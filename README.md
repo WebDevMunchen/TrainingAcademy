@@ -1,1 +1,1 @@
-# TrainingAcademy
+# Training-Academy
