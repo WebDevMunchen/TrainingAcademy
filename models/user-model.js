@@ -23,6 +23,11 @@ const userSchema = new Schema({
         enum: ["ausstehend", "genehmigt", "abgelehnt"],
         default: "ausstehend",
       },
+      statusAttended: {
+        type: String,
+        enum: ["teilgenommen", "nicht teilgenommen", "in Prüfung"],
+        default: "in Prüfung",
+      },
     },
   ],
 });

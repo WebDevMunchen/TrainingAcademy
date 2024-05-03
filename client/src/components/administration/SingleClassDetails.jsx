@@ -32,7 +32,7 @@ export default function SingleClassDetails() {
                 <li>
                 <RegisterdUserCard
                   
-                  user={registeredUser}
+                  registeredUser={registeredUser}
                   activityId = {id}
                 />
                 </li>
