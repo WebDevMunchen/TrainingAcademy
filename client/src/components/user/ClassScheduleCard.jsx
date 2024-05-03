@@ -37,8 +37,8 @@ export default function ClassScheduleCard({ activity }) {
 
   return (
     <>
-      <div className="transition-all  duration-1000 bg-white hover:bg-blue-500  hover:shadow-xl m-2 p-4 relative z-40 group  ">
-        <div className=" absolute  bg-blue-500/50 top-0 left-0 w-24 h-1 z-30  transition-all duration-200   group-hover:bg-white group-hover:w-1/2  "></div>
+      <div className="transition-all shadow-xl duration-1000 bg-white hover:bg-blue-500  hover:shadow-xl m-2 p-4 relative z-40 group">
+        <div className=" absolute bg-blue-500/50 top-0 left-0 w-24 h-1 z-30  transition-all duration-200   group-hover:bg-white group-hover:w-1/2  "></div>
         <div className="py-2 px-9 relative  ">
           <h3 className="flex justify-center text-lg font-semibold text-black group-hover:text-white ">
             {activity.title}

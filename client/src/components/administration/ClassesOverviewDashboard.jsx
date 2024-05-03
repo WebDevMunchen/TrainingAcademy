@@ -6,9 +6,9 @@ export default function ClassesOverviewDashboard() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50/50 flex">
+      <div className="bg-gray-50/50 flex">
         <SideMenu />
-        <div className=" w-10/12 overflow-y-auto max-h-[900px]">
+        <div className=" w-10/12 overflow-y-auto max-h-[820px]">
           <ClassesSchedule />
         </div>
       </div>

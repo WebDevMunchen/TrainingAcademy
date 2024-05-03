@@ -8,7 +8,7 @@ export default function ClassesSchedule() {
   return (
     <>
       <section className="w-10/12 mx-auto bg-blue-500ray-50">
-        <div className="py-10  sm:py-16 block lg:py-12 relative bg-opacity-50  z-40  ">
+        <div className="py-10 sm:py-16 block lg:py-12 relative bg-opacity-50  z-40">
           <div className="relative mx-auto h-full px-4 pb-20   md:pb-10 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8">
             <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 relative">
               <div className="max-w-xl mx-auto text-center">
