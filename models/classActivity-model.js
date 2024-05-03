@@ -10,6 +10,7 @@ const classActivitySchema = new Schema({
     location: { type: String, required: true },
     department: [{ type: String }],
     capacity: {type: Number, required: true},
+    usedCapacity: {type: Number, default: 0},
     // type: {type: Schema.Types.ObjectId, ref: "ClassType" }, "For later use"
     registeredUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],
     // contactPerson: [{ type: Schema.Types.ObjectId, ref: "User" }],

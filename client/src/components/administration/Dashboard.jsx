@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 
 export default function Dashboard() {
   const { allActivities, allUsers } = useContext(AuthContext);
+  
   const [totalAttendees, setTotalAttendees] = useState(0);
   const [totalCapacity, setTotalCapacity] = useState(0);
   const [pendingClassesCount, setPendingClassesCount] = useState(0);
@@ -13,7 +14,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (allActivities && allActivities.length > 0) {
       const registeredAttendees = allActivities.reduce((total, activity) => {
-        return total + activity.registeredUsers.length;
+        return total + activity.usedCapacity;
       }, 0);
       setTotalAttendees(registeredAttendees);
 
@@ -27,7 +28,6 @@ export default function Dashboard() {
     }
 
     if (allUsers && allUsers.length > 0) {
-      // Count pending classes for all users
       let count = 0;
       allUsers.forEach(user => {
         if (user.classesRegistered && user.classesRegistered.length > 0) {

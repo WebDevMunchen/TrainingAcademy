@@ -40,18 +40,14 @@ export default function ClassListPreview({ activity }) {
 
       <td className="py-3 px-5 border-b border-blue-gray-50 flex justify-center">
         <div className="w-10/12">
-          <p className="antialiased font-sans mb-1 block text-xs font-medium text-blue-gray-600">
-            {activity.registeredUsers.length + "/" + activity.capacity}
-          </p>
-          <div className="flex flex-start bg-blue-gray-50 overflow-hidden w-full rounded-sm font-sans text-xs font-medium h-1">
-            <div
-              className="flex justify-center items-center h-full bg-gradient-to-tr from-blue-600 to-blue-400 text-white"
-              style={{
-                width: `${
-                  (activity.registeredUsers.length / activity.capacity) * 100
-                }%`,
-              }}
-            ></div>
+          <div
+            className="radial-progress bg-gray-200 text-cyan-600 mx-8"
+            style={{
+              "--value": (activity.usedCapacity / activity.capacity) * 100,
+            }}
+            role="progressbar"
+          >
+            <span className="text-neutral-800 font-bold">{activity.usedCapacity + "/" + activity.capacity}</span>
           </div>
         </div>
       </td>

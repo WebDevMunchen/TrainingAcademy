@@ -20,7 +20,7 @@ const userSchema = new Schema({
       registeredClassID: { type: Schema.Types.ObjectId, ref: "ClassActivitie" },
       status: {
         type: String,
-        enum: ["ausstehend", "genemight", "abgelehnt"],
+        enum: ["ausstehend", "genehmigt", "abgelehnt"],
         default: "ausstehend",
       },
     },

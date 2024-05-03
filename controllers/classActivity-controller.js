@@ -34,7 +34,6 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
   res.status(201).json(activity);
 });
 
-
 const registerClass = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
   const { id: userID } = req.user;
@@ -57,6 +56,35 @@ const registerClass = asyncWrapper(async (req, res, next) => {
   next();
 });
 
+const increaseClassCapacity = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  const updatedCapacity = await ClassActivity.findByIdAndUpdate(
+    id,
+
+    { $inc: { usedCapacity: 1 } },
+    { new: true, populate: "registeredUsers" }
+  );
+
+  await updatedCapacity.save();
+
+  res.status(201).json(updatedCapacity);
+});
+
+const decreaseClassCapacity = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  const updatedCapacity = await ClassActivity.findByIdAndUpdate(
+    id,
+
+    { $inc: { usedCapacity: -1 } },
+    { new: true, populate: "registeredUsers" }
+  );
+
+  await updatedCapacity.save();
+
+  res.status(201).json(updatedCapacity);
+});
 
 const getActivity = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
@@ -67,7 +95,9 @@ const getActivity = asyncWrapper(async (req, res, next) => {
 });
 
 const getAllActivities = asyncWrapper(async (req, res, next) => {
-  const allActivities = await ClassActivity.find({}).populate("registeredUsers");
+  const allActivities = await ClassActivity.find({}).populate(
+    "registeredUsers"
+  );
 
   res.json(allActivities);
 });
@@ -77,4 +107,6 @@ module.exports = {
   getAllActivities,
   registerClass,
   getActivity,
+  increaseClassCapacity,
+  decreaseClassCapacity
 };

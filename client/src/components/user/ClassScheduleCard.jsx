@@ -28,9 +28,9 @@ export default function ClassScheduleCard({ activity }) {
 
   const dateString = activity.date;
   const date = new Date(dateString);
-  const dateToday = new Date
+  // const dateToday = new Date
 
-  console.log(dateToday)
+  // console.log(dateToday)
 
   const day = date.getDate();
   const month = date.getMonth() + 1;
