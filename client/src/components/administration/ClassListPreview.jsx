@@ -10,6 +10,15 @@ export default function ClassListPreview({ activity }) {
 
   const formattedDate = `${day}/${month}/${year}`;
 
+  const ausstehendUsers = activity.registeredUsers.filter(user => {
+    return user.classesRegistered.some(classInfo => {
+      return classInfo.registeredClassID === activity._id && classInfo.status === 'ausstehend';
+    });
+  });
+
+  const ausstehendCount = ausstehendUsers.length;
+  console.log(ausstehendCount)
+
   return (
     <tr>
       <td className="py-3 px-5 border-b border-blue-gray-50">
@@ -38,8 +47,13 @@ export default function ClassListPreview({ activity }) {
         </p>
       </td>
 
+      <td className="py-3 px-5 border-b border-blue-gray-50">
+        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+          {ausstehendCount}
+        </p>
+      </td>
+
       <td className="py-3 px-5 border-b border-blue-gray-50 flex justify-center">
-        <div className="w-10/12">
           <div
             className="radial-progress bg-gray-200 text-cyan-600 mx-8"
             style={{
@@ -49,13 +63,12 @@ export default function ClassListPreview({ activity }) {
           >
             <span className="text-neutral-800 font-bold">{activity.usedCapacity + "/" + activity.capacity}</span>
           </div>
-        </div>
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
         <NavLink
           to={`/${activity._id}`}
-          className="block antialiased font-sans text-xs font-medium text-blue-600 text-center"
+          className="block antialiased font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
         >
           Details
         </NavLink>

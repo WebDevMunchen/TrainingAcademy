@@ -13,10 +13,10 @@ export default function UserList() {
         <p>Loading...</p>
       ) : (
         <>
-      <div className="min-h-screen bg-gray-50/50 flex">
+      <div className="bg-gray-50/50 flex">
 
         <SideMenu />
-        <div className="mt-8 bg-white p-4 shadow rounded-lg w-10/12 mr-auto ml-auto">
+        <div className="mt-4 bg-white p-4 shadow rounded-lg h-[calc(93vh-32px)] w-10/12 mr-auto ml-auto">
           <h2 className="text-gray-500 text-lg font-semibold pb-4">
             Benutzerübersicht
           </h2>

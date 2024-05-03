@@ -48,7 +48,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50/50 flex">
+      <div className="bg-gray-50/50 flex">
         <SideMenu />
         <div className="p-4 xl:flex-1">
           <div className="mt-12">
@@ -216,7 +216,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="mb-4 grid grid-cols-1 gap-6 xl:grid-cols-3">
+            <div className="mx-auto w-10/12 mb-4 grid grid-cols-1 gap-6">
               <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
                 <div className="relative bg-clip-border rounded-xl overflow-hidden bg-transparent text-gray-700 shadow-none m-0 flex items-center justify-between p-6">
                   <div>
@@ -236,7 +236,7 @@ export default function Dashboard() {
                   <table className="w-full min-w-[640px] table-auto">
                     <thead>
                       <tr>
-                        <th className="border-b border-blue-gray-50 py-3 px-6 text-left">
+                        <th className="w-3/12 border-b border-blue-gray-50 py-3 px-6 text-left">
                           <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
                             Thema
                           </p>
@@ -254,6 +254,11 @@ export default function Dashboard() {
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
                           <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
                             Datum
+                          </p>
+                        </th>
+                        <th className="w-2/12 border-b border-blue-gray-50 py-3 px-6 text-center">
+                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                            Ausstehende Genehmigungen
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">

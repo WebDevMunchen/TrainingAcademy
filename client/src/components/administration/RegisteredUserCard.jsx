@@ -123,7 +123,7 @@ export default function RegisteredUserCard({ registeredUser, activityId }) {
           </p>
         </div>
       </div>
-      {user.role === "ASP" ? (
+      {user.role === "ASP" || user.role === "admin" ? (
         <div className="flex gap-4">
           <label class="cursor-pointer">
             <input

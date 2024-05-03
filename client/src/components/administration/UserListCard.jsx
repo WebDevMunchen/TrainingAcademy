@@ -20,7 +20,7 @@ export default function UserListCard({ user }) {
           {user.status}
         </td>
         <td className="py-2 px-4 border-b border-grey-light">
-          <NavLink to={`/${user._id}`}>Mehr</NavLink>
+          <NavLink className={"block antialiased font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125"} to={`/${user._id}`}>Mehr</NavLink>
         </td>
       </tr>
     </>
