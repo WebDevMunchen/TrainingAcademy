@@ -12,6 +12,7 @@ import Dashboard from "./components/administration/Dashboard";
 import UserList from "./components/administration/UserList";
 import ClassesOverviewDashboard from "./components/administration/ClassesOverviewDashboard";
 import CreateClass from "./components/administration/CreateClass";
+import UserInfoCard from "./components/administration/UserInfoCard";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="users" element={<UserList />} />
+            <Route path="userProfile/:id" element={<UserInfoCard />} />
             <Route
               path="classesOverview"
               element={<ClassesOverviewDashboard />}

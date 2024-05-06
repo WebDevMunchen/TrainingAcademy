@@ -17,7 +17,6 @@ export default function ClassListPreview({ activity }) {
   });
 
   const ausstehendCount = ausstehendUsers.length;
-  console.log(ausstehendCount)
 
   return (
     <tr>

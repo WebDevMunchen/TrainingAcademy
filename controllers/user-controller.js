@@ -55,6 +55,20 @@ const getProfile = asyncWrapper(async (req, res, next) => {
   }
 });
 
+const getUserInformation = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  const user = await User.findById(id).populate(
+    "classesRegistered.registeredClassID"
+  );
+
+  if (!user) {
+    throw new ErrorResponse(404, "User not found!");
+  } else {
+    res.json(user);
+  }
+});
+
 const getAllUsers = asyncWrapper(async (req, res, next) => {
   const user = await User.find({}).populate(
     "classesRegistered.registeredClassID"
@@ -282,4 +296,5 @@ module.exports = {
   updateClassStatus,
   updateAttended,
   updateNotAttended,
+  getUserInformation,
 };
