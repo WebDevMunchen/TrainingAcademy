@@ -14,7 +14,7 @@ const userSchema = new Schema({
   },
   dateOfRegistration: { type: Date, default: Date.now() },
   userContactInformation: {type: String, required: true},
-  status: { type: String, enum: ["active", "inactive"], default: "active" },
+  status: { type: String, enum: ["aktiv", "inaktiv"], default: "aktiv" },
   classesRegistered: [
     {
       registeredClassID: { type: Schema.Types.ObjectId, ref: "ClassActivitie" },

@@ -10,9 +10,12 @@ export default function ClassListPreview({ activity }) {
 
   const formattedDate = `${day}/${month}/${year}`;
 
-  const ausstehendUsers = activity.registeredUsers.filter(user => {
-    return user.classesRegistered.some(classInfo => {
-      return classInfo.registeredClassID === activity._id && classInfo.status === 'ausstehend';
+  const ausstehendUsers = activity.registeredUsers.filter((user) => {
+    return user.classesRegistered.some((classInfo) => {
+      return (
+        classInfo.registeredClassID === activity._id &&
+        classInfo.status === "ausstehend"
+      );
     });
   });
 
@@ -29,9 +32,11 @@ export default function ClassListPreview({ activity }) {
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
-        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
-          {activity.department}
-        </p>
+        <div className="flex">
+          {activity.department.map((image) => {
+            return <img src={image} alt="logo" className="w-12 h-12" />;
+          })}
+        </div>
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
@@ -53,15 +58,17 @@ export default function ClassListPreview({ activity }) {
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50 flex justify-center">
-          <div
-            className="radial-progress bg-gray-200 text-cyan-600 mx-8"
-            style={{
-              "--value": (activity.usedCapacity / activity.capacity) * 100,
-            }}
-            role="progressbar"
-          >
-            <span className="text-neutral-800 font-bold">{activity.usedCapacity + "/" + activity.capacity}</span>
-          </div>
+        <div
+          className="radial-progress bg-gray-200 text-cyan-600 mx-8"
+          style={{
+            "--value": (activity.usedCapacity / activity.capacity) * 100,
+          }}
+          role="progressbar"
+        >
+          <span className="text-neutral-800 font-bold">
+            {activity.usedCapacity + "/" + activity.capacity}
+          </span>
+        </div>
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
