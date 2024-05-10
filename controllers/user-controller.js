@@ -41,6 +41,40 @@ const createUser = asyncWrapper(async (req, res, next) => {
   res.status(201).json(user);
 });
 
+const updateUser = asyncWrapper(async (req, res, next) => {
+  const {
+    email,
+    firstName,
+    lastName,
+    role,
+    department,
+    status,
+    userContactInformation,
+  } = req.body;
+
+  const {id} = req.params
+
+
+  const updatedFields = {
+    email,
+    firstName,
+    lastName,
+    role,
+    department,
+    status,
+    userContactInformation,
+  };
+
+  const user = await User.findByIdAndUpdate(id, updatedFields, { new: true });
+
+  if(!user) {
+    throw new ErrorResponse(404, "User not found!")
+  } else {
+    res.status(201).json(user)
+  }
+
+});
+
 const getProfile = asyncWrapper(async (req, res, next) => {
   const { id } = req.user;
 
@@ -124,16 +158,16 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     }" angemeldet! <br/ ><br /> Zur Genehmigungsprozes: http://localhost:5173/classes/${activity_id}`,
   };
 
-  // const sendMail = async(transporter, mailOptions) => {
-  //     try {
-  //       await transporter.sendMail(mailOptions)
-  //       console.log("Success")
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+  const sendMail = async(transporter, mailOptions) => {
+      try {
+        await transporter.sendMail(mailOptions)
+        console.log("Success")
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
-  // sendMail(transporter, mailOptions)
+  sendMail(transporter, mailOptions)
 
   res.status(201).json(updatedUser);
 });
@@ -183,16 +217,16 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       html: `Deine Anfrage für die Schulung wurde ${newStatus}! <br/ ><br />`,
     };
 
-    // const sendMail = async(transporter, mailOptions) => {
-    //     try {
-    //       await transporter.sendMail(mailOptions)
-    //       console.log("Success")
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
+    const sendMail = async(transporter, mailOptions) => {
+        try {
+          await transporter.sendMail(mailOptions)
+          console.log("Success")
+        } catch (error) {
+          console.log(error)
+        }
+      }
 
-    // sendMail(transporter, mailOptions)
+    sendMail(transporter, mailOptions)
 
     res.status(200).json({ message: "Class status updated successfully" });
   } catch (error) {
@@ -297,4 +331,5 @@ module.exports = {
   updateAttended,
   updateNotAttended,
   getUserInformation,
+  updateUser
 };

@@ -54,12 +54,12 @@ export default function UserList() {
                 </tbody>
               </table>
               <div className="text-right mt-4 mr-16">
-                <button
-                  onClick={() => navigate(-1)}
+                <NavLink
+                  to={"/admin/dashboard"}
                   className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                 >
                   Zurück
-                </button>
+                </NavLink>
               </div>
             </div>
           </div>

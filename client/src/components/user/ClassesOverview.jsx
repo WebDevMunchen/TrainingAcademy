@@ -5,6 +5,12 @@ import ClassesOverviewCard from "./ClassOverviewCard";
 export default function ClassesOverview() {
   const { user } = useContext(AuthContext);
 
+  const compareDates = (a, b) => {
+    const dateA = new Date(a.registeredClassID.date);
+    const dateB = new Date(b.registeredClassID.date);
+    return dateB - dateA;
+  };
+
   return (
     <>
       <section className=" bg-blue-500ray-50">
@@ -17,23 +23,22 @@ export default function ClassesOverview() {
                     Meine Schulungen
                   </p>
                 </div>
-                <p className="mt-4 text-base leading-relaxed text-gray-600 group-hover:text-white">
-                  Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-                  amet sint. Velit officia consequat duis enim velit mollit..
-                </p>
               </div>
               <div className="grid grid-cols-1 gap-2 mt-12 sm:grid-cols-1 lg:mt-12 w-10/12 ml-auto mr-auto">
                 {!user ? (
                   <p>Loading</p>
                 ) : (
-                  user?.classesRegistered?.map((activity) => {
-                    return (
-                      <ClassesOverviewCard
-                        key={activity._id}
-                        activity={activity}
-                      />
-                    );
-                  })
+                  user.classesRegistered
+                    .slice() // create a copy to avoid mutating original array
+                    .sort(compareDates) // Sort the classes by date
+                    .map((activity) => {
+                      return (
+                        <ClassesOverviewCard
+                          key={activity._id}
+                          activity={activity}
+                        />
+                      );
+                    })
                 )}
               </div>
             </div>

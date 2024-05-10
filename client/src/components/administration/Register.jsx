@@ -151,34 +151,9 @@ export default function Register() {
                   </div>
                 </div>
                 <div className="flex justify-center">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="terms"
-                      aria-describedby="terms"
-                      type="checkbox"
-                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                      required=""
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="terms"
-                      className="font-light text-gray-500 dark:text-gray-300"
-                    >
-                      I accept the{" "}
-                      <a
-                        className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                        href="#"
-                      >
-                        Terms and Conditions
-                      </a>
-                    </label>
-                  </div>
-                </div>
-                <div className="flex justify-center">
                   <button
                     type="submit"
-                    className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/2 rounded cursor-pointer"
+                    className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/2 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                   >
                     Registrieren
                   </button>

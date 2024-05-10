@@ -61,12 +61,16 @@ const increaseClassCapacity = asyncWrapper(async (req, res, next) => {
 
   const updatedCapacity = await ClassActivity.findByIdAndUpdate(
     id,
-
     { $inc: { usedCapacity: 1 } },
     { new: true, populate: "registeredUsers" }
   );
 
-  await updatedCapacity.save();
+  // Check if usedCapacity exceeds capacity after update
+  if (updatedCapacity.usedCapacity > updatedCapacity.capacity) {
+    throw new ErrorResponse(404, "Capacity reached!");
+  } else {
+    await updatedCapacity.save();
+  }
 
   res.status(201).json(updatedCapacity);
 });
@@ -95,11 +99,27 @@ const getActivity = asyncWrapper(async (req, res, next) => {
 });
 
 const getAllActivities = asyncWrapper(async (req, res, next) => {
-  const allActivities = await ClassActivity.find({}).populate(
-    "registeredUsers"
-  );
+  try {
+    const { month } = req.query;
+    let query = {};
 
-  res.json(allActivities);
+    if (month) {
+      query.month = month;
+    }
+
+    const allActivities = await ClassActivity.find(query).populate(
+      "registeredUsers"
+    );
+
+    if (allActivities.length === 0) {
+      return res.status(404).json({ message: "No activities found" });
+    }
+
+    res.json(allActivities);
+  } catch (error) {
+    console.error("Error fetching activities:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 module.exports = {
@@ -108,5 +128,5 @@ module.exports = {
   registerClass,
   getActivity,
   increaseClassCapacity,
-  decreaseClassCapacity
+  decreaseClassCapacity,
 };

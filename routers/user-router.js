@@ -9,7 +9,8 @@ const {
   updateClassStatus,
   updateAttended,
   updateNotAttended,
-  getUserInformation
+  getUserInformation,
+  updateUser
 } = require("../controllers/user-controller");
 
 const { authenticate, authorize } = require("../middlewares/authentication");
@@ -21,6 +22,7 @@ userRouter.route("/register").post(createUser);
 userRouter.route("/login").post(login);
 userRouter.route("/logout").post(logout);
 userRouter.route("/profileInformation/:id").get(authenticate, getUserInformation);
+userRouter.route("/profileInformation/update/:id").put(authenticate, updateUser)
 userRouter.route("/profile").get(authenticate, getProfile);
 userRouter.route("/getAllUsers").get(authenticate, getAllUsers);
 userRouter.route("/updateClassStatus/:id").put(updateClassStatus)

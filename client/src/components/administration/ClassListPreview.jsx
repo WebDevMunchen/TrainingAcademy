@@ -1,6 +1,21 @@
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 export default function ClassListPreview({ activity }) {
+  const [ausstehendCount, setAusstehendCount] = useState(0);
+
+  useEffect(() => {
+    const ausstehendUsers = activity.registeredUsers.filter((user) => {
+      return user.classesRegistered.some((classInfo) => {
+        return (
+          classInfo.registeredClassID === activity._id &&
+          classInfo.status === "ausstehend"
+        );
+      });
+    });
+    setAusstehendCount(ausstehendUsers.length);
+  }, [activity]);
+
   const dateString = activity?.date;
   const date = new Date(dateString);
 
@@ -9,17 +24,6 @@ export default function ClassListPreview({ activity }) {
   const year = date.getFullYear();
 
   const formattedDate = `${day}/${month}/${year}`;
-
-  const ausstehendUsers = activity.registeredUsers.filter((user) => {
-    return user.classesRegistered.some((classInfo) => {
-      return (
-        classInfo.registeredClassID === activity._id &&
-        classInfo.status === "ausstehend"
-      );
-    });
-  });
-
-  const ausstehendCount = ausstehendUsers.length;
 
   return (
     <tr>

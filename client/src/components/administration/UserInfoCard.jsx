@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import SideMenu from "./SideMenu";
 import { useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
@@ -124,9 +124,9 @@ export default function UserInfoCard() {
                   </div>
                 </div>
                 <div className="h-[50px] space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
-                  <button className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+                  <NavLink to={`/admin/userProfile/update/${userInfomation._id}`} className="flex items-center text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
                     Bearbeiten
-                  </button>
+                  </NavLink>
                   <button
                     onClick={() => navigate(-1)}
                     className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
@@ -140,18 +140,28 @@ export default function UserInfoCard() {
                   {userInfomation.firstName + " " + userInfomation.lastName}
                 </h1>
                 <p className="font-light text-gray-600 mt-3">
-                  Registriert seit: {formattedDate}
+                  <span className="font-medium">Registriert seit:</span> {formattedDate}
                 </p>
-                <p className="font-light text-gray-600">
-                  Status: {userInfomation.status}
-                </p>
+                <p className="font-light text-gray-600 mt-3">
+                <span className="font-medium">Status: </span>
+                <span
+            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ml-2  
+    ${
+      userInfomation.status === "aktiv"
+        ? "bg-green-100 text-green-800"
+        : "bg-red-200 text-red-700"
+    }`}
+          >
+            {userInfomation.status}
+          </span>
+          </p>
 
-                <p className="mt-8 text-gray-500">
-                  Abteilung: {userInfomation.department} - Role:{" "}
-                  {userInfomation.role}
+                <p className="mt-8 text-gray-600">
+                <span className="font-medium">Abteilung:</span> {userInfomation.department} - <span className="font-medium">Role: </span>
+                {userInfomation.role.charAt(0).toUpperCase() + userInfomation.role.slice(1)}
                 </p>
-                <p className="mt-2 text-gray-500">
-                  E-Mail: {userInfomation.email}
+                <p className="mt-2 text-gray-600">
+                <span className="font-medium"> E-Mail:</span> {userInfomation.email}
                 </p>
               </div>
               <div className="mt-6 flex flex-col min-h-96">
@@ -213,9 +223,19 @@ export default function UserInfoCard() {
                               </td>
 
                               <td className="py-3 px-5 border-b border-blue-gray-50">
-                                <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
-                                  {activity.registeredClassID.department}
-                                </p>
+                                <div className="flex">
+                                  {activity.registeredClassID.department.map(
+                                    (image) => {
+                                      return (
+                                        <img
+                                          src={image}
+                                          alt="logo"
+                                          className="w-12 h-12"
+                                        />
+                                      );
+                                    }
+                                  )}
+                                </div>
                               </td>
 
                               <td className="py-3 px-5 border-b border-blue-gray-50">

@@ -13,6 +13,7 @@ import UserList from "./components/administration/UserList";
 import ClassesOverviewDashboard from "./components/administration/ClassesOverviewDashboard";
 import CreateClass from "./components/administration/CreateClass";
 import UserInfoCard from "./components/administration/UserInfoCard";
+import UpdateUser from "./components/administration/UpdateUser";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="users" element={<UserList />} />
             <Route path="userProfile/:id" element={<UserInfoCard />} />
+            <Route path="userProfile/update/:id" element={<UpdateUser />} />
             <Route
               path="classesOverview"
               element={<ClassesOverviewDashboard />}
