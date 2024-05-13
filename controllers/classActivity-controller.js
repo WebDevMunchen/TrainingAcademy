@@ -59,18 +59,19 @@ const registerClass = asyncWrapper(async (req, res, next) => {
 const increaseClassCapacity = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
-  const updatedCapacity = await ClassActivity.findByIdAndUpdate(
-    id,
-    { $inc: { usedCapacity: 1 } },
-    { new: true, populate: "registeredUsers" }
-  );
+  // Retrieve the class activity
+  const classActivity = await ClassActivity.findById(id);
 
-  // Check if usedCapacity exceeds capacity after update
-  if (updatedCapacity.usedCapacity > updatedCapacity.capacity) {
+  // Check if there is capacity available
+  if (classActivity.usedCapacity >= classActivity.capacity) {
     throw new ErrorResponse(404, "Capacity reached!");
-  } else {
-    await updatedCapacity.save();
   }
+
+  // Increment usedCapacity
+  classActivity.usedCapacity += 1;
+
+  // Save the updated class activity
+  const updatedCapacity = await classActivity.save();
 
   res.status(201).json(updatedCapacity);
 });

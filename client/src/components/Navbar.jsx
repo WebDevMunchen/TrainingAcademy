@@ -30,7 +30,7 @@ export default function Navbar() {
                 </div>
               ) : (
                 <>
-                  {user.role === "user" ? (
+                  {user.role === "user" || user.role === "ASP" ? (
                     <>
                       <div className="px-2 xl:px-12 py-3 ml-20 flex w-full items-center">
                         <ul className="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12">

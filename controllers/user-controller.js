@@ -4,6 +4,7 @@ const asyncWrapper = require("../utils/asyncWrapper.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const ClassActivity = require("../models/classActivity-model.js");
 
 const createUser = asyncWrapper(async (req, res, next) => {
   const {
@@ -52,8 +53,7 @@ const updateUser = asyncWrapper(async (req, res, next) => {
     userContactInformation,
   } = req.body;
 
-  const {id} = req.params
-
+  const { id } = req.params;
 
   const updatedFields = {
     email,
@@ -67,12 +67,11 @@ const updateUser = asyncWrapper(async (req, res, next) => {
 
   const user = await User.findByIdAndUpdate(id, updatedFields, { new: true });
 
-  if(!user) {
-    throw new ErrorResponse(404, "User not found!")
+  if (!user) {
+    throw new ErrorResponse(404, "User not found!");
   } else {
-    res.status(201).json(user)
+    res.status(201).json(user);
   }
-
 });
 
 const getProfile = asyncWrapper(async (req, res, next) => {
@@ -116,13 +115,11 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
   const { registeredClass } = req;
   const { _id: activity_id } = registeredClass;
 
-  const user = await User.findById(id).populate(
-    "classesRegistered.registeredClassID"
-  );
+  const user = await User.findById(id)
   if (
     user.classesRegistered.some(
       (classItem) =>
-        classItem.registeredClassID.toString() === activity_id.toString()
+        classItem.registeredClassID === activity_id
     )
   ) {
     throw new ErrorResponse(400, "User is already registered for this class");
@@ -158,16 +155,16 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     }" angemeldet! <br/ ><br /> Zur Genehmigungsprozes: http://localhost:5173/classes/${activity_id}`,
   };
 
-  const sendMail = async(transporter, mailOptions) => {
-      try {
-        await transporter.sendMail(mailOptions)
-        console.log("Success")
-      } catch (error) {
-        console.log(error)
-      }
-    }
+  // const sendMail = async(transporter, mailOptions) => {
+  //     try {
+  //       await transporter.sendMail(mailOptions)
+  //       console.log("Success")
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
 
-  sendMail(transporter, mailOptions)
+  // sendMail(transporter, mailOptions)
 
   res.status(201).json(updatedUser);
 });
@@ -175,20 +172,33 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 const updateClassStatus = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
   const { classId, newStatus } = req.body;
+  
 
   try {
     const user = await User.findById(id);
-
+   
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const classIndex = user.classesRegistered.findIndex(
-      (classObj) => classObj.registeredClassID.toString() === classId
-    );
+    const classIndex = user.classesRegistered.findIndex((classObj) => {
+      if (classObj.registeredClassID) {
+        return classObj.registeredClassID.toString() === classId;
+      }
+      return false;
+    });
+    
 
     if (classIndex === -1) {
       return res.status(404).json({ error: "Class not found for this user" });
+    }
+
+    // Check if activity capacity is equal to usedCapacity
+    const activity = await ClassActivity.findById(classId);
+    if (activity.capacity === activity.usedCapacity && (user.classesRegistered[classIndex].status === "abgelehnt" || user.classesRegistered[classIndex].status === "ausstehend")) {
+      return res
+        .status(400)
+        .json({ error: "Activity capacity is already full" });
     }
 
     user.classesRegistered[classIndex].status = newStatus;
@@ -217,16 +227,16 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       html: `Deine Anfrage für die Schulung wurde ${newStatus}! <br/ ><br />`,
     };
 
-    const sendMail = async(transporter, mailOptions) => {
-        try {
-          await transporter.sendMail(mailOptions)
-          console.log("Success")
-        } catch (error) {
-          console.log(error)
-        }
-      }
+    // const sendMail = async(transporter, mailOptions) => {
+    //     try {
+    //       await transporter.sendMail(mailOptions)
+    //       console.log("Success")
+    //     } catch (error) {
+    //       console.log(error)
+    //     }
+    //   }
 
-    sendMail(transporter, mailOptions)
+    // sendMail(transporter, mailOptions)
 
     res.status(200).json({ message: "Class status updated successfully" });
   } catch (error) {
@@ -331,5 +341,5 @@ module.exports = {
   updateAttended,
   updateNotAttended,
   getUserInformation,
-  updateUser
+  updateUser,
 };

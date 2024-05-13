@@ -1,5 +1,5 @@
 export default function ClassesOverviewCard({ activity }) {
-  const dateString = activity.registeredClassID.date;
+  const dateString = activity?.registeredClassID?.date;
   const date = new Date(dateString);
 
   const day = date.getDate();
@@ -48,24 +48,24 @@ export default function ClassesOverviewCard({ activity }) {
         </div>
         <div className="py-2 px-9 relative  ">
           <h3 className="flex justify-center text-lg font-semibold text-black">
-            {activity.registeredClassID.title}
+            {activity.registeredClassID?.title}
           </h3>
           <div className="flex justify-center mt-2 mb-1">
             <p>Ziel Gruppe</p>
           </div>
           <div className="mt-4 flex justify-center">
-            {activity.registeredClassID.department.map((dept, index) => (
+            {activity.registeredClassID?.department.map((dept, index) => (
               <img key={index} src={dept} className="w-12 h-12" />
             ))}
           </div>
           <p className="flex justify-center mt-4 text-base text-gray-600  ">
-            {activity.registeredClassID.description}
+            {activity.registeredClassID?.description}
           </p>
           <div className="flex justify-around gap-16">
             <div className="flex flex-col">
               <p className="mt-4 text-base text-gray-600 ">
                 <span className="font-bold">Kapazität:</span>{" "}
-                {activity.registeredClassID.capacity + " Teilnehmer"}
+                {activity.registeredClassID?.capacity + " Teilnehmer"}
               </p>
               <p className="mt-4 text-base text-gray-600 ">
                 <span className="font-bold">Datum:</span> {formattedDate}
@@ -74,21 +74,21 @@ export default function ClassesOverviewCard({ activity }) {
             <div className="flex flex-col">
               <p className="mt-4 text-base text-gray-600 ">
                 <span className="font-bold">Uhrzeit:</span>{" "}
-                {activity.registeredClassID.time}
+                {activity.registeredClassID?.time}
               </p>
               <p className="mt-4 text-base text-gray-600 ">
                 <span className="font-bold">Dauer:</span>{" "}
-                {activity.registeredClassID.duration + " min"}
+                {activity.registeredClassID?.duration + " min"}
               </p>
             </div>
             <div className="flex flex-col">
               <p className="mt-4 text-base text-gray-600 ">
                 <span className="font-bold">Location:</span>{" "}
-                {activity.registeredClassID.location}
+                {activity.registeredClassID?.location}
               </p>
               <p className="mt-4 text-base text-gray-600 ">
                 <span className="font-bold">Lehrer:</span>{" "}
-                {activity.registeredClassID.teacher}
+                {activity.registeredClassID?.teacher}
               </p>
             </div>
           </div>

@@ -25,8 +25,8 @@ userRouter.route("/profileInformation/:id").get(authenticate, getUserInformation
 userRouter.route("/profileInformation/update/:id").put(authenticate, updateUser)
 userRouter.route("/profile").get(authenticate, getProfile);
 userRouter.route("/getAllUsers").get(authenticate, getAllUsers);
-userRouter.route("/updateClassStatus/:id").put(updateClassStatus)
-userRouter.route("/updateAttended/:id").put(updateAttended)
-userRouter.route("/updateNotAttended/:id").put(updateNotAttended)
+userRouter.route("/updateClassStatus/:id").put(authenticate, updateClassStatus)
+userRouter.route("/updateAttended/:id").put(authenticate, updateAttended)
+userRouter.route("/updateNotAttended/:id").put(authenticate, updateNotAttended)
 
 module.exports = userRouter;

@@ -6,8 +6,8 @@ export default function ClassesOverview() {
   const { user } = useContext(AuthContext);
 
   const compareDates = (a, b) => {
-    const dateA = new Date(a.registeredClassID.date);
-    const dateB = new Date(b.registeredClassID.date);
+    const dateA = new Date(a?.registeredClassID?.date);
+    const dateB = new Date(b?.registeredClassID?.date);
     return dateB - dateA;
   };
 
