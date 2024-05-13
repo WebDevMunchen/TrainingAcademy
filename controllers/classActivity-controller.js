@@ -96,6 +96,10 @@ const getActivity = asyncWrapper(async (req, res, next) => {
 
   const activity = await ClassActivity.findById(id).populate("registeredUsers");
 
+  if(!activity) {
+    throw new ErrorResponse(404, "notfound")
+  }
+
   res.status(201).json(activity);
 });
 

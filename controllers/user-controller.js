@@ -155,16 +155,16 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     }" angemeldet! <br/ ><br /> Zur Genehmigungsprozes: http://localhost:5173/${activity_id}`,
   };
 
-  const sendMail = async(transporter, mailOptions) => {
-      try {
-        await transporter.sendMail(mailOptions)
-        console.log("Success")
-      } catch (error) {
-        console.log(error)
-      }
-    }
+  // const sendMail = async(transporter, mailOptions) => {
+  //     try {
+  //       await transporter.sendMail(mailOptions)
+  //       console.log("Success")
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
 
-  sendMail(transporter, mailOptions)
+  // sendMail(transporter, mailOptions)
 
   res.status(201).json(updatedUser);
 });
@@ -227,16 +227,16 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       html: `Deine Anfrage für die Schulung wurde ${newStatus}! <br/ ><br />`,
     };
 
-    const sendMail = async(transporter, mailOptions) => {
-        try {
-          await transporter.sendMail(mailOptions)
-          console.log("Success")
-        } catch (error) {
-          console.log(error)
-        }
-      }
+    // const sendMail = async(transporter, mailOptions) => {
+    //     try {
+    //       await transporter.sendMail(mailOptions)
+    //       console.log("Success")
+    //     } catch (error) {
+    //       console.log(error)
+    //     }
+    //   }
 
-    sendMail(transporter, mailOptions)
+    // sendMail(transporter, mailOptions)
 
     res.status(200).json({ message: "Class status updated successfully" });
   } catch (error) {

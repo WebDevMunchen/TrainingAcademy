@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
 import { useParams } from "react-router-dom";
@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 export default function RegisteredUserCard({
   registeredUser,
   activityId,
-  setActivity,
+  setActivity
 }) {
   const { user, setAllActivities } = useContext(AuthContext);
   const { id } = useParams();
@@ -20,25 +20,30 @@ export default function RegisteredUserCard({
       .put(`/user/updateClassStatus/${registeredUser._id}`, {
         classId: id,
         newStatus: status,
+      }).then((response) => {
+        axiosClient.put(`/classActivity/increaseClassCapacity/${id}`)
       })
       .then((response) => {
-        return (
-          axiosClient.put(`/classActivity/increaseClassCapacity/${id}`),
-          console.log("Approved with increased usedCapacity!")
-        );
-      })
-      .then((response) => {
-        // Fetch the updated single activity
+        console.log("updated decrease class capacity");
+        console.log(response);
+  
+        // Perform the next axios request
         return axiosClient.get(`/classActivity/${id}`);
       })
-      .then((responseSingleActivity) => {
-        // Update the activity state with the fetched data
-        setActivity(responseSingleActivity.data);
-        
+      .then((response) => {
+        console.log("Get Request on single Class Activity");
+        console.log(response);
+        setActivity(response.data)
+        // Fetch the updated single activity
+        // console.log(response);
+  
         // Fetch all activities
         return axiosClient.get(`/classActivity/allActivities`);
       })
       .then((responseAllActivities) => {
+        console.log("now setting allActivities");
+        console.log(responseAllActivities);
+  
         // Update all activities state with the fetched data
         setAllActivities(responseAllActivities.data);
       })
@@ -54,17 +59,26 @@ export default function RegisteredUserCard({
         newStatus: status,
       })
       .then((response) => {
-        // Fetch the updated single activity
+        console.log("updated decrease class capacity");
+        console.log(response);
+  
+        // Perform the next axios request
         return axiosClient.get(`/classActivity/${id}`);
       })
-      .then((responseSingleActivity) => {
-        // Update the activity state with the fetched data
-        setActivity(responseSingleActivity.data);
-        
+      .then((response) => {
+        console.log("Get Request on single Class Activity");
+        console.log(response);
+        setActivity(response.data)
+        // Fetch the updated single activity
+        // console.log(response);
+  
         // Fetch all activities
         return axiosClient.get(`/classActivity/allActivities`);
       })
       .then((responseAllActivities) => {
+        console.log("now setting allActivities");
+        console.log(responseAllActivities);
+  
         // Update all activities state with the fetched data
         setAllActivities(responseAllActivities.data);
       })
@@ -78,25 +92,30 @@ export default function RegisteredUserCard({
       .put(`/user/updateClassStatus/${registeredUser._id}`, {
         classId: id,
         newStatus: status,
+      }).then((response) => {
+        axiosClient.put(`/classActivity/decreaseClassCapacity/${id}`)
       })
       .then((response) => {
-        return (
-          axiosClient.put(`/classActivity/decreaseClassCapacity/${id}`),
-          console.log("Changed to declined and usedCapacity decreased!")
-        );
-      })
-      .then((response) => {
-        // Fetch the updated single activity
+        console.log("updated decrease class capacity");
+        console.log(response);
+  
+        // Perform the next axios request
         return axiosClient.get(`/classActivity/${id}`);
       })
-      .then((responseSingleActivity) => {
-        // Update the activity state with the fetched data
-        setActivity(responseSingleActivity.data);
-        
+      .then((response) => {
+        console.log("Get Request on single Class Activity");
+        console.log(response);
+        setActivity(response.data)
+        // Fetch the updated single activity
+        // console.log(response);
+  
         // Fetch all activities
         return axiosClient.get(`/classActivity/allActivities`);
       })
       .then((responseAllActivities) => {
+        console.log("now setting allActivities");
+        console.log(responseAllActivities);
+  
         // Update all activities state with the fetched data
         setAllActivities(responseAllActivities.data);
       })
@@ -104,6 +123,7 @@ export default function RegisteredUserCard({
         console.log(error);
       });
   };
+  
 
   const handleApproved = (e) => {
     if (e.target.checked) {
