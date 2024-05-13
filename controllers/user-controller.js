@@ -152,19 +152,19 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     text: "Training Academy - Rent Group München",
     html: `${user.firstName + " " + user.lastName} hat sich für die Schulung "${
       registeredClass.title
-    }" angemeldet! <br/ ><br /> Zur Genehmigungsprozes: http://localhost:5173/classes/${activity_id}`,
+    }" angemeldet! <br/ ><br /> Zur Genehmigungsprozes: http://localhost:5173/${activity_id}`,
   };
 
-  // const sendMail = async(transporter, mailOptions) => {
-  //     try {
-  //       await transporter.sendMail(mailOptions)
-  //       console.log("Success")
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+  const sendMail = async(transporter, mailOptions) => {
+      try {
+        await transporter.sendMail(mailOptions)
+        console.log("Success")
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
-  // sendMail(transporter, mailOptions)
+  sendMail(transporter, mailOptions)
 
   res.status(201).json(updatedUser);
 });
@@ -227,16 +227,16 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       html: `Deine Anfrage für die Schulung wurde ${newStatus}! <br/ ><br />`,
     };
 
-    // const sendMail = async(transporter, mailOptions) => {
-    //     try {
-    //       await transporter.sendMail(mailOptions)
-    //       console.log("Success")
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
+    const sendMail = async(transporter, mailOptions) => {
+        try {
+          await transporter.sendMail(mailOptions)
+          console.log("Success")
+        } catch (error) {
+          console.log(error)
+        }
+      }
 
-    // sendMail(transporter, mailOptions)
+    sendMail(transporter, mailOptions)
 
     res.status(200).json({ message: "Class status updated successfully" });
   } catch (error) {
@@ -255,9 +255,12 @@ const updateAttended = asyncWrapper(async (req, res, next) => {
     return res.status(404).json({ error: "User not found" });
   }
 
-  const classIndex = user.classesRegistered.findIndex(
-    (classObj) => classObj.registeredClassID.toString() === classId
-  );
+  const classIndex = user.classesRegistered.findIndex((classObj) => {
+    if (classObj.registeredClassID) {
+      return classObj.registeredClassID.toString() === classId;
+    }
+    return false;
+  });
 
   if (classIndex === -1) {
     return res.status(404).json({ error: "Class not found for this user" });
@@ -278,9 +281,12 @@ const updateNotAttended = asyncWrapper(async (req, res, next) => {
     return res.status(404).json({ error: "User not found" });
   }
 
-  const classIndex = user.classesRegistered.findIndex(
-    (classObj) => classObj.registeredClassID.toString() === classId
-  );
+  const classIndex = user.classesRegistered.findIndex((classObj) => {
+    if (classObj.registeredClassID) {
+      return classObj.registeredClassID.toString() === classId;
+    }
+    return false;
+  });
 
   if (classIndex === -1) {
     return res.status(404).json({ error: "Class not found for this user" });

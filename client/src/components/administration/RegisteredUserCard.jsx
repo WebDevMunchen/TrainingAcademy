@@ -12,12 +12,8 @@ export default function RegisteredUserCard({
   const { id } = useParams();
   const modalRef = useRef(null);
 
-  const [hideApprovalButtons, setHideApprovalButtons] = useState(false);
-  const [submited, setSubmited] = useState(true);
-
   const [hideAttendedBtn, setHideAttendedBtn] = useState(false);
   const [submitedAttended, setSubmitedAttended] = useState(true);
-
 
   const approve = (status) => {
     axiosClient
@@ -32,20 +28,19 @@ export default function RegisteredUserCard({
         );
       })
       .then((response) => {
-        setHideApprovalButtons(true);
-        setSubmited(false);
-      })
-      .then((response) => {
+        // Fetch the updated single activity
         return axiosClient.get(`/classActivity/${id}`);
       })
-      .then((response) => {
-        setActivity(response.data);
-      })
-      .then((response) => {
+      .then((responseSingleActivity) => {
+        // Update the activity state with the fetched data
+        setActivity(responseSingleActivity.data);
+        
+        // Fetch all activities
         return axiosClient.get(`/classActivity/allActivities`);
       })
-      .then((response) => {
-        setAllActivities(response.data);
+      .then((responseAllActivities) => {
+        // Update all activities state with the fetched data
+        setAllActivities(responseAllActivities.data);
       })
       .catch((error) => {
         console.log(error);
@@ -59,23 +54,19 @@ export default function RegisteredUserCard({
         newStatus: status,
       })
       .then((response) => {
-        console.log("Declined but usedCapacity did not decrease!");
-      })
-      .then((response) => {
-        setHideApprovalButtons(true);
-        setSubmited(false);
-      })
-      .then((response) => {
+        // Fetch the updated single activity
         return axiosClient.get(`/classActivity/${id}`);
       })
-      .then((response) => {
-        setActivity(response.data);
-      })
-      .then((response) => {
+      .then((responseSingleActivity) => {
+        // Update the activity state with the fetched data
+        setActivity(responseSingleActivity.data);
+        
+        // Fetch all activities
         return axiosClient.get(`/classActivity/allActivities`);
       })
-      .then((response) => {
-        setAllActivities(response.data);
+      .then((responseAllActivities) => {
+        // Update all activities state with the fetched data
+        setAllActivities(responseAllActivities.data);
       })
       .catch((error) => {
         console.log(error);
@@ -95,20 +86,19 @@ export default function RegisteredUserCard({
         );
       })
       .then((response) => {
-        setHideApprovalButtons(true);
-        setSubmited(false);
-      })
-      .then((response) => {
+        // Fetch the updated single activity
         return axiosClient.get(`/classActivity/${id}`);
       })
-      .then((response) => {
-        setActivity(response.data);
-      })
-      .then((response) => {
+      .then((responseSingleActivity) => {
+        // Update the activity state with the fetched data
+        setActivity(responseSingleActivity.data);
+        
+        // Fetch all activities
         return axiosClient.get(`/classActivity/allActivities`);
       })
-      .then((response) => {
-        setAllActivities(response.data);
+      .then((responseAllActivities) => {
+        // Update all activities state with the fetched data
+        setAllActivities(responseAllActivities.data);
       })
       .catch((error) => {
         console.log(error);
@@ -364,8 +354,6 @@ export default function RegisteredUserCard({
                   </div>
                 </div>
               </label>
-
- 
             </>
           ) : (
             <div class="flex flex-col gap-1">
@@ -567,7 +555,7 @@ export default function RegisteredUserCard({
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold uppercase text-gray-500">
-                      keine Handlung nötig
+                      Keine Antwort Erforderlich
                     </p>
                   </div>
                 </div>

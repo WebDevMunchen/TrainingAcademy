@@ -51,7 +51,7 @@ export default function AuthProvider({ children }) {
         console.log(error);
         setAllUsers(null);
       });
-  }, [currentMonth]);
+  }, [currentMonth, setAllActivities]);
 
   const handleNextMonth = () => {
     const months = [

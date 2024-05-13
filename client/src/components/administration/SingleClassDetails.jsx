@@ -18,7 +18,7 @@ export default function SingleClassDetails() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [setActivity]);
 
   const dateString = activity?.date;
   const date = new Date(dateString);
