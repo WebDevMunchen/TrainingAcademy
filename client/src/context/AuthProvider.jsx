@@ -11,6 +11,9 @@ export default function AuthProvider({ children }) {
   const [allUsers, setAllUsers] = useState(null);
   const [allActivities, setAllActivities] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentMonth, setCurrentMonth] = useState(
+    new Date().toLocaleDateString('de-DE', { month: 'long' }).toLocaleLowerCase()
+  );
 
   useEffect(() => {
     axiosClient
@@ -28,10 +31,10 @@ export default function AuthProvider({ children }) {
       });
 
     axiosClient
-      .get("/classActivity/allActivities")
+      .get(`/classActivity/allActivities?month=${currentMonth}`)
       .then((response) => {
         setAllActivities(response.data);
-        console.log("All Activities", response.data);
+        console.log(`/classActivity/allActivities?month=${currentMonth}`);
       })
       .catch((error) => {
         console.log(error);
@@ -48,7 +51,27 @@ export default function AuthProvider({ children }) {
         console.log(error);
         setAllUsers(null);
       });
-  }, []);
+  }, [currentMonth]);
+
+  const handleNextMonth = () => {
+    const months = [
+      "januar", "februar", "märz", "april", "mai", "juni",
+      "juli", "august", "september", "oktober", "november", "dezember"
+    ];
+    const currentMonthIndex = months.findIndex(month => month === currentMonth);
+    const nextMonthIndex = (currentMonthIndex + 1) % 12;
+    setCurrentMonth(months[nextMonthIndex]);
+  };
+  
+  const handlePreviousMonth = () => {
+    const months = [
+      "januar", "februar", "märz", "april", "mai", "juni",
+      "juli", "august", "september", "oktober", "november", "dezember"
+    ];
+    const currentMonthIndex = months.findIndex(month => month === currentMonth);
+    const previousMonthIndex = (currentMonthIndex - 1 + 12) % 12;
+    setCurrentMonth(months[previousMonthIndex]);
+  };
 
   const login = async (data) => {
     axiosClient
@@ -106,13 +129,17 @@ export default function AuthProvider({ children }) {
           login,
           logout,
           signup,
+          handleNextMonth,
+          handlePreviousMonth,
           setUser,
           setIsLoading,
           setAllActivities,
+          setAllUsers,
           user,
           allUsers,
           allActivities,
           isLoading,
+          currentMonth
         }}
       >
         {children}

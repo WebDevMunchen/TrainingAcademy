@@ -6,7 +6,7 @@ const userSchema = new Schema({
   password: { type: String, required: true, select: false },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  deparment: {type: String},
+  department: {type: String, required: true},
   role: {
     type: String,
     enum: ["admin", "ASP", "teacher", "user"],
@@ -14,14 +14,19 @@ const userSchema = new Schema({
   },
   dateOfRegistration: { type: Date, default: Date.now() },
   userContactInformation: {type: String, required: true},
-  status: { type: String, enum: ["active", "inactive"], default: "active" },
+  status: { type: String, enum: ["aktiv", "inaktiv"], default: "aktiv" },
   classesRegistered: [
     {
       registeredClassID: { type: Schema.Types.ObjectId, ref: "ClassActivitie" },
       status: {
         type: String,
-        enum: ["ausstehend", "genemight", "abgelehnt"],
+        enum: ["ausstehend", "genehmigt", "abgelehnt"],
         default: "ausstehend",
+      },
+      statusAttended: {
+        type: String,
+        enum: ["teilgenommen", "nicht teilgenommen", "in Prüfung"],
+        default: "in Prüfung",
       },
     },
   ],

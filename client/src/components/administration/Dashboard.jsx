@@ -5,7 +5,8 @@ import ClassListPreview from "./ClassListPreview";
 import { NavLink } from "react-router-dom";
 
 export default function Dashboard() {
-  const { allActivities, allUsers } = useContext(AuthContext);
+  const { allActivities, allUsers, handlePreviousMonth, handleNextMonth, currentMonth } = useContext(AuthContext);
+  
   const [totalAttendees, setTotalAttendees] = useState(0);
   const [totalCapacity, setTotalCapacity] = useState(0);
   const [pendingClassesCount, setPendingClassesCount] = useState(0);
@@ -13,7 +14,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (allActivities && allActivities.length > 0) {
       const registeredAttendees = allActivities.reduce((total, activity) => {
-        return total + activity.registeredUsers.length;
+        return total + activity.usedCapacity;
       }, 0);
       setTotalAttendees(registeredAttendees);
 
@@ -27,7 +28,6 @@ export default function Dashboard() {
     }
 
     if (allUsers && allUsers.length > 0) {
-      // Count pending classes for all users
       let count = 0;
       allUsers.forEach(user => {
         if (user.classesRegistered && user.classesRegistered.length > 0) {
@@ -48,11 +48,11 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50/50 flex">
+      <div className="bg-gray-50/50 flex">
         <SideMenu />
         <div className="p-4 xl:flex-1">
-          <div className="mt-12">
-            <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-6">
+            <div className="mb-6 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
               <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
                 <div className="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
                   <svg
@@ -215,13 +215,46 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
+            <div className="flex justify-between mb-4">
 
-            <div className="mb-4 grid grid-cols-1 gap-6 xl:grid-cols-3">
+            <button onClick={handlePreviousMonth}>
+                    {" "}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="w-10 h-10 mr-2 mt-0.5"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-4.28 9.22a.75.75 0 0 0 0 1.06l3 3a.75.75 0 1 0 1.06-1.06l-1.72-1.72h5.69a.75.75 0 0 0 0-1.5h-5.69l1.72-1.72a.75.75 0 0 0-1.06-1.06l-3 3Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                  <p className="text-4xl font-semibold tracking-widest text-g uppercase">{currentMonth}</p>
+                  <button onClick={handleNextMonth}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="w-10 h-10 ml-2 mt-0.5"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm4.28 10.28a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 1 0-1.06 1.06l1.72 1.72H8.25a.75.75 0 0 0 0 1.5h5.69l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+            </div>
+
+            <div className=" mx-auto w-10/12 mb-4 grid grid-cols-1 gap-6">
               <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
                 <div className="relative bg-clip-border rounded-xl overflow-hidden bg-transparent text-gray-700 shadow-none m-0 flex items-center justify-between p-6">
                   <div>
                     <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
-                      Kommende Kurse:
+                      Schulungen für monat {currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1)}:
                     </h6>
                   </div>
                   <button
@@ -232,11 +265,11 @@ export default function Dashboard() {
                     type="button"
                   ></button>
                 </div>
-                <div className="p-6 overflow-x-scroll px-0 pt-0 pb-2">
+                <div className="p-6 h-[calc(55vh-32px)] overflow-x-scroll px-0 pt-0 pb-2">
                   <table className="w-full min-w-[640px] table-auto">
                     <thead>
                       <tr>
-                        <th className="border-b border-blue-gray-50 py-3 px-6 text-left">
+                        <th className="w-3/12 border-b border-blue-gray-50 py-3 px-6 text-left">
                           <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
                             Thema
                           </p>
@@ -254,6 +287,11 @@ export default function Dashboard() {
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
                           <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
                             Datum
+                          </p>
+                        </th>
+                        <th className="w-2/12 border-b border-blue-gray-50 py-3 px-6 text-center">
+                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                            Ausstehende Genehmigungen
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">

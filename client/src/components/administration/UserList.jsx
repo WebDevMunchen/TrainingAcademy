@@ -1,11 +1,12 @@
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import UserListCard from "./UserListCard";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import SideMenu from "./SideMenu";
 
 export default function UserList() {
   const { allUsers } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -13,54 +14,55 @@ export default function UserList() {
         <p>Loading...</p>
       ) : (
         <>
-      <div className="min-h-screen bg-gray-50/50 flex">
-
-        <SideMenu />
-        <div className="mt-8 bg-white p-4 shadow rounded-lg w-10/12 mr-auto ml-auto">
-          <h2 className="text-gray-500 text-lg font-semibold pb-4">
-            Benutzerübersicht
-          </h2>
-          <div className="my-1"></div>
-          <div className="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div>
-          <table className="w-full table-auto text-sm">
-            <thead>
-              <tr className="text-sm leading-normal">
-                <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">
-                  Vorname
-                </th>
-                <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">
-                  Nachname
-                </th>
-                <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">
-                  Abteilung
-                </th>
-                <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">
-                  E-Mail Adresse
-                </th>
-                <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">
-                  Status
-                </th>
-                <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">
-                  Details
-                </th>
-              </tr>
-            </thead>
-            <tbody className="">
-              {allUsers.map((user) => {
-                return <UserListCard key={user._id} user={user} />;
-              })}
-            </tbody>
-          </table>
-          <div className="text-right mt-4">
-            <NavLink
-              to={"/admin/dashboard"}
-              className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 px-4 rounded"
-            >
-              Zurück
-            </NavLink>
+          <div className="bg-gray-50/50 flex">
+            <SideMenu />
+            <div className="mt-4 bg-white p-4 shadow rounded-lg h-[calc(93vh-32px)] w-10/12 mr-auto ml-auto">
+              <h2 className="text-gray-500 text-lg font-semibold pb-4">
+                Benutzerübersicht
+              </h2>
+              <div className="bg-gradient-to-r from-blue-300 to-blue-500 h-px mb-6"></div>
+              <table className="w-11/12 table-auto mx-auto divide-y divide-gray-200 overflow-x-auto">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Vorname
+                    </th>
+                    <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Nachname
+                    </th>
+                    <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Role
+                    </th>
+                    <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Email
+                    </th>
+                    <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Abteilung
+                    </th>
+                    <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Details
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {allUsers.map((user) => {
+                    return <UserListCard key={user._id} user={user} />;
+                  })}
+                </tbody>
+              </table>
+              <div className="text-right mt-4 mr-16">
+                <NavLink
+                  to={"/admin/dashboard"}
+                  className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                >
+                  Zurück
+                </NavLink>
+              </div>
+            </div>
           </div>
-        </div>
-        </div>
         </>
       )}
     </>

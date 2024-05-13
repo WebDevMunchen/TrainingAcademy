@@ -34,7 +34,6 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
   res.status(201).json(activity);
 });
 
-
 const registerClass = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
   const { id: userID } = req.user;
@@ -57,6 +56,40 @@ const registerClass = asyncWrapper(async (req, res, next) => {
   next();
 });
 
+const increaseClassCapacity = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  // Retrieve the class activity
+  const classActivity = await ClassActivity.findById(id);
+
+  // Check if there is capacity available
+  if (classActivity.usedCapacity >= classActivity.capacity) {
+    throw new ErrorResponse(404, "Capacity reached!");
+  }
+
+  // Increment usedCapacity
+  classActivity.usedCapacity += 1;
+
+  // Save the updated class activity
+  const updatedCapacity = await classActivity.save();
+
+  res.status(201).json(updatedCapacity);
+});
+
+const decreaseClassCapacity = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  const updatedCapacity = await ClassActivity.findByIdAndUpdate(
+    id,
+
+    { $inc: { usedCapacity: -1 } },
+    { new: true, populate: "registeredUsers" }
+  );
+
+  await updatedCapacity.save();
+
+  res.status(201).json(updatedCapacity);
+});
 
 const getActivity = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
@@ -67,9 +100,27 @@ const getActivity = asyncWrapper(async (req, res, next) => {
 });
 
 const getAllActivities = asyncWrapper(async (req, res, next) => {
-  const allActivities = await ClassActivity.find({}).populate("registeredUsers");
+  try {
+    const { month } = req.query;
+    let query = {};
 
-  res.json(allActivities);
+    if (month) {
+      query.month = month;
+    }
+
+    const allActivities = await ClassActivity.find(query).populate(
+      "registeredUsers"
+    );
+
+    if (allActivities.length === 0) {
+      return res.status(404).json({ message: "No activities found" });
+    }
+
+    res.json(allActivities);
+  } catch (error) {
+    console.error("Error fetching activities:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 module.exports = {
@@ -77,4 +128,6 @@ module.exports = {
   getAllActivities,
   registerClass,
   getActivity,
+  increaseClassCapacity,
+  decreaseClassCapacity,
 };
