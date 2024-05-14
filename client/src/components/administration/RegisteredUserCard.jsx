@@ -2,6 +2,8 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
 import { useParams } from "react-router-dom";
+import { notifySuccess } from "../../utils/toaster";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function RegisteredUserCard({
   registeredUser,
@@ -158,6 +160,21 @@ export default function RegisteredUserCard({
     modalRef.current.close(); // Close the modal
   };
 
+
+  const notify = () =>
+    toast.success(
+      "--Creation Successful-- Redirecting to the admin dashboard",
+      {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      }
+    );
   let dPath = "";
   let spanStyle = "";
 
@@ -179,7 +196,11 @@ export default function RegisteredUserCard({
 
   return (
     <>
+{/* Same as */}
+<button onClick={() => notify}>Test</button>
       <div className="px-4 py-4 sm:px-6">
+      <ToastContainer />
+
         <div className="flex items-center justify-between">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
             {registeredUser.firstName + " " + registeredUser.lastName}
