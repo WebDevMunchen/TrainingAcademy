@@ -34,6 +34,19 @@ export default function ClassScheduleCard({ activity }) {
 
   const formattedDate = `${day}/${month}/${year}`;
 
+  const activityDate = new Date(activity.date);
+  const activityTime = activity.time.split(":");
+  activityDate.setHours(activityTime[0], activityTime[1]);
+
+  const currentTime = new Date();
+  const oneHourBeforeActivity = new Date(
+    activityDate.getTime() - 60 * 60 * 1000
+  );
+
+  const activityDatePassed = currentTime > activityDate;
+  const oneHourPrior =
+    currentTime > oneHourBeforeActivity && currentTime < activityDate;
+
   return (
     <>
       <div className="m-2 bg-white border p-4 relative z-40 group shadow-lg">
@@ -99,37 +112,102 @@ export default function ClassScheduleCard({ activity }) {
           </div>
 
           <div className="flex justify-center">
-  {user.role === "user" && (
-    activity.capacity - activity.usedCapacity !== 0 ? (
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          type="submit"
-          className="mt-8 bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer"
-          value={
-            activity.registeredUsers.some(
-              (userObj) => userObj._id === user._id
-            )
-              ? "Bereits Angemeldet"
-              : statusBtn
-          }
-        />
-      </form>
-    ) : (
-      <button className="mt-8 bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer">
-        Kapazität Voll
-      </button>
-    )
-  )}
-</div>
+            {user.role === "user" &&
+              !activityDatePassed &&
+              !oneHourPrior &&
+              (activity.capacity - activity.usedCapacity !== 0 ? (
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <input
+                    type="submit"
+                    className={`bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition ${
+                      activity.registeredUsers.some(
+                        (userObj) => userObj._id === user._id
+                      )
+                        ? "cursor-not-allowed"
+                        : "hover:shadow-lg hover:-translate-y-0.5"
+                    }`}
+                    value={
+                      activity.registeredUsers.some(
+                        (userObj) => userObj._id === user._id
+                      )
+                        ? "Bereits Angemeldet"
+                        : statusBtn
+                    }
+                    disabled={activity.registeredUsers.some(
+                      (userObj) => userObj._id === user._id
+                    )}
+                  />
+                </form>
+              ) : (
+                <button
+                  className="mt-8 bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                  disabled
+                >
+                  Kapazität Voll
+                </button>
+              ))}
+            {user.role === "user" && (activityDatePassed || oneHourPrior) && (
+              <button
+                className="mt-8 bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                disabled
+              >
+                Registrierung abgeschlossen
+              </button>
+            )}
+          </div>
 
           <div className="flex justify-center">
-            {user.role !== "user" && (
+            {(user.role === "ASP" || user.role === "admin") && (
               <NavLink
                 to={`/${activity._id}`}
-                className="mt-8 bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer"
+                className="w-fit bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-1/2 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
               >
                 Details Anzeigen
               </NavLink>
+            )}
+          </div>
+          <div className="flex justify-center">
+            {(user.role === "ASP" || user.role === "admin") &&
+              !activityDatePassed &&
+              !oneHourPrior &&
+              (activity.capacity - activity.usedCapacity !== 0 ? (
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <input
+                    type="submit"
+                    className={`bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition ${
+                      activity.registeredUsers.some(
+                        (userObj) => userObj._id === user._id
+                      )
+                        ? "cursor-not-allowed"
+                        : "hover:shadow-lg hover:-translate-y-0.5"
+                    }`}
+                    value={
+                      activity.registeredUsers.some(
+                        (userObj) => userObj._id === user._id
+                      )
+                        ? "Bereits Angemeldet"
+                        : statusBtn
+                    }
+                    disabled={activity.registeredUsers.some(
+                      (userObj) => userObj._id === user._id
+                    )}
+                  />
+                </form>
+              ) : (
+                <button
+                  className="bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                  disabled
+                >
+                  Kapazität Voll
+                </button>
+              ))}
+            {(user.role === "ASP" || user.role === "admin") && (activityDatePassed || oneHourPrior) && (
+              <button
+                className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                disabled
+              >
+                Registrierung abgeschlossen
+              </button>
             )}
           </div>
         </div>

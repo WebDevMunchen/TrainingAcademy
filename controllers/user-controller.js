@@ -115,11 +115,10 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
   const { registeredClass } = req;
   const { _id: activity_id } = registeredClass;
 
-  const user = await User.findById(id)
+  const user = await User.findById(id);
   if (
     user.classesRegistered.some(
-      (classItem) =>
-        classItem.registeredClassID === activity_id
+      (classItem) => classItem.registeredClassID === activity_id
     )
   ) {
     throw new ErrorResponse(400, "User is already registered for this class");
@@ -172,11 +171,10 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 const updateClassStatus = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
   const { classId, newStatus } = req.body;
-  
 
   try {
     const user = await User.findById(id);
-   
+
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -187,7 +185,6 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       }
       return false;
     });
-    
 
     if (classIndex === -1) {
       return res.status(404).json({ error: "Class not found for this user" });
@@ -195,7 +192,11 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
 
     // Check if activity capacity is equal to usedCapacity
     const activity = await ClassActivity.findById(classId);
-    if (activity.capacity === activity.usedCapacity && (user.classesRegistered[classIndex].status === "abgelehnt" || user.classesRegistered[classIndex].status === "ausstehend")) {
+    if (
+      activity.capacity === activity.usedCapacity &&
+      (user.classesRegistered[classIndex].status === "abgelehnt" ||
+        user.classesRegistered[classIndex].status === "ausstehend")
+    ) {
       return res
         .status(400)
         .json({ error: "Activity capacity is already full" });
@@ -311,7 +312,8 @@ const login = asyncWrapper(async (req, res, next) => {
   const match = await bcrypt.compare(password, user.password);
 
   if (!match) {
-    throw new ErrorResponse(401, "Incorrect password!");
+    // Send a 401 response for incorrect password
+    return res.status(401).json({ error: "Incorrect password!" });
   }
 
   const payload = {

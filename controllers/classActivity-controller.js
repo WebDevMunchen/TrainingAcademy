@@ -114,7 +114,7 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
 
     const allActivities = await ClassActivity.find(query).populate(
       "registeredUsers"
-    );
+    ).sort({ date: -1, time: -1 }); // Sort by date in ascending order
 
     if (allActivities.length === 0) {
       return res.status(404).json({ message: "No activities found" });
@@ -126,6 +126,7 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 module.exports = {
   createClassActivity,

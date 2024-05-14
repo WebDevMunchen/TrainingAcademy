@@ -66,7 +66,7 @@ export default function Login() {
                 <div className="flex justify-center">
                   <input
                     type="submit"
-                    className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/2 rounded cursor-pointer"
+                    className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/2 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                     value={"Anmelden"}
                   />
                 </div>
@@ -82,6 +82,39 @@ export default function Login() {
                   </div>
                 </div>
               </form>
+              <dialog id="my_modal_1" className="modal">
+                <div className="modal-box">
+                  <div class="bg-red-200 px-6 py-4 mx-2 my-4 rounded-md text-lg flex items-center justify-center mx-auto">
+                    <svg
+                      viewBox="0 0 24 24"
+                      class="text-red-600 w-5 h-5 sm:w-5 sm:h-5 mr-3"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M11.983,0a12.206,12.206,0,0,0-8.51,3.653A11.8,11.8,0,0,0,0,12.207,11.779,11.779,0,0,0,11.8,24h.214A12.111,12.111,0,0,0,24,11.791h0A11.766,11.766,0,0,0,11.983,0ZM10.5,16.542a1.476,1.476,0,0,1,1.449-1.53h.027a1.527,1.527,0,0,1,1.523,1.47,1.475,1.475,0,0,1-1.449,1.53h-.027A1.529,1.529,0,0,1,10.5,16.542ZM11,12.5v-6a1,1,0,0,1,2,0v6a1,1,0,1,1-2,0Z"
+                      ></path>
+                    </svg>
+                    <span class="text-red-800 font-bold"> Anmeldung fehlgeschlagen </span>
+                  </div>
+
+                  <div
+                    class="bg-red-100 border text-center  border-red-400 text-red-700 px-4 py-3 rounded relative"
+                    role="alert"
+                  >
+                    <span class="block sm:inline">
+                      Falsche E-Mail-Adresse und/oder Passwort
+                    </span><br />
+                    <span class="block sm:inline">
+                      Bitte erneut versuchen
+                    </span>
+                  </div>
+                  <div className="modal-action flex justify-center">
+                    <form method="dialog" className="flex gap-2">
+                      <button className="btn w-28">Schließen</button>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
             </div>
           </div>
         </div>

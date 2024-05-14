@@ -20,7 +20,7 @@ export default function ClassesSchedule() {
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
-                      className="w-10 h-10 mr-2 mt-0.5"
+                      className="w-10 h-10 mr-2 mt-0.5 transition-transform duration-300 transform hover:scale-125"
                     >
                       <path
                         fillRule="evenodd"
@@ -31,14 +31,14 @@ export default function ClassesSchedule() {
                   </button>
 
                   <p className="text-4xl font-semibold tracking-widest text-g uppercase">
-                    Übersciht {currentMonth}
+                    ÜBERSICHT {currentMonth}
                   </p>
                   <button onClick={handleNextMonth}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
-                      className="w-10 h-10 ml-2 mt-0.5"
+                      className="w-10 h-10 ml-2 mt-0.5 transition-transform duration-300 transform hover:scale-125"
                     >
                       <path
                         fillRule="evenodd"
@@ -51,7 +51,11 @@ export default function ClassesSchedule() {
               </div>
               <div className="grid grid-cols-1 gap-2 mt-12 sm:grid-cols-1 lg:mt-12 w-10/12 ml-auto mr-auto">
                 {!allActivities ? (
-                  <p>Loading</p>
+                  <img
+                    className="mx-auto h-[calc(85vh-32px)]"
+                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715669996/symbols/freepik-export-20240514065734UGY2_wpm9md.png"
+                    alt="logo"
+                  />
                 ) : (
                   allActivities.map((activity) => (
                     <ClassScheduleCard key={activity._id} activity={activity} />

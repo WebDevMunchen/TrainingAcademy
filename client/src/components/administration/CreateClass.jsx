@@ -384,7 +384,7 @@ export default function CreateClass() {
                 <div className="flex justify-center">
                   <input
                     type="submit"
-                    className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/2 rounded cursor-pointer"
+                    className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/3 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                     value={"Erstellen"}
                   />
                 </div>

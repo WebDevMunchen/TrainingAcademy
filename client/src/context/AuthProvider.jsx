@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axiosClient from "../utils/axiosClient";
 import { useNavigate } from "react-router-dom";
+import { badCredentials } from "../utils/badCredentials";
 
 export const AuthContext = createContext();
 
@@ -12,7 +13,9 @@ export default function AuthProvider({ children }) {
   const [allActivities, setAllActivities] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currentMonth, setCurrentMonth] = useState(
-    new Date().toLocaleDateString('de-DE', { month: 'long' }).toLocaleLowerCase()
+    new Date()
+      .toLocaleDateString("de-DE", { month: "long" })
+      .toLocaleLowerCase()
   );
 
   useEffect(() => {
@@ -34,7 +37,7 @@ export default function AuthProvider({ children }) {
       .get(`/classActivity/allActivities?month=${currentMonth}`)
       .then((response) => {
         setAllActivities(response.data);
-        console.log(`/classActivity/allActivities?month=${currentMonth}`);
+        console.log("All Activities", response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -55,20 +58,44 @@ export default function AuthProvider({ children }) {
 
   const handleNextMonth = () => {
     const months = [
-      "januar", "februar", "märz", "april", "mai", "juni",
-      "juli", "august", "september", "oktober", "november", "dezember"
+      "januar",
+      "februar",
+      "märz",
+      "april",
+      "mai",
+      "juni",
+      "juli",
+      "august",
+      "september",
+      "oktober",
+      "november",
+      "dezember",
     ];
-    const currentMonthIndex = months.findIndex(month => month === currentMonth);
+    const currentMonthIndex = months.findIndex(
+      (month) => month === currentMonth
+    );
     const nextMonthIndex = (currentMonthIndex + 1) % 12;
     setCurrentMonth(months[nextMonthIndex]);
   };
-  
+
   const handlePreviousMonth = () => {
     const months = [
-      "januar", "februar", "märz", "april", "mai", "juni",
-      "juli", "august", "september", "oktober", "november", "dezember"
+      "januar",
+      "februar",
+      "märz",
+      "april",
+      "mai",
+      "juni",
+      "juli",
+      "august",
+      "september",
+      "oktober",
+      "november",
+      "dezember",
     ];
-    const currentMonthIndex = months.findIndex(month => month === currentMonth);
+    const currentMonthIndex = months.findIndex(
+      (month) => month === currentMonth
+    );
     const previousMonthIndex = (currentMonthIndex - 1 + 12) % 12;
     setCurrentMonth(months[previousMonthIndex]);
   };
@@ -79,16 +106,23 @@ export default function AuthProvider({ children }) {
       .then((response) => {
         setUser(response.data);
         navigate("/");
-  
+
         return axiosClient.get("/user/getAllUsers");
       })
       .then((usersResponse) => {
         setAllUsers(usersResponse.data);
+
+        return axiosClient.get(
+          `classActivity/allActivities?month=${currentMonth}`
+        );
+      })
+      .then((responseAllActivities) => {
+        setAllActivities(responseAllActivities.data);
       })
       .catch((error) => {
-        console.error("Error:", error);
+        badCredentials()
         setUser(null);
-        setAllUsers(null)
+        setAllUsers(null);
       })
       .finally(() => {
         setIsLoading(false);
@@ -139,7 +173,7 @@ export default function AuthProvider({ children }) {
           allUsers,
           allActivities,
           isLoading,
-          currentMonth
+          currentMonth,
         }}
       >
         {children}

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
-import { useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import RegisterdUserCard from "./RegisteredUserCard";
 
 export default function SingleClassDetails() {
   const { id } = useParams();
+  const navigate = useNavigate()
 
   const [activity, setActivity] = useState(null);
 
@@ -18,7 +19,7 @@ export default function SingleClassDetails() {
       .catch((error) => {
         console.log(error);
       });
-  }, [setActivity]);
+  }, []);
 
   const dateString = activity?.date;
   const date = new Date(dateString);
@@ -49,7 +50,14 @@ export default function SingleClassDetails() {
                 <div className=" absolute bg-blue-500/50 top-0 left-0 w-24 h-1 z-30  transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
                 <div className="py-2 px-9 relative  ">
                   <div className="flex justify-between">
-                    <p className="text-white">Placeholder longer</p>
+                  <div className="text-right mt-1 mr-16">
+                  <button 
+                    onClick={() => navigate(-1)}
+                    className="flex items-center text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                  >
+                    Zurück
+                  </button>
+              </div>
                     <h3 className="flex justify-center text-lg font-semibold text-black">
                       {activity.title}
                     </h3>

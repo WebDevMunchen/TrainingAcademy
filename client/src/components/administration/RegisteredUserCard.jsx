@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 export default function RegisteredUserCard({
   registeredUser,
   activityId,
-  setActivity
+  setActivity,
 }) {
   const { user, setAllActivities } = useContext(AuthContext);
   const { id } = useParams();
@@ -20,31 +20,19 @@ export default function RegisteredUserCard({
       .put(`/user/updateClassStatus/${registeredUser._id}`, {
         classId: id,
         newStatus: status,
-      }).then((response) => {
-        axiosClient.put(`/classActivity/increaseClassCapacity/${id}`)
       })
       .then((response) => {
-        console.log("updated decrease class capacity");
-        console.log(response);
-  
-        // Perform the next axios request
+        return axiosClient.put(`/classActivity/increaseClassCapacity/${id}`);
+      })
+      .then((response) => {
         return axiosClient.get(`/classActivity/${id}`);
       })
-      .then((response) => {
-        console.log("Get Request on single Class Activity");
-        console.log(response);
-        setActivity(response.data)
-        // Fetch the updated single activity
-        // console.log(response);
-  
-        // Fetch all activities
+      .then((responseSingleActivity) => {
+        setActivity(responseSingleActivity.data);
+     
         return axiosClient.get(`/classActivity/allActivities`);
       })
       .then((responseAllActivities) => {
-        console.log("now setting allActivities");
-        console.log(responseAllActivities);
-  
-        // Update all activities state with the fetched data
         setAllActivities(responseAllActivities.data);
       })
       .catch((error) => {
@@ -59,27 +47,14 @@ export default function RegisteredUserCard({
         newStatus: status,
       })
       .then((response) => {
-        console.log("updated decrease class capacity");
-        console.log(response);
-  
-        // Perform the next axios request
         return axiosClient.get(`/classActivity/${id}`);
       })
-      .then((response) => {
-        console.log("Get Request on single Class Activity");
-        console.log(response);
-        setActivity(response.data)
-        // Fetch the updated single activity
-        // console.log(response);
-  
-        // Fetch all activities
+      .then((responseSingleActivity) => {
+        setActivity(responseSingleActivity.data);
+
         return axiosClient.get(`/classActivity/allActivities`);
       })
       .then((responseAllActivities) => {
-        console.log("now setting allActivities");
-        console.log(responseAllActivities);
-  
-        // Update all activities state with the fetched data
         setAllActivities(responseAllActivities.data);
       })
       .catch((error) => {
@@ -92,38 +67,25 @@ export default function RegisteredUserCard({
       .put(`/user/updateClassStatus/${registeredUser._id}`, {
         classId: id,
         newStatus: status,
-      }).then((response) => {
-        axiosClient.put(`/classActivity/decreaseClassCapacity/${id}`)
       })
       .then((response) => {
-        console.log("updated decrease class capacity");
-        console.log(response);
-  
-        // Perform the next axios request
+        return axiosClient.put(`/classActivity/decreaseClassCapacity/${id}`);
+      })
+      .then((response) => {
         return axiosClient.get(`/classActivity/${id}`);
       })
-      .then((response) => {
-        console.log("Get Request on single Class Activity");
-        console.log(response);
-        setActivity(response.data)
-        // Fetch the updated single activity
-        // console.log(response);
-  
-        // Fetch all activities
+      .then((responseSingleActivity) => {
+        setActivity(responseSingleActivity.data);
+
         return axiosClient.get(`/classActivity/allActivities`);
       })
       .then((responseAllActivities) => {
-        console.log("now setting allActivities");
-        console.log(responseAllActivities);
-  
-        // Update all activities state with the fetched data
         setAllActivities(responseAllActivities.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  
 
   const handleApproved = (e) => {
     if (e.target.checked) {
@@ -549,22 +511,6 @@ export default function RegisteredUserCard({
                     <p className="text-sm font-semibold uppercase text-gray-500">
                       Übermittelt
                     </p>
-                    {/* <div>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-6 h-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                          />
-                        </svg>
-                      </div> */}
                   </div>
                 </div>
               </div>

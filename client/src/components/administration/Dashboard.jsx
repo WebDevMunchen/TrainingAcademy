@@ -5,8 +5,14 @@ import ClassListPreview from "./ClassListPreview";
 import { NavLink } from "react-router-dom";
 
 export default function Dashboard() {
-  const { allActivities, allUsers, handlePreviousMonth, handleNextMonth, currentMonth } = useContext(AuthContext);
-  
+  const {
+    allActivities,
+    allUsers,
+    handlePreviousMonth,
+    handleNextMonth,
+    currentMonth,
+  } = useContext(AuthContext);
+
   const [totalAttendees, setTotalAttendees] = useState(0);
   const [totalCapacity, setTotalCapacity] = useState(0);
   const [pendingClassesCount, setPendingClassesCount] = useState(0);
@@ -27,13 +33,17 @@ export default function Dashboard() {
       setTotalCapacity(0);
     }
 
-    if (allUsers && allUsers.length > 0) {
+    if (allActivities && allActivities.length > 0) {
       let count = 0;
-      allUsers.forEach(user => {
-        if (user.classesRegistered && user.classesRegistered.length > 0) {
-          user.classesRegistered.forEach(classRegistered => {
-            if (classRegistered.status === "ausstehend") {
-              count++;
+      allActivities.forEach((activity) => {
+        if (activity.registeredUsers && activity.registeredUsers.length > 0) {
+          activity.registeredUsers.forEach((user) => {
+            if (user.classesRegistered && user.classesRegistered.length > 0) {
+              user.classesRegistered.forEach((classRegistered) => {
+                if (classRegistered.status === "ausstehend" && classRegistered.registeredClassID === activity._id) {
+                  count++;
+                }
+              });
             }
           });
         }
@@ -42,6 +52,9 @@ export default function Dashboard() {
     } else {
       setPendingClassesCount(0);
     }
+    
+    
+    
   }, [allActivities, allUsers]);
 
   const remainingSpots = totalCapacity - totalAttendees;
@@ -71,7 +84,7 @@ export default function Dashboard() {
                     Schulungen in diesem Monat
                   </h6>
                   <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                    {!allActivities ? <>Loading</> : allActivities.length}
+                    {!allActivities ? <>0</> : allActivities.length}
                   </h4>
                 </div>
                 <div className="flex gap-3 items-center border-t border-blue-gray-50 p-4">
@@ -155,13 +168,17 @@ export default function Dashboard() {
                     Teilnehmer in diesem Monat
                   </h6>
                   <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                  {totalAttendees}
-
+                    {totalAttendees}
                   </h4>
                 </div>
                 <div className="border-t border-blue-gray-50 p-4">
                   <p className="block antialiased font-sans text-base leading-relaxed font-semibold text-gray-400">
-                    Insgesamt noch <span className="font-bold text-cyan-600"> {remainingSpots} </span> freie Plätze
+                    Insgesamt noch{" "}
+                    <span className="font-bold text-cyan-600">
+                      {" "}
+                      {remainingSpots}{" "}
+                    </span>{" "}
+                    freie Plätze
                   </p>
                 </div>
               </div>
@@ -199,46 +216,11 @@ export default function Dashboard() {
                     Zur Schulungs Übersicht
                   </p>
                   <NavLink to={"/classes"}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="#4687f3"
-                    className="w-7 h-7 transition-transform duration-300 transform hover:scale-150"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm4.28 10.28a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 1 0-1.06 1.06l1.72 1.72H8.25a.75.75 0 0 0 0 1.5h5.69l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  </NavLink>
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-between mb-4">
-
-            <button onClick={handlePreviousMonth}>
-                    {" "}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="w-10 h-10 mr-2 mt-0.5"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-4.28 9.22a.75.75 0 0 0 0 1.06l3 3a.75.75 0 1 0 1.06-1.06l-1.72-1.72h5.69a.75.75 0 0 0 0-1.5h-5.69l1.72-1.72a.75.75 0 0 0-1.06-1.06l-3 3Z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  <p className="text-4xl font-semibold tracking-widest text-g uppercase">{currentMonth}</p>
-                  <button onClick={handleNextMonth}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="w-10 h-10 ml-2 mt-0.5"
+                      fill="#4687f3"
+                      className="w-7 h-7 transition-transform duration-300 transform hover:scale-150"
                     >
                       <path
                         fillRule="evenodd"
@@ -246,26 +228,48 @@ export default function Dashboard() {
                         clipRule="evenodd"
                       />
                     </svg>
-                  </button>
+                  </NavLink>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-between mb-4">
+              <button onClick={handlePreviousMonth}>
+                {" "}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-10 h-10 mr-2 mt-0.5 transition-transform duration-300 transform hover:scale-125"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-4.28 9.22a.75.75 0 0 0 0 1.06l3 3a.75.75 0 1 0 1.06-1.06l-1.72-1.72h5.69a.75.75 0 0 0 0-1.5h-5.69l1.72-1.72a.75.75 0 0 0-1.06-1.06l-3 3Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+              <p className="text-4xl font-semibold tracking-widest text-g uppercase">
+                {currentMonth}
+              </p>
+              <button onClick={handleNextMonth}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-10 h-10 ml-2 mt-0.5 transition-transform duration-300 transform hover:scale-125"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm4.28 10.28a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 1 0-1.06 1.06l1.72 1.72H8.25a.75.75 0 0 0 0 1.5h5.69l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
             </div>
 
-            <div className=" mx-auto w-10/12 mb-4 grid grid-cols-1 gap-6">
+            <div className="mx-auto w-10/12 mb-4 grid grid-cols-1 gap-6">
               <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
-                <div className="relative bg-clip-border rounded-xl overflow-hidden bg-transparent text-gray-700 shadow-none m-0 flex items-center justify-between p-6">
-                  <div>
-                    <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
-                      Schulungen für monat {currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1)}:
-                    </h6>
-                  </div>
-                  <button
-                    aria-expanded="false"
-                    aria-haspopup="menu"
-                    id=":r5:"
-                    className="relative middle none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-8 max-w-[32px] h-8 max-h-[32px] rounded-lg text-xs text-blue-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30"
-                    type="button"
-                  ></button>
-                </div>
-                <div className="p-6 h-[calc(55vh-32px)] overflow-x-scroll px-0 pt-0 pb-2">
+                <div className="p-6 h-[calc(63.5vh-32px)] overflow-x-scroll px-0 pt-0 pb-2">
                   <table className="w-full min-w-[640px] table-auto">
                     <thead>
                       <tr>
@@ -308,8 +312,14 @@ export default function Dashboard() {
                     </thead>
                     <tbody>
                       {!allActivities ? (
-                        <tr>
-                          <td colSpan="2">Loading...</td>
+                        <tr >
+                          <td colSpan="7 ">
+                            <img
+                              className="mx-auto h-[calc(53vh-32px)] w-[calc(60vh-32px)]"
+                              src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715671755/symbols/freepik-export-20240514065734UGY2_wpm9md_rahv71.png"
+                              alt="logo"
+                            />
+                          </td>
                         </tr>
                       ) : (
                         allActivities.map((activity) => {

@@ -5,9 +5,9 @@ const { updateUserRegistration } = require("../controllers/user-controller.js");
 
 const classActivityRouter = express.Router();
 
-classActivityRouter.route("/allActivities").get(authenticate, getAllActivities);
+classActivityRouter.route("/allActivities").get(getAllActivities);
+classActivityRouter.route("/:id").get(getActivity);
 classActivityRouter.route("/create").post(authenticate, createClassActivity);
-classActivityRouter.route("/:id").get(authenticate, getActivity);
 classActivityRouter.route("/registerClass/:id").put(authenticate, registerClass, updateUserRegistration);
 classActivityRouter.route("/increaseClassCapacity/:id").put(authenticate, increaseClassCapacity);
 classActivityRouter.route("/decreaseClassCapacity/:id").put(authenticate, decreaseClassCapacity);

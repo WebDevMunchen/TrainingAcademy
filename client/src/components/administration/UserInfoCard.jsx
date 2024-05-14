@@ -124,7 +124,10 @@ export default function UserInfoCard() {
                   </div>
                 </div>
                 <div className="h-[50px] space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
-                  <NavLink to={`/admin/userProfile/update/${userInfomation._id}`} className="flex items-center text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+                  <NavLink
+                    to={`/admin/userProfile/update/${userInfomation._id}`}
+                    className="flex items-center text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                  >
                     Bearbeiten
                   </NavLink>
                   <button
@@ -140,28 +143,33 @@ export default function UserInfoCard() {
                   {userInfomation.firstName + " " + userInfomation.lastName}
                 </h1>
                 <p className="font-light text-gray-600 mt-3">
-                  <span className="font-medium">Registriert seit:</span> {formattedDate}
+                  <span className="font-medium">Registriert seit:</span>{" "}
+                  {formattedDate}
                 </p>
                 <p className="font-light text-gray-600 mt-3">
-                <span className="font-medium">Status: </span>
-                <span
-            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ml-2  
+                  <span className="font-medium">Status: </span>
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ml-2  
     ${
       userInfomation.status === "aktiv"
         ? "bg-green-100 text-green-800"
         : "bg-red-200 text-red-700"
     }`}
-          >
-            {userInfomation.status}
-          </span>
-          </p>
+                  >
+                    {userInfomation.status}
+                  </span>
+                </p>
 
                 <p className="mt-8 text-gray-600">
-                <span className="font-medium">Abteilung:</span> {userInfomation.department} - <span className="font-medium">Role: </span>
-                {userInfomation.role.charAt(0).toUpperCase() + userInfomation.role.slice(1)}
+                  <span className="font-medium">Abteilung:</span>{" "}
+                  {userInfomation.department} -{" "}
+                  <span className="font-medium">Role: </span>
+                  {userInfomation.role.charAt(0).toUpperCase() +
+                    userInfomation.role.slice(1)}
                 </p>
                 <p className="mt-2 text-gray-600">
-                <span className="font-medium"> E-Mail:</span> {userInfomation.email}
+                  <span className="font-medium"> E-Mail:</span>{" "}
+                  {userInfomation.email}
                 </p>
               </div>
               <div className="mt-6 flex flex-col min-h-96">
