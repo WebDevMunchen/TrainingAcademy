@@ -1,9 +1,9 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
 import { useParams } from "react-router-dom";
-import { notifySuccess } from "../../utils/toaster";
-import { ToastContainer, toast } from "react-toastify";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function RegisteredUserCard({
   registeredUser,
@@ -31,11 +31,13 @@ export default function RegisteredUserCard({
       })
       .then((responseSingleActivity) => {
         setActivity(responseSingleActivity.data);
-     
+
         return axiosClient.get(`/classActivity/allActivities`);
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
+        console.log("Success")
+
       })
       .catch((error) => {
         console.log(error);
@@ -58,6 +60,7 @@ export default function RegisteredUserCard({
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
+        console.log("Success")
       })
       .catch((error) => {
         console.log(error);
@@ -83,6 +86,8 @@ export default function RegisteredUserCard({
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
+        console.log("Success")
+
       })
       .catch((error) => {
         console.log(error);
@@ -93,6 +98,7 @@ export default function RegisteredUserCard({
     if (e.target.checked) {
       const status = e.target.value;
       approve(status);
+      notifySuccess()
     }
   };
 
@@ -100,6 +106,7 @@ export default function RegisteredUserCard({
     if (e.target.checked) {
       const status = e.target.value;
       decline(status);
+      notifySuccess()
     }
   };
 
@@ -107,6 +114,7 @@ export default function RegisteredUserCard({
     if (e.target.checked) {
       const status = e.target.value;
       declineWithCapacityIncrease(status);
+      notifySuccess()
     }
   };
 
@@ -157,24 +165,25 @@ export default function RegisteredUserCard({
   };
 
   const closeModal = () => {
-    modalRef.current.close(); // Close the modal
+    if (modalRef.current) {
+      modalRef.current.close(); // Close the modal
+    }
   };
 
+  const notifySuccess = () =>
+    toast.success("Genehmigung geändert", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mt-14 mr-6",
+    });
 
-  const notify = () =>
-    toast.success(
-      "--Creation Successful-- Redirecting to the admin dashboard",
-      {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      }
-    );
   let dPath = "";
   let spanStyle = "";
 
@@ -196,11 +205,21 @@ export default function RegisteredUserCard({
 
   return (
     <>
-{/* Same as */}
-<button onClick={() => notify}>Test</button>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme="light"
+        transition={Bounce}
+      />
+      
       <div className="px-4 py-4 sm:px-6">
-      <ToastContainer />
-
         <div className="flex items-center justify-between">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
             {registeredUser.firstName + " " + registeredUser.lastName}
