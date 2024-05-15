@@ -12,7 +12,8 @@ const classActivitySchema = new Schema({
     capacity: {type: Number, required: true},
     usedCapacity: {type: Number, default: 0},
     registeredUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    teacher: {type: String, required: true}
+    teacher: {type: String, required: true},
+    // waitingList: [{type: Schema.Types.ObjectId, ref: "User"}]
 })
 
 const ClassActivity = model("ClassActivitie", classActivitySchema)

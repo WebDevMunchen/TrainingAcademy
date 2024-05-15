@@ -44,11 +44,12 @@ export default function RegisteredUserCard({
       });
   };
 
-  const decline = (status) => {
+  const decline = (status, reason) => {
     axiosClient
       .put(`/user/updateClassStatus/${registeredUser._id}`, {
         classId: id,
         newStatus: status,
+        newReason: reason
       })
       .then((response) => {
         return axiosClient.get(`/classActivity/${id}`);
@@ -67,11 +68,12 @@ export default function RegisteredUserCard({
       });
   };
 
-  const declineWithCapacityIncrease = (status) => {
+  const declineWithCapacityIncrease = (status, reason) => {
     axiosClient
       .put(`/user/updateClassStatus/${registeredUser._id}`, {
         classId: id,
         newStatus: status,
+        newReason: reason
       })
       .then((response) => {
         return axiosClient.put(`/classActivity/decreaseClassCapacity/${id}`);
@@ -109,6 +111,13 @@ export default function RegisteredUserCard({
       notifySuccess()
     }
   };
+
+  const handleBegrundung = (e) => {
+    if (e.target.selected) {
+      const reason = e.target.value;
+      decline(reason);
+    }
+  }
 
   const handleDeclinedWithCapcityIncrease = (e) => {
     if (e.target.checked) {
@@ -427,6 +436,15 @@ export default function RegisteredUserCard({
                       {registeredUser.firstName + " " + registeredUser.lastName}{" "}
                       bei dieser Schulung ändern?
                     </p>
+                    <div>
+
+<textarea
+                              onChange={handleBegrundung}
+
+className="resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+placeholder="Geben Sie eine Begrundung ein:"
+/>
+</div>
                     <div className="modal-action">
                       <form method="dialog" className="flex gap-2">
                         {registeredUser.classesRegistered.some(
@@ -434,6 +452,7 @@ export default function RegisteredUserCard({
                             element.registeredClassID === activityId &&
                             element.status === "genehmigt"
                         ) ? (
+                          <div>
                           <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
                             <input
                               onChange={handleDeclinedWithCapcityIncrease}
@@ -444,6 +463,9 @@ export default function RegisteredUserCard({
                             />
                             In "Abgelehnt" ändern
                           </label>
+     
+
+                          </div>
                         ) : (
                           <label className="btn w-fit bg-green-600 text-white hover:bg-green-700">
                             <input

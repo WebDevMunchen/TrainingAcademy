@@ -170,7 +170,7 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 
 const updateClassStatus = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const { classId, newStatus } = req.body;
+  const { classId, newStatus, newReason } = req.body;
 
   try {
     const user = await User.findById(id);
@@ -203,6 +203,7 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
     }
 
     user.classesRegistered[classIndex].status = newStatus;
+    user.classesRegistered[classIndex].reason = newReason;
 
     await user.save();
 
