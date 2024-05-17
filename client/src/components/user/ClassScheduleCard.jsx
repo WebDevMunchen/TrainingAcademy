@@ -143,7 +143,7 @@ export default function ClassScheduleCard({ activity }) {
                   className="mt-8 bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
                   disabled
                 >
-                  Anmelden zur Warteliste
+                  Kapazität Voll
                 </button>
               ))}
             {user.role === "user" && (activityDatePassed || oneHourPrior) && (
@@ -195,10 +195,10 @@ export default function ClassScheduleCard({ activity }) {
                 </form>
               ) : (
                 <button
-                  className="bg-gradient-to-b from-yellow-400 to-yellow-600 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                  className="bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
                   disabled
                 >
-                  Anmelden zur Warteliste
+                  Kapazität Voll
                 </button>
               ))}
             {(user.role === "ASP" || user.role === "admin") && (activityDatePassed || oneHourPrior) && (

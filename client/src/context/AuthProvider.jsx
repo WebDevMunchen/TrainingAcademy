@@ -145,7 +145,11 @@ export default function AuthProvider({ children }) {
     axiosClient
       .post("/user/register", data)
       .then((response) => {
-        navigate("/");
+
+        return(axiosClient.get(`user/getAllUsers`))
+      }).then((response) => {
+        setAllUsers(response.data)
+        navigate("/admin/users");
       })
       .catch((error) => {
         console.log(error);

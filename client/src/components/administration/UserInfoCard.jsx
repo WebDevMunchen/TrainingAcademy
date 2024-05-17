@@ -168,8 +168,8 @@ export default function UserInfoCard() {
                     userInfomation.role.slice(1)}
                 </p>
                 <p className="mt-2 text-gray-600">
-                  <span className="font-medium"> E-Mail:</span>{" "}
-                  {userInfomation.email}
+                  <span className="font-medium"> Kürzel:</span>{" "}
+                  {userInfomation.logID}
                 </p>
               </div>
               <div className="mt-6 flex flex-col min-h-96">

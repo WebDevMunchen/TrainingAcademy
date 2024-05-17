@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema({
-  email: { type: String, required: true },
+  logID: { type: String, required: true },
   password: { type: String, required: true, select: false },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
@@ -15,6 +15,7 @@ const userSchema = new Schema({
   dateOfRegistration: { type: Date, default: Date.now() },
   userContactInformation: {type: String, required: true},
   status: { type: String, enum: ["aktiv", "inaktiv"], default: "aktiv" },
+  inbox: {type: String, default: "webdevmunchen@gmail.com"},
   classesRegistered: [
     {
       registeredClassID: { type: Schema.Types.ObjectId, ref: "ClassActivitie" },

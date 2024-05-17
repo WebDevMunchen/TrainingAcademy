@@ -8,7 +8,7 @@ const ClassActivity = require("../models/classActivity-model.js");
 
 const createUser = asyncWrapper(async (req, res, next) => {
   const {
-    email,
+    logID,
     password,
     firstName,
     lastName,
@@ -18,16 +18,17 @@ const createUser = asyncWrapper(async (req, res, next) => {
     status,
     classesRegistered,
     userContactInformation,
+    inbox
   } = req.body;
 
-  const findUser = await User.findOne({ email });
+  const findUser = await User.findOne({ logID });
 
   if (findUser) {
     throw new ErrorResponse(409, "User already exists!");
   }
 
   const user = await User.create({
-    email,
+    logID,
     password,
     firstName,
     lastName,
@@ -37,6 +38,7 @@ const createUser = asyncWrapper(async (req, res, next) => {
     status,
     classesRegistered,
     userContactInformation,
+    inbox
   });
 
   res.status(201).json(user);
@@ -44,7 +46,7 @@ const createUser = asyncWrapper(async (req, res, next) => {
 
 const updateUser = asyncWrapper(async (req, res, next) => {
   const {
-    email,
+    logID,
     firstName,
     lastName,
     role,
@@ -56,7 +58,7 @@ const updateUser = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
   const updatedFields = {
-    email,
+    logID,
     firstName,
     lastName,
     role,
@@ -226,7 +228,8 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
         name: "Antwort ausstehende Anfrage",
         address: user.userContactInformation,
       },
-      to: `${user.email}`,
+      to: `${user.inbox
+      }`,
       subject: "Training Academy - Rent Group München",
       text: "Training Academy - Rent Group München",
       html: `Deine Anfrage für die Schulung wurde ${newStatus}! <br/ ><br />
@@ -305,9 +308,9 @@ const updateNotAttended = asyncWrapper(async (req, res, next) => {
 });
 
 const login = asyncWrapper(async (req, res, next) => {
-  const { email, password } = req.body;
+  const { logID, password } = req.body;
 
-  const user = await User.findOne({ email })
+  const user = await User.findOne({ logID })
     .select("+password")
     .populate("classesRegistered.registeredClassID");
 
@@ -324,7 +327,7 @@ const login = asyncWrapper(async (req, res, next) => {
 
   const payload = {
     id: user._id,
-    email: user.email,
+    logID: user.logID,
     role: user.role,
   };
 
