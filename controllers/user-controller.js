@@ -170,7 +170,7 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 
 const updateClassStatus = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const { classId, newStatus, newReason } = req.body;
+  const { classId, newStatus, reason } = req.body; // Capture the reason from the request body
 
   try {
     const user = await User.findById(id);
@@ -202,8 +202,11 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
         .json({ error: "Activity capacity is already full" });
     }
 
+    // Update the status and reason
     user.classesRegistered[classIndex].status = newStatus;
-    user.classesRegistered[classIndex].reason = newReason;
+    if (newStatus === "abgelehnt") {
+      user.classesRegistered[classIndex].reason = reason; // Set the reason if status is "abgelehnt"
+    }
 
     await user.save();
 
@@ -226,7 +229,8 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       to: `${user.email}`,
       subject: "Training Academy - Rent Group München",
       text: "Training Academy - Rent Group München",
-      html: `Deine Anfrage für die Schulung wurde ${newStatus}! <br/ ><br />`,
+      html: `Deine Anfrage für die Schulung wurde ${newStatus}! <br/ ><br />
+            Grund: ´${reason}`,
     };
 
     // const sendMail = async(transporter, mailOptions) => {
@@ -246,6 +250,7 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 const updateAttended = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;

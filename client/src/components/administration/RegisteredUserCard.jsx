@@ -17,6 +17,8 @@ export default function RegisteredUserCard({
   const [hideAttendedBtn, setHideAttendedBtn] = useState(false);
   const [submitedAttended, setSubmitedAttended] = useState(true);
 
+  const [declineReason, setDeclineReason] = useState(""); // State variable to store the reason for declining
+
   const approve = (status) => {
     axiosClient
       .put(`/user/updateClassStatus/${registeredUser._id}`, {
@@ -36,11 +38,13 @@ export default function RegisteredUserCard({
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
-        console.log("Success")
-
+        console.log("Success");
+        notifySuccess();
       })
       .catch((error) => {
-        console.log(error);
+        if(error.name === "AxiosError") {
+          notifyError()
+        }
       });
   };
 
@@ -49,7 +53,7 @@ export default function RegisteredUserCard({
       .put(`/user/updateClassStatus/${registeredUser._id}`, {
         classId: id,
         newStatus: status,
-        newReason: reason
+        reason: reason,
       })
       .then((response) => {
         return axiosClient.get(`/classActivity/${id}`);
@@ -61,10 +65,13 @@ export default function RegisteredUserCard({
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
-        console.log("Success")
+        console.log("Success");
+        notifySuccess();
       })
       .catch((error) => {
-        console.log(error);
+        if(error.name === "AxiosError") {
+          notifyError()
+        }
       });
   };
 
@@ -73,7 +80,7 @@ export default function RegisteredUserCard({
       .put(`/user/updateClassStatus/${registeredUser._id}`, {
         classId: id,
         newStatus: status,
-        newReason: reason
+        reason: reason,
       })
       .then((response) => {
         return axiosClient.put(`/classActivity/decreaseClassCapacity/${id}`);
@@ -88,11 +95,13 @@ export default function RegisteredUserCard({
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
-        console.log("Success")
-
+        console.log("Success");
+        notifySuccess();
       })
       .catch((error) => {
-        console.log(error);
+        if(error.name === "AxiosError") {
+          notifyError()
+        }
       });
   };
 
@@ -100,30 +109,20 @@ export default function RegisteredUserCard({
     if (e.target.checked) {
       const status = e.target.value;
       approve(status);
-      notifySuccess()
     }
   };
 
   const handleDeclined = (e) => {
     if (e.target.checked) {
       const status = e.target.value;
-      decline(status);
-      notifySuccess()
+      decline(status, declineReason);
     }
   };
-
-  const handleBegrundung = (e) => {
-    if (e.target.selected) {
-      const reason = e.target.value;
-      decline(reason);
-    }
-  }
 
   const handleDeclinedWithCapcityIncrease = (e) => {
     if (e.target.checked) {
       const status = e.target.value;
-      declineWithCapacityIncrease(status);
-      notifySuccess()
+      declineWithCapacityIncrease(status, declineReason);
     }
   };
 
@@ -193,6 +192,24 @@ export default function RegisteredUserCard({
       className: "mt-14 mr-6",
     });
 
+  const notifyError = () => {
+    toast.error(
+      `Fehler. Die Genehmigung wurde nicht geändert.`,
+      {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        className: "mt-14 mr-6 w-80",
+      }
+    );
+  };
+
   let dPath = "";
   let spanStyle = "";
 
@@ -227,7 +244,6 @@ export default function RegisteredUserCard({
         theme="light"
         transition={Bounce}
       />
-      
       <div className="px-4 py-4 sm:px-6">
         <div className="flex items-center justify-between">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
@@ -431,20 +447,11 @@ export default function RegisteredUserCard({
                       </span>
                     </div>
 
-                    <p className="py-4">
+                    <p className="py-2">
                       Möchtest du den Genehmigungsstatus für{" "}
                       {registeredUser.firstName + " " + registeredUser.lastName}{" "}
                       bei dieser Schulung ändern?
                     </p>
-                    <div>
-
-<textarea
-                              onChange={handleBegrundung}
-
-className="resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-placeholder="Geben Sie eine Begrundung ein:"
-/>
-</div>
                     <div className="modal-action">
                       <form method="dialog" className="flex gap-2">
                         {registeredUser.classesRegistered.some(
@@ -453,32 +460,52 @@ placeholder="Geben Sie eine Begrundung ein:"
                             element.status === "genehmigt"
                         ) ? (
                           <div>
-                          <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
-                            <input
-                              onChange={handleDeclinedWithCapcityIncrease}
-                              onClick={closeModal}
-                              type="radio"
-                              class="peer sr-only"
-                              value="abgelehnt"
-                            />
-                            In "Abgelehnt" ändern
-                          </label>
-     
-
+                            <div className="w-96 mr-10">
+                              <label
+                                htmlFor="description"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              >
+                                Begrundung:
+                              </label>
+                              <textarea
+                                className="mb-4 mr-12 resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Geben Sie eine Begrundung ein..."
+                                value={declineReason} // Bind value to state variable
+                                onChange={(e) =>
+                                  setDeclineReason(e.target.value)
+                                } // Update state variable on change
+                              />
+                            </div>
+                            <div className="flex justify-end gap-2">
+                              <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
+                                <input
+                                  onChange={handleDeclinedWithCapcityIncrease}
+                                  onClick={closeModal}
+                                  type="radio"
+                                  class="peer sr-only"
+                                  value="abgelehnt"
+                                />
+                                In "Abgelehnt" ändern
+                              </label>
+                              {/* Conditionally render textarea if status is 'abgelehnt' */}
+                              <button className="btn w-28">Abbrechen</button>
+                            </div>
                           </div>
                         ) : (
-                          <label className="btn w-fit bg-green-600 text-white hover:bg-green-700">
-                            <input
-                              onChange={handleApproved}
-                              onClick={closeModal}
-                              type="radio"
-                              class="peer sr-only"
-                              value="genehmigt"
-                            />
-                            In "Genehmigt" ändern
-                          </label>
+                          <>
+                            <label className="btn w-fit bg-green-600 text-white hover:bg-green-700">
+                              <input
+                                onChange={handleApproved}
+                                onClick={closeModal}
+                                type="radio"
+                                class="peer sr-only"
+                                value="genehmigt"
+                              />
+                              In "Genehmigt" ändern
+                            </label>
+                            <button className="btn w-28">Abbrechen</button>
+                          </>
                         )}
-                        <button className="btn w-28">Abbrechen</button>
                       </form>
                     </div>
                   </div>
