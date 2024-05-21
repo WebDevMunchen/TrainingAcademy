@@ -4,9 +4,8 @@ export default {
   theme: {
     extend: {   
       fontFamily: {
-      titleFont: ['Dosis', 'sans-serif'],
-      titleH3: ['Roboto Serif', 'serif']
-    }
+        anek: ["Anek Devanagari", "sans-serif"],
+      },
   },
  
   },

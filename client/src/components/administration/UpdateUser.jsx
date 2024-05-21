@@ -4,9 +4,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { AuthContext } from "../../context/AuthProvider";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
-    const {setAllUsers} = useContext(AuthContext)
+  const { setAllUsers } = useContext(AuthContext);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -19,9 +21,7 @@ export default function Register() {
       .then((response) => {
         setUserInformation(response.data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, []);
 
   const {
@@ -40,11 +40,10 @@ export default function Register() {
       })
       .then((response) => {
         setAllUsers(response.data);
-        navigate("/admin/users")
+        navigate(`/admin/userProfile/${id}`);
+        notifySuccess();
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const aspLogistik = import.meta.env.VITE_APP_LOGISTIK;
@@ -58,9 +57,8 @@ export default function Register() {
       ) : (
         <div className="bg-gray-50/50 flex">
           <SideMenu />
-
-          <div className="flex flex-col items-center px-6 py-8 lg:py-12 mx-auto w-10/12">
-            <div className="bg-white rounded-md shadow w-4/12">
+          <div className="flex flex-col items-center py-8 lg:py-12 mx-auto w-10/12">
+            <div className="bg-white rounded-md shadow w-full lg:w-4/12">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Update Benutzerinformationen:
@@ -69,7 +67,7 @@ export default function Register() {
                   className="space-y-4 w-full md:space-y-6"
                   onSubmit={handleSubmit(onSubmit)}
                 >
-                  <div className="flex justify-around gap-2">
+                  <div className="flex flex-col lg:flex-row justify-around gap-2">
                     <div>
                       <label
                         htmlFor="firstName"
@@ -111,12 +109,12 @@ export default function Register() {
                       {...register("logID", { required: true })}
                       defaultValue={userInfomation.logID}
                       type="input"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-full"
                       placeholder="Die Abkürzung sollte drei Zeichen lang sein..."
                     />
                   </div>
 
-                  <div className="flex justify-around gap-2">
+                  <div className="flex flex-col lg:flex-row justify-around gap-2">
                     <div>
                       <label
                         htmlFor="department"
@@ -173,18 +171,16 @@ export default function Register() {
                         <option value={aspHR}>HR</option>
                       </select>
                     </div>
-
-                    
                   </div>
 
-                  <div className="flex justify-around gap-2">
-                  <div>
-                        <label
-                          htmlFor="role"
-                          className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
-                        >
-                          Role:
-                        </label>
+                  <div className="flex flex-col lg:flex-row justify-around gap-2">
+                    <div>
+                      <label
+                        htmlFor="role"
+                        className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Role:
+                      </label>
 
                       <select
                         {...register("role", {
@@ -200,12 +196,12 @@ export default function Register() {
                       </select>
                     </div>
                     <div>
-                        <label
-                          htmlFor="status"
-                          className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
-                        >
-                          Status:
-                        </label>
+                      <label
+                        htmlFor="status"
+                        className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Status:
+                      </label>
 
                       <select
                         {...register("status", {
@@ -218,8 +214,6 @@ export default function Register() {
                         <option value="inaktiv">Inaktiv</option>
                       </select>
                     </div>
-
-                    
                   </div>
 
                   <div className="flex justify-center gap-4">
@@ -236,7 +230,6 @@ export default function Register() {
                     >
                       Abbrechen
                     </button>
-                    
                   </div>
                 </form>
               </div>

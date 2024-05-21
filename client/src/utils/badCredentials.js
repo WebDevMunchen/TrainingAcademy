@@ -1,6 +1,8 @@
 export const badCredentials = () => {
-    document.getElementById("my_modal_1").showModal();
-  };
-
- 
-
+  const modal = document.getElementById("badCredentials");
+  if (modal) {
+      modal.showModal();
+  } else {
+      console.error("Modal element not found!");
+  }
+};

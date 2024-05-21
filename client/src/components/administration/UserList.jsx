@@ -21,7 +21,11 @@ export default function UserList() {
                 Benutzerübersicht
               </h2>
               <div className="bg-gradient-to-r from-blue-300 to-blue-500 h-px mb-6"></div>
-              <table className="w-11/12 table-auto mx-auto divide-y divide-gray-200 overflow-x-auto">
+
+              <div className="mx-auto w-10/12 mb-4 grid grid-cols-1 gap-6">
+              <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
+                <div className="p-6 h-[calc(63.5vh-32px)] overflow-x-scroll px-0 pt-0 pb-2">
+                  <table className="w-full min-w-[640px] table-auto">
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -53,7 +57,11 @@ export default function UserList() {
                   })}
                 </tbody>
               </table>
-              <div className="text-right mt-4 mr-16 flex justify-end">
+
+            </div>
+
+          </div>
+          <div className="text-right flex justify-end">
                 <NavLink
                   to={"/admin/dashboard"}
                   className="w-fit flex items-center text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
@@ -61,7 +69,8 @@ export default function UserList() {
                   Zurück
                 </NavLink>
               </div>
-            </div>
+          </div>
+          </div>
           </div>
         </>
       )}

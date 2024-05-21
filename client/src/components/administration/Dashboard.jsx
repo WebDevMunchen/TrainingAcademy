@@ -65,7 +65,7 @@ export default function Dashboard() {
         <SideMenu />
         <div className="p-4 xl:flex-1">
           <div className="mt-6">
-            <div className="mb-6 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
+            <div className="hidden lg:grid mb-6 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
               <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
                 <div className="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
                   <svg
@@ -248,7 +248,7 @@ export default function Dashboard() {
                   />
                 </svg>
               </button>
-              <p className="text-4xl font-semibold tracking-widest text-g uppercase">
+              <p className="font-anek text-4xl font-semibold tracking-widest text-g uppercase">
                 {currentMonth}
               </p>
               <button onClick={handleNextMonth}>
@@ -293,6 +293,11 @@ export default function Dashboard() {
                             Datum
                           </p>
                         </th>
+                        <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
+                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                            Uhrzeit
+                          </p>
+                        </th>
                         <th className="w-2/12 border-b border-blue-gray-50 py-3 px-6 text-center">
                           <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
                             Ausstehende Genehmigungen
@@ -305,22 +310,24 @@ export default function Dashboard() {
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
                           <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
-                            Link
+                            Links
                           </p>
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {!allActivities ? (
-                        <tr >
-                          <td colSpan="7 ">
+                        <>
+                        <tr>
+                          <td colSpan="7">
                             <img
-                              className="mx-auto h-[calc(53vh-32px)] w-[calc(60vh-32px)]"
+                              className="h-[calc(42vh-40px)] lg:mx-auto lg:h-[calc(53vh-32px)] lg:w-[calc(60vh-32px)]"
                               src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715671755/symbols/freepik-export-20240514065734UGY2_wpm9md_rahv71.png"
                               alt="logo"
                             />
                           </td>
                         </tr>
+                        </>
                       ) : (
                         allActivities.map((activity) => {
                           return (

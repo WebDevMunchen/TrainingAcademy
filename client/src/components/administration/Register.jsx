@@ -2,6 +2,9 @@ import { useForm } from "react-hook-form";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import SideMenu from "./SideMenu";
+import { Bounce, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export default function Register() {
   const { signup } = useContext(AuthContext);
@@ -20,13 +23,27 @@ export default function Register() {
   const aspVertrieb = import.meta.env.VITE_APP_VERTRIEB;
   const aspHR = import.meta.env.VITE_APP_HR;
 
+
+
   return (
     <>
       <div className="bg-gray-50/50 flex">
         <SideMenu />
-
-        <div className="flex flex-col items-center px-6 py-8 lg:py-12 mx-auto w-10/12">
-          <div className="bg-white rounded-md shadow w-4/12">
+        <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme="light"
+        transition={Bounce}
+      />
+        <div className="flex flex-col items-center px-0 py-8 lg:py-12 lg:px-6 mx-auto w-10/12">
+          <div className="bg-white rounded-md shadow w-full lg:w-4/12">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Benutzerkonto erstellen
@@ -35,7 +52,7 @@ export default function Register() {
                 className="space-y-4 w-full md:space-y-6"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <div className="flex justify-around gap-2">
+                <div className="flex flex-col lg:flex-row justify-around gap-2">
                   <div>
                     <label
                       htmlFor="firstName"
@@ -74,8 +91,8 @@ export default function Register() {
                   <input
                     {...register("logID", { required: true })}
                     type="input"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Die Abkürzung sollte drei Zeichen lang sein..."
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-full"
+                    placeholder="Drei Zeichen lang"
                   />
                 </div>
                 <div>
@@ -89,11 +106,11 @@ export default function Register() {
                     {...register("password", { required: true })}
                     type="password"
                     placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-full"
                   />
                 </div>
 
-                <div className="flex justify-around gap-2">
+                <div className="flex flex-col lg:flex-row justify-around gap-2">
                   <div>
                     <label
                       htmlFor="department"
@@ -109,17 +126,17 @@ export default function Register() {
                     />
                   </div>
                   <div>
-                    
                     <div className="flex justify-start">
-
-                    <label
-                      htmlFor="userContactInformation"
-                      className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Ansprechpartner:
-
-                    </label>
-                                        <div className="tooltip ml-2 hover:cursor-pointer" data-tip="Für jede Abteilung ist eine E-Mail-Adresse des ASPs hinterlegt. Diese E-Mail-Adresse wird verwendet, um eine E-Mail an den ASP zu senden, der entscheidet, ob der Mitarbeiter an der Schulung teilnehmen darf">
+                      <label
+                        htmlFor="userContactInformation"
+                        className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Ansprechpartner:
+                      </label>
+                      <div
+                        className="tooltip ml-2 hover:cursor-pointer"
+                        data-tip="Für jede Abteilung ist eine E-Mail-Adresse des ASPs hinterlegt. Diese E-Mail-Adresse wird verwendet, um eine E-Mail an den ASP zu senden, der entscheidet, ob der Mitarbeiter an der Schulung teilnehmen darf"
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -136,7 +153,6 @@ export default function Register() {
                         </svg>
                       </div>
                     </div>
-
 
                     <select
                       {...register("userContactInformation", {

@@ -18,13 +18,13 @@ const createUser = asyncWrapper(async (req, res, next) => {
     status,
     classesRegistered,
     userContactInformation,
-    inbox
+    inbox,
   } = req.body;
 
   const findUser = await User.findOne({ logID });
 
   if (findUser) {
-    throw new ErrorResponse(409, "User already exists!");
+    return res.status(409).json({ message: "User already registered" });
   }
 
   const user = await User.create({
@@ -38,7 +38,7 @@ const createUser = asyncWrapper(async (req, res, next) => {
     status,
     classesRegistered,
     userContactInformation,
-    inbox
+    inbox,
   });
 
   res.status(201).json(user);
@@ -74,6 +74,24 @@ const updateUser = asyncWrapper(async (req, res, next) => {
   } else {
     res.status(201).json(user);
   }
+});
+
+const updatePassword = asyncWrapper(async (req, res, next) => {
+  const {id} = req.params
+
+  const { password } = req.body;
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const update = { password: hashedPassword };
+
+  const user = await User.findByIdAndUpdate(id, update, { new: true });
+
+  if (!user) {
+    throw new ErrorResponse(404, "User not found!");
+  }
+
+  res.status(200).json({ message: "Password updated successfully" });
 });
 
 const getProfile = asyncWrapper(async (req, res, next) => {
@@ -228,8 +246,7 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
         name: "Antwort ausstehende Anfrage",
         address: user.userContactInformation,
       },
-      to: `${user.inbox
-      }`,
+      to: `${user.inbox}`,
       subject: "Training Academy - Rent Group München",
       text: "Training Academy - Rent Group München",
       html: `Deine Anfrage für die Schulung wurde ${newStatus}! <br/ ><br />
@@ -253,7 +270,6 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
 
 const updateAttended = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
@@ -315,7 +331,7 @@ const login = asyncWrapper(async (req, res, next) => {
     .populate("classesRegistered.registeredClassID");
 
   if (!user) {
-    throw new ErrorResponse(404, "User does not exist!");
+    return res.status(404).json({ error: "User not found!" });
   }
 
   const match = await bcrypt.compare(password, user.password);
@@ -359,4 +375,5 @@ module.exports = {
   updateNotAttended,
   getUserInformation,
   updateUser,
+  updatePassword,
 };

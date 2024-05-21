@@ -14,8 +14,14 @@ import ClassesOverviewDashboard from "./components/administration/ClassesOvervie
 import CreateClass from "./components/administration/CreateClass";
 import UserInfoCard from "./components/administration/UserInfoCard";
 import UpdateUser from "./components/administration/UpdateUser";
+import EditClass from "./components/administration/EditClass";
+import Report from "./components/administration/Report";
+import AuthorizeNonUser from "./components/AuthorizeNonUser";
 
 function App() {
+
+  const allowedRoles = ["admin", "teacher", "ASP"];
+
   return (
     <>
       <Navbar />
@@ -25,9 +31,15 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         <Route path="/" element={<Protected />}>
-          <Route path="/:id" element={<SingleClassDetails />} />
           <Route path="/classes" element={<ClassesSchedule />} />
           <Route path="/classesOverview" element={<ClassesOverview />} />
+
+          <Route
+            path="/classInformation"
+            element={<AuthorizeNonUser roles={allowedRoles} />}
+          >
+            <Route path=":id" element={<SingleClassDetails />} />
+          </Route>
           <Route path="/admin" element={<Authorize role="admin" />}>
             <Route path="register" element={<Register />} />
             <Route path="dashboard" element={<Dashboard />} />
@@ -39,6 +51,8 @@ function App() {
               element={<ClassesOverviewDashboard />}
             />
             <Route path="createClass" element={<CreateClass />} />
+            <Route path="editClass/:id" element={<EditClass />} />
+            <Route path="report/:id" element={<Report />} />
           </Route>
         </Route>
       </Routes>

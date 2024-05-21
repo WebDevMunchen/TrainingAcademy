@@ -29,9 +29,9 @@ export default function ClassesOverviewCard({ activity }) {
 
   return (
     <>
-      <div className="bg-white border m-2 p-4 relative z-40 group shadow-lg">
-        <div className=" absolute bg-blue-500/50 top-0 left-0 w-24 h-1 z-30  transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
-        <div className="space-x-4 flex justify-end mt-4 mr-4">
+      <div className="bg-white border m-2 p-4 relative group shadow-lg">
+        <div className="absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
+        <div className="flex justify-center lg:justify-end mt-4 mr-4 items-center ">
           <span className={spanStyle}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -40,13 +40,34 @@ export default function ClassesOverviewCard({ activity }) {
               strokeWidth={1.5}
               stroke="currentColor"
               className="w-6 h-6 mr-2"
+
             >
               <path strokeLinecap="round" strokeLinejoin="round" d={dPath} />
             </svg>
             {activity.status}
           </span>
+          {activity.status === "abgelehnt" && (
+            <div
+              className="tooltip ml-2 hover:cursor-pointer"
+              style={{ width: "auto", height: "auto" }}
+              data-tip={activity.reason}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="#ffb951"
+                className="w-8 h-8"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+          )}
         </div>
-        <div className="py-2 px-9 relative  ">
+        <div className="py-2 relative">
           <h3 className="flex justify-center text-lg font-semibold text-black">
             {activity.registeredClassID?.title}
           </h3>
@@ -58,12 +79,16 @@ export default function ClassesOverviewCard({ activity }) {
               <img key={index} src={dept} className="w-12 h-12" />
             ))}
           </div>
-          <p className="flex justify-center mt-4 text-base text-gray-600  ">
+          <p className="text-center lg:flex justify-center mt-4 text-base text-gray-600">
             {activity.registeredClassID?.description}
           </p>
-          <div className="flex justify-around gap-16">
-            <div className="flex flex-col">
-              <p className="mt-4 text-base text-gray-600 ">
+          <div className="grid grid-cols-3 grid-rows-1 text-center lg:text-left justify-items-center">
+            <div className="flex flex-col mr-2">
+              <p className="mt-4 text-base text-gray-600 lg:hidden">
+                <span className="font-bold">Kapazität:</span>{" "}
+                {activity.registeredClassID?.capacity + " Teilneh."}
+              </p>
+              <p className="hidden lg:inline mt-4 text-base text-gray-600">
                 <span className="font-bold">Kapazität:</span>{" "}
                 {activity.registeredClassID?.capacity + " Teilnehmer"}
               </p>
@@ -71,29 +96,33 @@ export default function ClassesOverviewCard({ activity }) {
                 <span className="font-bold">Datum:</span> {formattedDate}
               </p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col mr-2">
               <p className="mt-4 text-base text-gray-600 ">
                 <span className="font-bold">Uhrzeit:</span>{" "}
                 {activity.registeredClassID?.time}
               </p>
-              <p className="mt-4 text-base text-gray-600 ">
+              <p className="mt-4 text-base text-gray-600 lg:hidden">
+                <span className="font-bold">Dauer:</span>{" "}<br />
+                {activity.registeredClassID?.duration + " Min."}
+              </p>
+              <p className="hidden lg:inline mt-4 text-base text-gray-600">
                 <span className="font-bold">Dauer:</span>{" "}
-                {activity.registeredClassID?.duration + " min"}
+                {activity.registeredClassID?.duration + " Min."}
               </p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col mr-2">
               <p className="mt-4 text-base text-gray-600 ">
                 <span className="font-bold">Location:</span>{" "}
                 {activity.registeredClassID?.location}
               </p>
               <p className="mt-4 text-base text-gray-600 ">
-                <span className="font-bold">Lehrer:</span>{" "}
+                <span className="font-bold">Referent:</span>{" "}
                 {activity.registeredClassID?.teacher}
               </p>
             </div>
           </div>
+          </div>
         </div>
-      </div>
     </>
   );
 }

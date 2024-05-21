@@ -1,13 +1,36 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import SideMenu from "./SideMenu";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateClass() {
   const { setAllActivities } = useContext(AuthContext);
 
+  const navigate = useNavigate()
+
   const [selectedDepartments, setSelectedDepartments] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState("");
+
+  useEffect(() => {
+    const date = new Date();
+    const monthNames = [
+      "januar",
+      "februar",
+      "märz",
+      "april",
+      "mai",
+      "juni",
+      "juli",
+      "august",
+      "september",
+      "oktober",
+      "november",
+      "dezember",
+    ];
+    setCurrentMonth(monthNames[date.getMonth()]);
+  }, [])
 
   const {
     register,
@@ -33,13 +56,13 @@ export default function CreateClass() {
         withCredentials: true,
       })
       .then((response) => {
-        return axiosClient.get("/classActivity/allActivities");
+        return axiosClient.get(`/classActivity/allActivities?month=${currentMonth}`);
       })
       .then((activitiesResponse) => {
         setAllActivities(activitiesResponse.data);
+        navigate("/admin/dashboard")
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -47,8 +70,8 @@ export default function CreateClass() {
     <>
       <div className="bg-gray-50/50 flex">
         <SideMenu />
-        <div className="flex flex-col items-center px-6 py-8 lg:py-10 mx-auto w-10/12">
-          <div className="bg-white rounded-md shadow w-6/12">
+        <div className="flex mt-4 flex-col items-center w-11/12 lg:py-10 mx-auto lg:mt-0 lg:w-5/12">
+          <div className="bg-white rounded-md shadow w-11/12 lg:6/12">
             <div className="p-6 space-y-4 md:space-y-4 sm:p-6">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Neue Schulung erstellen
@@ -85,7 +108,7 @@ export default function CreateClass() {
                   />
                 </div>
 
-                <div className="flex justify-between">
+                <div className="flex flex-col lg:flex-row lg:justify-between">
                   <div>
                     <label
                       htmlFor="month"
@@ -112,7 +135,7 @@ export default function CreateClass() {
                     </select>
                   </div>
 
-                  <div>
+                  <div className="mt-2 lg:mt-0">
                     <label
                       htmlFor="date"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -125,7 +148,7 @@ export default function CreateClass() {
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-48 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
-                  <div>
+                  <div className="mt-2 lg:mt-0">
                     <label
                       htmlFor="time"
                       className="pr-20 block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -139,7 +162,7 @@ export default function CreateClass() {
                     />
                   </div>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex flex-col lg:flex-row justify-between">
                   <div>
                     <label
                       htmlFor="duration"
@@ -155,7 +178,7 @@ export default function CreateClass() {
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-48 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
-                  <div>
+                  <div className="mt-2 lg:mt-0">
                     <label
                       htmlFor="location"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -169,7 +192,7 @@ export default function CreateClass() {
                     />
                   </div>
 
-                  <div>
+                  <div className="mt-2 lg:mt-0">
                     <label
                       htmlFor="capacity"
                       className="ml-2 block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -209,7 +232,7 @@ export default function CreateClass() {
                 >
                   Zielgruppe:
                 </label>
-                <div className="grid grid-cols-4 grid-rows-3">
+                <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-4 lg:grid-rows-3">
                   <div className="flex items-center mb-1">
                     <input
                       type="checkbox"
@@ -351,7 +374,7 @@ export default function CreateClass() {
                       Projektmanagement
                     </label>
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-center ">
                     <input
                       type="checkbox"
                       value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/p0m4tdmsd5qdmysdzolk.png"

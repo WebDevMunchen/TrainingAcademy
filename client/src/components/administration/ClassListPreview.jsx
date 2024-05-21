@@ -37,8 +37,8 @@ export default function ClassListPreview({ activity }) {
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
         <div className="flex">
-          {activity.department.map((image) => {
-            return <img src={image} alt="logo" className="w-12 h-12" />;
+          {activity.department.map((image, index) => {
+            return <img key={index} src={image} alt="logo" className="w-12 h-12" />;
           })}
         </div>
       </td>
@@ -52,6 +52,15 @@ export default function ClassListPreview({ activity }) {
       <td className="py-3 px-5 border-b border-blue-gray-50">
         <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
           {formattedDate}
+        </p>
+      </td>
+
+      <td className="py-3 px-5 border-b border-blue-gray-50">
+        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+          {activity.time}
+        </p>
+        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+          {`(${activity.duration} min)`}
         </p>
       </td>
 
@@ -77,10 +86,22 @@ export default function ClassListPreview({ activity }) {
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
         <NavLink
-          to={`/${activity._id}`}
-          className="block antialiased font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
+          to={`/classInformation/${activity._id}`}
+          className="mb-2 block antialiased font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
         >
           Details
+        </NavLink>
+        <NavLink
+          to={`/admin/editClass/${activity._id}`}
+          className="mb-2 block antialiased font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
+        >
+          Bearbeiten
+        </NavLink>
+        <NavLink
+          to={`/admin/report/${activity._id}`}
+          className="block antialiased font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
+        >
+          Bericht
         </NavLink>
       </td>
     </tr>

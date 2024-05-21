@@ -14,7 +14,6 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     month,
     time,
     teacher,
-    contactPerson,
   } = req.body;
 
   const activity = await ClassActivity.create({
@@ -28,10 +27,47 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     month,
     time,
     teacher,
-    contactPerson,
   });
 
   res.status(201).json(activity);
+});
+
+const editClassActivity = asyncWrapper(async (req, res, next) => {
+  const {
+    title,
+    description,
+    date,
+    duration,
+    location,
+    department,
+    capacity,
+    month,
+    time,
+    teacher,
+  } = req.body;
+
+  const { id } = req.params;
+
+  const updatedClass = {
+    title,
+    description,
+    date,
+    duration,
+    location,
+    department,
+    capacity,
+    month,
+    time,
+    teacher,
+  }
+
+  const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, { new: true });
+
+  if (!activity) {
+    throw new ErrorResponse(404, "Activity not found!");
+  } else {
+    res.status(201).json(activity);
+  }
 });
 
 const registerClass = asyncWrapper(async (req, res, next) => {
@@ -135,4 +171,5 @@ module.exports = {
   getActivity,
   increaseClassCapacity,
   decreaseClassCapacity,
+  editClassActivity
 };

@@ -4,11 +4,11 @@ export default function UserListCard({ user }) {
   return (
     <>
       <tr className="text-center">
-        <td class="px-6 py-4 whitespace-nowrap">
-          <div class="text-sm font-medium text-gray-900">{user.firstName}</div>
+        <td className="px-6 py-4 whitespace-nowrap">
+          <div className="text-sm font-medium text-gray-900">{user.firstName}</div>
         </td>
-        <td class="px-6 py-4 whitespace-nowrap">
-          <div class="text-sm font-medium text-gray-900">{user.lastName}</div>
+        <td className="px-6 py-4 whitespace-nowrap">
+          <div className="text-sm font-medium text-gray-900">{user.lastName}</div>
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
           <span
@@ -22,18 +22,18 @@ export default function UserListCard({ user }) {
             {user.status}
           </span>
         </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
           {user.role}
         </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
           {user.logID}
         </td>
 
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
           {user.department}
         </td>
 
-        <td class="px-6 py-4 text-sm font-medium">
+        <td className="px-6 py-4 text-sm font-medium">
           <NavLink
             to={`/admin/userProfile/${user._id}`}
             className="block font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125"

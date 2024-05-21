@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
 import { useParams } from "react-router-dom";
@@ -10,9 +10,13 @@ export default function RegisteredUserCard({
   activityId,
   setActivity,
 }) {
-  const { user, setAllActivities } = useContext(AuthContext);
+  const { user, setAllActivities, setUser, currentMonth } =
+    useContext(AuthContext);
   const { id } = useParams();
   const modalRef = useRef(null);
+
+  const [hideChangedBtn, setHideChangedBtn] = useState(false);
+  const [submitedChangedStatus, setSubmitedChangedStatus] = useState(true);
 
   const [hideAttendedBtn, setHideAttendedBtn] = useState(false);
   const [submitedAttended, setSubmitedAttended] = useState(true);
@@ -29,21 +33,30 @@ export default function RegisteredUserCard({
         return axiosClient.put(`/classActivity/increaseClassCapacity/${id}`);
       })
       .then((response) => {
+        return axiosClient.get("/user/profile");
+      })
+      .then((responseProfile) => {
+        setUser(responseProfile.data);
+      })
+      .then((response) => {
         return axiosClient.get(`/classActivity/${id}`);
       })
       .then((responseSingleActivity) => {
         setActivity(responseSingleActivity.data);
 
-        return axiosClient.get(`/classActivity/allActivities`);
+        return axiosClient.get(
+          `/classActivity/allActivities?month=${currentMonth}`
+        );
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
-        console.log("Success");
         notifySuccess();
       })
       .catch((error) => {
-        if(error.name === "AxiosError") {
-          notifyError()
+        if (error.name === "AxiosError") {
+          notifyError();
+          setHideChangedBtn(false);
+          setSubmitedChangedStatus(true);
         }
       });
   };
@@ -56,21 +69,30 @@ export default function RegisteredUserCard({
         reason: reason,
       })
       .then((response) => {
+        return axiosClient.get("/user/profile");
+      })
+      .then((responseProfile) => {
+        setUser(responseProfile.data);
+      })
+      .then((response) => {
         return axiosClient.get(`/classActivity/${id}`);
       })
       .then((responseSingleActivity) => {
         setActivity(responseSingleActivity.data);
 
-        return axiosClient.get(`/classActivity/allActivities`);
+        return axiosClient.get(
+          `/classActivity/allActivities?month=${currentMonth}`
+        );
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
-        console.log("Success");
         notifySuccess();
       })
       .catch((error) => {
-        if(error.name === "AxiosError") {
-          notifyError()
+        if (error.name === "AxiosError") {
+          notifyError();
+          setHideChangedBtn(false);
+          setSubmitedChangedStatus(true);
         }
       });
   };
@@ -86,21 +108,30 @@ export default function RegisteredUserCard({
         return axiosClient.put(`/classActivity/decreaseClassCapacity/${id}`);
       })
       .then((response) => {
+        return axiosClient.get("/user/profile");
+      })
+      .then((responseProfile) => {
+        setUser(responseProfile.data);
+      })
+      .then((response) => {
         return axiosClient.get(`/classActivity/${id}`);
       })
       .then((responseSingleActivity) => {
         setActivity(responseSingleActivity.data);
 
-        return axiosClient.get(`/classActivity/allActivities`);
+        return axiosClient.get(
+          `/classActivity/allActivities?month=${currentMonth}`
+        );
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
-        console.log("Success");
         notifySuccess();
       })
       .catch((error) => {
-        if(error.name === "AxiosError") {
-          notifyError()
+        if (error.name === "AxiosError") {
+          notifyError();
+          setHideChangedBtn(false);
+          setSubmitedChangedStatus(true);
         }
       });
   };
@@ -109,6 +140,8 @@ export default function RegisteredUserCard({
     if (e.target.checked) {
       const status = e.target.value;
       approve(status);
+      setHideChangedBtn(true);
+      setSubmitedChangedStatus(false);
     }
   };
 
@@ -116,6 +149,8 @@ export default function RegisteredUserCard({
     if (e.target.checked) {
       const status = e.target.value;
       decline(status, declineReason);
+      setHideChangedBtn(true);
+      setSubmitedChangedStatus(false);
     }
   };
 
@@ -123,6 +158,8 @@ export default function RegisteredUserCard({
     if (e.target.checked) {
       const status = e.target.value;
       declineWithCapacityIncrease(status, declineReason);
+      setHideChangedBtn(true);
+      setSubmitedChangedStatus(false);
     }
   };
 
@@ -132,12 +169,8 @@ export default function RegisteredUserCard({
         classId: id,
         newStatusAttended: status,
       })
-      .then((response) => {
-        console.log("Success");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then((response) => {})
+      .catch((error) => {});
   };
 
   const notParticipated = (status) => {
@@ -146,12 +179,8 @@ export default function RegisteredUserCard({
         classId: id,
         newStatusAttended: status,
       })
-      .then((response) => {
-        console.log("Success");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then((response) => {})
+      .catch((error) => {});
   };
 
   const handleParticipated = (e) => {
@@ -160,6 +189,7 @@ export default function RegisteredUserCard({
       participated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
+      notifySuccessAttended();
     }
   };
 
@@ -169,6 +199,7 @@ export default function RegisteredUserCard({
       notParticipated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
+      notifySuccessAttended();
     }
   };
 
@@ -192,22 +223,33 @@ export default function RegisteredUserCard({
       className: "mt-14 mr-6",
     });
 
+  const notifySuccessAttended = () =>
+    toast.success("Status geändert", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mt-14 mr-6",
+    });
+
   const notifyError = () => {
-    toast.error(
-      `Fehler. Die Genehmigung wurde nicht geändert.`,
-      {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        className: "mt-14 mr-6 w-80",
-      }
-    );
+    toast.error(`Fehler. Die Genehmigung wurde nicht geändert`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mt-14 mr-6 w-80",
+    });
   };
 
   let dPath = "";
@@ -244,19 +286,19 @@ export default function RegisteredUserCard({
         theme="light"
         transition={Bounce}
       />
-      <div className="px-4 py-4 sm:px-6">
+      <div className="px-4 py-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
             {registeredUser.firstName + " " + registeredUser.lastName}
           </h3>
           <p className="flex items-center text-sm font-medium text-gray-500">
-            <span className="mr-2 text-md font-semibold text-gray-900">
+            <span className="mr-2 text-md font-semibold text-gray-900 hidden lg:inline">
               Status:{" "}
             </span>
-            {registeredUser.classesRegistered.map((element) => {
+            {registeredUser.classesRegistered.map((element, index) => {
               if (element.registeredClassID === activityId)
                 return (
-                  <>
+                  <React.Fragment key={element.registeredClassID}>
                     {element.status === "genehmigt" ? (
                       <span className="inline-flex items-center bg-green-600 rounded-full px-3 text-sm text-white py-1 font-medium">
                         <svg
@@ -312,7 +354,7 @@ export default function RegisteredUserCard({
                         {element.status}
                       </span>
                     )}
-                  </>
+                  </React.Fragment>
                 );
             })}
           </p>
@@ -334,17 +376,17 @@ export default function RegisteredUserCard({
               element.status === "ausstehend"
           ) ? (
             <>
-              <label class="cursor-pointer">
+              <label className="cursor-pointer">
                 <input
                   onChange={handleApproved}
                   type="radio"
-                  class="peer sr-only"
+                  className="peer sr-only"
                   value="genehmigt"
                 />
-                <div class="shadow-md border w-60 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-blue-400 peer-checked:ring-offset-2">
-                  <div class="flex flex-col gap-1">
-                    <div class="flex items-center justify-between">
-                      <p class="text-sm font-semibold uppercase text-gray-500">
+                <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-blue-400 peer-checked:ring-offset-2 lg:w-52">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-semibold uppercase text-gray-500">
                         Genehmigen
                       </p>
                       <div>
@@ -367,45 +409,112 @@ export default function RegisteredUserCard({
                   </div>
                 </div>
               </label>
-
-              <label class="cursor-pointer">
-                <input
-                  onChange={handleDeclined}
-                  type="radio"
-                  class="peer sr-only"
-                  value="abgelehnt"
-                />
-                <div class="shadow-md border w-60 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2">
-                  <div class="flex flex-col gap-1">
-                    <div class="flex items-center justify-between">
-                      <p class="text-sm font-semibold uppercase text-gray-500">
-                        Ablehnen
-                      </p>
-                      <div>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-6 h-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                          />
-                        </svg>
-                      </div>
+              <button
+                className="shadow-md border w-36 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:w-52"
+                onClick={() => modalRef.current.showModal()}
+              >
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold uppercase text-gray-500">
+                      Ablehnen
+                    </p>
+                    <div>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                      </svg>
                     </div>
                   </div>
                 </div>
-              </label>
+              </button>
+              <dialog ref={modalRef} id="my_modal_1" className="modal">
+                <div className="modal-box">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-bold text-lg">Genehmigung Ablehnen</h3>
+                    <span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+
+                  <p className="py-2">
+                    Möchtest du für{" "}
+                    {registeredUser.firstName + " " + registeredUser.lastName}{" "}
+                    den Genehmigungsstatus bei dieser Schulung wirklich
+                    ablehnen?
+                  </p>
+                  <div className="modal-action mr-2.5">
+                    <form method="dialog" className="flex gap-2">
+                      <div>
+                        <div className="w-72 mx-auto lg:w-96 mr-8">
+                          <label
+                            htmlFor="description"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          >
+                            Begrundung:
+                          </label>
+                          <textarea
+                            className="mb-4 w-full resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-full"
+                            placeholder="Geben Sie eine Begrundung ein..."
+                            value={declineReason} // Bind value to state variable
+                            onChange={(e) => setDeclineReason(e.target.value)} // Update state variable on change
+                          />
+                        </div>
+                        <div className="flex justify-end gap-2">
+                          <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
+                            <input
+                              onChange={handleDeclined}
+                              onClick={closeModal}
+                              type="radio"
+                              className="peer sr-only"
+                              value="abgelehnt"
+                            />
+                            Bestätigen
+                          </label>
+                          {/* Conditionally render textarea if status is 'abgelehnt' */}
+                          <button className="btn w-28">Abbrechen</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
             </>
           ) : (
-            <div class="flex flex-col gap-1">
-              <div class="flex items-center justify-between">
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center justify-between">
                 <button
+                  hidden={submitedChangedStatus}
+                  className="shadow-md border w-44 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2"
+                >
+                  <span className="flex justify-center items-center gap-2 text-sm font-semibold uppercase text-gray-500">
+                    Übermittelt
+                  </span>
+                </button>
+                <button
+                  hidden={hideChangedBtn}
                   className="shadow-md border w-44 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2"
                   onClick={() => modalRef.current.showModal()}
                 >
@@ -419,7 +528,7 @@ export default function RegisteredUserCard({
                     >
                       <path
                         fillRule="evenodd"
-                        d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
+                        d="M15.97 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 1 1-1.06-1.06l3.22-3.22H7.5a.75.75 0 0 1 0-1.5h11.69l-3.22-3.22a.75.75 0 0 1 0-1.06Zm-7.94 9a.75.75 0 0 1 0 1.06l-3.22 3.22H16.5a.75.75 0 0 1 0 1.5H4.81l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 0Z"
                         clipRule="evenodd"
                       />
                     </svg>
@@ -460,7 +569,7 @@ export default function RegisteredUserCard({
                             element.status === "genehmigt"
                         ) ? (
                           <div>
-                            <div className="w-96 mr-10">
+                            <div className="w-72 mr-0 lg:w-96 lg:mr-12">
                               <label
                                 htmlFor="description"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -482,7 +591,7 @@ export default function RegisteredUserCard({
                                   onChange={handleDeclinedWithCapcityIncrease}
                                   onClick={closeModal}
                                   type="radio"
-                                  class="peer sr-only"
+                                  className="peer sr-only"
                                   value="abgelehnt"
                                 />
                                 In "Abgelehnt" ändern
@@ -498,7 +607,7 @@ export default function RegisteredUserCard({
                                 onChange={handleApproved}
                                 onClick={closeModal}
                                 type="radio"
-                                class="peer sr-only"
+                                className="peer sr-only"
                                 value="genehmigt"
                               />
                               In "Genehmigt" ändern
@@ -522,7 +631,7 @@ export default function RegisteredUserCard({
               element.status === "genehmigt" &&
               element.statusAttended === "in Prüfung"
           ) ? (
-            <div className="flex justify-center gap-4 px-4 py-6">
+            <div className="flex justify-center gap-2 px-4 py-6 lg:gap-4">
               <label hidden={hideAttendedBtn} className="cursor-pointer">
                 <input
                   onChange={handleParticipated}
@@ -530,10 +639,10 @@ export default function RegisteredUserCard({
                   className="peer sr-only"
                   value="teilgenommen"
                 />
-                <div class="shadow-md border w-60 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2">
+                <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:w-60 lg:p-4">
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center justify-between">
-                      <p className="text-sm font-semibold uppercase text-gray-500">
+                      <p className="text-sm font-semibold uppercase text-gray-500 mr-1">
                         Teilgenommen
                       </p>
                       <div>
@@ -564,10 +673,13 @@ export default function RegisteredUserCard({
                   className="peer sr-only"
                   value="nicht teilgenommen"
                 />
-                <div class="shadow-md border w-60 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2">
+                <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:w-60 lg:p-4">
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center justify-between">
-                      <p className="text-sm font-semibold uppercase text-gray-500">
+                      <p className="text-sm font-semibold uppercase text-gray-500 lg:hidden">
+                        Nicht Teilgen.
+                      </p>
+                      <p className="hidden lg:inline text-sm font-semibold uppercase text-gray-500">
                         Nicht Teilgenommen
                       </p>
                       <div>
@@ -593,11 +705,11 @@ export default function RegisteredUserCard({
 
               <div
                 hidden={submitedAttended}
-                class="shadow-md border w-60 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2"
+                className="shadow-md border w-40 max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:p-4"
               >
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold uppercase text-gray-500">
+                    <p className="text-sm font-semibold uppercase text-gray-500 mx-auto">
                       Übermittelt
                     </p>
                   </div>
@@ -606,7 +718,7 @@ export default function RegisteredUserCard({
             </div>
           ) : (
             <div className="flex justify-center gap-4 px-4 py-6">
-              <div class="shadow-md border w-fit max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2">
+              <div className="shadow-md border w-fit max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:p-4">
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold uppercase text-gray-500">
