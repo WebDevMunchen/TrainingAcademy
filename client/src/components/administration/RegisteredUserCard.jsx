@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
 import { useParams } from "react-router-dom";
-import { Bounce, ToastContainer, toast } from "react-toastify";
+import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function RegisteredUserCard({
@@ -53,11 +53,9 @@ export default function RegisteredUserCard({
         notifySuccess();
       })
       .catch((error) => {
-        if (error.name === "AxiosError") {
-          notifyError();
-          setHideChangedBtn(false);
-          setSubmitedChangedStatus(true);
-        }
+        notifyError();
+        setHideChangedBtn(false);
+        setSubmitedChangedStatus(true);
       });
   };
 
@@ -169,7 +167,9 @@ export default function RegisteredUserCard({
         classId: id,
         newStatusAttended: status,
       })
-      .then((response) => {})
+      .then((response) => {
+        notifySuccessAttended();
+      })
       .catch((error) => {});
   };
 
@@ -179,7 +179,9 @@ export default function RegisteredUserCard({
         classId: id,
         newStatusAttended: status,
       })
-      .then((response) => {})
+      .then((response) => {
+        notifySuccessAttended();
+      })
       .catch((error) => {});
   };
 
@@ -189,7 +191,6 @@ export default function RegisteredUserCard({
       participated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
-      notifySuccessAttended();
     }
   };
 
@@ -199,7 +200,6 @@ export default function RegisteredUserCard({
       notParticipated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
-      notifySuccessAttended();
     }
   };
 
@@ -214,7 +214,7 @@ export default function RegisteredUserCard({
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
-      closeOnClick: false,
+      closeOnClick: true,
       pauseOnHover: false,
       draggable: false,
       progress: undefined,
@@ -228,7 +228,7 @@ export default function RegisteredUserCard({
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
-      closeOnClick: false,
+      closeOnClick: true,
       pauseOnHover: false,
       draggable: false,
       progress: undefined,
@@ -237,7 +237,7 @@ export default function RegisteredUserCard({
       className: "mt-14 mr-6",
     });
 
-  const notifyError = () => {
+  const notifyError = () =>
     toast.error(`Die Genehmigung könnte nicht geändert werden`, {
       position: "top-right",
       autoClose: 3000,
@@ -248,9 +248,8 @@ export default function RegisteredUserCard({
       progress: undefined,
       theme: "light",
       transition: Bounce,
-      className: "mt-14 mr-6 w-80",
+      className: "mt-14 mr-6",
     });
-  };
 
   let dPath = "";
   let spanStyle = "";
@@ -273,19 +272,7 @@ export default function RegisteredUserCard({
 
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable={false}
-        pauseOnHover={false}
-        theme="light"
-        transition={Bounce}
-      />
+
       <div className="px-4 py-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
@@ -413,7 +400,9 @@ export default function RegisteredUserCard({
                 className="shadow-md border w-36 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:w-52"
                 onClick={() => modalRef.current.showModal()}
               >
+
                 <div className="flex flex-col gap-1">
+
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold uppercase text-gray-500">
                       Ablehnen
@@ -438,7 +427,9 @@ export default function RegisteredUserCard({
                 </div>
               </button>
               <dialog ref={modalRef} id="my_modal_1" className="modal">
+
                 <div className="modal-box">
+
                   <div className="flex items-center gap-2">
                     <h3 className="font-bold text-lg">Genehmigung Ablehnen</h3>
                     <span>
@@ -477,7 +468,7 @@ export default function RegisteredUserCard({
                           </label>
                           <textarea
                             className="mb-4 w-full resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-full"
-                            placeholder="Geben Sie eine Begrundung ein..."
+                            placeholder="Gib eine Begründung ein..."
                             value={declineReason}
                             onChange={(e) => setDeclineReason(e.target.value)}
                           />
@@ -536,7 +527,7 @@ export default function RegisteredUserCard({
                 <dialog ref={modalRef} id="my_modal_1" className="modal">
                   <div className="modal-box">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-lg">Genehmigung Ändern</h3>
+                      <h3 className="font-bold text-lg">Genehmigung ändern</h3>
                       <span>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -573,11 +564,11 @@ export default function RegisteredUserCard({
                                 htmlFor="description"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                               >
-                                Begrundung:
+                                Begründung:
                               </label>
                               <textarea
                                 className="mb-4 mr-12 resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Geben Sie eine Begrundung ein..."
+                                placeholder="Gib eine Begründung ein..."
                                 value={declineReason}
                                 onChange={(e) =>
                                   setDeclineReason(e.target.value)
@@ -593,7 +584,7 @@ export default function RegisteredUserCard({
                                   className="peer sr-only"
                                   value="abgelehnt"
                                 />
-                                In "Abgelehnt" ändern
+                                Zu "abgelehnt" ändern
                               </label>
 
                               <button className="btn w-28">Abbrechen</button>

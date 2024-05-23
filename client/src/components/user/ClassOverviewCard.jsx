@@ -71,7 +71,7 @@ export default function ClassesOverviewCard({ activity }) {
             {activity.registeredClassID?.title}
           </h3>
           <div className="flex justify-center mt-2 mb-1">
-            <p>Ziel Gruppe</p>
+            <p>Zielgruppe</p>
           </div>
           <div className="mt-4 flex justify-center">
             {activity.registeredClassID?.department.map((dept, index) => (

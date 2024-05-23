@@ -30,7 +30,7 @@ export default function Login() {
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-md font-bold leading-tight tracking-tight text-gray-900 md:text-xl dark:text-white">
-                Melde dich bei deinem Konto an
+                Melde dich hier mit deinem Konto an:
               </h1>
               <form
                 className="space-y-4 md:space-y-6"
@@ -99,10 +99,10 @@ export default function Login() {
                         </svg>
                       </div>
                       <div>
-                        <p className="font-bold mb-6">Kennwort Vergessen?</p>
+                        <p className="font-bold mb-6">Kennwort vergessen?</p>
                         <p className="text-sm mb-6">
                           Um dein Kennwort zurückzusetzen, wende dich bitte an
-                          deine Training- oder Personalabteilung
+                          deine Trainings- oder Personalabteilung.
                         </p>
                       </div>
                     </div>
@@ -138,10 +138,12 @@ export default function Login() {
                     role="alert"
                   >
                     <span className="block sm:inline">
-                      Falsche Kürzel und/oder Kennwort
+                      Falsches Kürzel und/oder Kennwort.
                     </span>
                     <br />
-                    <span className="block sm:inline">Bitte erneut versuchen</span>
+                    <span className="block sm:inline">
+                      Bitte erneut versuchen.
+                    </span>
                   </div>
                   <div className="modal-action flex justify-center">
                     <form method="dialog" className="flex gap-2">

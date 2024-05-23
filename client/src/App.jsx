@@ -17,6 +17,7 @@ import UpdateUser from "./components/administration/UpdateUser";
 import EditClass from "./components/administration/EditClass";
 import Report from "./components/administration/Report";
 import AuthorizeNonUser from "./components/AuthorizeNonUser";
+import { Bounce, ToastContainer } from "react-toastify";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
@@ -24,7 +25,19 @@ function App() {
   return (
     <>
       <Navbar />
-
+      <ToastContainer
+                    position="top-right"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick={false}
+                    rtl={false}
+                    pauseOnFocusLoss={false}
+                    draggable={false}
+                    pauseOnHover={false}
+                    theme="light"
+                    transition={Bounce}
+                  />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

@@ -171,7 +171,7 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     text: "Training Academy - Rent Group München",
     html: `${user.firstName + " " + user.lastName} hat sich für die Schulung "${
       registeredClass.title
-    }" angemeldet! <br/ ><br /> Zum Genehmigungsprozes: http://localhost:5173/classInformation/${activity_id}`,
+    }" angemeldet! <br/ ><br /> Zum Genehmigungsprozess: http://localhost:5173/classInformation/${activity_id}`,
   };
 
   const sendMail = async (transporter, mailOptions) => {

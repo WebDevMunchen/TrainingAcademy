@@ -42,7 +42,7 @@ export default function ClassScheduleCard({ activity }) {
 
   const currentTime = new Date();
   const oneDayBeforeActivity = new Date(
-    activityDate.getTime() - 24 * 60 * 60 * 1000
+    activityDate.getTime() - 2 * 24 * 60 * 60 * 1000
   );
 
   const activityDatePassed = currentTime > activityDate;
@@ -88,7 +88,7 @@ export default function ClassScheduleCard({ activity }) {
             )}
           </p>
           <div className="flex justify-center mt-2 mb-1">
-            <p>Ziel Gruppe</p>
+            <p>Zielgruppe</p>
           </div>
           <div className="flex justify-center gap-2">
             {activity.department.map((image, index) => {
@@ -132,7 +132,7 @@ export default function ClassScheduleCard({ activity }) {
                 <span className="font-bold">Location:</span> {activity.location}
               </p>
               <p className="mt-4 text-base text-gray-600">
-                <span className="font-bold">Lehrer:</span> {activity.teacher}
+                <span className="font-bold">Referent:</span> {activity.teacher}
               </p>
             </div>
           </div>

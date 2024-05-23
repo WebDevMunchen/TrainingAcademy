@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { updatePBC } from "../../utils/updatePBC";
 import { useForm } from "react-hook-form";
-import { Bounce, ToastContainer, toast } from "react-toastify";
+import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function UserInfoCard() {
@@ -116,19 +116,6 @@ export default function UserInfoCard() {
       ) : (
         <div className="bg-gray-50/50 flex">
           <SideMenu />
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick={false}
-            rtl={false}
-            pauseOnFocusLoss={false}
-            draggable={false}
-            pauseOnHover={false}
-            theme="light"
-            transition={Bounce}
-          />
           <div className="mx-auto w-9/12">
             <div className="p-4 bg-white shadow mt-2 lg:mt-6">
               <div className="hidden lg:grid grid-cols-3 md:grid-cols-3">
@@ -209,7 +196,7 @@ export default function UserInfoCard() {
                 <p className="mt-8 text-gray-600">
                   <span className="font-medium">Abteilung:</span>{" "}
                   {userInfomation.department} -{" "}
-                  <span className="font-medium">Role: </span>
+                  <span className="font-medium">Rolle: </span>
                   {userInfomation.role.charAt(0).toUpperCase() +
                     userInfomation.role.slice(1)}
                 </p>
@@ -279,7 +266,7 @@ export default function UserInfoCard() {
               </div>
               <div className="mt-6 flex flex-col min-h-96">
                 <div className="mb-4 flex justify-center text-xl font-medium">
-                  Schulungsverlauf
+                Schulungshistorie
                 </div>
                 <div className="h-[calc(38vh-32px)] overflow-x-scroll">
                   <table className="w-full min-w-[640px] table-auto">
@@ -292,7 +279,7 @@ export default function UserInfoCard() {
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
                           <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
-                            Zeilgruppe
+                            Zielgruppe
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
@@ -370,11 +357,39 @@ export default function UserInfoCard() {
                             </td>
 
                             <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
-                              {activity.status}
+                              <span
+                                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+          ${
+            activity
+              ? activity.status === "genehmigt"
+                ? "bg-green-100 text-green-800"
+                : activity.status === "ausstehend"
+                ? "bg-orange-100 text-orange-800"
+                : "bg-red-200 text-red-700"
+              : ""
+          }`}
+                              >
+                                {activity ? activity.status : "Not Registered"}
+                              </span>
                             </td>
 
                             <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
-                              {activity.statusAttended}
+                              <span
+                                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+          ${
+            activity
+              ? activity.statusAttended === "teilgenommen"
+                ? "bg-green-100 text-green-800"
+                : activity.statusAttended === "in Prüfung"
+                ? "bg-orange-100 text-orange-800"
+                : "bg-red-200 text-red-700"
+              : ""
+          }`}
+                              >
+                                {activity
+                                  ? activity.statusAttended
+                                  : "Not Registered"}
+                              </span>
                             </td>
                           </tr>
                         );

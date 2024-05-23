@@ -89,7 +89,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex gap-3 items-center border-t border-blue-gray-50 p-4">
                   <p className="block antialiased font-sans text-base leading-relaxed font-semibold text-gray-400">
-                    Neue Schulung Erstellen
+                    Neue Schulung erstellen
                   </p>
                   <NavLink to={"/admin/createClass"}>
                     <svg
@@ -129,7 +129,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex gap-3 items-center border-t border-blue-gray-50 p-4">
                   <p className="block antialiased font-sans text-base leading-relaxed font-semibold text-gray-400">
-                    Neuen User Registrieren
+                    Neuen User registrieren
                   </p>
                   <NavLink to={"/admin/register"}>
                     <svg
@@ -213,7 +213,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex gap-3 items-center border-t border-blue-gray-50 p-4">
                   <p className="block antialiased font-sans text-base leading-relaxed font-semibold text-gray-400">
-                    Zur Schulungs Übersicht
+                    Zur Schulungsübersicht
                   </p>
                   <NavLink to={"/classes"}>
                     <svg
