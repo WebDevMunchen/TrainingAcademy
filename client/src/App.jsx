@@ -12,29 +12,59 @@ import Dashboard from "./components/administration/Dashboard";
 import UserList from "./components/administration/UserList";
 import ClassesOverviewDashboard from "./components/administration/ClassesOverviewDashboard";
 import CreateClass from "./components/administration/CreateClass";
+import UserInfoCard from "./components/administration/UserInfoCard";
+import UpdateUser from "./components/administration/UpdateUser";
+import EditClass from "./components/administration/EditClass";
+import Report from "./components/administration/Report";
+import AuthorizeNonUser from "./components/AuthorizeNonUser";
+import { Bounce, ToastContainer } from "react-toastify";
 
 function App() {
+  const allowedRoles = ["admin", "teacher", "ASP"];
+
   return (
     <>
       <Navbar />
-
+      <ToastContainer
+                    position="top-right"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick={false}
+                    rtl={false}
+                    pauseOnFocusLoss={false}
+                    draggable={false}
+                    pauseOnHover={false}
+                    theme="light"
+                    transition={Bounce}
+                  />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
 
         <Route path="/" element={<Protected />}>
-          <Route path="/:id" element={<SingleClassDetails />} />
           <Route path="/classes" element={<ClassesSchedule />} />
           <Route path="/classesOverview" element={<ClassesOverview />} />
+
+          <Route
+            path="/classInformation"
+            element={<AuthorizeNonUser roles={allowedRoles} />}
+          >
+            <Route path=":id" element={<SingleClassDetails />} />
+          </Route>
           <Route path="/admin" element={<Authorize role="admin" />}>
             <Route path="register" element={<Register />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="users" element={<UserList />} />
+            <Route path="userProfile/:id" element={<UserInfoCard />} />
+            <Route path="userProfile/update/:id" element={<UpdateUser />} />
             <Route
               path="classesOverview"
               element={<ClassesOverviewDashboard />}
             />
             <Route path="createClass" element={<CreateClass />} />
+            <Route path="editClass/:id" element={<EditClass />} />
+            <Route path="report/:id" element={<Report />} />
           </Route>
         </Route>
       </Routes>

@@ -9,7 +9,7 @@ export default function SideMenu() {
 
   return (
     <>
-      <aside className="bg-gradient-to-br from-gray-800 to-gray-900 -translate-x-80 inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0">
+      <aside className="hidden lg:inline bg-gradient-to-br from-gray-800 to-gray-900 -translate-x-80 inset-0 z-50 my-4 ml-4 h-[calc(93vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0">
         <div className="relative border-b border-white/20">
           <a
             className="flex items-center justify-center gap-4 pt-6 pb-4 px-8"
@@ -19,7 +19,10 @@ export default function SideMenu() {
               Training Academy
             </h6>
           </a>
-          <a className="flex items-center justify-center gap-4 px-8 mb-4" href="#/">
+          <a
+            className="flex items-center justify-center gap-4 px-8 mb-4"
+            href="#/"
+          >
             <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-white">
               Rent Group | München
             </h6>
@@ -107,7 +110,7 @@ export default function SideMenu() {
                     ></path>
                   </svg>
                   <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">
-                    Benutzer Liste
+                  Benutzerübersicht
                   </p>
                 </button>
               </NavLink>
@@ -137,7 +140,7 @@ export default function SideMenu() {
                     <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z"></path>
                   </svg>
                   <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">
-                    Benutzer Registrieren
+                    Benutzerregistrierung
                   </p>
                 </button>
               </NavLink>
@@ -171,7 +174,7 @@ export default function SideMenu() {
                     ></path>
                   </svg>
                   <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">
-                    Schulungen
+                    Schulungsübericht
                   </p>
                 </button>
               </NavLink>
@@ -207,7 +210,7 @@ export default function SideMenu() {
                   </svg>
 
                   <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">
-                    Neue Schulung erstellen
+                    Neue Schulung
                   </p>
                 </button>
               </NavLink>

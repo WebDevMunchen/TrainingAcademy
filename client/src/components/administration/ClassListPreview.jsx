@@ -1,6 +1,21 @@
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 export default function ClassListPreview({ activity }) {
+  const [ausstehendCount, setAusstehendCount] = useState(0);
+
+  useEffect(() => {
+    const ausstehendUsers = activity.registeredUsers.filter((user) => {
+      return user.classesRegistered.some((classInfo) => {
+        return (
+          classInfo.registeredClassID === activity._id &&
+          classInfo.status === "ausstehend"
+        );
+      });
+    });
+    setAusstehendCount(ausstehendUsers.length);
+  }, [activity]);
+
   const dateString = activity?.date;
   const date = new Date(dateString);
 
@@ -21,9 +36,13 @@ export default function ClassListPreview({ activity }) {
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
-        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
-          {activity.department}
-        </p>
+        <div className="flex">
+          {activity.department.map((image, index) => {
+            return (
+              <img key={index} src={image} alt="logo" className="w-12 h-12" />
+            );
+          })}
+        </div>
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
@@ -38,30 +57,53 @@ export default function ClassListPreview({ activity }) {
         </p>
       </td>
 
+      <td className="py-3 px-5 border-b border-blue-gray-50">
+        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+          {activity.time}
+        </p>
+        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+          {`(${activity.duration} min)`}
+        </p>
+      </td>
+
+      <td className="py-3 px-5 border-b border-blue-gray-50">
+        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+          {ausstehendCount}
+        </p>
+      </td>
+
       <td className="py-3 px-5 border-b border-blue-gray-50 flex justify-center">
-        <div className="w-10/12">
-          <p className="antialiased font-sans mb-1 block text-xs font-medium text-blue-gray-600">
-            {activity.registeredUsers.length + "/" + activity.capacity}
-          </p>
-          <div className="flex flex-start bg-blue-gray-50 overflow-hidden w-full rounded-sm font-sans text-xs font-medium h-1">
-            <div
-              className="flex justify-center items-center h-full bg-gradient-to-tr from-blue-600 to-blue-400 text-white"
-              style={{
-                width: `${
-                  (activity.registeredUsers.length / activity.capacity) * 100
-                }%`,
-              }}
-            ></div>
-          </div>
+        <div
+          className="radial-progress bg-gray-200 text-cyan-600 mx-8"
+          style={{
+            "--value": (activity.usedCapacity / activity.capacity) * 100,
+          }}
+          role="progressbar"
+        >
+          <span className="text-neutral-800 font-bold">
+            {activity.usedCapacity + "/" + activity.capacity}
+          </span>
         </div>
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
         <NavLink
-          to={`/${activity._id}`}
-          className="block antialiased font-sans text-xs font-medium text-blue-600 text-center"
+          to={`/classInformation/${activity._id}`}
+          className="mb-2 block antialiased font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
         >
           Details
+        </NavLink>
+        <NavLink
+          to={`/admin/editClass/${activity._id}`}
+          className="mb-2 block antialiased font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
+        >
+          Bearbeiten
+        </NavLink>
+        <NavLink
+          to={`/admin/report/${activity._id}`}
+          className="block antialiased font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
+        >
+          Bericht
         </NavLink>
       </td>
     </tr>
