@@ -52,7 +52,7 @@ export default function ClassScheduleCard({ activity }) {
             <h3 className="hidden lg:flex justify-center text-lg font-semibold text-black">
               {activity.title}
             </h3>
-            <h3 className="flex justify-center mx-auto text-lg font-semibold text-black lg:hidden">
+            <h3 className="flex justify-center mx-auto text-center mb-2 text-lg font-semibold text-black lg:hidden">
               {activity.title}
             </h3>
             <p className="hidden lg:inline font-semibold">

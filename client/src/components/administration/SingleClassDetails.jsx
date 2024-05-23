@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import RegisterdUserCard from "./RegisteredUserCard";
+import { AuthContext } from "../../context/AuthProvider";
 
 export default function SingleClassDetails() {
+  const { user } = useContext(AuthContext);
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -22,10 +25,12 @@ export default function SingleClassDetails() {
   const date = new Date(dateString);
 
   const day = date.getDate();
+  const dayPrior = date.getDate() - 1;
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
 
   const formattedDate = `${day}/${month}/${year}`;
+  const formatedDateprior = `${dayPrior}/${month}/${year}`;
   return (
     <>
       {!activity ? (
@@ -47,69 +52,98 @@ export default function SingleClassDetails() {
                 <div className=" absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
                 <div className="py-2 relative  ">
                   <div className="hidden lg:flex justify-between">
-                    <div className="flex text-right mt-1 mr-16">
-                      <button
-                        onClick={() => navigate(-1)}
-                        className="flex items-center text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-                      >
-                        Zurück
-                      </button>
-                    </div>
+                    {user.role === "admin" ? (
+                      <div className="flex text-right mt-1 mr-12">
+                        <NavLink
+                          to={`/admin/editClass/${activity._id}`}
+                          className="flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                        >
+                          Bearbeiten
+                        </NavLink>
+                        <button
+                          onClick={() => navigate("/classes")}
+                          className="ml-2 flex items-center text-white  h-[40px] px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                        >
+                          Überischt
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex text-right mt-1 mr-40">
+                        <button
+                          onClick={() => navigate("/classes")}
+                          className="ml-2 flex items-center text-white  h-[40px]  px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                        >
+                          Überischt
+                        </button>
+                      </div>
+                    )}
                     <h3 className="flex justify-center text-lg font-semibold text-black">
                       {activity.title}
                     </h3>
-                    <p className="font-semibold flex items-center">
-                      {activity.capacity - activity.usedCapacity === 0 ? (
-                        <span className="shrink-0 rounded-full bg-red-500 px-3 font-mono text-md font-medium tracking-tight text-white">
-                          Class Voll
-                        </span>
-                      ) : (
-                        <>
-                          <span className="mr-2">Freie Plätze:</span>
-                          <span className="shrink-0 rounded-full bg-green-500 px-3 font-mono text-md font-medium tracking-tight text-white">
-                            {activity.capacity - activity.usedCapacity}
+                    <div className="flex flex-col">
+                      <div>
+                        <p className="font-semibold">
+                          Registrierung endet:{" "}
+                          <span className="font-normal">
+                            {formatedDateprior} um {activity.time}
                           </span>
-                        </>
-                      )}
-                      <button
-                        className="ml-3 transition-transform duration-300 transform hover:scale-150"
-                        onClick={() => window.location.reload()}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="w-6 h-6"
-                        >
-                          <path
-                            fill="#3d94ff"
-                            fillRule="evenodd"
-                            d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </p>
+                        </p>
+                      </div>
+                      <div>
+                        <p className="font-semibold flex items-center ml-[61px] mt-2">
+                          {activity.capacity - activity.usedCapacity === 0 ? (
+                            <span className="shrink-0 rounded-full bg-red-500 px-3 font-mono text-md font-medium tracking-tight text-white">
+                              Class Voll
+                            </span>
+                          ) : (
+                            <>
+                              <span className="mr-2">Freie Plätze:</span>
+                              <span className="shrink-0 rounded-full bg-green-500 px-3 font-mono text-md font-medium tracking-tight text-white">
+                                {activity.capacity - activity.usedCapacity}
+                              </span>
+                            </>
+                          )}
+                          <button
+                            className="ml-3 transition-transform duration-300 transform hover:scale-150"
+                            onClick={() => window.location.reload()}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                              className="w-6 h-6"
+                            >
+                              <path
+                                fill="#3d94ff"
+                                fillRule="evenodd"
+                                d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </button>
+                        </p>
+                      </div>
+                    </div>
                   </div>
                   <div className="flex justify-between lg:hidden">
-                  <button
-                        className="ml-3 transition-transform duration-300 transform hover:scale-150"
-                        onClick={() => window.location.reload()}
+                    <button
+                      className="ml-3 transition-transform duration-300 transform hover:scale-150"
+                      onClick={() => window.location.reload()}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="w-6 h-6"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="w-6 h-6"
-                        >
-                          <path
-                            fill="#3d94ff"
-                            fillRule="evenodd"
-                            d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
+                        <path
+                          fill="#3d94ff"
+                          fillRule="evenodd"
+                          d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
                     <p className="font-semibold flex items-center">
                       {activity.capacity - activity.usedCapacity === 0 ? (
                         <span className="shrink-0 rounded-full bg-red-500 px-3 font-mono text-md font-medium tracking-tight text-white">
@@ -123,13 +157,11 @@ export default function SingleClassDetails() {
                           </span>
                         </>
                       )}
-
                     </p>
-
                   </div>
                   <h3 className="flex justify-center mt-2 text-lg font-semibold text-black lg:hidden">
-                      {activity.title}
-                    </h3>
+                    {activity.title}
+                  </h3>
                   <div className="flex justify-center mt-2 mb-1">
                     <p>Ziel Gruppe</p>
                   </div>

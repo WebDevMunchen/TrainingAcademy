@@ -72,7 +72,6 @@ export default function EditClass() {
     return `${year}-${month}-${day}`;
   };
   
-  // Assuming activityInformation.date is "2024-05-30T00:00:00.000Z"
   const formattedDate = formatDate(activityInformation?.date);
 
   return (
@@ -80,8 +79,8 @@ export default function EditClass() {
     {!activityInformation ? <p>Loading...</p> :
       <div className="bg-gray-50/50 flex">
         <SideMenu />
-        <div className="flex flex-col items-center px-6 py-8 lg:py-10 mx-auto w-10/12">
-          <div className="bg-white rounded-md shadow w-6/12">
+        <div className="flex mt-4 flex-col items-center w-11/12 lg:py-10 mx-auto lg:mt-0 lg:w-5/12">
+          <div className="bg-white rounded-md shadow w-11/12 lg:6/12">
             <div className="p-6 space-y-4 md:space-y-4 sm:p-6">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 "{activityInformation.title}" bearbeiten:
@@ -121,7 +120,7 @@ export default function EditClass() {
                   />
                 </div>
 
-                <div className="flex justify-between">
+                <div className="flex flex-col lg:flex-row lg:justify-between">
                   <div>
                     <label
                       htmlFor="month"
@@ -175,12 +174,13 @@ export default function EditClass() {
                       type="time"
                       {...register("time", { required: true })}
                       className="ml-2 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
                       defaultValue={activityInformation.time}
 
                    />
                   </div>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex flex-col lg:flex-row justify-between">
                   <div>
                     <label
                       htmlFor="duration"
@@ -256,7 +256,7 @@ export default function EditClass() {
                 >
                   Zielgruppe:
                 </label>
-                <div className="grid grid-cols-4 grid-rows-3">
+                <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-4 lg:grid-rows-3">
                     {[
                       { value: "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/hczkglpvaybhguywjgku.png", label: "Alle" },
                       { value: "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ng4emaukxn9adrxpnvlu.png", label: "Vertrieb" },

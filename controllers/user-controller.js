@@ -171,19 +171,19 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     text: "Training Academy - Rent Group München",
     html: `${user.firstName + " " + user.lastName} hat sich für die Schulung "${
       registeredClass.title
-    }" angemeldet! <br/ ><br /> Zur Genehmigungsprozes: http://localhost:5173/${activity_id}`,
+    }" angemeldet! <br/ ><br /> Zur Genehmigungsprozes: http://localhost:5173/classInformation/${activity_id}`,
   };
 
-  // const sendMail = async(transporter, mailOptions) => {
-  //     try {
-  //       await transporter.sendMail(mailOptions)
-  //       console.log("Success")
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
+  const sendMail = async(transporter, mailOptions) => {
+      try {
+        await transporter.sendMail(mailOptions)
+        console.log("Success")
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
-  // sendMail(transporter, mailOptions)
+  sendMail(transporter, mailOptions)
 
   res.status(201).json(updatedUser);
 });
@@ -210,16 +210,31 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       return res.status(404).json({ error: "Class not found for this user" });
     }
 
-    // Check if activity capacity is equal to usedCapacity
     const activity = await ClassActivity.findById(classId);
+
+    if (!activity) {
+      return res.status(404).json({ error: "Class activity not found" });
+    }
+
+    // Compare the current date and time with the activity date and time
+    const currentDate = new Date();
+    const activityDate = new Date(activity.date);
+    const [activityHours, activityMinutes] = activity.time.split(':').map(Number);
+    activityDate.setHours(activityHours, activityMinutes, 0, 0);
+
+    const timeDifference = activityDate - currentDate;
+
+    if (timeDifference <= 24 * 60 * 60 * 1000) { // 24 hours in milliseconds
+      return res.status(400).json({ error: "Cannot update status within 24 hours before the activity start date and time" });
+    }
+
+    // Check if activity capacity is equal to usedCapacity
     if (
       activity.capacity === activity.usedCapacity &&
       (user.classesRegistered[classIndex].status === "abgelehnt" ||
         user.classesRegistered[classIndex].status === "ausstehend")
     ) {
-      return res
-        .status(400)
-        .json({ error: "Activity capacity is already full" });
+      return res.status(400).json({ error: "Activity capacity is already full" });
     }
 
     // Update the status and reason
@@ -241,6 +256,15 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       },
     });
 
+    let mailHtml;
+    if (newStatus === "abgelehnt") {
+      mailHtml = `Die Anfrage von ${user.firstName} ${user.lastName} für die Schulung "${activity.title}" wurde ${newStatus}! <br/><br/>Grund: ${reason}`;
+    } else if (newStatus === "genehmigt") {
+      mailHtml = `Die Anfrage von ${user.firstName} ${user.lastName} für die Schulung "${activity.title}" wurde ${newStatus}!`;
+    } else {
+      mailHtml = `Die Anfrage von ${user.firstName} ${user.lastName} für die Schulung "${activity.title}" wurde ${newStatus}!`;
+    }
+
     const mailOptions = {
       from: {
         name: "Antwort ausstehende Anfrage",
@@ -249,20 +273,19 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       to: `${user.inbox}`,
       subject: "Training Academy - Rent Group München",
       text: "Training Academy - Rent Group München",
-      html: `Deine Anfrage für die Schulung wurde ${newStatus}! <br/ ><br />
-            Grund: ´${reason}`,
+      html: mailHtml,
     };
 
-    // const sendMail = async(transporter, mailOptions) => {
-    //     try {
-    //       await transporter.sendMail(mailOptions)
-    //       console.log("Success")
-    //     } catch (error) {
-    //       console.log(error)
-    //     }
-    //   }
+    const sendMail = async(transporter, mailOptions) => {
+        try {
+          await transporter.sendMail(mailOptions)
+          console.log("Success")
+        } catch (error) {
+          console.log(error)
+        }
+      }
 
-    // sendMail(transporter, mailOptions)
+    sendMail(transporter, mailOptions)
 
     res.status(200).json({ message: "Class status updated successfully" });
   } catch (error) {

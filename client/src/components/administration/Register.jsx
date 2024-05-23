@@ -21,9 +21,14 @@ export default function Register() {
 
   const aspLogistik = import.meta.env.VITE_APP_LOGISTIK;
   const aspVertrieb = import.meta.env.VITE_APP_VERTRIEB;
+  const aspIT = import.meta.env.VITE_APP_IT;
+  const aspFuhrpark = import.meta.env.VITE_APP_FUHRPARK;
+  const aspBuchhaltung = import.meta.env.VITE_APP_BUCHHALTUNG;
+  const aspEinkauf = import.meta.env.VITE_APP_EINKAUF;
+  const aspDesign = import.meta.env.VITE_APP_DESIGN;
+  const aspProjektmanagement = import.meta.env.VITE_APP_PROJEKTMANAGEMENT;
+  const aspOfficemanagement = import.meta.env.VITE_APP_OFFICEMANAGEMENT;
   const aspHR = import.meta.env.VITE_APP_HR;
-
-
 
   return (
     <>
@@ -162,7 +167,15 @@ export default function Register() {
                     >
                       <option value={aspLogistik}>Logistik</option>
                       <option value={aspVertrieb}>Vertrieb</option>
-                      <option value={aspHR}>HR</option>
+                      <option value={aspIT}>IT & Services</option>
+                      <option value={aspFuhrpark}>Fuhrpark</option>
+                      <option value={aspHR}>HR & Training</option>
+                      <option value={aspBuchhaltung}>Buchhaltung</option>
+                      <option value={aspEinkauf}>Einkauf & Anmietung</option>
+                      <option value={aspDesign}>Design & Planung</option>
+                      <option value={aspProjektmanagement}>Projektmanagement</option>
+                      <option value={aspOfficemanagement}>Office Management</option>
+
                     </select>
                   </div>
                 </div>

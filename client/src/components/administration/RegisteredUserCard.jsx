@@ -238,7 +238,7 @@ export default function RegisteredUserCard({
     });
 
   const notifyError = () => {
-    toast.error(`Fehler. Die Genehmigung wurde nicht geändert`, {
+    toast.error(`Die Genehmigung könnte nicht geändert werden`, {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
