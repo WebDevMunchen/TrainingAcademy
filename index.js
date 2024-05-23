@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/user", userRouter);
-app.use("/classActivity", classActivityRouter)
+app.use("/classActivity", classActivityRouter);
 
 app.use(errorHandler);
 

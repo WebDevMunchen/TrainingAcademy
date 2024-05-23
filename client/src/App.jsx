@@ -19,7 +19,6 @@ import Report from "./components/administration/Report";
 import AuthorizeNonUser from "./components/AuthorizeNonUser";
 
 function App() {
-
   const allowedRoles = ["admin", "teacher", "ASP"];
 
   return (

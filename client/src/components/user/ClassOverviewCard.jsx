@@ -40,7 +40,6 @@ export default function ClassesOverviewCard({ activity }) {
               strokeWidth={1.5}
               stroke="currentColor"
               className="w-6 h-6 mr-2"
-
             >
               <path strokeLinecap="round" strokeLinejoin="round" d={dPath} />
             </svg>
@@ -102,7 +101,7 @@ export default function ClassesOverviewCard({ activity }) {
                 {activity.registeredClassID?.time}
               </p>
               <p className="mt-4 text-base text-gray-600 lg:hidden">
-                <span className="font-bold">Dauer:</span>{" "}<br />
+                <span className="font-bold">Dauer:</span> <br />
                 {activity.registeredClassID?.duration + " Min."}
               </p>
               <p className="hidden lg:inline mt-4 text-base text-gray-600">
@@ -121,8 +120,8 @@ export default function ClassesOverviewCard({ activity }) {
               </p>
             </div>
           </div>
-          </div>
         </div>
+      </div>
     </>
   );
 }

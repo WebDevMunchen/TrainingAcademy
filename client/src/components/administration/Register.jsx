@@ -5,7 +5,6 @@ import SideMenu from "./SideMenu";
 import { Bounce, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 export default function Register() {
   const { signup } = useContext(AuthContext);
 
@@ -35,18 +34,18 @@ export default function Register() {
       <div className="bg-gray-50/50 flex">
         <SideMenu />
         <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable={false}
-        pauseOnHover={false}
-        theme="light"
-        transition={Bounce}
-      />
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable={false}
+          pauseOnHover={false}
+          theme="light"
+          transition={Bounce}
+        />
         <div className="flex flex-col items-center px-0 py-8 lg:py-12 lg:px-6 mx-auto w-10/12">
           <div className="bg-white rounded-md shadow w-full lg:w-4/12">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -173,9 +172,12 @@ export default function Register() {
                       <option value={aspBuchhaltung}>Buchhaltung</option>
                       <option value={aspEinkauf}>Einkauf & Anmietung</option>
                       <option value={aspDesign}>Design & Planung</option>
-                      <option value={aspProjektmanagement}>Projektmanagement</option>
-                      <option value={aspOfficemanagement}>Office Management</option>
-
+                      <option value={aspProjektmanagement}>
+                        Projektmanagement
+                      </option>
+                      <option value={aspOfficemanagement}>
+                        Office Management
+                      </option>
                     </select>
                   </div>
                 </div>

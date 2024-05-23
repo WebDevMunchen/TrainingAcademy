@@ -29,8 +29,8 @@ export default function ClassesOverview() {
                   <p>Loading</p>
                 ) : (
                   user.classesRegistered
-                    .slice() // create a copy to avoid mutating original array
-                    .sort(compareDates) // Sort the classes by date
+                    .slice()
+                    .sort(compareDates)
                     .map((activity) => {
                       return (
                         <ClassesOverviewCard

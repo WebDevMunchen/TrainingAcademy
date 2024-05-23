@@ -19,8 +19,7 @@ export default function UserInfoCard() {
       .then((response) => {
         setUserInformation(response.data);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   }, []);
 
   const {
@@ -38,8 +37,7 @@ export default function UserInfoCard() {
         document.getElementById("updatePBC").close();
         notifySuccess();
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const monthsInGerman = [
@@ -228,11 +226,11 @@ export default function UserInfoCard() {
                       Kennwort zurücksetzen
                     </button>
                   </div>
-
                 </div>
                 <div>
-                <div className="mt-1 flex items-center justify-center lg:hidden">
-                    <NavLink to={`/admin/userProfile/update/${userInfomation._id}`}
+                  <div className="mt-1 flex items-center justify-center lg:hidden">
+                    <NavLink
+                      to={`/admin/userProfile/update/${userInfomation._id}`}
                       className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125"
                     >
                       Benutzerinformationen bearbeiten
@@ -325,66 +323,62 @@ export default function UserInfoCard() {
                       </tr>
                     </thead>
                     <tbody>
-                      {userInfomation.classesRegistered.map(
-                        (activity) => {
-                          return (
-                              <tr key={activity._id}>
-                                <td className="py-3 px-5 border-b border-blue-gray-50">
-                                  <div className="flex items-center gap-4">
-                                    <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-bold">
-                                      {activity.registeredClassID.title}
-                                    </p>
-                                  </div>
-                                </td>
+                      {userInfomation.classesRegistered.map((activity) => {
+                        return (
+                          <tr key={activity._id}>
+                            <td className="py-3 px-5 border-b border-blue-gray-50">
+                              <div className="flex items-center gap-4">
+                                <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-bold">
+                                  {activity.registeredClassID.title}
+                                </p>
+                              </div>
+                            </td>
 
-                                <td className="py-3 px-5 border-b border-blue-gray-50">
-                                  <div className="flex">
-                                    {activity.registeredClassID.department.map(
-                                      (image, index) => {
-                                        return (
-                                          <img
-                                            key={index}
-                                            src={image}
-                                            alt="logo"
-                                            className="w-12 h-12"
-                                          />
-                                        );
-                                      }
-                                    )}
-                                  </div>
-                                </td>
+                            <td className="py-3 px-5 border-b border-blue-gray-50">
+                              <div className="flex">
+                                {activity.registeredClassID.department.map(
+                                  (image, index) => {
+                                    return (
+                                      <img
+                                        key={index}
+                                        src={image}
+                                        alt="logo"
+                                        className="w-12 h-12"
+                                      />
+                                    );
+                                  }
+                                )}
+                              </div>
+                            </td>
 
-                                <td className="py-3 px-5 border-b border-blue-gray-50">
-                                  <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
-                                    {activity.registeredClassID.location}
-                                  </p>
-                                </td>
+                            <td className="py-3 px-5 border-b border-blue-gray-50">
+                              <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+                                {activity.registeredClassID.location}
+                              </p>
+                            </td>
 
-                                <td className="py-3 px-5 border-b border-blue-gray-50">
-                                  <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
-                                    {formatDate(
-                                      activity.registeredClassID.date
-                                    )}
-                                  </p>
-                                </td>
+                            <td className="py-3 px-5 border-b border-blue-gray-50">
+                              <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+                                {formatDate(activity.registeredClassID.date)}
+                              </p>
+                            </td>
 
-                                <td className="py-3 px-5 border-b border-blue-gray-50">
-                                  <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
-                                    {activity.registeredClassID.time}
-                                  </p>
-                                </td>
+                            <td className="py-3 px-5 border-b border-blue-gray-50">
+                              <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+                                {activity.registeredClassID.time}
+                              </p>
+                            </td>
 
-                                <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
-                                  {activity.status}
-                                </td>
+                            <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
+                              {activity.status}
+                            </td>
 
-                                <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
-                                  {activity.statusAttended}
-                                </td>
-                              </tr>
-                          );
-                        }
-                      )}
+                            <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
+                              {activity.statusAttended}
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>

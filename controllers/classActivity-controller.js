@@ -59,9 +59,11 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     month,
     time,
     teacher,
-  }
+  };
 
-  const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, { new: true });
+  const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, {
+    new: true,
+  });
 
   if (!activity) {
     throw new ErrorResponse(404, "Activity not found!");
@@ -74,13 +76,11 @@ const registerClass = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
   const { id: userID } = req.user;
 
-  // Check if the user is already registered for this class
   const classActivity = await ClassActivity.findById(id);
   if (classActivity.registeredUsers.includes(userID)) {
     throw new ErrorResponse(400, "User is already registered for this class");
   }
 
-  // If the user is not already registered, add them to the registered users array
   const registeredClass = await ClassActivity.findByIdAndUpdate(
     id,
     { $push: { registeredUsers: userID } },
@@ -95,18 +95,14 @@ const registerClass = asyncWrapper(async (req, res, next) => {
 const increaseClassCapacity = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
-  // Retrieve the class activity
   const classActivity = await ClassActivity.findById(id);
 
-  // Check if there is capacity available
   if (classActivity.usedCapacity >= classActivity.capacity) {
     throw new ErrorResponse(404, "Capacity reached!");
   }
 
-  // Increment usedCapacity
   classActivity.usedCapacity += 1;
 
-  // Save the updated class activity
   const updatedCapacity = await classActivity.save();
 
   res.status(201).json(updatedCapacity);
@@ -132,8 +128,8 @@ const getActivity = asyncWrapper(async (req, res, next) => {
 
   const activity = await ClassActivity.findById(id).populate("registeredUsers");
 
-  if(!activity) {
-    throw new ErrorResponse(404, "notfound")
+  if (!activity) {
+    throw new ErrorResponse(404, "notfound");
   }
 
   res.status(201).json(activity);
@@ -148,9 +144,9 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
       query.month = month;
     }
 
-    const allActivities = await ClassActivity.find(query).populate(
-      "registeredUsers"
-    ).sort({ date: -1, time: -1 }); // Sort by date in ascending order
+    const allActivities = await ClassActivity.find(query)
+      .populate("registeredUsers")
+      .sort({ date: -1, time: -1 }); 
 
     if (allActivities.length === 0) {
       return res.status(404).json({ message: "No activities found" });
@@ -163,7 +159,6 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
   }
 });
 
-
 module.exports = {
   createClassActivity,
   getAllActivities,
@@ -171,5 +166,5 @@ module.exports = {
   getActivity,
   increaseClassCapacity,
   decreaseClassCapacity,
-  editClassActivity
+  editClassActivity,
 };

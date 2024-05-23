@@ -77,7 +77,7 @@ const updateUser = asyncWrapper(async (req, res, next) => {
 });
 
 const updatePassword = asyncWrapper(async (req, res, next) => {
-  const {id} = req.params
+  const { id } = req.params;
 
   const { password } = req.body;
 
@@ -174,23 +174,23 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     }" angemeldet! <br/ ><br /> Zur Genehmigungsprozes: http://localhost:5173/classInformation/${activity_id}`,
   };
 
-  const sendMail = async(transporter, mailOptions) => {
-      try {
-        await transporter.sendMail(mailOptions)
-        console.log("Success")
-      } catch (error) {
-        console.log(error)
-      }
+  const sendMail = async (transporter, mailOptions) => {
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log("Success");
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-  sendMail(transporter, mailOptions)
+  sendMail(transporter, mailOptions);
 
   res.status(201).json(updatedUser);
 });
 
 const updateClassStatus = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const { classId, newStatus, reason } = req.body; // Capture the reason from the request body
+  const { classId, newStatus, reason } = req.body;
 
   try {
     const user = await User.findById(id);
@@ -216,31 +216,35 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       return res.status(404).json({ error: "Class activity not found" });
     }
 
-    // Compare the current date and time with the activity date and time
     const currentDate = new Date();
     const activityDate = new Date(activity.date);
-    const [activityHours, activityMinutes] = activity.time.split(':').map(Number);
+    const [activityHours, activityMinutes] = activity.time
+      .split(":")
+      .map(Number);
     activityDate.setHours(activityHours, activityMinutes, 0, 0);
 
     const timeDifference = activityDate - currentDate;
 
-    if (timeDifference <= 24 * 60 * 60 * 1000) { // 24 hours in milliseconds
-      return res.status(400).json({ error: "Cannot update status within 24 hours before the activity start date and time" });
+    if (timeDifference <= 24 * 60 * 60 * 1000) {
+      return res.status(400).json({
+        error:
+          "Cannot update status within 24 hours before the activity start date and time",
+      });
     }
 
-    // Check if activity capacity is equal to usedCapacity
     if (
       activity.capacity === activity.usedCapacity &&
       (user.classesRegistered[classIndex].status === "abgelehnt" ||
         user.classesRegistered[classIndex].status === "ausstehend")
     ) {
-      return res.status(400).json({ error: "Activity capacity is already full" });
+      return res
+        .status(400)
+        .json({ error: "Activity capacity is already full" });
     }
 
-    // Update the status and reason
     user.classesRegistered[classIndex].status = newStatus;
     if (newStatus === "abgelehnt") {
-      user.classesRegistered[classIndex].reason = reason; // Set the reason if status is "abgelehnt"
+      user.classesRegistered[classIndex].reason = reason;
     }
 
     await user.save();
@@ -276,16 +280,16 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       html: mailHtml,
     };
 
-    const sendMail = async(transporter, mailOptions) => {
-        try {
-          await transporter.sendMail(mailOptions)
-          console.log("Success")
-        } catch (error) {
-          console.log(error)
-        }
+    const sendMail = async (transporter, mailOptions) => {
+      try {
+        await transporter.sendMail(mailOptions);
+        console.log("Success");
+      } catch (error) {
+        console.log(error);
       }
+    };
 
-    sendMail(transporter, mailOptions)
+    sendMail(transporter, mailOptions);
 
     res.status(200).json({ message: "Class status updated successfully" });
   } catch (error) {
@@ -360,7 +364,6 @@ const login = asyncWrapper(async (req, res, next) => {
   const match = await bcrypt.compare(password, user.password);
 
   if (!match) {
-    // Send a 401 response for incorrect password
     return res.status(401).json({ error: "Incorrect password!" });
   }
 

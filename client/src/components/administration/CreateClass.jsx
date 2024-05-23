@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 export default function CreateClass() {
   const { setAllActivities } = useContext(AuthContext);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [currentMonth, setCurrentMonth] = useState("");
@@ -30,7 +30,7 @@ export default function CreateClass() {
       "dezember",
     ];
     setCurrentMonth(monthNames[date.getMonth()]);
-  }, [])
+  }, []);
 
   const {
     register,
@@ -56,14 +56,15 @@ export default function CreateClass() {
         withCredentials: true,
       })
       .then((response) => {
-        return axiosClient.get(`/classActivity/allActivities?month=${currentMonth}`);
+        return axiosClient.get(
+          `/classActivity/allActivities?month=${currentMonth}`
+        );
       })
       .then((activitiesResponse) => {
         setAllActivities(activitiesResponse.data);
-        navigate("/admin/dashboard")
+        navigate("/admin/dashboard");
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   return (
@@ -207,12 +208,9 @@ export default function CreateClass() {
                       className="ml-2 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
-
                 </div>
 
-                <div className="flex justify-start gap-16">
-
-                </div>
+                <div className="flex justify-start gap-16"></div>
                 <div>
                   <label
                     htmlFor="teacher"

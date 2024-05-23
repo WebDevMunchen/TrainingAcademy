@@ -5,24 +5,28 @@ import axiosClient from "../../utils/axiosClient";
 import { NavLink } from "react-router-dom";
 
 export default function ClassScheduleCard({ activity }) {
-  const { setUser, user, setAllActivities, currentMonth } = useContext(AuthContext);
+  const { setUser, user, setAllActivities, currentMonth } =
+    useContext(AuthContext);
   const { handleSubmit } = useForm();
 
   const onSubmit = () => {
     axiosClient
-      .put(`/classActivity/registerClass/${activity._id}`, { withCredentials: true })
+      .put(`/classActivity/registerClass/${activity._id}`, {
+        withCredentials: true,
+      })
       .then((response) => {
         return axiosClient.get("/user/profile");
       })
       .then((responseProfile) => {
         setUser(responseProfile.data);
-        return axiosClient.get(`/classActivity/allActivities?month=${currentMonth}`);
+        return axiosClient.get(
+          `/classActivity/allActivities?month=${currentMonth}`
+        );
       })
       .then((responseActivities) => {
         setAllActivities(responseActivities.data);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const dateString = activity.date;
@@ -37,10 +41,13 @@ export default function ClassScheduleCard({ activity }) {
   activityDate.setHours(activityTime[0], activityTime[1]);
 
   const currentTime = new Date();
-  const oneDayBeforeActivity = new Date(activityDate.getTime() - 24 * 60 * 60 * 1000);
+  const oneDayBeforeActivity = new Date(
+    activityDate.getTime() - 24 * 60 * 60 * 1000
+  );
 
   const activityDatePassed = currentTime > activityDate;
-  const oneDayPrior = currentTime > oneDayBeforeActivity && currentTime < activityDate;
+  const oneDayPrior =
+    currentTime > oneDayBeforeActivity && currentTime < activityDate;
 
   return (
     <>
@@ -67,26 +74,27 @@ export default function ClassScheduleCard({ activity }) {
                 </span>
               )}
             </p>
-
           </div>
           <p className="font-semibold flex justify-center gap-2 lg:hidden">
-              Freie Plätze:{" "}
-              {activity.capacity - activity.usedCapacity > 5 ? (
-                <span className="shrink-0 rounded-full bg-emerald-500 px-3 font-mono text-md font-medium tracking-tight text-white">
-                  {activity.capacity - activity.usedCapacity}
-                </span>
-              ) : (
-                <span className="shrink-0 rounded-full bg-red-500 px-3 font-mono text-md font-medium tracking-tight text-white">
-                  {activity.capacity - activity.usedCapacity}
-                </span>
-              )}
-            </p>
+            Freie Plätze:{" "}
+            {activity.capacity - activity.usedCapacity > 5 ? (
+              <span className="shrink-0 rounded-full bg-emerald-500 px-3 font-mono text-md font-medium tracking-tight text-white">
+                {activity.capacity - activity.usedCapacity}
+              </span>
+            ) : (
+              <span className="shrink-0 rounded-full bg-red-500 px-3 font-mono text-md font-medium tracking-tight text-white">
+                {activity.capacity - activity.usedCapacity}
+              </span>
+            )}
+          </p>
           <div className="flex justify-center mt-2 mb-1">
             <p>Ziel Gruppe</p>
           </div>
           <div className="flex justify-center gap-2">
             {activity.department.map((image, index) => {
-              return <img key={index} src={image} alt="logo" className="w-12 h-12" />;
+              return (
+                <img key={index} src={image} alt="logo" className="w-12 h-12" />
+              );
             })}
           </div>
           <p className="text-center lg:flex justify-center mt-4 text-base text-gray-600">
@@ -94,7 +102,7 @@ export default function ClassScheduleCard({ activity }) {
           </p>
           <div className="grid grid-cols-3 grid-rows-1 gap-2 text-center lg:gap-0 lg:text-left justify-items-center">
             <div className="flex flex-col">
-            <p className="mt-4 text-base text-gray-600 lg:hidden">
+              <p className="mt-4 text-base text-gray-600 lg:hidden">
                 <span className="font-bold">Kapazität:</span>{" "}
                 {activity.capacity + " Teilneh."}
               </p>
@@ -111,7 +119,7 @@ export default function ClassScheduleCard({ activity }) {
                 <span className="font-bold">Uhrzeit:</span> {activity.time}
               </p>
               <p className="mt-4 text-base text-gray-600 lg:hidden">
-                <span className="font-bold">Dauer:</span>{" "}<br />
+                <span className="font-bold">Dauer:</span> <br />
                 {activity.duration + " Min."}
               </p>
               <p className="hidden lg:inline mt-4 text-base text-gray-600">
@@ -138,16 +146,22 @@ export default function ClassScheduleCard({ activity }) {
                   <input
                     type="submit"
                     className={`bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition ${
-                      activity.registeredUsers.some((userObj) => userObj._id === user._id)
+                      activity.registeredUsers.some(
+                        (userObj) => userObj._id === user._id
+                      )
                         ? "cursor-not-allowed"
                         : "hover:shadow-lg hover:-translate-y-0.5"
                     }`}
                     value={
-                      activity.registeredUsers.some((userObj) => userObj._id === user._id)
+                      activity.registeredUsers.some(
+                        (userObj) => userObj._id === user._id
+                      )
                         ? "Bereits Angemeldet"
                         : "Anmelden"
                     }
-                    disabled={activity.registeredUsers.some((userObj) => userObj._id === user._id)}
+                    disabled={activity.registeredUsers.some(
+                      (userObj) => userObj._id === user._id
+                    )}
                   />
                 </form>
               ) : (
@@ -169,7 +183,9 @@ export default function ClassScheduleCard({ activity }) {
           </div>
 
           <div className="flex justify-center">
-            {(user.role === "ASP" || user.role === "admin" || user.role === "teacher") && (
+            {(user.role === "ASP" ||
+              user.role === "admin" ||
+              user.role === "teacher") && (
               <NavLink
                 to={`/classInformation/${activity._id}`}
                 className="w-fit bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-1/2 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
@@ -187,16 +203,22 @@ export default function ClassScheduleCard({ activity }) {
                   <input
                     type="submit"
                     className={`bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition ${
-                      activity.registeredUsers.some((userObj) => userObj._id === user._id)
+                      activity.registeredUsers.some(
+                        (userObj) => userObj._id === user._id
+                      )
                         ? "cursor-not-allowed"
                         : "hover:shadow-lg hover:-translate-y-0.5"
                     }`}
                     value={
-                      activity.registeredUsers.some((userObj) => userObj._id === user._id)
+                      activity.registeredUsers.some(
+                        (userObj) => userObj._id === user._id
+                      )
                         ? "Bereits Angemeldet"
                         : "Anmelden"
                     }
-                    disabled={activity.registeredUsers.some((userObj) => userObj._id === user._id)}
+                    disabled={activity.registeredUsers.some(
+                      (userObj) => userObj._id === user._id
+                    )}
                   />
                 </form>
               ) : (

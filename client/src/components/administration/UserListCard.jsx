@@ -5,10 +5,14 @@ export default function UserListCard({ user }) {
     <>
       <tr className="text-center">
         <td className="px-6 py-4 whitespace-nowrap">
-          <div className="text-sm font-medium text-gray-900">{user.firstName}</div>
+          <div className="text-sm font-medium text-gray-900">
+            {user.firstName}
+          </div>
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
-          <div className="text-sm font-medium text-gray-900">{user.lastName}</div>
+          <div className="text-sm font-medium text-gray-900">
+            {user.lastName}
+          </div>
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
           <span

@@ -29,5 +29,5 @@ const authorize = (role) => {
 
 module.exports = {
   authenticate,
-  authorize
+  authorize,
 };

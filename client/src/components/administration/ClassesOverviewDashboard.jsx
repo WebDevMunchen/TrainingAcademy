@@ -1,9 +1,7 @@
 import ClassesSchedule from "../user/ClassesSchedule";
 import SideMenu from "./SideMenu";
-// import ClassesSchedule from "../user/ClassesSchedule";
 
 export default function ClassesOverviewDashboard() {
-
   return (
     <>
       <div className="bg-gray-50/50 flex">

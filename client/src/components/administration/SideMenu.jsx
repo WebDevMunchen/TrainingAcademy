@@ -19,7 +19,10 @@ export default function SideMenu() {
               Training Academy
             </h6>
           </a>
-          <a className="flex items-center justify-center gap-4 px-8 mb-4" href="#/">
+          <a
+            className="flex items-center justify-center gap-4 px-8 mb-4"
+            href="#/"
+          >
             <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-white">
               Rent Group | München
             </h6>

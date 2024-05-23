@@ -21,7 +21,7 @@ export default function RegisteredUserCard({
   const [hideAttendedBtn, setHideAttendedBtn] = useState(false);
   const [submitedAttended, setSubmitedAttended] = useState(true);
 
-  const [declineReason, setDeclineReason] = useState(""); // State variable to store the reason for declining
+  const [declineReason, setDeclineReason] = useState("");
 
   const approve = (status) => {
     axiosClient
@@ -205,7 +205,7 @@ export default function RegisteredUserCard({
 
   const closeModal = () => {
     if (modalRef.current) {
-      modalRef.current.close(); // Close the modal
+      modalRef.current.close();
     }
   };
 
@@ -478,8 +478,8 @@ export default function RegisteredUserCard({
                           <textarea
                             className="mb-4 w-full resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-full"
                             placeholder="Geben Sie eine Begrundung ein..."
-                            value={declineReason} // Bind value to state variable
-                            onChange={(e) => setDeclineReason(e.target.value)} // Update state variable on change
+                            value={declineReason}
+                            onChange={(e) => setDeclineReason(e.target.value)}
                           />
                         </div>
                         <div className="flex justify-end gap-2">
@@ -493,7 +493,6 @@ export default function RegisteredUserCard({
                             />
                             Bestätigen
                           </label>
-                          {/* Conditionally render textarea if status is 'abgelehnt' */}
                           <button className="btn w-28">Abbrechen</button>
                         </div>
                       </div>
@@ -579,10 +578,10 @@ export default function RegisteredUserCard({
                               <textarea
                                 className="mb-4 mr-12 resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Geben Sie eine Begrundung ein..."
-                                value={declineReason} // Bind value to state variable
+                                value={declineReason}
                                 onChange={(e) =>
                                   setDeclineReason(e.target.value)
-                                } // Update state variable on change
+                                }
                               />
                             </div>
                             <div className="flex justify-end gap-2">
@@ -596,7 +595,7 @@ export default function RegisteredUserCard({
                                 />
                                 In "Abgelehnt" ändern
                               </label>
-                              {/* Conditionally render textarea if status is 'abgelehnt' */}
+
                               <button className="btn w-28">Abbrechen</button>
                             </div>
                           </div>

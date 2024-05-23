@@ -52,17 +52,17 @@ export default function ClassesSchedule() {
               <div className="grid grid-cols-1 gap-2 mt-12 sm:grid-cols-1 mt-2 w-80 lg:mt-2 lg:w-10/12 mx-auto">
                 {!allActivities ? (
                   <>
-                  <img
-                    className="mx-auto h-[calc(70vh-32px)] lg:hidden"
-                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715669996/symbols/freepik-export-20240514065734UGY2_wpm9md.png"
-                    alt="logo"
-                  />
-                  <img
-                  className="hidden lg:inline mx-auto h-[calc(85vh-32px)]"
-                  src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715669996/symbols/freepik-export-20240514065734UGY2_wpm9md.png"
-                  alt="logo"
-                />
-                </>
+                    <img
+                      className="mx-auto h-[calc(70vh-32px)] lg:hidden"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715669996/symbols/freepik-export-20240514065734UGY2_wpm9md.png"
+                      alt="logo"
+                    />
+                    <img
+                      className="hidden lg:inline mx-auto h-[calc(85vh-32px)]"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715669996/symbols/freepik-export-20240514065734UGY2_wpm9md.png"
+                      alt="logo"
+                    />
+                  </>
                 ) : (
                   allActivities.map((activity) => (
                     <ClassScheduleCard key={activity._id} activity={activity} />

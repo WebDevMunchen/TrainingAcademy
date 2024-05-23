@@ -4,8 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { AuthContext } from "../../context/AuthProvider";
-import { Bounce, ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
   const { setAllUsers } = useContext(AuthContext);

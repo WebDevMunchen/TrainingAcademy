@@ -40,7 +40,10 @@ export default function Dashboard() {
           activity.registeredUsers.forEach((user) => {
             if (user.classesRegistered && user.classesRegistered.length > 0) {
               user.classesRegistered.forEach((classRegistered) => {
-                if (classRegistered.status === "ausstehend" && classRegistered.registeredClassID === activity._id) {
+                if (
+                  classRegistered.status === "ausstehend" &&
+                  classRegistered.registeredClassID === activity._id
+                ) {
                   count++;
                 }
               });
@@ -52,9 +55,6 @@ export default function Dashboard() {
     } else {
       setPendingClassesCount(0);
     }
-    
-    
-    
   }, [allActivities, allUsers]);
 
   const remainingSpots = totalCapacity - totalAttendees;
@@ -318,15 +318,15 @@ export default function Dashboard() {
                     <tbody>
                       {!allActivities ? (
                         <>
-                        <tr>
-                          <td colSpan="7">
-                            <img
-                              className="h-[calc(42vh-40px)] lg:mx-auto lg:h-[calc(53vh-32px)] lg:w-[calc(60vh-32px)]"
-                              src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715671755/symbols/freepik-export-20240514065734UGY2_wpm9md_rahv71.png"
-                              alt="logo"
-                            />
-                          </td>
-                        </tr>
+                          <tr>
+                            <td colSpan="7">
+                              <img
+                                className="h-[calc(42vh-40px)] lg:mx-auto lg:h-[calc(53vh-32px)] lg:w-[calc(60vh-32px)]"
+                                src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715671755/symbols/freepik-export-20240514065734UGY2_wpm9md_rahv71.png"
+                                alt="logo"
+                              />
+                            </td>
+                          </tr>
                         </>
                       ) : (
                         allActivities.map((activity) => {

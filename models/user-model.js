@@ -6,16 +6,16 @@ const userSchema = new Schema({
   password: { type: String, required: true, select: false },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  department: {type: String, required: true},
+  department: { type: String, required: true },
   role: {
     type: String,
     enum: ["admin", "ASP", "teacher", "user"],
     default: "user",
   },
   dateOfRegistration: { type: Date, default: Date.now() },
-  userContactInformation: {type: String, required: true},
+  userContactInformation: { type: String, required: true },
   status: { type: String, enum: ["aktiv", "inaktiv"], default: "aktiv" },
-  inbox: {type: String, default: "webdevmunchen@gmail.com"},
+  inbox: { type: String, default: "webdevmunchen@gmail.com" },
   classesRegistered: [
     {
       registeredClassID: { type: Schema.Types.ObjectId, ref: "ClassActivitie" },
@@ -29,7 +29,7 @@ const userSchema = new Schema({
         enum: ["teilgenommen", "nicht teilgenommen", "in Prüfung"],
         default: "in Prüfung",
       },
-      reason: {type: String}
+      reason: { type: String },
     },
   ],
 });
