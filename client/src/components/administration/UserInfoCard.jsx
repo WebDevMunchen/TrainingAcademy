@@ -5,6 +5,7 @@ import axiosClient from "../../utils/axiosClient";
 import { updatePBC } from "../../utils/updatePBC";
 import { useForm } from "react-hook-form";
 import { Bounce, toast } from "react-toastify";
+import profilePic from "../../../src/assets/profile.jpeg";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function UserInfoCard() {
@@ -94,6 +95,11 @@ export default function UserInfoCard() {
     );
     return notAttendedClasses.length;
   };
+  const sortedClasses = userInfomation?.classesRegistered.sort((a, b) => {
+    const dateA = new Date(a.registeredClassID.date);
+    const dateB = new Date(b.registeredClassID.date);
+    return dateB - dateA; // descending order
+  });
 
   const notifySuccess = () =>
     toast.success("Kennwort geändert", {
@@ -142,21 +148,10 @@ export default function UserInfoCard() {
 
                 <div className="hidden lg:inline relative">
                   <div className="w-36 h-36 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-0 flex items-center justify-center text-indigo-500">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-24 w-24"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+                    <img className="w-28 mt-2" src={profilePic} alt="profile" />
                   </div>
                 </div>
-                <div className="h-[50px] space-x-8 flex justify-between mt-0 md:mt-0 md:justify-center lg:mt32">
+                <div className="h-[50px] ml-36 space-x-8 flex justify-between mt-0 md:mt-0 md:justify-center lg:mt32">
                   <NavLink
                     to={`/admin/userProfile/update/${userInfomation._id}`}
                     className="flex items-center text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
@@ -266,7 +261,7 @@ export default function UserInfoCard() {
               </div>
               <div className="mt-6 flex flex-col min-h-96">
                 <div className="mb-4 flex justify-center text-xl font-medium">
-                Schulungshistorie
+                  Schulungshistorie
                 </div>
                 <div className="h-[calc(38vh-32px)] overflow-x-scroll">
                   <table className="w-full min-w-[640px] table-auto">
@@ -310,7 +305,7 @@ export default function UserInfoCard() {
                       </tr>
                     </thead>
                     <tbody>
-                      {userInfomation.classesRegistered.map((activity) => {
+                      {sortedClasses.map((activity) => {
                         return (
                           <tr key={activity._id}>
                             <td className="py-3 px-5 border-b border-blue-gray-50">
@@ -357,39 +352,82 @@ export default function UserInfoCard() {
                             </td>
 
                             <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
-                              <span
-                                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-          ${
-            activity
-              ? activity.status === "genehmigt"
-                ? "bg-green-100 text-green-800"
-                : activity.status === "ausstehend"
-                ? "bg-orange-100 text-orange-800"
-                : "bg-red-200 text-red-700"
-              : ""
-          }`}
-                              >
-                                {activity ? activity.status : "Not Registered"}
-                              </span>
+                              <div className="flex items-center justify-center">
+                                <span
+                                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+      ${
+        activity
+          ? activity.status === "genehmigt"
+            ? "bg-green-100 text-green-800"
+            : activity.status === "ausstehend"
+            ? "bg-orange-100 text-orange-800"
+            : "bg-red-200 text-red-700"
+          : ""
+      }`}
+                                >
+                                  {activity
+                                    ? activity.status
+                                    : "nicht registriert"}
+                                </span>
+                                {activity && activity.status === "abgelehnt" ? (
+                                  <span
+                                    className="tooltip ml-2 hover:cursor-pointer"
+                                    style={{ width: "auto", height: "auto" }}
+                                    data-tip={activity.reason}
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="#ffb951"
+                                      className="w-8 h-8"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                  </span>
+                                ) : (
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="#ffffff"
+                                    className="w-8 h-8"
+                                  >
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                                      clipRule="evenodd"
+                                    />
+                                  </svg>
+                                )}
+                              </div>
                             </td>
 
                             <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
-                              <span
-                                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-          ${
-            activity
-              ? activity.statusAttended === "teilgenommen"
-                ? "bg-green-100 text-green-800"
-                : activity.statusAttended === "in Prüfung"
-                ? "bg-orange-100 text-orange-800"
-                : "bg-red-200 text-red-700"
-              : ""
-          }`}
-                              >
-                                {activity
-                                  ? activity.statusAttended
-                                  : "Not Registered"}
-                              </span>
+                              {activity && activity.status === "abgelehnt" ? (
+                                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-500 bg-gray-200 text-gray-800">
+                                  kein Status erforderlich
+                                </span>
+                              ) : (
+                                <span
+                                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+        ${
+          activity
+            ? activity.statusAttended === "teilgenommen"
+              ? "bg-green-100 text-green-800"
+              : activity.statusAttended === "in Prüfung"
+              ? "bg-orange-100 text-orange-800"
+              : "bg-red-200 text-red-700"
+            : ""
+        }`}
+                                >
+                                  {activity
+                                    ? activity.statusAttended
+                                    : "nicht registriert"}
+                                </span>
+                              )}
                             </td>
                           </tr>
                         );

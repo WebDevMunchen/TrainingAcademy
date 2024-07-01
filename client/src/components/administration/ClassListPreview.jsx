@@ -62,7 +62,7 @@ export default function ClassListPreview({ activity }) {
           {activity.time}
         </p>
         <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
-          {`(${activity.duration} min)`}
+          {`(Dauer: ${activity.duration} min)`}
         </p>
       </td>
 

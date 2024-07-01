@@ -163,7 +163,7 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 
   const mailOptions = {
     from: {
-      name: "Ausstehende Genehmigung",
+      name: "Ausstehende Genehmigung - No reply",
       address: process.env.USER,
     },
     to: `${user.userContactInformation}`,
