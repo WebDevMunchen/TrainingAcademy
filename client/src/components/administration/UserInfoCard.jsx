@@ -373,7 +373,9 @@ export default function UserInfoCard() {
                                   <span
                                     className="tooltip ml-2 hover:cursor-pointer"
                                     style={{ width: "auto", height: "auto" }}
-                                    data-tip={activity.reason}
+                                    data-tip={
+                                      /^[^a-zA-Z]*$/.test(activity.reason) ? "Kein angegebener Grund" : activity.reason
+                                    }
                                   >
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
