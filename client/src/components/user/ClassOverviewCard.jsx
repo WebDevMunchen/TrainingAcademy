@@ -32,24 +32,15 @@ export default function ClassesOverviewCard({ activity }) {
       <div className="bg-white border m-2 p-4 relative group shadow-lg">
         <div className="absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
         <div className="flex justify-center lg:justify-end mt-4 mr-4 items-center ">
-          <span className={spanStyle}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6 mr-2"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d={dPath} />
-            </svg>
-            {activity.status}
-          </span>
-          {activity.status === "abgelehnt" && (
-            <div
-              className="tooltip ml-2 hover:cursor-pointer"
+        {activity.status === "abgelehnt" && (
+            <span
+              className="tooltip mr-2 hover:cursor-pointer"
               style={{ width: "auto", height: "auto" }}
-              data-tip={activity.reason}
+              data-tip={
+                /^[^a-zA-Z]*$/.test(activity.reason)
+                  ? "Kein Grund vorhanden"
+                  : activity.reason
+              }
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -63,8 +54,22 @@ export default function ClassesOverviewCard({ activity }) {
                   clipRule="evenodd"
                 />
               </svg>
-            </div>
+            </span>
           )}
+          <span className={spanStyle}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6 mr-2"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d={dPath} />
+            </svg>
+            {activity.status}
+          </span>
+
         </div>
         <div className="py-2 relative">
           <h3 className="flex justify-center text-lg font-semibold text-black">

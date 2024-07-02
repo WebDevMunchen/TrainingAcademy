@@ -18,6 +18,7 @@ import EditClass from "./components/administration/EditClass";
 import Report from "./components/administration/Report";
 import AuthorizeNonUser from "./components/AuthorizeNonUser";
 import { Bounce, ToastContainer } from "react-toastify";
+import Datenschutz from "./components/user/Datenschutz";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
@@ -45,6 +46,7 @@ function App() {
         <Route path="/" element={<Protected />}>
           <Route path="/classes" element={<ClassesSchedule />} />
           <Route path="/classesOverview" element={<ClassesOverview />} />
+          <Route path="/datenschutz" element={<Datenschutz />} />
 
           <Route
             path="/classInformation"
