@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
 import { useParams } from "react-router-dom";
@@ -22,6 +22,19 @@ export default function RegisteredUserCard({
   const [submitedAttended, setSubmitedAttended] = useState(true);
 
   const [declineReason, setDeclineReason] = useState("");
+
+  const [activitySingleInformation, setActivitySingleInformation] =
+    useState(null);
+
+  useEffect(() => {
+    axiosClient
+      .get(`/classActivity/${id}`)
+      .then((response) => {
+        setActivitySingleInformation(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {});
+  }, []);
 
   const approve = (status) => {
     axiosClient
@@ -191,6 +204,7 @@ export default function RegisteredUserCard({
       participated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
+      notifySuccessAttended();
     }
   };
 
@@ -200,6 +214,7 @@ export default function RegisteredUserCard({
       notParticipated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
+      notifySuccessAttended();
     }
   };
 
@@ -224,7 +239,7 @@ export default function RegisteredUserCard({
     });
 
   const notifySuccessAttended = () =>
-    toast.success("Status geändert", {
+    toast.success("Status geändert. Bitte die Seite aktualisieren!", {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -270,16 +285,80 @@ export default function RegisteredUserCard({
       "M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z";
   }
 
+  const currentDate = new Date();
+  const isoDateString = currentDate.toISOString();
+
+  let formattedDate = null;
+
+  const timeFromJson = activitySingleInformation?.time;
+  const dateString = activitySingleInformation?.date;
+
+  if (timeFromJson && dateString) {
+    const [hoursStr, minutesStr] = timeFromJson.split(":");
+    const hoursToAdd = parseInt(hoursStr, 10);
+    const minutesToAdd = parseInt(minutesStr, 10);
+
+    const dateFromJson = new Date(dateString);
+    dateFromJson.setHours(dateFromJson.getHours() + hoursToAdd);
+    dateFromJson.setMinutes(dateFromJson.getMinutes() + minutesToAdd);
+
+    formattedDate = dateFromJson.toISOString();
+  }
+
   return (
     <>
-
       <div className="px-4 py-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
             {registeredUser.firstName + " " + registeredUser.lastName}
           </h3>
-          <p className="flex items-center text-sm font-medium text-gray-500">
-            <span className="mr-2 text-md font-semibold text-gray-900 hidden lg:inline">
+
+          <p className="font-medium text-gray-500">
+            <span className="text-lg font-semibold text-gray-900">
+              Abteilung:
+            </span>{" "}
+            {registeredUser.department}
+          </p>
+
+
+        </div>
+        <div className="mt-2 flex items-center justify-between">
+
+          <p className="flex flex-col items-center text-sm font-medium text-gray-500">
+            <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
+              Teilnahmestatus:{" "}
+            </span>
+            {registeredUser.classesRegistered.map((element, index) => {
+              if (element.registeredClassID === activityId)
+                return (
+                  <React.Fragment key={element.registeredClassID}>
+                    {element.status === "genehmigt" ? (
+                      
+                      <span className={`inline-flex items-center rounded-full px-3 text-sm text-white py-1.5 font-medium ${
+                        element.statusAttended === "teilgenommen" ? "bg-green-600" :
+                        element.statusAttended === "nicht teilgenommen" ? "bg-red-500" :
+                        "bg-orange-500"
+                      }`}>
+
+                        {element.statusAttended}
+                      </span>
+                    ) : element.status === "ausstehend" ? 
+                    <span className="inline-flex items-center bg-orange-500 rounded-full px-3 text-sm text-white py-1.5 font-medium">
+
+                    auf Genehmigung warten
+                  </span> :
+                    (
+                      <span className="inline-flex items-center bg-gray-500 rounded-full px-3 text-sm text-white py-1.5 font-medium">
+
+                        kein Status vorhanden
+                      </span>
+                    )}
+                  </React.Fragment>
+                );
+            })}
+          </p>
+          <p className="flex flex-col items-center text-sm font-medium text-gray-500">
+            <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
               Status:{" "}
             </span>
             {registeredUser.classesRegistered.map((element, index) => {
@@ -305,7 +384,7 @@ export default function RegisteredUserCard({
                         {element.status}
                       </span>
                     ) : element.status === "abgelehnt" ? (
-                      <span className="inline-flex items-center bg-red-600 rounded-full px-3 text-sm text-white py-1 font-medium">
+                      <span className="inline-flex items-center bg-red-600 rounded-full px-3 text-sm text-white py-2 font-medium">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -345,16 +424,9 @@ export default function RegisteredUserCard({
                 );
             })}
           </p>
+          </div>
+
         </div>
-        <div className="mt-4 flex items-center justify-between">
-          <p className="text-sm font-medium text-gray-500">
-            <span className="text-md font-semibold text-gray-900">
-              Abteilung:
-            </span>{" "}
-            {registeredUser.department}
-          </p>
-        </div>
-      </div>
       {user.role === "ASP" || user.role === "admin" ? (
         <div className="flex justify-center gap-4 px-4 py-6">
           {registeredUser.classesRegistered.some(
@@ -400,9 +472,7 @@ export default function RegisteredUserCard({
                 className="shadow-md border w-36 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:w-52"
                 onClick={() => modalRef.current.showModal()}
               >
-
                 <div className="flex flex-col gap-1">
-
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold uppercase text-gray-500">
                       Ablehnen
@@ -427,9 +497,7 @@ export default function RegisteredUserCard({
                 </div>
               </button>
               <dialog ref={modalRef} id="my_modal_1" className="modal">
-
                 <div className="modal-box">
-
                   <div className="flex items-center gap-2">
                     <h3 className="font-bold text-lg">Genehmigung Ablehnen</h3>
                     <span>
@@ -615,104 +683,118 @@ export default function RegisteredUserCard({
         </div>
       ) : (
         <>
-          {registeredUser.classesRegistered.some(
-            (element) =>
-              element.registeredClassID === activityId &&
-              element.status === "genehmigt" &&
-              element.statusAttended === "in Prüfung"
-          ) ? (
-            <div className="flex justify-center gap-2 px-4 py-6 lg:gap-4">
-              <label hidden={hideAttendedBtn} className="cursor-pointer">
-                <input
-                  onChange={handleParticipated}
-                  type="radio"
-                  className="peer sr-only"
-                  value="teilgenommen"
-                />
-                <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:w-60 lg:p-4">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-semibold uppercase text-gray-500 mr-1">
-                        Teilgenommen
-                      </p>
-                      <div>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-6 h-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                          />
-                        </svg>
+          {isoDateString > formattedDate ? (
+            registeredUser.classesRegistered.some(
+              (element) =>
+                element.registeredClassID === activityId &&
+                element.status === "genehmigt" &&
+                element.statusAttended === "in Prüfung"
+            ) ? (
+              <div className="flex justify-center gap-2 px-4 py-6 lg:gap-4">
+                <label hidden={hideAttendedBtn} className="cursor-pointer">
+                  <input
+                    onChange={handleParticipated}
+                    type="radio"
+                    className="peer sr-only"
+                    value="teilgenommen"
+                  />
+                  <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:w-60 lg:p-4">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-semibold uppercase text-gray-500 mr-1">
+                          Teilgenommen
+                        </p>
+                        <div>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </label>
+                </label>
 
-              <label hidden={hideAttendedBtn} className="cursor-pointer">
-                <input
-                  onChange={handleNotParticipated}
-                  type="radio"
-                  className="peer sr-only"
-                  value="nicht teilgenommen"
-                />
-                <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:w-60 lg:p-4">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-semibold uppercase text-gray-500 lg:hidden">
-                        Nicht Teilgen.
-                      </p>
-                      <p className="hidden lg:inline text-sm font-semibold uppercase text-gray-500">
-                        Nicht Teilgenommen
-                      </p>
-                      <div>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-6 h-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                          />
-                        </svg>
+                <label hidden={hideAttendedBtn} className="cursor-pointer">
+                  <input
+                    onChange={handleNotParticipated}
+                    type="radio"
+                    className="peer sr-only"
+                    value="nicht teilgenommen"
+                  />
+                  <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:w-60 lg:p-4">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-semibold uppercase text-gray-500 lg:hidden">
+                          Nicht Teilgen.
+                        </p>
+                        <p className="hidden lg:inline text-sm font-semibold uppercase text-gray-500">
+                          Nicht Teilgenommen
+                        </p>
+                        <div>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </label>
+                </label>
 
-              <div
-                hidden={submitedAttended}
-                className="shadow-md border w-40 max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:p-4"
-              >
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold uppercase text-gray-500 mx-auto">
-                      Übermittelt
-                    </p>
+                <div
+                  hidden={submitedAttended}
+                  className="shadow-md border w-40 max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:p-4"
+                >
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-semibold uppercase text-gray-500 mx-auto">
+                        Übermittelt
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex justify-center gap-4 px-4 py-6">
+                <div className="shadow-md border w-fit max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:p-4">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-semibold uppercase text-gray-500">
+                        Keine Antwort Erforderlich
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
           ) : (
             <div className="flex justify-center gap-4 px-4 py-6">
               <div className="shadow-md border w-fit max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:p-4">
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold uppercase text-gray-500">
-                      Keine Antwort Erforderlich
+                      Noch nicht begonnen
                     </p>
                   </div>
                 </div>

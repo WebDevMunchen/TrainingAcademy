@@ -1,6 +1,6 @@
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import SideMenu from "./SideMenu";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { updatePBC } from "../../utils/updatePBC";
 import { useForm } from "react-hook-form";
@@ -98,7 +98,7 @@ export default function UserInfoCard() {
   const sortedClasses = userInfomation?.classesRegistered.sort((a, b) => {
     const dateA = new Date(a.registeredClassID.date);
     const dateB = new Date(b.registeredClassID.date);
-    return dateB - dateA; // descending order
+    return dateB - dateA;
   });
 
   const notifySuccess = () =>
@@ -374,7 +374,9 @@ export default function UserInfoCard() {
                                     className="tooltip ml-2 hover:cursor-pointer"
                                     style={{ width: "auto", height: "auto" }}
                                     data-tip={
-                                      /^[^a-zA-Z]*$/.test(activity.reason) ? "Kein Grund vorhanden" : activity.reason
+                                      /^[^a-zA-Z]*$/.test(activity.reason)
+                                        ? "Kein Grund vorhanden"
+                                        : activity.reason
                                     }
                                   >
                                     <svg
@@ -408,7 +410,9 @@ export default function UserInfoCard() {
                             </td>
 
                             <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
-                              {activity && activity.status === "abgelehnt" ? (
+                              {activity &&
+                              (activity.status === "abgelehnt" ||
+                                activity.status === "ausstehend") ? (
                                 <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-500 bg-gray-200 text-gray-800">
                                   kein Status erforderlich
                                 </span>

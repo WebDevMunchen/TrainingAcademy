@@ -26,9 +26,15 @@ export default function UserListCard({ user }) {
             {user.status}
           </span>
         </td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          {user.role}
-        </td>
+        {user.role === "teacher" ? (
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            Referent
+          </td>
+        ) : (
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+          </td>
+        )}
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
           {user.logID}
         </td>

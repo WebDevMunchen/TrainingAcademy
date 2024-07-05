@@ -228,7 +228,7 @@ export default function SingleClassDetails() {
             return (
               <ul
                 key={registeredUser._id}
-                className="w-11/12 bg-white shadow overflow-hidden sm:rounded-md mx-auto mt-4 lg:w-4/12"
+                className="w-11/12 bg-white shadow overflow-hidden sm:rounded-md mx-auto mt-4 mb-6 lg:w-4/12"
               >
                 <li>
                   <RegisterdUserCard

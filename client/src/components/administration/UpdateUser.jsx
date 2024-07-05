@@ -213,7 +213,6 @@ export default function Register() {
                       </select>
                     </div>
                   </div>
-
                   <div className="flex justify-center gap-4">
                     <button
                       type="submit"

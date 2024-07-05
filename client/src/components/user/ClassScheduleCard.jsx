@@ -174,7 +174,7 @@ export default function ClassScheduleCard({ activity }) {
               ))}
             {user.role === "user" && (activityDatePassed || oneDayPrior) && (
               <button
-                className="mt-8 bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                className="mt-8 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
                 disabled
               >
                 Registrierung abgeschlossen
