@@ -6,8 +6,7 @@ export default {
       fontFamily: {
         anek: ["Anek Devanagari", "sans-serif"],
       },
-  },
- 
+    },
   },
   daisyui: {
     themes: [
@@ -22,10 +21,8 @@ export default {
           success: "#28965A",
         },
       },
-
       "dark",
     ],
   },
-
   plugins: [require("daisyui")],
 };
