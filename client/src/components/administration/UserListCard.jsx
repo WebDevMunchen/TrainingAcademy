@@ -16,7 +16,7 @@ export default function UserListCard({ user }) {
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
           <span
-            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+            className={`px-2 inline-flex text-sm leading-5 font-semibold rounded-full 
     ${
       user.status === "aktiv"
         ? "bg-green-100 text-green-800"
@@ -46,7 +46,7 @@ export default function UserListCard({ user }) {
         <td className="px-6 py-4 text-sm font-medium">
           <NavLink
             to={`/admin/userProfile/${user._id}`}
-            className="block font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125"
+            className="block  text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125"
           >
             Mehr
           </NavLink>

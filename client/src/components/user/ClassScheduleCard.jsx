@@ -329,7 +329,7 @@ export default function ClassScheduleCard({ activity }) {
             )}
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-4">
             {(user.role === "ASP" ||
               user.role === "admin" ||
               user.role === "teacher") && (
@@ -340,7 +340,17 @@ export default function ClassScheduleCard({ activity }) {
                 Details Anzeigen
               </NavLink>
             )}
+            {(
+              user.role === "admin") && (
+              <NavLink
+                to={`/classInformation/participation/${activity._id}`}
+                className="w-fit bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-1/2 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+              >
+                Teilnahme verwalten
+              </NavLink>
+            )}
           </div>
+
           <div className="flex justify-center">
             {(user.role === "ASP" || user.role === "admin") &&
               !activityDatePassed &&

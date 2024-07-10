@@ -19,6 +19,7 @@ import Report from "./components/administration/Report";
 import AuthorizeNonUser from "./components/AuthorizeNonUser";
 import { Bounce, ToastContainer } from "react-toastify";
 import Datenschutz from "./components/user/Datenschutz";
+import SingleClassDetailsAdmin from "./components/administration/SingleClassDetailsAdmin";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
@@ -53,6 +54,7 @@ function App() {
             element={<AuthorizeNonUser roles={allowedRoles} />}
           >
             <Route path=":id" element={<SingleClassDetails />} />
+            <Route path="participation/:id" element={<SingleClassDetailsAdmin />} />
           </Route>
           <Route path="/admin" element={<Authorize role="admin" />}>
             <Route path="register" element={<Register />} />

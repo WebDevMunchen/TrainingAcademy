@@ -29,7 +29,7 @@ export default function ClassListPreview({ activity }) {
     <tr>
       <td className="py-3 px-5 border-b border-blue-gray-50">
         <div className="flex items-center gap-4">
-          <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-bold">
+          <p className="block antialiased text-sm leading-normal text-blue-gray-900 font-bold">
             {activity.title}
           </p>
         </div>
@@ -46,28 +46,28 @@ export default function ClassListPreview({ activity }) {
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
-        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+        <p className="block antialiased text-sm font-medium text-blue-gray-600 text-center">
           {activity.location}
         </p>
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
-        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+        <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
           {formattedDate}
         </p>
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
-        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+        <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
           {activity.time}
         </p>
-        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+        <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
           {`(Dauer: ${activity.duration} min)`}
         </p>
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
-        <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+        <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
           {ausstehendCount}
         </p>
       </td>
@@ -89,19 +89,19 @@ export default function ClassListPreview({ activity }) {
       <td className="py-3 px-5 border-b border-blue-gray-50">
         <NavLink
           to={`/classInformation/${activity._id}`}
-          className="mb-2 block antialiased font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
+          className="mb-2 block antialiased  text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
         >
           Details
         </NavLink>
         <NavLink
           to={`/admin/editClass/${activity._id}`}
-          className="mb-2 block antialiased font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
+          className="mb-2 block antialiased  text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
         >
           Bearbeiten
         </NavLink>
         <NavLink
           to={`/admin/report/${activity._id}`}
-          className="block antialiased font-sans text-xs font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
+          className="block antialiased  text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
         >
           Bericht
         </NavLink>

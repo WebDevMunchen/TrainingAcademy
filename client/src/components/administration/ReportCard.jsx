@@ -25,7 +25,7 @@ export default function ReportCard({ registeredUser, activity }) {
       <td className="px-6 py-4 flex justify-center ">
         <div className="flex items-center">
           <span
-            className={`px-2 py-0.5 mr-1 inline-flex text-xs leading-5 font-semibold rounded-full 
+            className={`px-2 py-0.5 mr-1 inline-flex text-sm leading-5 font-semibold rounded-full 
           ${
             registration
               ? registration.status === "genehmigt"
@@ -67,10 +67,10 @@ export default function ReportCard({ registeredUser, activity }) {
 
       <td className="px-6 py-4 whitespace-nowrap">
         {registration.status === "abgelehnt" ? 
-        <span className="bg-slate-200 text-white-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full">nicht angemeldet</span>
+        <span className="bg-slate-200 text-white-800 px-2 inline-flex text-sm leading-5 font-semibold rounded-full">nicht angemeldet</span>
         :
         <span
-        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+        className={`px-2 inline-flex text-sm leading-5 font-semibold rounded-full 
         ${
           registration
             ? registration.statusAttended === "teilgenommen"

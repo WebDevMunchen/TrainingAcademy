@@ -79,15 +79,15 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div className="p-4 text-right">
-                  <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                  <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
                     Anzahl der registrierten Mitarbeiter
                   </h6>
-                  <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                  <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
                     {!allUsers ? <>Loading</> : allUsers.length}
                   </h4>
                 </div>
                 <div className="flex gap-3 items-center border-t border-blue-gray-50 p-4">
-                  <p className="block antialiased font-sans text-base leading-relaxed font-semibold text-gray-400">
+                  <p className="block antialiased  text-base leading-relaxed font-semibold text-gray-400">
                     Neuen User registrieren
                   </p>
                   <NavLink to={"/admin/register"}>
@@ -120,15 +120,15 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div className="p-4 text-right">
-                  <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                  <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
                     Schulungen in diesem Monat
                   </h6>
-                  <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                  <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
                     {!allActivities ? <>0</> : allActivities.length}
                   </h4>
                 </div>
                 <div className="flex gap-3 items-center border-t border-blue-gray-50 p-4">
-                  <p className="block antialiased font-sans text-base leading-relaxed font-semibold text-gray-400">
+                  <p className="block antialiased  text-base leading-relaxed font-semibold text-gray-400">
                     Neue Schulung erstellen
                   </p>
                   <NavLink to={"/admin/createClass"}>
@@ -164,15 +164,15 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div className="p-4 text-right">
-                  <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                  <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
                     Teilnehmer in diesem Monat
                   </h6>
-                  <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                  <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
                     {totalAttendees}
                   </h4>
                 </div>
                 <div className="border-t border-blue-gray-50 p-4">
-                  <p className="block antialiased font-sans text-base leading-relaxed font-semibold text-gray-400">
+                  <p className="block antialiased  text-base leading-relaxed font-semibold text-gray-400">
                     Insgesamt noch{" "}
                     <span className="font-bold text-cyan-600">
                       {" "}
@@ -204,15 +204,15 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div className="p-4 text-right">
-                  <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                  <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
                     Ausstehende Genehmigungen
                   </h6>
-                  <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                  <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
                     {pendingClassesCount}
                   </h4>
                 </div>
                 <div className="flex gap-3 items-center border-t border-blue-gray-50 p-4">
-                  <p className="block antialiased font-sans text-base leading-relaxed font-semibold text-gray-400">
+                  <p className="block antialiased  text-base leading-relaxed font-semibold text-gray-400">
                     Zur Schulungsübersicht
                   </p>
                   <NavLink to={"/classes"}>
@@ -267,49 +267,49 @@ export default function Dashboard() {
               </button>
             </div>
 
-            <div className="mx-auto w-10/12 mb-4 grid grid-cols-1 gap-6">
+            <div className="mx-auto w-11/12 mb-4 grid grid-cols-1 gap-6">
               <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
                 <div className="p-6 h-[calc(63.5vh-32px)] overflow-x-scroll px-0 pt-0 pb-2">
                   <table className="w-full min-w-[640px] table-auto">
                     <thead>
                       <tr>
-                        <th className="w-3/12 border-b border-blue-gray-50 py-3 px-6 text-left">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                        <th className="w-1/4 border-b border-blue-gray-50 py-3 px-6 text-left">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Thema
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Zielgruppe
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Location
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Datum
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Uhrzeit
                           </p>
                         </th>
-                        <th className="w-2/12 border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                        <th className="w-1/12 border-b border-blue-gray-50 py-3 px-6 text-center">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Ausstehende Genehmigungen
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Teilnehmer Angemeldet
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Links
                           </p>
                         </th>

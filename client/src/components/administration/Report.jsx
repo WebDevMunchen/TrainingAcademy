@@ -38,19 +38,19 @@ export default function Report() {
                     <table className="w-full min-w-[640px] table-auto">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Vorname
                           </th>
-                          <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Nachname
                           </th>
-                          <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Abteilung
                           </th>
-                          <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Genehmigung
                           </th>
-                          <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Teilnahme
                           </th>
                         </tr>

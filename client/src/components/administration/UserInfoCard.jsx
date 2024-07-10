@@ -177,7 +177,7 @@ export default function UserInfoCard() {
                 <p className="font-light text-gray-600 mt-3">
                   <span className="font-medium">Status: </span>
                   <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ml-2  
+                    className={`px-2 inline-flex text-sm leading-5 font-semibold rounded-full ml-2  
     ${
       userInfomation.status === "aktiv"
         ? "bg-green-100 text-green-800"
@@ -268,37 +268,37 @@ export default function UserInfoCard() {
                     <thead>
                       <tr>
                         <th className="w-3/12 border-b border-blue-gray-50 py-3 px-6 text-left">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Thema
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Zielgruppe
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Location
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Datum
                           </p>
                         </th>
                         <th className="w-2/12 border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Uhrzeit
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Genehmigung
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Teilnahme
                           </p>
                         </th>
@@ -310,7 +310,7 @@ export default function UserInfoCard() {
                           <tr key={activity._id}>
                             <td className="py-3 px-5 border-b border-blue-gray-50">
                               <div className="flex items-center gap-4">
-                                <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-bold">
+                                <p className="block antialiased  text-sm leading-normal text-blue-gray-900 font-bold">
                                   {activity.registeredClassID.title}
                                 </p>
                               </div>
@@ -334,19 +334,19 @@ export default function UserInfoCard() {
                             </td>
 
                             <td className="py-3 px-5 border-b border-blue-gray-50">
-                              <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+                              <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
                                 {activity.registeredClassID.location}
                               </p>
                             </td>
 
                             <td className="py-3 px-5 border-b border-blue-gray-50">
-                              <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+                              <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
                                 {formatDate(activity.registeredClassID.date)}
                               </p>
                             </td>
 
                             <td className="py-3 px-5 border-b border-blue-gray-50">
-                              <p className="block antialiased font-sans text-xs font-medium text-blue-gray-600 text-center">
+                              <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
                                 {activity.registeredClassID.time}
                               </p>
                             </td>
@@ -354,7 +354,7 @@ export default function UserInfoCard() {
                             <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
                               <div className="flex items-center justify-center">
                                 <span
-                                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                  className={`px-2 inline-flex text-sm leading-5 font-semibold rounded-full 
       ${
         activity
           ? activity.status === "genehmigt"
@@ -413,12 +413,12 @@ export default function UserInfoCard() {
                               {activity &&
                               (activity.status === "abgelehnt" ||
                                 activity.status === "ausstehend") ? (
-                                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-500 bg-gray-200 text-gray-800">
+                                <span className="px-2 inline-flex text-sm leading-5 font-semibold rounded-full text-gray-500 bg-gray-200 text-gray-800">
                                 nicht angemeldet
                                 </span>
                               ) : (
                                 <span
-                                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                  className={`px-2 inline-flex text-sm leading-5 font-semibold rounded-full 
         ${
           activity
             ? activity.statusAttended === "teilgenommen"
