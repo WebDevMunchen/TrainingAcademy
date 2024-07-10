@@ -1,4 +1,3 @@
-
 export default function ClassesOverviewCard({ activity }) {
   const dateString = activity?.registeredClassID?.date;
   const date = new Date(dateString);
@@ -40,14 +39,17 @@ export default function ClassesOverviewCard({ activity }) {
     spanStyle2 =
       "inline-flex items-center bg-green-600 rounded-full px-3 text-sm text-white py-1 font-medium";
     dPath2 = "M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z";
-  } else if (activity.statusAttended === "in Prüfung" && activity.status === "abgelehnt") {
+  } else if (
+    activity.statusAttended === "in Prüfung" &&
+    activity.status === "abgelehnt"
+  ) {
     spanStyle2 =
       "inline-flex items-center bg-slate-400 rounded-full px-4 py-1.5 text-sm text-white py-1 font-medium";
   } else {
     spanStyle2 =
-    "inline-flex items-center bg-orange-500 rounded-full px-3 text-sm text-white py-1 font-medium";
-  dPath2 =
-    "M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z";
+      "inline-flex items-center bg-orange-500 rounded-full px-3 text-sm text-white py-1 font-medium";
+    dPath2 =
+      "M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z";
   }
 
   const showLegend = () => {
@@ -59,67 +61,63 @@ export default function ClassesOverviewCard({ activity }) {
       <div className="bg-white border m-2 p-4 relative group shadow-lg">
         <div className="absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
         <div className="flex justify-center lg:justify-between px-6 mt-4 mr-4 items-center ">
-
-          {activity.status === "abgelehnt" ?
-                  <span className="invisible">
-                  nicht angemeldet
-                </span>
-                : 
-                <span className={spanStyle2}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6 mr-2"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d={dPath2} />
-                </svg>
-                {activity.statusAttended}
-              </span>
-        }
-
-          <div className="flex items-center">
-
-        {activity.status === "abgelehnt" && (
-            <span
-              className="tooltip mr-2 hover:cursor-pointer"
-              style={{ width: "auto", height: "auto" }}
-              data-tip={
-                /^[^a-zA-Z]*$/.test(activity.reason)
-                  ? "Kein Grund vorhanden"
-                  : activity.reason
-              }
-            >
+          {activity.status === "abgelehnt" ? (
+            <span className="invisible">nicht angemeldet</span>
+          ) : (
+            <span className={spanStyle2}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
+                fill="none"
                 viewBox="0 0 24 24"
-                fill="#ffb951"
-                className="w-8 h-8"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 mr-2"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
-                  clipRule="evenodd"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" d={dPath2} />
               </svg>
+              {activity.statusAttended}
             </span>
           )}
 
-          <span className={spanStyle}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6 mr-2"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d={dPath} />
-            </svg>
-            {activity.status}
-          </span>
+          <div className="flex items-center">
+            {activity.status === "abgelehnt" && (
+              <span
+                className="tooltip mr-2 hover:cursor-pointer"
+                style={{ width: "auto", height: "auto" }}
+                data-tip={
+                  /^[^a-zA-Z]*$/.test(activity.reason)
+                    ? "Kein Grund vorhanden"
+                    : activity.reason
+                }
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="#ffb951"
+                  className="w-8 h-8"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </span>
+            )}
+
+            <span className={spanStyle}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 mr-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d={dPath} />
+              </svg>
+              {activity.status}
+            </span>
           </div>
         </div>
         <div className="py-2 relative">
@@ -135,77 +133,147 @@ export default function ClassesOverviewCard({ activity }) {
             ))}
           </div>
           <div className="flex items-center justify-center">
-              <button
-                onClick={showLegend}
-                className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125 mx-auto mt-1"
-              >
-                Legende
-              </button>
+            <button
+              onClick={showLegend}
+              className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125 mx-auto mt-1"
+            >
+              Legende
+            </button>
           </div>
           <dialog id="legend" className="modal">
-        <div className="modal-box w-full max-w-5xl">
-        <h2 className="text-center font-anek font-semibold text-4xl">Legende</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-3">
+            <div className="modal-box w-full max-w-5xl">
+              <h2 className="text-center font-anek font-semibold text-4xl">
+                Legende
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-3">
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      className="w-20 mx-auto"
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/hczkglpvaybhguywjgku.png"
-                      alt="alle"
-                    />
-                    <p className="font-anek font-medium text-center text-lg">Alle</p>
+                  <img
+                    className="w-20 mx-auto"
+                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/hczkglpvaybhguywjgku.png"
+                    alt="alle"
+                  />
+                  <p className="font-anek font-medium text-center text-lg">
+                    Alle
+                  </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ng4emaukxn9adrxpnvlu.png" alt="Vertrieb" className="w-20 mx-auto" />
-                    <p className="font-anek font-medium text-center text-lg">Vertrieb</p>
+                  <img
+                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ng4emaukxn9adrxpnvlu.png"
+                    alt="Vertrieb"
+                    className="w-20 mx-auto"
+                  />
+                  <p className="font-anek font-medium text-center text-lg">
+                    Vertrieb
+                  </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/o4qwfioe3dkqrkhmumd4.png" alt="Logistik" className="w-20 mx-auto" />
-                    <p className="font-anek font-medium text-center text-lg">Logistik</p>
+                  <img
+                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/o4qwfioe3dkqrkhmumd4.png"
+                    alt="Logistik"
+                    className="w-20 mx-auto"
+                  />
+                  <p className="font-anek font-medium text-center text-lg">
+                    Logistik
+                  </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/uaozccdgnwtcelxvqjug.png" alt="Fuhrpark" className="w-20 mx-auto" />
-                    <p className="font-anek font-medium text-center text-lg">Fuhrpark</p>
+                  <img
+                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/uaozccdgnwtcelxvqjug.png"
+                    alt="Fuhrpark"
+                    className="w-20 mx-auto"
+                  />
+                  <p className="font-anek font-medium text-center text-lg">
+                    Fuhrpark
+                  </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ke8amlflgcdrvdfghzoz.png" alt="IT & Services" className="w-20 mx-auto" />
-                    <p className="font-anek font-medium text-center text-lg">IT & Services</p>
+                  <img
+                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ke8amlflgcdrvdfghzoz.png"
+                    alt="IT & Services"
+                    className="w-20 mx-auto"
+                  />
+                  <p className="font-anek font-medium text-center text-lg">
+                    IT & Services
+                  </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/gmnv44k0nydrmfnbr67y.png" alt="HR & Training" className="w-20 mx-auto" />
-                    <p className="font-anek font-medium text-center text-lg">HR & Training</p>
+                  <img
+                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/gmnv44k0nydrmfnbr67y.png"
+                    alt="HR & Training"
+                    className="w-20 mx-auto"
+                  />
+                  <p className="font-anek font-medium text-center text-lg">
+                    HR & Training
+                  </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/ip7khvjx1dgxosk6lxnb.png" alt="Buchhaltung" className="w-20 mx-auto" />
-                    <p className="font-anek font-medium text-center text-lg">Buchhaltung</p>
+                  <img
+                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/ip7khvjx1dgxosk6lxnb.png"
+                    alt="Buchhaltung"
+                    className="w-20 mx-auto"
+                  />
+                  <p className="font-anek font-medium text-center text-lg">
+                    Buchhaltung
+                  </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ydkcdshvmwdffe4tyf9f.png" alt="item8" className="w-20 mx-auto" />
-                    <p className="font-anek font-medium text-center text-lg">Einkauf & Anmietung</p>
+                  <img
+                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ydkcdshvmwdffe4tyf9f.png"
+                    alt="item8"
+                    className="w-20 mx-auto"
+                  />
+                  <p className="font-anek font-medium text-center text-lg">
+                    Einkauf & Anmietung
+                  </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/wodezi58z28wwhcvhsev.png" alt="Design & Planung" className="w-20 mx-auto" />
-                    <p className="font-anek font-medium text-center text-lg">Design & Planung</p>
+                  <img
+                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/wodezi58z28wwhcvhsev.png"
+                    alt="Design & Planung"
+                    className="w-20 mx-auto"
+                  />
+                  <p className="font-anek font-medium text-center text-lg">
+                    Design & Planung
+                  </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ikluglsekc6msbuvgn0z.png" alt="Projektmanagement" className="w-20 mx-auto" />
-                    <p className="font-anek font-medium text-center text-lg">Projektmanagement</p>
+                  <img
+                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ikluglsekc6msbuvgn0z.png"
+                    alt="Projektmanagement"
+                    className="w-20 mx-auto"
+                  />
+                  <p className="font-anek font-medium text-center text-lg">
+                    Projektmanagement
+                  </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/p0m4tdmsd5qdmysdzolk.png" alt="Officemanagement" className="w-20 mx-auto" />
-                    <p className="font-anek font-medium text-center text-lg">Officemanagement</p>
+                  <img
+                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/p0m4tdmsd5qdmysdzolk.png"
+                    alt="Officemanagement"
+                    className="w-20 mx-auto"
+                  />
+                  <p className="font-anek font-medium text-center text-lg">
+                    Officemanagement
+                  </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/l85s2hjejj6kzkzung8o.png" alt="Gesundheitsmanagement" className="w-20 mx-auto" />
-                    <p className="font-anek font-medium text-center text-lg">Gesundheitsmanagement</p>
+                  <img
+                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/l85s2hjejj6kzkzung8o.png"
+                    alt="Gesundheitsmanagement"
+                    className="w-20 mx-auto"
+                  />
+                  <p className="font-anek font-medium text-center text-lg">
+                    Gesundheitsmanagement
+                  </p>
                 </div>
-            </div>
-            <div className="modal-action flex justify-center">
+              </div>
+              <div className="modal-action flex justify-center">
                 <form method="dialog" className="flex gap-2">
-                    <button className="btn w-28">Schließen</button>
+                  <button className="btn w-28">Schließen</button>
                 </form>
+              </div>
             </div>
-        </div>
-    </dialog>
+          </dialog>
           <p className="text-center lg:flex justify-center mt-2 text-base text-gray-600">
             {activity.registeredClassID?.description}
           </p>

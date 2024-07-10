@@ -286,25 +286,78 @@ export default function RegisteredUserCard({
   }
 
   const currentDate = new Date();
-  const isoDateString = currentDate.toISOString();
+  const isoDateString = currentDate.getFullYear() + '-' +
+                        ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' +
+                        ('0' + currentDate.getDate()).slice(-2) + 'T' +
+                        ('0' + currentDate.getHours()).slice(-2) + ':' +
+                        ('0' + currentDate.getMinutes()).slice(-2) + ':' +
+                        ('0' + currentDate.getSeconds()).slice(-2);
 
   let formattedDate = null;
-
+  let formattedDateDeducted = null;
+  let formattedDateAdded = null;
+  
   const timeFromJson = activitySingleInformation?.time;
   const dateString = activitySingleInformation?.date;
+  
+  if (timeFromJson && dateString) {
+    const [hoursStr, minutesStr] = timeFromJson.split(":");
+    const hoursToAdd = parseInt(hoursStr, 10);
+    const minutesToAdd = parseInt(minutesStr, 10);
+  
+    const dateFromJson = new Date(dateString);
+    dateFromJson.setHours(dateFromJson.getHours() + hoursToAdd);
+    dateFromJson.setMinutes(dateFromJson.getMinutes() + minutesToAdd);
+  
+    formattedDate = dateFromJson.toISOString();
+  }
 
   if (timeFromJson && dateString) {
     const [hoursStr, minutesStr] = timeFromJson.split(":");
     const hoursToAdd = parseInt(hoursStr, 10);
     const minutesToAdd = parseInt(minutesStr, 10);
-
+  
     const dateFromJson = new Date(dateString);
     dateFromJson.setHours(dateFromJson.getHours() + hoursToAdd);
     dateFromJson.setMinutes(dateFromJson.getMinutes() + minutesToAdd);
-
-    formattedDate = dateFromJson.toISOString();
+  
+    dateFromJson.setMinutes(dateFromJson.getMinutes() - 1440);
+    
+    formattedDateDeducted = dateFromJson.toISOString();
   }
 
+  if (timeFromJson && dateString) {
+    const [hoursStr, minutesStr] = timeFromJson.split(":");
+    const hoursToAdd = parseInt(hoursStr, 10);
+    const minutesToAdd = parseInt(minutesStr, 10);
+  
+    const dateFromJson = new Date(dateString);
+    dateFromJson.setHours(dateFromJson.getHours() + hoursToAdd);
+    dateFromJson.setMinutes(dateFromJson.getMinutes() + minutesToAdd);
+  
+    dateFromJson.setMinutes(dateFromJson.getMinutes() + 1440);
+    
+    formattedDateAdded = dateFromJson.toISOString();
+  }
+
+  console.log(isoDateString  + " " + formattedDate + " " + formattedDateDeducted)
+
+  const date1 = new Date(isoDateString);
+  const date2 = new Date(formattedDate);
+  const date3 = new Date(formattedDateDeducted);
+  const date4 = new Date(formattedDateAdded);
+
+
+  const differenceMs = date1.getTime() - date2.getTime();
+  const differenceMs2 = date1.getTime() - date3.getTime();
+  const differenceMs3 = date1.getTime() - date4.getTime();
+
+  // Convert milliseconds to hours
+  const differenceHours = differenceMs / (1000 * 60 * 60) + 2;
+  const differenceHours2 = differenceMs2 / (1000 * 60 * 60) + 2;
+  const differenceHours3 = differenceMs3 / (1000 * 60 * 60) + 2;
+  
+  console.log("Difference in hours:", differenceHours);
   return (
     <>
       <div className="px-4 py-4">
@@ -456,7 +509,7 @@ export default function RegisteredUserCard({
         <>
           <div
             className={`flex justify-center gap-4 px-4 py-6 ${
-              isoDateString > formattedDate ? "flex" : "hidden"
+              differenceHours > -24  ? "flex" : "hidden"
             }`}
           >
             <label className="cursor-pointer">
@@ -474,7 +527,7 @@ export default function RegisteredUserCard({
           </div>
           <div
             className={`flex justify-center gap-4 px-4 py-6 ${
-              isoDateString < formattedDate ? "flex" : "hidden"
+              differenceHours < -24 ? "flex" : "hidden"
             }`}
           >
             {registeredUser.classesRegistered.some(
@@ -739,7 +792,7 @@ export default function RegisteredUserCard({
         </>
       ) : (
         <>
-          {isoDateString > formattedDate ? (
+          {differenceHours < 24 && differenceHours > 0 ? (
             registeredUser.classesRegistered.some(
               (element) =>
                 element.registeredClassID === activityId &&
@@ -850,7 +903,10 @@ export default function RegisteredUserCard({
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold uppercase text-gray-500">
-                      Noch nicht begonnen
+                      {differenceHours > 24 ?
+                      "Änderungen nicht mehr möglich" :
+                      "Noch nicht begonnen"  
+                    }
                     </p>
                   </div>
                 </div>

@@ -29,12 +29,14 @@ export default function SingleClassDetails() {
   const date = new Date(dateString);
 
   const day = date.getDate();
-  const dayPrior = date.getDate() - 1;
+  const dayPrior = date.getDate() - 2;
+  const dayPriorGenehimgung = date.getDate() - 1;
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
 
   const formattedDate = `${day}/${month}/${year}`;
   const formatedDateprior = `${dayPrior}/${month}/${year}`;
+  const formatedDatepriorGenehmigung = `${dayPriorGenehimgung}/${month}/${year}`;
   return (
     <>
       {!activity ? (
@@ -87,9 +89,17 @@ export default function SingleClassDetails() {
                     <div className="flex flex-col">
                       <div>
                         <p className="font-semibold">
-                          Registrierungsende:{" "}
+                          Anmeldeschluss:{" "}
                           <span className="font-normal">
                             {formatedDateprior} um {activity.time}
+                          </span>
+                        </p>
+                      </div>
+                      <div className="flex flex-col">
+                        <p className="font-semibold mt-1">
+                          Genehmigungsende:{" "}
+                          <span className="font-normal">
+                            {formatedDatepriorGenehmigung} um {activity.time}
                           </span>
                         </p>
                       </div>
