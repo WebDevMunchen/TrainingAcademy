@@ -134,7 +134,7 @@ export default function Register() {
                           htmlFor="userContactInformation"
                           className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
                         >
-                          Ansprechpartner:
+                          Genehmiger*in:
                         </label>
                         <div
                           className="tooltip ml-2 hover:cursor-pointer"
@@ -188,8 +188,8 @@ export default function Register() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       >
                         <option value="admin">Admin</option>
-                        <option value="ASP">Ansprechpartner</option>
-                        <option value="teacher">Referent</option>
+                        <option value="ASP">Genehmiger*in</option>
+                        <option value="teacher">Referent*in</option>
                         <option value="user">User</option>
                       </select>
                     </div>

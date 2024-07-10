@@ -24,7 +24,7 @@ export default function SideMenu() {
             href="#/"
           >
             <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-white">
-              Rent Group | München
+              Rent.Group | München
             </h6>
           </a>
           <button
@@ -174,7 +174,7 @@ export default function SideMenu() {
                     ></path>
                   </svg>
                   <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">
-                    Schulungsübericht
+                    Schulungsübersicht
                   </p>
                 </button>
               </NavLink>

@@ -299,7 +299,7 @@ export default function UserInfoCard() {
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
                           <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
-                            Status
+                            Teilnahme
                           </p>
                         </th>
                       </tr>
@@ -414,7 +414,7 @@ export default function UserInfoCard() {
                               (activity.status === "abgelehnt" ||
                                 activity.status === "ausstehend") ? (
                                 <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-500 bg-gray-200 text-gray-800">
-                                  kein Status erforderlich
+                                nicht angemeldet
                                 </span>
                               ) : (
                                 <span

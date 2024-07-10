@@ -28,7 +28,7 @@ export default function UserListCard({ user }) {
         </td>
         {user.role === "teacher" ? (
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            Referent
+            Referent*in
           </td>
         ) : (
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

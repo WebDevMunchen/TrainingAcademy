@@ -232,7 +232,7 @@ export default function EditClass() {
                       htmlFor="teacher"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Referent:
+                      Referent*in:
                     </label>
                     <input
                       placeholder="Wer unterrichtet die Schulung?"

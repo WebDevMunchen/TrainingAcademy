@@ -308,7 +308,7 @@ export default function RegisteredUserCard({
   return (
     <>
       <div className="px-4 py-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mx-2">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
             {registeredUser.firstName + " " + registeredUser.lastName}
           </h3>
@@ -319,12 +319,9 @@ export default function RegisteredUserCard({
             </span>{" "}
             {registeredUser.department}
           </p>
-
-
         </div>
-        <div className="mt-2 flex items-center justify-between">
-
-          <p className="flex flex-col items-center text-sm font-medium text-gray-500">
+        <div className="mt-2 flex items-center justify-between mx-2">
+          <p className="flex flex-col items-start text-sm font-medium text-gray-500">
             <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
               Teilnahmestatus:{" "}
             </span>
@@ -333,33 +330,34 @@ export default function RegisteredUserCard({
                 return (
                   <React.Fragment key={element.registeredClassID}>
                     {element.status === "genehmigt" ? (
-                      
-                      <span className={`inline-flex items-center rounded-full px-3 text-sm text-white py-1.5 font-medium ${
-                        element.statusAttended === "teilgenommen" ? "bg-green-600" :
-                        element.statusAttended === "nicht teilgenommen" ? "bg-red-500" :
-                        "bg-orange-500"
-                      }`}>
-
+                      <span
+                        className={`inline-flex items-center rounded-full px-3 text-sm text-white py-1.5 font-medium ${
+                          element.statusAttended === "teilgenommen"
+                            ? "bg-green-600"
+                            : element.statusAttended === "nicht teilgenommen"
+                            ? "bg-red-500"
+                            : "bg-orange-500"
+                        }`}
+                      >
                         {element.statusAttended}
                       </span>
-                    ) : element.status === "ausstehend" ? 
-                    <span className="inline-flex items-center bg-orange-500 rounded-full px-3 text-sm text-white py-1.5 font-medium">
-
-                    auf Genehmigung warten
-                  </span> :
-                    (
-                      <span className="inline-flex items-center bg-gray-500 rounded-full px-3 text-sm text-white py-1.5 font-medium">
-
-                        kein Status vorhanden
+                    ) : element.status === "ausstehend" ? (
+                      <span className="inline-flex items-center bg-orange-500 rounded-full px-3 text-sm text-white py-1.5 font-medium">
+                        auf Genehmigung warten
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center bg-slate-400 rounded-full px-3 text-sm text-white py-1.5 font-medium">
+                        nicht angemeldet
                       </span>
                     )}
                   </React.Fragment>
                 );
             })}
           </p>
-          <p className="flex flex-col items-center text-sm font-medium text-gray-500">
+
+          <p className="flex flex-col items-end text-sm font-medium text-gray-500">
             <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
-              Status:{" "}
+            Genehmigungsstatus:{" "}
             </span>
             {registeredUser.classesRegistered.map((element, index) => {
               if (element.registeredClassID === activityId)
@@ -383,8 +381,33 @@ export default function RegisteredUserCard({
                         </svg>
                         {element.status}
                       </span>
+   
                     ) : element.status === "abgelehnt" ? (
-                      <span className="inline-flex items-center bg-red-600 rounded-full px-3 text-sm text-white py-2 font-medium">
+                      <div className="flex items-center">
+
+                      <span
+                      className="tooltip mr-1 hover:cursor-pointer"
+                      style={{ width: "auto", height: "auto" }}
+                      data-tip={
+                        /^[^a-zA-Z]*$/.test(element.reason)
+                          ? "Kein Grund vorhanden"
+                          : element.reason
+                      }
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="#ffb951"
+                        className="w-8 h-8"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </span>
+                      <span className="inline-flex items-center bg-red-600 rounded-full px-3 text-sm text-white py-1 font-medium">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -401,6 +424,9 @@ export default function RegisteredUserCard({
                         </svg>
                         {element.status}
                       </span>
+                      </div>
+
+                      
                     ) : (
                       <span className="inline-flex items-center bg-orange-500 rounded-full px-3 text-sm text-white py-1 font-medium">
                         <svg
@@ -424,29 +450,81 @@ export default function RegisteredUserCard({
                 );
             })}
           </p>
-          </div>
-
         </div>
+      </div>
       {user.role === "ASP" || user.role === "admin" ? (
-        <div className="flex justify-center gap-4 px-4 py-6">
-          {registeredUser.classesRegistered.some(
-            (element) =>
-              element.registeredClassID === activityId &&
-              element.status === "ausstehend"
-          ) ? (
-            <>
-              <label className="cursor-pointer">
-                <input
-                  onChange={handleApproved}
-                  type="radio"
-                  className="peer sr-only"
-                  value="genehmigt"
-                />
-                <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-blue-400 peer-checked:ring-offset-2 lg:w-52">
+        <>
+          <div
+            className={`flex justify-center gap-4 px-4 py-6 ${
+              isoDateString > formattedDate ? "flex" : "hidden"
+            }`}
+          >
+            <label className="cursor-pointer">
+              <input type="radio" className="peer sr-only" />
+              <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-blue-400 peer-checked:ring-offset-2 lg:w-52">
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center justify-center">
+                    <p className="text-sm font-semibold uppercase text-gray-500">
+                      Beendet
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </label>
+          </div>
+          {/* <div className={`flex justify-center gap-4 px-4 py-6`}> */}
+          <div
+            className={`flex justify-center gap-4 px-4 py-6 ${
+              isoDateString < formattedDate ? "flex" : "hidden"
+            }`}
+          >
+            {registeredUser.classesRegistered.some(
+              (element) =>
+                element.registeredClassID === activityId &&
+                element.status === "ausstehend"
+            ) ? (
+              <>
+                <label className="cursor-pointer">
+                  <input
+                    onChange={handleApproved}
+                    type="radio"
+                    className="peer sr-only"
+                    value="genehmigt"
+                  />
+                  <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-blue-400 peer-checked:ring-offset-2 lg:w-52">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-semibold uppercase text-gray-500">
+                          Genehmigen
+                        </p>
+                        <div>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+                <button
+                  className="shadow-md border w-36 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:w-52"
+                  onClick={() => modalRef.current.showModal()}
+                >
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-semibold uppercase text-gray-500">
-                        Genehmigen
+                        Ablehnen
                       </p>
                       <div>
                         <svg
@@ -460,142 +538,19 @@ export default function RegisteredUserCard({
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                           />
                         </svg>
                       </div>
                     </div>
                   </div>
-                </div>
-              </label>
-              <button
-                className="shadow-md border w-36 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:w-52"
-                onClick={() => modalRef.current.showModal()}
-              >
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold uppercase text-gray-500">
-                      Ablehnen
-                    </p>
-                    <div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </button>
-              <dialog ref={modalRef} id="my_modal_1" className="modal">
-                <div className="modal-box">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-bold text-lg">Genehmigung Ablehnen</h3>
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
-                        />
-                      </svg>
-                    </span>
-                  </div>
-
-                  <p className="py-2">
-                    Möchtest du für{" "}
-                    {registeredUser.firstName + " " + registeredUser.lastName}{" "}
-                    den Genehmigungsstatus bei dieser Schulung wirklich
-                    ablehnen?
-                  </p>
-                  <div className="modal-action mr-2.5">
-                    <form method="dialog" className="flex gap-2">
-                      <div>
-                        <div className="w-72 mx-auto lg:w-96 mr-8">
-                          <label
-                            htmlFor="description"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                          >
-                            Begrundung:
-                          </label>
-                          <textarea
-                            className="mb-4 w-full resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-full"
-                            placeholder="Gib eine Begründung ein..."
-                            value={declineReason}
-                            onChange={(e) => setDeclineReason(e.target.value)}
-                          />
-                        </div>
-                        <div className="flex justify-end gap-2">
-                          <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
-                            <input
-                              onChange={handleDeclined}
-                              onClick={closeModal}
-                              type="radio"
-                              className="peer sr-only"
-                              value="abgelehnt"
-                            />
-                            Bestätigen
-                          </label>
-                          <button className="btn w-28">Abbrechen</button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </dialog>
-            </>
-          ) : (
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center justify-between">
-                <button
-                  hidden={submitedChangedStatus}
-                  className="shadow-md border w-44 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2"
-                >
-                  <span className="flex justify-center items-center gap-2 text-sm font-semibold uppercase text-gray-500">
-                    Übermittelt
-                  </span>
-                </button>
-                <button
-                  hidden={hideChangedBtn}
-                  className="shadow-md border w-44 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2"
-                  onClick={() => modalRef.current.showModal()}
-                >
-                  <span className="flex justify-center items-center gap-2 text-sm font-semibold uppercase text-gray-500">
-                    Ändern
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M15.97 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 1 1-1.06-1.06l3.22-3.22H7.5a.75.75 0 0 1 0-1.5h11.69l-3.22-3.22a.75.75 0 0 1 0-1.06Zm-7.94 9a.75.75 0 0 1 0 1.06l-3.22 3.22H16.5a.75.75 0 0 1 0 1.5H4.81l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 0Z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </span>
                 </button>
                 <dialog ref={modalRef} id="my_modal_1" className="modal">
                   <div className="modal-box">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-lg">Genehmigung ändern</h3>
+                      <h3 className="font-bold text-lg">
+                        Genehmigung ablehnen
+                      </h3>
                       <span>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -615,72 +570,174 @@ export default function RegisteredUserCard({
                     </div>
 
                     <p className="py-2">
-                      Möchtest du den Genehmigungsstatus für{" "}
+                      Möchtest du für{" "}
                       {registeredUser.firstName + " " + registeredUser.lastName}{" "}
-                      bei dieser Schulung ändern?
+                      die Anfrage zur Teilnahme an dieser Schulung wirklich
+                      ablehnen?
                     </p>
-                    <div className="modal-action">
+                    <div className="modal-action mr-2.5">
                       <form method="dialog" className="flex gap-2">
-                        {registeredUser.classesRegistered.some(
-                          (element) =>
-                            element.registeredClassID === activityId &&
-                            element.status === "genehmigt"
-                        ) ? (
-                          <div>
-                            <div className="w-72 mr-0 lg:w-96 lg:mr-12">
-                              <label
-                                htmlFor="description"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                              >
-                                Begründung:
-                              </label>
-                              <textarea
-                                className="mb-4 mr-12 resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Gib eine Begründung ein..."
-                                value={declineReason}
-                                onChange={(e) =>
-                                  setDeclineReason(e.target.value)
-                                }
-                              />
-                            </div>
-                            <div className="flex justify-end gap-2">
-                              <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
-                                <input
-                                  onChange={handleDeclinedWithCapcityIncrease}
-                                  onClick={closeModal}
-                                  type="radio"
-                                  className="peer sr-only"
-                                  value="abgelehnt"
-                                />
-                                Zu "abgelehnt" ändern
-                              </label>
-
-                              <button className="btn w-28">Abbrechen</button>
-                            </div>
+                        <div>
+                          <div className="w-72 mx-auto lg:w-96 mr-8">
+                            <label
+                              htmlFor="description"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              Begründung:
+                            </label>
+                            <textarea
+                              className="mb-4 w-full resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-full"
+                              placeholder="Gib eine Begründung ein..."
+                              value={declineReason}
+                              onChange={(e) => setDeclineReason(e.target.value)}
+                            />
                           </div>
-                        ) : (
-                          <>
-                            <label className="btn w-fit bg-green-600 text-white hover:bg-green-700">
+                          <div className="flex justify-end gap-2">
+                            <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
                               <input
-                                onChange={handleApproved}
+                                onChange={handleDeclined}
                                 onClick={closeModal}
                                 type="radio"
                                 className="peer sr-only"
-                                value="genehmigt"
+                                value="abgelehnt"
                               />
-                              In "Genehmigt" ändern
+                              Bestätigen
                             </label>
                             <button className="btn w-28">Abbrechen</button>
-                          </>
-                        )}
+                          </div>
+                        </div>
                       </form>
                     </div>
                   </div>
                 </dialog>
+              </>
+            ) : (
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center justify-between">
+                  <button
+                    hidden={submitedChangedStatus}
+                    className="shadow-md border w-44 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2"
+                  >
+                    <span className="flex justify-center items-center gap-2 text-sm font-semibold uppercase text-gray-500">
+                      Übermittelt
+                    </span>
+                  </button>
+                  <button
+                    hidden={hideChangedBtn}
+                    className="shadow-md border w-44 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2"
+                    onClick={() => modalRef.current.showModal()}
+                  >
+                    <span className="flex justify-center items-center gap-2 text-sm font-semibold uppercase text-gray-500">
+                      Ändern
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M15.97 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 1 1-1.06-1.06l3.22-3.22H7.5a.75.75 0 0 1 0-1.5h11.69l-3.22-3.22a.75.75 0 0 1 0-1.06Zm-7.94 9a.75.75 0 0 1 0 1.06l-3.22 3.22H16.5a.75.75 0 0 1 0 1.5H4.81l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 0Z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                  <dialog ref={modalRef} id="my_modal_1" className="modal">
+                    <div className="modal-box">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-bold text-lg">
+                          Genehmigung ändern
+                        </h3>
+                        <span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+
+                      <p className="py-2">
+                        Möchtest du für{" "}
+                        {registeredUser.firstName +
+                          " " +
+                          registeredUser.lastName}{" "}
+                        die Anfrage zur Teilnahme an dieser Schulung wirklich
+                        ändern?
+                      </p>
+                      <div className="modal-action">
+                        <form method="dialog" className="flex gap-2">
+                          {registeredUser.classesRegistered.some(
+                            (element) =>
+                              element.registeredClassID === activityId &&
+                              element.status === "genehmigt"
+                          ) ? (
+                            <div>
+                              <div className="w-72 mr-0 lg:w-96 lg:mr-12">
+                                <label
+                                  htmlFor="description"
+                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                >
+                                  Begründung:
+                                </label>
+                                <textarea
+                                  className="mb-4 mr-12 resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                  placeholder="Gib eine Begründung ein..."
+                                  value={declineReason}
+                                  onChange={(e) =>
+                                    setDeclineReason(e.target.value)
+                                  }
+                                />
+                              </div>
+                              <div className="flex justify-end gap-2">
+                                <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
+                                  <input
+                                    onChange={handleDeclinedWithCapcityIncrease}
+                                    onClick={closeModal}
+                                    type="radio"
+                                    className="peer sr-only"
+                                    value="abgelehnt"
+                                  />
+                                  In "abgelehnt" ändern
+                                </label>
+
+                                <button className="btn w-28">Abbrechen</button>
+                              </div>
+                            </div>
+                          ) : (
+                            <>
+                              <label className="btn w-fit bg-green-600 text-white hover:bg-green-700">
+                                <input
+                                  onChange={handleApproved}
+                                  onClick={closeModal}
+                                  type="radio"
+                                  className="peer sr-only"
+                                  value="genehmigt"
+                                />
+                                In "Genehmigt" ändern
+                              </label>
+                              <button className="btn w-28">Abbrechen</button>
+                            </>
+                          )}
+                        </form>
+                      </div>
+                    </div>
+                  </dialog>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        </>
       ) : (
         <>
           {isoDateString > formattedDate ? (

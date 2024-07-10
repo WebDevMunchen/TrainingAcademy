@@ -120,11 +120,11 @@ export default function Register() {
                         htmlFor="userContactInformation"
                         className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Ansprechpartner:
+                        Genehmiger*in:
                       </label>
                       <div
                         className="tooltip ml-2 hover:cursor-pointer"
-                        data-tip="Für jede Abteilung ist eine E-Mail-Adresse des ASPs hinterlegt. Diese E-Mail-Adresse wird verwendet, um eine E-Mail an den ASP zu senden, der entscheidet, ob der Mitarbeiter an der Schulung teilnehmen darf"
+                        data-tip="Für jede Abteilung ist eine E-Mail-Adresse des Genehmigers (Ansprechpartners) hinterlegt. Diese E-Mail-Adresse wird verwendet, um eine E-Mail an den Genehmiger zu senden, der entscheidet, ob der Mitarbeiter an der Schulung teilnehmen darf"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
