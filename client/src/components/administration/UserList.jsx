@@ -7,6 +7,10 @@ import SideMenu from "./SideMenu";
 export default function UserList() {
   const { allUsers } = useContext(AuthContext);
 
+  const date = new Date();
+
+  const currentYear = date.getFullYear();
+
   return (
     <>
       {!allUsers ? (
@@ -21,7 +25,7 @@ export default function UserList() {
               </h2>
               <div className="bg-gradient-to-r from-blue-300 to-blue-500 h-px mb-6"></div>
 
-              <div className="mx-auto w-10/12 mb-4 grid grid-cols-1 gap-6">
+              <div className="mx-auto w-11/12 mb-4 grid grid-cols-1 gap-6">
                 <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
                   <div className="p-6 h-[calc(75.5vh-32px)] overflow-x-scroll px-0 pt-0 pb-2">
                     <table className="w-full min-w-[640px] table-auto">
@@ -44,6 +48,9 @@ export default function UserList() {
                           </th>
                           <th className="px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Abteilung
+                          </th>
+                          <th className="w-2/12 px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
+                            Jährliche Unterweisung in {currentYear}
                           </th>
                           <th className="px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Details

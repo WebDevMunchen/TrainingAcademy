@@ -14,6 +14,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     month,
     time,
     teacher,
+    safetyBriefing
   } = req.body;
 
   const activity = await ClassActivity.create({
@@ -27,6 +28,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     month,
     time,
     teacher,
+    safetyBriefing
   });
 
   res.status(201).json(activity);
@@ -44,6 +46,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     month,
     time,
     teacher,
+    safetyBriefing
   } = req.body;
 
   const { id } = req.params;
@@ -59,6 +62,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     month,
     time,
     teacher,
+    safetyBriefing
   };
 
   const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, {

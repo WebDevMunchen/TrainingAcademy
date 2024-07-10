@@ -222,7 +222,7 @@ export default function RegisteredUserCardAdmin({
                         {element.status}
                       </span>
                     ) : element.status === "abgelehnt" ? (
-                      <div className="flex items-center">
+                      <span className="flex items-center">
                         <span
                           className="tooltip mr-1 hover:cursor-pointer"
                           style={{ width: "auto", height: "auto" }}
@@ -262,7 +262,7 @@ export default function RegisteredUserCardAdmin({
                           </svg>
                           {element.status}
                         </span>
-                      </div>
+                      </span>
                     ) : (
                       <span className="inline-flex items-center bg-orange-500 rounded-full px-3 text-sm text-white py-1 font-medium">
                         <svg

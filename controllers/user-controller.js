@@ -125,7 +125,7 @@ const getUserInformation = asyncWrapper(async (req, res, next) => {
 const getAllUsers = asyncWrapper(async (req, res, next) => {
   const user = await User.find({}).populate(
     "classesRegistered.registeredClassID"
-  );
+  ).sort({status: 1});
 
   res.json(user);
 });
@@ -389,6 +389,7 @@ const logout = asyncWrapper(async (req, res, next) => {
     .cookie("access_token", "", { httpOnly: true, maxAge: 0 })
     .json({ success: true });
 });
+
 module.exports = {
   createUser,
   getProfile,

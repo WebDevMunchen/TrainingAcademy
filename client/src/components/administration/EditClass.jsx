@@ -79,9 +79,9 @@ export default function EditClass() {
       ) : (
         <div className="bg-gray-50/50 flex">
           <SideMenu />
-          <div className="flex mt-4 flex-col items-center w-11/12 lg:py-10 mx-auto lg:mt-0 lg:w-5/12">
+          <div className="flex mt-4 flex-col items-center w-11/12 lg:py-7 mx-auto lg:mt-0 lg:w-5/12">
             <div className="bg-white rounded-md shadow w-11/12 lg:6/12">
-              <div className="p-6 space-y-4 md:space-y-4 sm:p-6">
+              <div className="p-6 space-y-4 md:space-y-2 sm:p-6">
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   "{activityInformation.title}" bearbeiten:
                 </h1>
@@ -119,6 +119,20 @@ export default function EditClass() {
                     />
                   </div>
 
+                  <div className="flex gap-4">
+                  <label
+                    htmlFor="safetyBriefing"
+                    className="block text-sm font-medium text-gray-900 dark:text-white mt-1"
+                  >
+                    Jährliche Sicherheitsunterweisung:
+                  </label>
+                  <input
+                    type="checkbox" {...register("safetyBriefing", { required: false })}
+                    id="safetyBriefing"
+                    className="checkbox"
+                    defaultChecked={activityInformation.safetyBriefing}
+                  />
+                </div>
                   <div className="flex flex-col lg:flex-row lg:justify-between">
                     <div>
                       <label
@@ -226,7 +240,6 @@ export default function EditClass() {
                     </div>
                   </div>
 
-                  <div className="flex justify-start gap-16"></div>
                   <div>
                     <label
                       htmlFor="teacher"

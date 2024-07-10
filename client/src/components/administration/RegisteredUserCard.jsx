@@ -286,78 +286,43 @@ export default function RegisteredUserCard({
   }
 
   const currentDate = new Date();
-  const isoDateString = currentDate.getFullYear() + '-' +
-                        ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' +
-                        ('0' + currentDate.getDate()).slice(-2) + 'T' +
-                        ('0' + currentDate.getHours()).slice(-2) + ':' +
-                        ('0' + currentDate.getMinutes()).slice(-2) + ':' +
-                        ('0' + currentDate.getSeconds()).slice(-2);
+  const isoDateString =
+    currentDate.getFullYear() +
+    "-" +
+    ("0" + (currentDate.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + currentDate.getDate()).slice(-2) +
+    "T" +
+    ("0" + currentDate.getHours()).slice(-2) +
+    ":" +
+    ("0" + currentDate.getMinutes()).slice(-2) +
+    ":" +
+    ("0" + currentDate.getSeconds()).slice(-2);
 
   let formattedDate = null;
-  let formattedDateDeducted = null;
-  let formattedDateAdded = null;
-  
+
   const timeFromJson = activitySingleInformation?.time;
   const dateString = activitySingleInformation?.date;
-  
+
   if (timeFromJson && dateString) {
     const [hoursStr, minutesStr] = timeFromJson.split(":");
     const hoursToAdd = parseInt(hoursStr, 10);
     const minutesToAdd = parseInt(minutesStr, 10);
-  
+
     const dateFromJson = new Date(dateString);
     dateFromJson.setHours(dateFromJson.getHours() + hoursToAdd);
     dateFromJson.setMinutes(dateFromJson.getMinutes() + minutesToAdd);
-  
+
     formattedDate = dateFromJson.toISOString();
   }
 
-  if (timeFromJson && dateString) {
-    const [hoursStr, minutesStr] = timeFromJson.split(":");
-    const hoursToAdd = parseInt(hoursStr, 10);
-    const minutesToAdd = parseInt(minutesStr, 10);
-  
-    const dateFromJson = new Date(dateString);
-    dateFromJson.setHours(dateFromJson.getHours() + hoursToAdd);
-    dateFromJson.setMinutes(dateFromJson.getMinutes() + minutesToAdd);
-  
-    dateFromJson.setMinutes(dateFromJson.getMinutes() - 1440);
-    
-    formattedDateDeducted = dateFromJson.toISOString();
-  }
-
-  if (timeFromJson && dateString) {
-    const [hoursStr, minutesStr] = timeFromJson.split(":");
-    const hoursToAdd = parseInt(hoursStr, 10);
-    const minutesToAdd = parseInt(minutesStr, 10);
-  
-    const dateFromJson = new Date(dateString);
-    dateFromJson.setHours(dateFromJson.getHours() + hoursToAdd);
-    dateFromJson.setMinutes(dateFromJson.getMinutes() + minutesToAdd);
-  
-    dateFromJson.setMinutes(dateFromJson.getMinutes() + 1440);
-    
-    formattedDateAdded = dateFromJson.toISOString();
-  }
-
-  console.log(isoDateString  + " " + formattedDate + " " + formattedDateDeducted)
-
   const date1 = new Date(isoDateString);
   const date2 = new Date(formattedDate);
-  const date3 = new Date(formattedDateDeducted);
-  const date4 = new Date(formattedDateAdded);
-
 
   const differenceMs = date1.getTime() - date2.getTime();
-  const differenceMs2 = date1.getTime() - date3.getTime();
-  const differenceMs3 = date1.getTime() - date4.getTime();
 
-  // Convert milliseconds to hours
   const differenceHours = differenceMs / (1000 * 60 * 60) + 2;
-  const differenceHours2 = differenceMs2 / (1000 * 60 * 60) + 2;
-  const differenceHours3 = differenceMs3 / (1000 * 60 * 60) + 2;
-  
-  console.log("Difference in hours:", differenceHours);
+
   return (
     <>
       <div className="px-4 py-4">
@@ -410,7 +375,7 @@ export default function RegisteredUserCard({
 
           <p className="flex flex-col items-end text-sm font-medium text-gray-500">
             <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
-            Genehmigungsstatus:{" "}
+              Genehmigungsstatus:{" "}
             </span>
             {registeredUser.classesRegistered.map((element, index) => {
               if (element.registeredClassID === activityId)
@@ -434,52 +399,48 @@ export default function RegisteredUserCard({
                         </svg>
                         {element.status}
                       </span>
-   
                     ) : element.status === "abgelehnt" ? (
                       <div className="flex items-center">
-
-                      <span
-                      className="tooltip mr-1 hover:cursor-pointer"
-                      style={{ width: "auto", height: "auto" }}
-                      data-tip={
-                        /^[^a-zA-Z]*$/.test(element.reason)
-                          ? "Kein Grund vorhanden"
-                          : element.reason
-                      }
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="#ffb951"
-                        className="w-8 h-8"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </span>
-                      <span className="inline-flex items-center bg-red-600 rounded-full px-3 text-sm text-white py-1 font-medium">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-6 h-6 mr-2"
+                        <span
+                          className="tooltip mr-1 hover:cursor-pointer"
+                          style={{ width: "auto", height: "auto" }}
+                          data-tip={
+                            /^[^a-zA-Z]*$/.test(element.reason)
+                              ? "Kein Grund vorhanden"
+                              : element.reason
+                          }
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                          />
-                        </svg>
-                        {element.status}
-                      </span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="#ffb951"
+                            className="w-8 h-8"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </span>
+                        <span className="inline-flex items-center bg-red-600 rounded-full px-3 text-sm text-white py-1 font-medium">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6 mr-2"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                          {element.status}
+                        </span>
                       </div>
-
-                      
                     ) : (
                       <span className="inline-flex items-center bg-orange-500 rounded-full px-3 text-sm text-white py-1 font-medium">
                         <svg
@@ -509,16 +470,16 @@ export default function RegisteredUserCard({
         <>
           <div
             className={`flex justify-center gap-4 px-4 py-6 ${
-              differenceHours > -24  ? "flex" : "hidden"
+              differenceHours > -24 ? "flex" : "hidden"
             }`}
           >
             <label className="cursor-pointer">
               <input type="radio" className="peer sr-only" />
-              <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-blue-400 peer-checked:ring-offset-2 lg:w-52">
+              <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-blue-400 peer-checked:ring-offset-2 lg:w-64">
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-center">
                     <p className="text-sm font-semibold uppercase text-gray-500">
-                      Beendet
+                      Änderungen nicht mehr möglich
                     </p>
                   </div>
                 </div>
@@ -903,10 +864,9 @@ export default function RegisteredUserCard({
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold uppercase text-gray-500">
-                      {differenceHours > 24 ?
-                      "Änderungen nicht mehr möglich" :
-                      "Noch nicht begonnen"  
-                    }
+                      {differenceHours > 24
+                        ? "Änderungen nicht mehr möglich"
+                        : "Noch nicht begonnen"}
                     </p>
                   </div>
                 </div>

@@ -414,7 +414,7 @@ export default function UserInfoCard() {
                               (activity.status === "abgelehnt" ||
                                 activity.status === "ausstehend") ? (
                                 <span className="px-2 inline-flex text-sm leading-5 font-semibold rounded-full text-gray-500 bg-gray-200 text-gray-800">
-                                nicht angemeldet
+                                  nicht angemeldet
                                 </span>
                               ) : (
                                 <span
