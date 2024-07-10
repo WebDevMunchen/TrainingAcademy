@@ -89,7 +89,7 @@ export default function SingleClassDetails() {
                     <div className="flex flex-col">
                       <div>
                         <p className="font-semibold">
-                          Anmeldeschluss:{" "}
+                        Registrierungsende:{" "}
                           <span className="font-normal">
                             {formatedDateprior} um {activity.time}
                           </span>
