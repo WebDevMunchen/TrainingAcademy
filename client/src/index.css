@@ -1,3 +1,4 @@
+@import './customStyles.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,7 +8,7 @@
     }
   }
 
-@import './customStyles.css';
+
 
 @keyframes fadeIn {
   from {

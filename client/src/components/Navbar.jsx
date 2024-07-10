@@ -12,7 +12,7 @@ export default function Navbar() {
         <nav className="flex justify-between lg:justify-between bg-gray-800 text-white w-full">
           <div className="px-2 xl:flex items-center">
             <NavLink to={"/"}>
-              <img className="max-w-none h-16" src={logo} alt="logo" />
+              <img className="max-w-none h-16" src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1720595800/logo_profile_b5hxd7.png" alt="logo" />
             </NavLink>
           </div>
           {!user ? (
