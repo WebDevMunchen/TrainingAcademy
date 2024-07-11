@@ -20,6 +20,7 @@ import AuthorizeNonUser from "./components/AuthorizeNonUser";
 import { Bounce, ToastContainer } from "react-toastify";
 import Datenschutz from "./components/user/Datenschutz";
 import SingleClassDetailsAdmin from "./components/administration/SingleClassDetailsAdmin";
+import ApproverList from "./components/administration/ApproverList";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
@@ -69,6 +70,7 @@ function App() {
             <Route path="createClass" element={<CreateClass />} />
             <Route path="editClass/:id" element={<EditClass />} />
             <Route path="report/:id" element={<Report />} />
+            <Route path="approverList" element={<ApproverList />} />
           </Route>
         </Route>
       </Routes>

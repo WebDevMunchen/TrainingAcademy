@@ -110,7 +110,7 @@ export default function SideMenu() {
                     ></path>
                   </svg>
                   <p className="block antialiased  text-base leading-relaxed text-inherit font-medium capitalize">
-                  Benutzerübersicht
+                    Benutzerübersicht
                   </p>
                 </button>
               </NavLink>
@@ -211,6 +211,42 @@ export default function SideMenu() {
 
                   <p className="block antialiased  text-base leading-relaxed text-inherit font-medium capitalize">
                     Neue Schulung
+                  </p>
+                </button>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to={"/admin/approverList"}
+                className={
+                  location.pathname === "/admin/approverList" ? "active" : ""
+                }
+              >
+                <button
+                  className={
+                    location.pathname === "/admin/approverList"
+                      ? "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 active:opacity-[0.85] w-full flex items-center gap-4 px-4 capitalize"
+                      : "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
+                  }
+                  type="button"
+                >
+                  <svg
+                    class="h-7 w-7"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    {" "}
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />{" "}
+                    <circle cx="8.5" cy="7" r="4" />{" "}
+                    <polyline points="17 11 19 13 23 9" />
+                  </svg>
+
+                  <p className="block antialiased  text-base leading-relaxed text-inherit font-medium capitalize">
+                    Genehmiger
                   </p>
                 </button>
               </NavLink>

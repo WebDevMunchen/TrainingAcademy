@@ -11,6 +11,7 @@ const errorHandler = require("./middlewares/errorHandler.js");
 
 const userRouter = require("./routers/user-router.js");
 const classActivityRouter = require("./routers/classActivity-router.js");
+const approverRouter = require("./routers/approver-router.js");
 
 app.use(
   cors({
@@ -24,6 +25,7 @@ app.use(express.json());
 
 app.use("/user", userRouter);
 app.use("/classActivity", classActivityRouter);
+app.use("/approver", approverRouter);
 
 app.use(errorHandler);
 

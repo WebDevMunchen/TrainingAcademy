@@ -11,6 +11,7 @@ export default function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
+  const [approver, setApprover] = useState(null);
   const [allUsers, setAllUsers] = useState(null);
   const [allActivities, setAllActivities] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,11 +47,20 @@ export default function AuthProvider({ children }) {
       .get("/user/getAllUsers")
       .then((response) => {
         setAllUsers(response.data);
-        console.log(response.data)
       })
       .catch((error) => {
         setAllUsers(null);
       });
+
+      axiosClient
+      .get("/approver/approverList")
+      .then((response) => {
+        setApprover(response.data);
+        console.log(response.data)
+      })
+      .catch((error) => {
+        setUser(null);
+      })
   }, [currentMonth, setAllActivities]);
 
   const handleNextMonth = () => {
@@ -184,6 +194,7 @@ export default function AuthProvider({ children }) {
           setAllActivities,
           setAllUsers,
           notifyErrorRegister,
+          approver,
           user,
           allUsers,
           allActivities,

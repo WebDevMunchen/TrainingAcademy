@@ -13,7 +13,7 @@ const userSchema = new Schema({
     default: "user",
   },
   dateOfRegistration: { type: Date, default: Date.now() },
-  userContactInformation: { type: String, required: true },
+  userContactInformation: { type: Schema.Types.ObjectId, ref: "Approver" },
   status: { type: String, enum: ["aktiv", "inaktiv"], default: "aktiv" },
   inbox: { type: String, default: "webdevmunchen@gmail.com" },
   classesRegistered: [
