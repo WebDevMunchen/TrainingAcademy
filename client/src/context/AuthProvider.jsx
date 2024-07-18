@@ -46,7 +46,8 @@ export default function AuthProvider({ children }) {
     axiosClient
       .get("/user/getAllUsers")
       .then((response) => {
-        setAllUsers(response.data);
+        setAllUsers(response.data)
+        console.log(response.data)
       })
       .catch((error) => {
         setAllUsers(null);
@@ -59,7 +60,7 @@ export default function AuthProvider({ children }) {
         console.log(response.data)
       })
       .catch((error) => {
-        setUser(null);
+        setApprover(null);
       })
   }, [currentMonth, setAllActivities]);
 
@@ -125,11 +126,18 @@ export default function AuthProvider({ children }) {
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
+
+        return axiosClient.get(
+          `/approver/approverList`
+        );
+      }).then((responseApprovers) => {
+        setApprover(responseApprovers.data)
       })
       .catch((error) => {
         badCredentials()
         setUser(null);
         setAllUsers(null);
+        setApprover(null);
       })
       .finally(() => {
         setIsLoading(false);
@@ -194,6 +202,7 @@ export default function AuthProvider({ children }) {
           setAllActivities,
           setAllUsers,
           notifyErrorRegister,
+          setApprover,
           approver,
           user,
           allUsers,

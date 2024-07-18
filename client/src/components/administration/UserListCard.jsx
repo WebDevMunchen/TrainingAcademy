@@ -55,7 +55,7 @@ export default function UserListCard({ user }) {
         </td>
 
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          {user.department}
+          {user.department.charAt(0).toUpperCase() + user.department.slice(1)}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex justify-center items-center">
   {hasAttendedSafetyBriefingThisYear ? (

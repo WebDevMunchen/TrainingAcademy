@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/AuthProvider";
 import SideMenu from "./SideMenu";
 
 export default function Register() {
-  const { signup } = useContext(AuthContext);
+  const { signup, approver } = useContext(AuthContext);
 
   const {
     register,
@@ -70,19 +70,50 @@ export default function Register() {
                     />
                   </div>
                 </div>
-                <div>
-                  <label
-                    htmlFor="logID"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Kürzel:
-                  </label>
-                  <input
-                    {...register("logID", { required: true })}
-                    type="input"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-full"
-                    placeholder="Drei Zeichen lang"
-                  />
+                <div className="flex flex-col lg:flex-row justify-around gap-2">
+                  <div>
+                    <label
+                      htmlFor="logID"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Kürzel:
+                    </label>
+                    <input
+                      {...register("logID", { required: true })}
+                      type="input"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Drei Zeichen lang"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="department"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Abteilung:
+                    </label>
+                    <select
+                      {...register("department", {
+                        required: true,
+                      })}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    >
+                      <option value={"logistik"}>Logistik</option>
+                      <option value={"vertrieb"}>Vertrieb</option>
+                      <option value={"it & Services"}>IT & Services</option>
+                      <option value={"fuhrpark"}>Fuhrpark</option>
+                      <option value={"hr & Training"}>HR & Training</option>
+                      <option value={"buchhaltung"}>Buchhaltung</option>
+                      <option value={"einkauf"}>Einkauf & Anmietung</option>
+                      <option value={"design & Planung"}>Design & Planung</option>
+                      <option value={"projektmanagement"}>
+                        Projektmanagement
+                      </option>
+                      <option value={"officemanagement"}>
+                        Office Management
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <div>
                   <label
@@ -97,74 +128,6 @@ export default function Register() {
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-full"
                   />
-                </div>
-
-                <div className="flex flex-col lg:flex-row justify-around gap-2">
-                  <div>
-                    <label
-                      htmlFor="department"
-                      className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Abteilung:
-                    </label>
-                    <input
-                      {...register("department", { required: true })}
-                      type="text"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Abteilung des Mitarbeiters"
-                    />
-                  </div>
-                  <div>
-                    <div className="flex justify-start">
-                      <label
-                        htmlFor="userContactInformation"
-                        className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Genehmiger*in:
-                      </label>
-                      <div
-                        className="tooltip ml-2 hover:cursor-pointer"
-                        data-tip="Für jede Abteilung ist eine E-Mail-Adresse des Genehmigers (Ansprechpartners) hinterlegt. Diese E-Mail-Adresse wird verwendet, um eine E-Mail an den Genehmiger zu senden, der entscheidet, ob der Mitarbeiter an der Schulung teilnehmen darf"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-6 h-6 hover:text-blue-500"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-
-                    <select
-                      {...register("userContactInformation", {
-                        required: true,
-                      })}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                      <option value={aspLogistik}>Logistik</option>
-                      <option value={aspVertrieb}>Vertrieb</option>
-                      <option value={aspIT}>IT & Services</option>
-                      <option value={aspFuhrpark}>Fuhrpark</option>
-                      <option value={aspHR}>HR & Training</option>
-                      <option value={aspBuchhaltung}>Buchhaltung</option>
-                      <option value={aspEinkauf}>Einkauf & Anmietung</option>
-                      <option value={aspDesign}>Design & Planung</option>
-                      <option value={aspProjektmanagement}>
-                        Projektmanagement
-                      </option>
-                      <option value={aspOfficemanagement}>
-                        Office Management
-                      </option>
-                    </select>
-                  </div>
                 </div>
                 <div className="flex justify-center">
                   <button

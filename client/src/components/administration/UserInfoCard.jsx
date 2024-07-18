@@ -190,7 +190,7 @@ export default function UserInfoCard() {
 
                 <p className="mt-8 text-gray-600">
                   <span className="font-medium">Abteilung:</span>{" "}
-                  {userInfomation.department} -{" "}
+                  {userInfomation.department.charAt(0).toUpperCase() + userInfomation.department.slice(1)} -{" "}
                   <span className="font-medium">Rolle: </span>
                   {userInfomation.role.charAt(0).toUpperCase() +
                     userInfomation.role.slice(1)}

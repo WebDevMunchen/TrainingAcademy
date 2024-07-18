@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const ClassActivity = require("../models/classActivity-model.js");
+const Approver = require("../models/approver-model.js");
 
 const createUser = asyncWrapper(async (req, res, next) => {
   const {
@@ -52,10 +53,10 @@ const updateUser = asyncWrapper(async (req, res, next) => {
     role,
     department,
     status,
-    userContactInformation,
   } = req.body;
 
   const { id } = req.params;
+  const contactInformationID = "668e958729a4cd5bb513f562"
 
   const updatedFields = {
     logID,
@@ -64,7 +65,7 @@ const updateUser = asyncWrapper(async (req, res, next) => {
     role,
     department,
     status,
-    userContactInformation,
+    userContactInformation: contactInformationID,
   };
 
   const user = await User.findByIdAndUpdate(id, updatedFields, { new: true });
@@ -97,9 +98,9 @@ const updatePassword = asyncWrapper(async (req, res, next) => {
 const getProfile = asyncWrapper(async (req, res, next) => {
   const { id } = req.user;
 
-  const user = await User.findById(id).populate(
-    "classesRegistered.registeredClassID"
-  );
+  const user = await User.findById(id)
+    .populate("classesRegistered.registeredClassID")
+    .populate("userContactInformation");
 
   if (!user) {
     throw new ErrorResponse(404, "User not found!");
@@ -111,9 +112,9 @@ const getProfile = asyncWrapper(async (req, res, next) => {
 const getUserInformation = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
-  const user = await User.findById(id).populate(
-    "classesRegistered.registeredClassID"
-  );
+  const user = await User.findById(id)
+    .populate("classesRegistered.registeredClassID")
+    .populate("userContactInformation");
 
   if (!user) {
     throw new ErrorResponse(404, "User not found!");
@@ -123,9 +124,10 @@ const getUserInformation = asyncWrapper(async (req, res, next) => {
 });
 
 const getAllUsers = asyncWrapper(async (req, res, next) => {
-  const user = await User.find({}).populate(
-    "classesRegistered.registeredClassID"
-  ).sort({status: 1});
+  const user = await User.find({})
+    .populate("classesRegistered.registeredClassID")
+    .populate("userContactInformation")
+    .sort({ status: 1 });
 
   res.json(user);
 });
@@ -148,7 +150,48 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     id,
     { $push: { classesRegistered: { registeredClassID: activity_id } } },
     { new: true }
-  ).populate("classesRegistered.registeredClassID");
+  )
+    .populate("classesRegistered.registeredClassID")
+    .populate("userContactInformation");
+
+  const approver = await Approver.findById(user.userContactInformation);
+
+  let recipientEmail;
+  switch (user.department) {
+    case "logistik":
+      recipientEmail = approver.logistik;
+      break;
+    case "vertrieb":
+      recipientEmail = approver.vertrieb;
+      break;
+    case "hr & Training":
+      recipientEmail = approver.hr;
+      break;
+    case "it & Services":
+      recipientEmail = approver.it;
+      break;
+    case "fuhrpark":
+      recipientEmail = approver.fuhrpark;
+      break;
+    case "buchhaltung":
+      recipientEmail = approver.buchhaltung;
+      break;
+    case "einkauf":
+      recipientEmail = approver.einkauf;
+      break;
+    case "design & Planung":
+      recipientEmail = approver.design;
+      break;
+    case "projektmanagement":
+      recipientEmail = approver.projektmanagement;
+      break;
+    case "officemanagement":
+      recipientEmail = approver.officemanagement;
+      break;
+    default:
+      recipientEmail = process.env.DEFAULT_APPROVER_EMAIL;
+      break;
+  }
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -166,7 +209,7 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
       name: "Ausstehende Genehmigung - No reply",
       address: process.env.USER,
     },
-    to: `${user.userContactInformation}`,
+    to: recipientEmail,
     subject: "Training Academy - Rent Group München",
     text: "Training Academy - Rent Group München",
     html: `${user.firstName + " " + user.lastName} hat sich für die Schulung "${
@@ -272,7 +315,7 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
     const mailOptions = {
       from: {
         name: "Antwort ausstehende Anfrage",
-        address: user.userContactInformation,
+        address: process.env.USER,
       },
       to: `${user.inbox}`,
       subject: "Training Academy - Rent Group München",
@@ -355,7 +398,8 @@ const login = asyncWrapper(async (req, res, next) => {
 
   const user = await User.findOne({ logID })
     .select("+password")
-    .populate("classesRegistered.registeredClassID");
+    .populate("classesRegistered.registeredClassID")
+    .populate("userContactInformation");
 
   if (!user) {
     return res.status(404).json({ error: "User not found!" });
