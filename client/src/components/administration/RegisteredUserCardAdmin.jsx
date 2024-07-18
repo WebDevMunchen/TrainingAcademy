@@ -8,11 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 export default function RegisteredUserCardAdmin({
   registeredUser,
   activityId,
-  setActivity,
 }) {
-  const { setAllActivities, setUser, currentMonth } = useContext(AuthContext);
   const { id } = useParams();
-  const modalRef = useRef(null);
 
   const [hideAttendedBtn, setHideAttendedBtn] = useState(false);
   const [submitedAttended, setSubmitedAttended] = useState(true);
@@ -87,25 +84,6 @@ export default function RegisteredUserCardAdmin({
       transition: Bounce,
       className: "mt-14 mr-6",
     });
-
-  let dPath = "";
-  let spanStyle = "";
-
-  if (registeredUser.status === "abgelehnt") {
-    spanStyle =
-      "inline-flex items-center bg-red-600 rounded-full px-3 text-sm text-white py-1 font-medium";
-    dPath =
-      "m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z";
-  } else if (registeredUser.status === "genehmigt") {
-    spanStyle =
-      "inline-flex items-center bg-green-600 rounded-full px-3 text-sm text-white py-1 font-medium";
-    dPath = "M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z";
-  } else {
-    spanStyle =
-      "inline-flex items-center bg-orange-500 rounded-full px-3 text-sm text-white py-1 font-medium";
-    dPath =
-      "M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z";
-  }
 
   const currentDate = new Date();
   const isoDateString =

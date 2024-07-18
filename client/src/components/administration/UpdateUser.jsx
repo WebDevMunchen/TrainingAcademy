@@ -44,10 +44,6 @@ export default function Register() {
       .catch((error) => {});
   };
 
-  const aspLogistik = import.meta.env.VITE_APP_LOGISTIK;
-  const aspVertrieb = import.meta.env.VITE_APP_VERTRIEB;
-  const aspHR = import.meta.env.VITE_APP_HR;
-
   return (
     <>
       {!userInfomation ? (
@@ -150,9 +146,9 @@ export default function Register() {
                       >
                         <option value={"logistik"}>Logistik</option>
                         <option value={"vertrieb"}>Vertrieb</option>
-                        <option value={"it & Services"}>IT & Services</option>
+                        <option value={"IT & Services"}>IT & Services</option>
                         <option value={"fuhrpark"}>Fuhrpark</option>
-                        <option value={"hr & Training"}>HR & Training</option>
+                        <option value={"HR & Training"}>HR & Training</option>
                         <option value={"buchhaltung"}>Buchhaltung</option>
                         <option value={"einkauf"}>Einkauf & Anmietung</option>
                         <option value={"design & Planung"}>

@@ -232,7 +232,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="flex justify-between mb-4">
+            <div className="flex justify-between mb-4 mx-16">
               <button onClick={handlePreviousMonth}>
                 {" "}
                 <svg

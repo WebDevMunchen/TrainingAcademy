@@ -13,7 +13,7 @@ export default function ClassesSchedule() {
           <div className="relative mx-auto h-full px-4 pb-20   md:pb-10 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8">
             <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 relative">
               <div className="max-w-xl mx-auto text-center">
-                <div className="flex justify-center items-center py-1.5 ml-0 rounded-full w-80 lg:w-full">
+                <div className="flex justify-between items-center py-1.5 ml-0 rounded-full w-80 lg:w-full">
                   <button onClick={handlePreviousMonth}>
                     {" "}
                     <svg

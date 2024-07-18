@@ -164,10 +164,10 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     case "vertrieb":
       recipientEmail = approver.vertrieb;
       break;
-    case "hr & Training":
+    case "HR & Training":
       recipientEmail = approver.hr;
       break;
-    case "it & Services":
+    case "IT & Services":
       recipientEmail = approver.it;
       break;
     case "fuhrpark":
@@ -193,6 +193,43 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
       break;
   }
 
+  let recipientEmailSubstitution;
+  switch (user.department) {
+    case "logistik":
+      recipientEmailSubstitution = approver.logistikSubstitute;
+      break;
+    case "vertrieb":
+      recipientEmailSubstitution = approver.vertriebSubstitute;
+      break;
+    case "HR & Training":
+      recipientEmailSubstitution = approver.hrSubstitute;
+      break;
+    case "IT & Services":
+      recipientEmailSubstitution = approver.itSubstitute;
+      break;
+    case "fuhrpark":
+      recipientEmailSubstitution = approver.fuhrparkSubstitute;
+      break;
+    case "buchhaltung":
+      recipientEmailSubstitution = approver.buchhaltungSubstitute;
+      break;
+    case "einkauf":
+      recipientEmailSubstitution = approver.einkaufSubstitute;
+      break;
+    case "design & Planung":
+      recipientEmailSubstitution = approver.designSubstitute;
+      break;
+    case "projektmanagement":
+      recipientEmailSubstitution = approver.projektmanagementSubstitute;
+      break;
+    case "officemanagement":
+      recipientEmailSubstitution = approver.officemanagementSubstitute;
+      break;
+    default:
+      recipientEmailSubstitution = process.env.DEFAULT_APPROVER_EMAIL;
+      break;
+  }
+
   const transporter = nodemailer.createTransport({
     service: "gmail",
     host: "smtp.gmail.com",
@@ -209,7 +246,7 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
       name: "Ausstehende Genehmigung - No reply",
       address: process.env.USER,
     },
-    to: recipientEmail,
+    to: `${recipientEmail}, ${recipientEmailSubstitution}`,
     subject: "Training Academy - Rent Group München",
     text: "Training Academy - Rent Group München",
     html: `${user.firstName + " " + user.lastName} hat sich für die Schulung "${

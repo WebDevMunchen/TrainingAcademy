@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/AuthProvider";
 import SideMenu from "./SideMenu";
 
 export default function Register() {
-  const { signup, approver } = useContext(AuthContext);
+  const { signup } = useContext(AuthContext);
 
   const {
     register,
@@ -15,17 +15,6 @@ export default function Register() {
   const onSubmit = (data) => {
     signup(data);
   };
-
-  const aspLogistik = import.meta.env.VITE_APP_LOGISTIK;
-  const aspVertrieb = import.meta.env.VITE_APP_VERTRIEB;
-  const aspIT = import.meta.env.VITE_APP_IT;
-  const aspFuhrpark = import.meta.env.VITE_APP_FUHRPARK;
-  const aspBuchhaltung = import.meta.env.VITE_APP_BUCHHALTUNG;
-  const aspEinkauf = import.meta.env.VITE_APP_EINKAUF;
-  const aspDesign = import.meta.env.VITE_APP_DESIGN;
-  const aspProjektmanagement = import.meta.env.VITE_APP_PROJEKTMANAGEMENT;
-  const aspOfficemanagement = import.meta.env.VITE_APP_OFFICEMANAGEMENT;
-  const aspHR = import.meta.env.VITE_APP_HR;
 
   return (
     <>
@@ -100,9 +89,9 @@ export default function Register() {
                     >
                       <option value={"logistik"}>Logistik</option>
                       <option value={"vertrieb"}>Vertrieb</option>
-                      <option value={"it & Services"}>IT & Services</option>
+                      <option value={"IT & Services"}>IT & Services</option>
                       <option value={"fuhrpark"}>Fuhrpark</option>
-                      <option value={"hr & Training"}>HR & Training</option>
+                      <option value={"HR & Training"}>HR & Training</option>
                       <option value={"buchhaltung"}>Buchhaltung</option>
                       <option value={"einkauf"}>Einkauf & Anmietung</option>
                       <option value={"design & Planung"}>Design & Planung</option>

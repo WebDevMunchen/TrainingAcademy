@@ -21,6 +21,7 @@ import { Bounce, ToastContainer } from "react-toastify";
 import Datenschutz from "./components/user/Datenschutz";
 import SingleClassDetailsAdmin from "./components/administration/SingleClassDetailsAdmin";
 import ApproverList from "./components/administration/ApproverList";
+import ApproverListSubstitute from "./components/administration/ApproverListSubstitute";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
@@ -71,6 +72,7 @@ function App() {
             <Route path="editClass/:id" element={<EditClass />} />
             <Route path="report/:id" element={<Report />} />
             <Route path="approverList" element={<ApproverList />} />
+            <Route path="approverListSubstitute" element={<ApproverListSubstitute />} />
           </Route>
         </Route>
       </Routes>

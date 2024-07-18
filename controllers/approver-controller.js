@@ -14,6 +14,16 @@ const createApprover = asyncWrapper(async (req, res, next) => {
     design,
     projektmanagement,
     officemanagement,
+    logistikSubstitute,
+    vertriebSubstitute,
+    hrSubstitute,
+    itSubstitute,
+    fuhrparkSubstitute,
+    buchhaltungSubstitute,
+    einkaufSubstitute,
+    designSubstitute,
+    projektmanagementSubstitute,
+    officemanagementSubstitute
   } = req.body;
 
   const approver = await Approver.create({
@@ -27,6 +37,16 @@ const createApprover = asyncWrapper(async (req, res, next) => {
     design,
     projektmanagement,
     officemanagement,
+    logistikSubstitute,
+    vertriebSubstitute,
+    hrSubstitute,
+    itSubstitute,
+    fuhrparkSubstitute,
+    buchhaltungSubstitute,
+    einkaufSubstitute,
+    designSubstitute,
+    projektmanagementSubstitute,
+    officemanagementSubstitute
   });
 
   res.status(201).json(approver);
@@ -44,6 +64,16 @@ const editApprover = asyncWrapper(async (req, res, next) => {
     design,
     projektmanagement,
     officemanagement,
+    logistikSubstitute,
+    vertriebSubstitute,
+    hrSubstitute,
+    itSubstitute,
+    fuhrparkSubstitute,
+    buchhaltungSubstitute,
+    einkaufSubstitute,
+    designSubstitute,
+    projektmanagementSubstitute,
+    officemanagementSubstitute
   } = req.body;
 
   const { id } = req.params;
@@ -59,6 +89,16 @@ const editApprover = asyncWrapper(async (req, res, next) => {
     design,
     projektmanagement,
     officemanagement,
+    logistikSubstitute,
+    vertriebSubstitute,
+    hrSubstitute,
+    itSubstitute,
+    fuhrparkSubstitute,
+    buchhaltungSubstitute,
+    einkaufSubstitute,
+    designSubstitute,
+    projektmanagementSubstitute,
+    officemanagementSubstitute
   };
 
   const approver = await Approver.findByIdAndUpdate(id, updateApprover, {

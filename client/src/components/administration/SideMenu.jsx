@@ -11,22 +11,22 @@ export default function SideMenu() {
     <>
       <aside className="hidden lg:inline bg-gradient-to-br from-gray-800 to-gray-900 -translate-x-80 inset-0 z-50 my-4 ml-4 h-[calc(93vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0">
         <div className="relative border-b border-white/20">
-          <a
+          <p
             className="flex items-center justify-center gap-4 pt-6 pb-4 px-8"
             href="#/"
           >
             <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-white">
               Training Academy
             </h6>
-          </a>
-          <a
+          </p>
+          <p
             className="flex items-center justify-center gap-4 px-8 mb-4"
             href="#/"
           >
             <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-white">
               Rent.Group | München
             </h6>
-          </a>
+          </p>
           <button
             className="middle none  font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-8 max-w-[32px] h-8 max-h-[32px] rounded-lg text-sm text-white hover:bg-white/10 active:bg-white/30 absolute right-0 top-0 grid rounded-br-none rounded-tl-none xl:hidden"
             type="button"
@@ -224,7 +224,7 @@ export default function SideMenu() {
               >
                 <button
                   className={
-                    location.pathname === "/admin/approverList"
+                    location.pathname === "/admin/approverList" || location.pathname === "/admin/approverListSubstitute"
                       ? "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 active:opacity-[0.85] w-full flex items-center gap-4 px-4 capitalize"
                       : "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
                   }
