@@ -49,7 +49,7 @@ export default function ClassesSchedule() {
                   </button>
                 </div>
               </div>
-              <div className="grid grid-cols-1 gap-2 mt-12 sm:grid-cols-1 mt-2 w-80 lg:mt-2 lg:w-10/12 mx-auto">
+              <div className="grid grid-cols-1 gap-2 mt-12 sm:grid-cols-1 mt-2 w-[23rem] lg:mt-2 lg:w-10/12 mx-auto">
                 {!allActivities ? (
                   <>
                     <img

@@ -107,8 +107,29 @@ export default function ClassScheduleCard({ activity }) {
       <div className="m-2 bg-white border p-4 relative group shadow-lg">
         <div className="absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2"></div>
         <div className="py-2 relative">
-          <div className="flex justify-between">
-              <p className="invisible w-72">Placeholder Longer</p>
+        <div className="flex justify-between lg:hidden">
+            <p className="font-semibold lg:hidden">
+                        Registrierungsende:{" "}
+                          <span className="font-normal">
+                            {formattedDatePrior} um {activity.time}
+                          </span>
+                        </p>
+                        <p className="w-48 inline font-semibold text-right lg:hidden">
+              Freie Plätze:{" "}
+              {activity.capacity - activity.usedCapacity > 5 ? (
+                <span className="shrink-0 rounded-full bg-emerald-500 px-3 font-mono text-md font-medium tracking-tight text-white">
+                  {activity.capacity - activity.usedCapacity}
+                </span>
+              ) : (
+                <span className="shrink-0 rounded-full bg-red-500 px-3 font-mono text-md font-medium tracking-tight text-white">
+                  {activity.capacity - activity.usedCapacity}
+                </span>
+              )}
+            </p>
+            </div>
+          <div className="flex justify-center lg:justify-between">
+
+              <p className="hidden lg:inline invisible w-72">Placeholder Longer</p>
             <h3 className="hidden lg:flex justify-center text-lg font-semibold text-black">
               {activity.title}
             </h3>
@@ -128,7 +149,7 @@ export default function ClassScheduleCard({ activity }) {
                 </span>
               )}
             </p>
-            <p className="font-semibold">
+            <p className="hidden lg:flex font-semibold">
                         Registrierungsende:{" "}
                           <span className="font-normal">
                             {formattedDatePrior} um {activity.time}
