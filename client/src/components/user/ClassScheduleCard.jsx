@@ -29,6 +29,27 @@ export default function ClassScheduleCard({ activity }) {
       .catch((error) => {});
   };
 
+  const onSubmitCancel = () => {
+    axiosClient
+      .put(`/classActivity/cancelClass/${activity._id}`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        return axiosClient.get("/user/profile");
+      })
+      .then((responseProfile) => {
+        setUser(responseProfile.data);
+
+        return axiosClient.get(
+          `/classActivity/allActivities?month=${currentMonth}`
+        );
+      })
+      .then((responseActivities) => {
+        setAllActivities(responseActivities.data);
+      })
+      .catch((error) => {});
+  };
+
   const showLegend = () => {
     document.getElementById("legend").showModal();
   };
@@ -283,42 +304,56 @@ export default function ClassScheduleCard({ activity }) {
               </p>
             </div>
           </div>
-
           <div className="flex justify-center">
-            {user.role === "user" &&
-              !activityDatePassed &&
-              !oneDayPrior &&
-              (activity.capacity - activity.usedCapacity !== 0 ? (
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <input
-                    type="submit"
-                    className={`bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition ${
-                      activity.registeredUsers.some(
-                        (userObj) => userObj._id === user._id
-                      )
-                        ? "cursor-not-allowed"
-                        : "hover:shadow-lg hover:-translate-y-0.5"
-                    }`}
-                    value={
-                      activity.registeredUsers.some(
-                        (userObj) => userObj._id === user._id
-                      )
-                        ? "Bereits Angemeldet"
-                        : "Anmelden"
-                    }
-                    disabled={activity.registeredUsers.some(
+            {user.role === "user" && !activityDatePassed && !oneDayPrior && (
+              <>
+                {activity.capacity - activity.usedCapacity > 0 ? (
+                  <>
+                    {activity.registeredUsers.some(
                       (userObj) => userObj._id === user._id
+                    ) ? (
+                      <form onSubmit={handleSubmit(onSubmitCancel)}>
+                        <input
+                          type="submit"
+                          className="bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                          value="Stornieren"
+                        />
+                      </form>
+                    ) : (
+                      <form onSubmit={handleSubmit(onSubmit)}>
+                        <input
+                          type="submit"
+                          className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition hover:shadow-lg hover:-translate-y-0.5"
+                          value="Anmelden"
+                        />
+                      </form>
                     )}
-                  />
-                </form>
-              ) : (
-                <button
-                  className="mt-8 bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
-                  disabled
-                >
-                  Ausgebucht
-                </button>
-              ))}
+                  </>
+                ) : (
+                  <>
+                    {activity.registeredUsers.some(
+                      (userObj) => userObj._id === user._id
+                    ) ? (
+                      <form onSubmit={handleSubmit(onSubmitCancel)}>
+                        <input
+                          type="submit"
+                          className="bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                          value="Stornieren"
+                        />
+                      </form>
+                    ) : (
+                      <button
+                        className="mt-3 bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                        disabled
+                      >
+                        Ausgebucht
+                      </button>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+
             {user.role === "user" && (activityDatePassed || oneDayPrior) && (
               <button
                 className="mt-8 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
@@ -340,8 +375,7 @@ export default function ClassScheduleCard({ activity }) {
                 Details Anzeigen
               </NavLink>
             )}
-            {(
-              user.role === "admin") && (
+            {user.role === "admin" && (
               <NavLink
                 to={`/classInformation/participation/${activity._id}`}
                 className="w-fit bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-1/2 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
@@ -354,42 +388,41 @@ export default function ClassScheduleCard({ activity }) {
           <div className="flex justify-center">
             {(user.role === "ASP" || user.role === "admin") &&
               !activityDatePassed &&
-              !oneDayPrior &&
-              (activity.capacity - activity.usedCapacity !== 0 ? (
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <input
-                    type="submit"
-                    className={`bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition ${
-                      activity.registeredUsers.some(
-                        (userObj) => userObj._id === user._id
-                      )
-                        ? "cursor-not-allowed"
-                        : "hover:shadow-lg hover:-translate-y-0.5"
-                    }`}
-                    value={
-                      activity.registeredUsers.some(
-                        (userObj) => userObj._id === user._id
-                      )
-                        ? "Bereits Angemeldet"
-                        : "Anmelden"
-                    }
-                    disabled={activity.registeredUsers.some(
-                      (userObj) => userObj._id === user._id
-                    )}
-                  />
-                </form>
-              ) : (
-                <button
-                  className="bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
-                  disabled
-                >
-                  Ausgebucht
-                </button>
-              ))}
+              !oneDayPrior && (
+                <>
+                  {activity.registeredUsers.some(
+                    (userObj) => userObj._id === user._id
+                  ) ? (
+                    <form onSubmit={handleSubmit(onSubmitCancel)}>
+                      <input
+                        type="submit"
+                        className="bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                        value="Stornieren"
+                      />
+                    </form>
+                  ) : activity.capacity - activity.usedCapacity > 0 ? (
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                      <input
+                        type="submit"
+                        className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition hover:shadow-lg hover:-translate-y-0.5"
+                        value="Anmelden"
+                      />
+                    </form>
+                  ) : (
+                    <button
+                      className="mt-3 bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                      disabled
+                    >
+                      Ausgebucht
+                    </button>
+                  )}
+                </>
+              )}
+
             {(user.role === "ASP" || user.role === "admin") &&
               (activityDatePassed || oneDayPrior) && (
                 <button
-                  className="bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                  className="mt-8 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
                   disabled
                 >
                   Registrierung abgeschlossen

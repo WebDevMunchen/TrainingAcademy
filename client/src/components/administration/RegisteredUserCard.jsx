@@ -475,7 +475,7 @@ export default function RegisteredUserCard({
           >
             <label className="cursor-pointer">
               <input type="radio" className="peer sr-only" />
-              <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-blue-400 peer-checked:ring-offset-2 lg:w-64">
+              <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-blue-400 peer-checked:ring-offset-2 lg:w-72">
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-center">
                     <p className="text-sm font-semibold uppercase text-gray-500">

@@ -47,7 +47,6 @@ export default function AuthProvider({ children }) {
       .get("/user/getAllUsers")
       .then((response) => {
         setAllUsers(response.data)
-        console.log(response.data)
       })
       .catch((error) => {
         setAllUsers(null);
@@ -57,7 +56,6 @@ export default function AuthProvider({ children }) {
       .get("/approver/approverList")
       .then((response) => {
         setApprover(response.data);
-        console.log(response.data)
       })
       .catch((error) => {
         setApprover(null);

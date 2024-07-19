@@ -1,6 +1,7 @@
 const ClassActivity = require("../models/classActivity-model.js");
 const ErrorResponse = require("../utils/errorResponse.js");
 const asyncWrapper = require("../utils/asyncWrapper.js");
+const User = require("../models/user-model.js");
 
 const createClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -14,7 +15,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     month,
     time,
     teacher,
-    safetyBriefing
+    safetyBriefing,
   } = req.body;
 
   const activity = await ClassActivity.create({
@@ -28,7 +29,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     month,
     time,
     teacher,
-    safetyBriefing
+    safetyBriefing,
   });
 
   res.status(201).json(activity);
@@ -46,7 +47,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     month,
     time,
     teacher,
-    safetyBriefing
+    safetyBriefing,
   } = req.body;
 
   const { id } = req.params;
@@ -62,7 +63,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     month,
     time,
     teacher,
-    safetyBriefing
+    safetyBriefing,
   };
 
   const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, {
@@ -96,6 +97,60 @@ const registerClass = asyncWrapper(async (req, res, next) => {
   next();
 });
 
+const cancelUserRegistration = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const { id: userID } = req.user;
+
+  try {
+    const user = await User.findById(userID);
+    if (!user) {
+      return next(new ErrorResponse(404, "User not found"));
+    }
+
+    const registeredClass = user.classesRegistered.find(
+      (classItem) => classItem.registeredClassID.toString() === id
+    );
+
+    if (!registeredClass) {
+      return res
+        .status(400)
+        .json({ message: "User is not registered for this class." });
+    }
+
+    user.classesRegistered = user.classesRegistered.filter(
+      (classItem) => classItem.registeredClassID.toString() !== id
+    );
+    await user.save();
+
+    const classActivity = await ClassActivity.findById(id).populate(
+      "registeredUsers"
+    );
+
+    if (!classActivity) {
+      return res.status(404).json({ message: "ClassActivity not found." });
+    }
+
+    if (registeredClass.status === "genehmigt") {
+      classActivity.usedCapacity = classActivity.usedCapacity - 1;
+    }
+
+    classActivity.registeredUsers = classActivity.registeredUsers.filter(
+      (registeredUser) => registeredUser._id.toString() !== userID
+    );
+
+    await classActivity.save();
+
+    const updatedClassActivity = await ClassActivity.findById(id).populate(
+      "registeredUsers"
+    );
+
+    res.json({ message: "Success", updatedCapacity: updatedClassActivity });
+  } catch (error) {
+    console.error("Error in cancelUserRegistration:", error);
+    next(error);
+  }
+});
+
 const increaseClassCapacity = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
@@ -127,6 +182,61 @@ const decreaseClassCapacity = asyncWrapper(async (req, res, next) => {
   res.status(201).json(updatedCapacity);
 });
 
+// const decreaseClassCapacityOnCancel = asyncWrapper(async (req, res, next) => {
+//   const { id } = req.params;
+//   const { id: userID } = req.user;
+
+//   try {
+//     console.log("Class ID:", id);
+//     console.log("Fetching user with ID:", userID);
+
+//     const user = await User.findById(userID);
+
+//     if (!user) {
+//       console.log("User not found");
+//       return res.status(404).json({ message: "User not found." });
+//     }
+
+//     console.log("User fetched:", user);
+//     const classIdStr = id.toString();
+//     console.log("Class ID string:", classIdStr);
+
+//     user.classesRegistered.forEach(classReg => {
+//       console.log(`Checking classReg: ${classReg.registeredClassID.toString()} with status: ${classReg.status}`);
+//     });
+
+//     const registeredClass = user.classesRegistered.find(
+//       (classReg) => classReg.registeredClassID.toString() === classIdStr && classReg.status === "genehmigt"
+//     );
+
+//     if (!registeredClass) {
+//       console.log("User is not registered for this class or status is not 'genehmigt'.");
+//       return res.status(400).json({ message: "User is not registered for this class or status is not 'genehmigt'." });
+//     }
+
+//     console.log("User is registered for the class with status 'genehmigt'. Decreasing capacity.");
+
+//     const updatedCapacity = await ClassActivity.findByIdAndUpdate(
+//       id,
+//       { $inc: { usedCapacity: -1 } },
+//       { new: true }
+//     ).populate("registeredUsers");
+
+//     if (!updatedCapacity) {
+//       console.log("ClassActivity not found or capacity not updated.");
+//       return res.status(404).json({ message: "ClassActivity not found or capacity not updated." });
+//     }
+
+//     console.log("Updated Capacity:", updatedCapacity);
+//     await updatedCapacity.save();
+
+//     res.status(201).json(updatedCapacity);
+//   } catch (error) {
+//     console.error("Error in decreaseClassCapacityOnCancel:", error);
+//     next(error);
+//   }
+// });
+
 const getActivity = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
@@ -150,7 +260,7 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
 
     const allActivities = await ClassActivity.find(query)
       .populate("registeredUsers")
-      .sort({ date: -1, time: -1 }); 
+      .sort({ date: -1, time: -1 });
 
     if (allActivities.length === 0) {
       return res.status(404).json({ message: "No activities found" });
@@ -171,4 +281,6 @@ module.exports = {
   increaseClassCapacity,
   decreaseClassCapacity,
   editClassActivity,
+  cancelUserRegistration,
+  // decreaseClassCapacityOnCancel,
 };

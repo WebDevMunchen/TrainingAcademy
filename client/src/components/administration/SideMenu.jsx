@@ -13,19 +13,18 @@ export default function SideMenu() {
         <div className="relative border-b border-white/20">
           <p
             className="flex items-center justify-center gap-4 pt-6 pb-4 px-8"
-            href="#/"
           >
-            <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-white">
+            <span className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-white">
               Training Academy
-            </h6>
+            </span>
           </p>
           <p
             className="flex items-center justify-center gap-4 px-8 mb-4"
-            href="#/"
+            
           >
-            <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-white">
+            <span className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-white">
               Rent.Group | München
-            </h6>
+            </span>
           </p>
           <button
             className="middle none  font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-8 max-w-[32px] h-8 max-h-[32px] rounded-lg text-sm text-white hover:bg-white/10 active:bg-white/30 absolute right-0 top-0 grid rounded-br-none rounded-tl-none xl:hidden"

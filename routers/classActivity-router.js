@@ -7,6 +7,8 @@ const {
   increaseClassCapacity,
   decreaseClassCapacity,
   editClassActivity,
+  cancelUserRegistration,
+  decreaseClassCapacityOnCancel,
 } = require("../controllers/classActivity-controller.js");
 const { authenticate } = require("../middlewares/authentication.js");
 const { updateUserRegistration } = require("../controllers/user-controller.js");
@@ -19,6 +21,12 @@ classActivityRouter.route("/create").post(authenticate, createClassActivity);
 classActivityRouter
   .route("/registerClass/:id")
   .put(authenticate, registerClass, updateUserRegistration);
+classActivityRouter
+  .route("/cancelClass/:id")
+  .put(authenticate, cancelUserRegistration);
+// classActivityRouter
+//   .route("/decreaseClassCapacityCancel/:id")
+//   .put(authenticate, decreaseClassCapacityOnCancel);
 classActivityRouter
   .route("/editClass/:id")
   .put(authenticate, editClassActivity);
