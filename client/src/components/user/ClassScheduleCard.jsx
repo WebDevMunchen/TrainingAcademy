@@ -54,12 +54,40 @@ export default function ClassScheduleCard({ activity }) {
     document.getElementById("legend").showModal();
   };
 
-  const dateString = activity.date;
-  const date = new Date(dateString);
+  // const dateString = activity.date;
+  // const date = new Date(dateString);
+  // const day = date.getDate();
+  // const dayPrior = date.getDate() - 2;
+  // const month = date.getMonth() + 1;
+  // const year = date.getFullYear();
+  // const formattedDate = `${day}/${month}/${year}`;
+  // const formatedDateprior = `${dayPrior}/${month}/${year}`;
+
+  // const activityDate = new Date(activity.date);
+  // const activityTime = activity.time.split(":");
+  // activityDate.setHours(activityTime[0], activityTime[1]);
+
+  // const currentTime = new Date();
+  // const oneDayBeforeActivity = new Date(
+  //   activityDate.getTime() - 2 * 24 * 60 * 60 * 1000
+  // );
+
+  // const activityDatePassed = currentTime > activityDate;
+  // const oneDayPrior =
+  //   currentTime > oneDayBeforeActivity && currentTime < activityDate;
+
+  const date = new Date(activity.date);
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
   const formattedDate = `${day}/${month}/${year}`;
+
+  const priorDate = new Date(date);
+  priorDate.setDate(day - 2);
+  const dayPrior = priorDate.getDate();
+  const monthPrior = priorDate.getMonth() + 1;
+  const yearPrior = priorDate.getFullYear();
+  const formattedDatePrior = `${dayPrior}/${monthPrior}/${yearPrior}`;
 
   const activityDate = new Date(activity.date);
   const activityTime = activity.time.split(":");
@@ -80,14 +108,15 @@ export default function ClassScheduleCard({ activity }) {
         <div className="absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2"></div>
         <div className="py-2 relative">
           <div className="flex justify-between">
-            <p className="hidden lg:inline text-white">Placeholder longer</p>
+              <p className="invisible w-72">Placeholder Longer</p>
             <h3 className="hidden lg:flex justify-center text-lg font-semibold text-black">
               {activity.title}
             </h3>
             <h3 className="flex justify-center mx-auto text-center mb-2 text-lg font-semibold text-black lg:hidden">
               {activity.title}
             </h3>
-            <p className="hidden lg:inline font-semibold">
+            <div className="flex flex-col">
+                        <p className="hidden lg:inline font-semibold text-right">
               Freie Plätze:{" "}
               {activity.capacity - activity.usedCapacity > 5 ? (
                 <span className="shrink-0 rounded-full bg-emerald-500 px-3 font-mono text-md font-medium tracking-tight text-white">
@@ -99,19 +128,15 @@ export default function ClassScheduleCard({ activity }) {
                 </span>
               )}
             </p>
+            <p className="font-semibold">
+                        Registrierungsende:{" "}
+                          <span className="font-normal">
+                            {formattedDatePrior} um {activity.time}
+                          </span>
+                        </p>
+                        </div>
           </div>
-          <p className="font-semibold flex justify-center gap-2 lg:hidden">
-            Freie Plätze:{" "}
-            {activity.capacity - activity.usedCapacity > 5 ? (
-              <span className="shrink-0 rounded-full bg-emerald-500 px-3 font-mono text-md font-medium tracking-tight text-white">
-                {activity.capacity - activity.usedCapacity}
-              </span>
-            ) : (
-              <span className="shrink-0 rounded-full bg-red-500 px-3 font-mono text-md font-medium tracking-tight text-white">
-                {activity.capacity - activity.usedCapacity}
-              </span>
-            )}
-          </p>
+
           <div className="flex justify-center mt-2 mb-1">
             <p>Zielgruppe</p>
           </div>
@@ -356,7 +381,7 @@ export default function ClassScheduleCard({ activity }) {
 
             {user.role === "user" && (activityDatePassed || oneDayPrior) && (
               <button
-                className="mt-8 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                className="mt-3 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
                 disabled
               >
                 Registrierung abgeschlossen
@@ -370,7 +395,7 @@ export default function ClassScheduleCard({ activity }) {
               user.role === "teacher") && (
               <NavLink
                 to={`/classInformation/${activity._id}`}
-                className="w-fit bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-1/2 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                className="text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
               >
                 Details Anzeigen
               </NavLink>
@@ -378,7 +403,7 @@ export default function ClassScheduleCard({ activity }) {
             {user.role === "admin" && (
               <NavLink
                 to={`/classInformation/participation/${activity._id}`}
-                className="w-fit bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-1/2 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                className="text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
               >
                 Teilnahme verwalten
               </NavLink>
@@ -422,7 +447,7 @@ export default function ClassScheduleCard({ activity }) {
             {(user.role === "ASP" || user.role === "admin") &&
               (activityDatePassed || oneDayPrior) && (
                 <button
-                  className="mt-8 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                  className="mt-3 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
                   disabled
                 >
                   Registrierung abgeschlossen

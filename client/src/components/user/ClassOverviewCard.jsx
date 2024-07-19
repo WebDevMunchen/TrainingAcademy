@@ -39,10 +39,7 @@ export default function ClassesOverviewCard({ activity }) {
     spanStyle2 =
       "inline-flex items-center bg-green-600 rounded-full px-3 text-sm text-white py-1 font-medium";
     dPath2 = "M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z";
-  } else if (
-    activity.statusAttended === "in Prüfung" &&
-    activity.status === "abgelehnt"
-  ) {
+  } else if (activity.status === "abgelehnt") {
     spanStyle2 =
       "inline-flex items-center bg-slate-400 rounded-full px-4 py-1.5 text-sm text-white py-1 font-medium";
   } else {
@@ -61,63 +58,96 @@ export default function ClassesOverviewCard({ activity }) {
       <div className="bg-white border m-2 p-4 relative group shadow-lg">
         <div className="absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
         <div className="flex justify-center lg:justify-between px-6 mt-4 mr-4 items-center ">
-          {activity.status === "abgelehnt" ? (
-            <span className="invisible">nicht angemeldet</span>
-          ) : (
-            <span className={spanStyle2}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6 mr-2"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d={dPath2} />
-              </svg>
-              {activity.statusAttended}
+          <div className="flex flex-col items-center">
+            <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
+              Teilnahmestatus:{" "}
             </span>
-          )}
-
-          <div className="flex items-center">
-            {activity.status === "abgelehnt" && (
-              <span
-                className="tooltip mr-2 hover:cursor-pointer"
-                style={{ width: "auto", height: "auto" }}
-                data-tip={
-                  /^[^a-zA-Z]*$/.test(activity.reason)
-                    ? "Kein Grund vorhanden"
-                    : activity.reason
-                }
-              >
+            {activity.status === "abgelehnt" ? (
+              <span className={spanStyle2}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
                   viewBox="0 0 24 24"
-                  fill="#ffb951"
-                  className="w-8 h-8"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-5.5 mr-2"
                 >
                   <path
-                    fillRule="evenodd"
-                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
-                    clipRule="evenodd"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
                   />
                 </svg>
+                nicht angemeldet
+              </span>
+            ) : (
+              <span className={spanStyle2}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6 mr-2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d={dPath2}
+                  />
+                </svg>
+                {activity.statusAttended}
               </span>
             )}
-
-            <span className={spanStyle}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6 mr-2"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d={dPath} />
-              </svg>
-              {activity.status}
+          </div>
+          <div className="flex flex-col items-center">
+            <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
+              Genehmigungsstatus:{" "}
             </span>
+            <div className="flex items-center">
+              {activity.status === "abgelehnt" && (
+                <span
+                  className="tooltip mr-2 hover:cursor-pointer"
+                  style={{ width: "auto", height: "auto" }}
+                  data-tip={
+                    /^[^a-zA-Z]*$/.test(activity.reason)
+                      ? "Kein Grund vorhanden"
+                      : activity.reason
+                  }
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="#ffb951"
+                    className="w-8 h-8"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+              )}
+
+              <span className={spanStyle}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6 mr-2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d={dPath}
+                  />
+                </svg>
+                {activity.status}
+              </span>
+            </div>
           </div>
         </div>
         <div className="py-2 relative">

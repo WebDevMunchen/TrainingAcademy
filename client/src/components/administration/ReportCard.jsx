@@ -1,5 +1,5 @@
 export default function ReportCard({ registeredUser, activity }) {
-  const registration = registeredUser.classesRegistered.find(
+  const registration = registeredUser?.classesRegistered?.find(
     (registration) => registration.registeredClassID === activity._id
   );
 
@@ -18,27 +18,27 @@ export default function ReportCard({ registeredUser, activity }) {
 
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="text-sm font-medium text-gray-900">
-          {registeredUser.department}
+          {registeredUser.department.charAt(0).toUpperCase() + registeredUser.department.slice(1)}
         </div>
       </td>
 
       <td className="px-6 py-4 flex justify-center ">
         <div className="flex items-center">
           <span
-            className={`px-2 py-0.5 mr-1 inline-flex text-sm leading-5 font-semibold rounded-full 
+            className={`px-2.5 py-1 mr-1 inline-flex text-sm leading-5 font-semibold rounded-full 
           ${
             registration
-              ? registration.status === "genehmigt"
+              ? registration?.status === "genehmigt"
                 ? "bg-green-100 text-green-800"
-                : registration.status === "ausstehend"
+                : registration?.status === "ausstehend"
                 ? "bg-orange-100 text-orange-800"
                 : "bg-red-200 text-red-700"
               : ""
           }`}
           >
-            {registration ? registration.status : "Not Registered"}
+            {registration ? registration?.status : "Not Registered"}
           </span>
-          {registration.status === "abgelehnt" && (
+          {registration?.status === "abgelehnt" && (
             <span
               className="tooltip mr-2 hover:cursor-pointer"
               style={{ width: "auto", height: "auto" }}
@@ -66,25 +66,26 @@ export default function ReportCard({ registeredUser, activity }) {
       </td>
 
       <td className="px-6 py-4 whitespace-nowrap">
-        {registration.status === "abgelehnt" ? 
-        <span className="bg-slate-200 text-white-800 px-2 inline-flex text-sm leading-5 font-semibold rounded-full">nicht angemeldet</span>
-        :
-        <span
-        className={`px-2 inline-flex text-sm leading-5 font-semibold rounded-full 
+        {registration?.status === "abgelehnt" ? (
+          <span className="bg-slate-200 text-white-800 px-2 inline-flex text-sm leading-5 font-semibold rounded-full">
+            nicht angemeldet
+          </span>
+        ) : (
+          <span
+            className={`px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full 
         ${
           registration
-            ? registration.statusAttended === "teilgenommen"
+            ? registration?.statusAttended === "teilgenommen"
               ? "bg-green-100 text-green-800"
-              : registration.statusAttended === "in Prüfung"
+              : registration?.statusAttended === "in Prüfung"
               ? "bg-orange-200 text-orange-800"
               : "bg-red-200 text-red-700"
             : ""
         }`}
-      >
-        {registration ? registration.statusAttended : "Not Registered"}
-      </span>
-      }
-
+          >
+            {registration ? registration?.statusAttended : "Not Registered"}
+          </span>
+        )}
       </td>
     </tr>
   );
