@@ -54,28 +54,6 @@ export default function ClassScheduleCard({ activity }) {
     document.getElementById("legend").showModal();
   };
 
-  // const dateString = activity.date;
-  // const date = new Date(dateString);
-  // const day = date.getDate();
-  // const dayPrior = date.getDate() - 2;
-  // const month = date.getMonth() + 1;
-  // const year = date.getFullYear();
-  // const formattedDate = `${day}/${month}/${year}`;
-  // const formatedDateprior = `${dayPrior}/${month}/${year}`;
-
-  // const activityDate = new Date(activity.date);
-  // const activityTime = activity.time.split(":");
-  // activityDate.setHours(activityTime[0], activityTime[1]);
-
-  // const currentTime = new Date();
-  // const oneDayBeforeActivity = new Date(
-  //   activityDate.getTime() - 2 * 24 * 60 * 60 * 1000
-  // );
-
-  // const activityDatePassed = currentTime > activityDate;
-  // const oneDayPrior =
-  //   currentTime > oneDayBeforeActivity && currentTime < activityDate;
-
   const date = new Date(activity.date);
   const day = date.getDate();
   const month = date.getMonth() + 1;

@@ -33,7 +33,6 @@ export default function ApproverListSubstitute() {
       })
 
       .catch((error) => {
-        console.log(error);
       });
   };
 

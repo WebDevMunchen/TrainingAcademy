@@ -182,60 +182,7 @@ const decreaseClassCapacity = asyncWrapper(async (req, res, next) => {
   res.status(201).json(updatedCapacity);
 });
 
-// const decreaseClassCapacityOnCancel = asyncWrapper(async (req, res, next) => {
-//   const { id } = req.params;
-//   const { id: userID } = req.user;
 
-//   try {
-//     console.log("Class ID:", id);
-//     console.log("Fetching user with ID:", userID);
-
-//     const user = await User.findById(userID);
-
-//     if (!user) {
-//       console.log("User not found");
-//       return res.status(404).json({ message: "User not found." });
-//     }
-
-//     console.log("User fetched:", user);
-//     const classIdStr = id.toString();
-//     console.log("Class ID string:", classIdStr);
-
-//     user.classesRegistered.forEach(classReg => {
-//       console.log(`Checking classReg: ${classReg.registeredClassID.toString()} with status: ${classReg.status}`);
-//     });
-
-//     const registeredClass = user.classesRegistered.find(
-//       (classReg) => classReg.registeredClassID.toString() === classIdStr && classReg.status === "genehmigt"
-//     );
-
-//     if (!registeredClass) {
-//       console.log("User is not registered for this class or status is not 'genehmigt'.");
-//       return res.status(400).json({ message: "User is not registered for this class or status is not 'genehmigt'." });
-//     }
-
-//     console.log("User is registered for the class with status 'genehmigt'. Decreasing capacity.");
-
-//     const updatedCapacity = await ClassActivity.findByIdAndUpdate(
-//       id,
-//       { $inc: { usedCapacity: -1 } },
-//       { new: true }
-//     ).populate("registeredUsers");
-
-//     if (!updatedCapacity) {
-//       console.log("ClassActivity not found or capacity not updated.");
-//       return res.status(404).json({ message: "ClassActivity not found or capacity not updated." });
-//     }
-
-//     console.log("Updated Capacity:", updatedCapacity);
-//     await updatedCapacity.save();
-
-//     res.status(201).json(updatedCapacity);
-//   } catch (error) {
-//     console.error("Error in decreaseClassCapacityOnCancel:", error);
-//     next(error);
-//   }
-// });
 
 const getActivity = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;

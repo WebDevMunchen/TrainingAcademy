@@ -22,7 +22,6 @@ export default function RegisteredUserCardAdmin({
       .get(`/classActivity/${id}`)
       .then((response) => {
         setActivitySingleInformation(response.data);
-        console.log(response.data);
       })
       .catch((error) => {});
   }, []);

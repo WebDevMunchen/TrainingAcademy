@@ -17,6 +17,7 @@ export default function SingleClassDetails() {
       .get(`/classActivity/${id}`)
       .then((response) => {
         setActivity(response.data);
+        console.log(response.data)
       })
       .catch((error) => {});
   }, []);
@@ -24,6 +25,12 @@ export default function SingleClassDetails() {
   const showLegend = () => {
     document.getElementById("legend").showModal();
   };
+
+  const filteredRegisteredUsers = user.role === "admin" 
+  ? activity?.registeredUsers 
+  : activity?.registeredUsers?.filter(
+      (registeredUser) => registeredUser.department === user.department
+    );
 
   const dateString = activity?.date;
   const date = new Date(dateString);
@@ -380,7 +387,7 @@ export default function SingleClassDetails() {
               </div>
             </>
           )}
-          {activity.registeredUsers.map((registeredUser) => {
+          {filteredRegisteredUsers.map((registeredUser) => {
             return (
               <ul
                 key={registeredUser._id}

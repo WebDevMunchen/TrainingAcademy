@@ -31,7 +31,6 @@ export default function RegisteredUserCard({
       .get(`/classActivity/${id}`)
       .then((response) => {
         setActivitySingleInformation(response.data);
-        console.log(response.data);
       })
       .catch((error) => {});
   }, []);

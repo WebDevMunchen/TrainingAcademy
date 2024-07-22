@@ -257,9 +257,7 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
   const sendMail = async (transporter, mailOptions) => {
     try {
       await transporter.sendMail(mailOptions);
-      console.log("Success");
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -363,9 +361,7 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
     const sendMail = async (transporter, mailOptions) => {
       try {
         await transporter.sendMail(mailOptions);
-        console.log("Success");
       } catch (error) {
-        console.log(error);
       }
     };
 
@@ -373,7 +369,6 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
 
     res.status(200).json({ message: "Class status updated successfully" });
   } catch (error) {
-    console.error("Error updating class status:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

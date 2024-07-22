@@ -34,7 +34,6 @@ export default function ApproverList() {
       })
 
       .catch((error) => {
-        console.log(error);
       });
   };
 
