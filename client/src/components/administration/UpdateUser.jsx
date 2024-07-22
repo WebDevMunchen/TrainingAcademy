@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { AuthContext } from "../../context/AuthProvider";
+import { Bounce, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
   const { setAllUsers } = useContext(AuthContext);
@@ -12,6 +14,8 @@ export default function Register() {
   const navigate = useNavigate();
 
   const [userInfomation, setUserInformation] = useState(null);
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+
 
   useEffect(() => {
     axiosClient
@@ -44,9 +48,25 @@ export default function Register() {
       .catch((error) => {});
   };
 
-  const aspLogistik = import.meta.env.VITE_APP_LOGISTIK;
-  const aspVertrieb = import.meta.env.VITE_APP_VERTRIEB;
-  const aspHR = import.meta.env.VITE_APP_HR;
+  const handleTooltipToggle = () => {
+    setIsTooltipVisible(!isTooltipVisible);
+  };
+
+
+
+  const notifyCopied = () =>
+    toast.success("Kennwort in die Zwischenablage kopiert!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mt-14 mr-6",
+    });
 
   return (
     <>
@@ -96,77 +116,85 @@ export default function Register() {
                       />
                     </div>
                   </div>
-                  <div>
-                    <label
-                      htmlFor="logID"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Kürzel:
-                    </label>
-                    <input
-                      {...register("logID", { required: true })}
-                      defaultValue={userInfomation.logID}
-                      type="input"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-full"
-                      placeholder="Die Abkürzung sollte drei Zeichen lang sein..."
-                    />
-                  </div>
-
                   <div className="flex flex-col lg:flex-row justify-around gap-2">
                     <div>
                       <label
-                        htmlFor="department"
-                        className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
+                        htmlFor="logID"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Abteilung:
+                        Kürzel:
                       </label>
                       <input
-                        {...register("department", { required: true })}
-                        defaultValue={userInfomation.department}
-                        type="text"
+                        {...register("logID", { required: true })}
+                        defaultValue={userInfomation.logID}
+                        type="input"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Abteilung des Mitarbeiters"
+                        placeholder="Die Abkürzung sollte drei Zeichen lang sein..."
                       />
                     </div>
+
                     <div>
                       <div className="flex justify-start">
                         <label
-                          htmlFor="userContactInformation"
-                          className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
+                          htmlFor="department"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >
-                          Ansprechpartner:
+                          Abteilung:
                         </label>
-                        <div
-                          className="tooltip ml-2 hover:cursor-pointer"
-                          data-tip="Für jede Abteilung ist eine E-Mail-Adresse des ASPs hinterlegt. Diese E-Mail-Adresse wird verwendet, um eine E-Mail an den ASP zu senden, der entscheidet, ob der Mitarbeiter an der Schulung teilnehmen darf."
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6 hover:text-blue-500"
+                        <div className="relative">
+                          <div
+                            className="tooltip ml-2 hover:cursor-pointer"
+                            onClick={handleTooltipToggle}
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-                            />
-                          </svg>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="w-6 h-6 hover:text-blue-500"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                              />
+                            </svg>
+                          </div>
+                          {isTooltipVisible && (
+                            <div className="absolute bg-gray-700 text-white text-sm p-4 rounded shadow-lg w-72 z-50">
+                              Für jede Abteilung sind die E-Mail-Adressen des
+                              ASPs und seines Stellvertreters hinterlegt. Diese
+                              E-Mail-Adressen werden verwendet, um eine E-Mail
+                              an sie zu senden, damit sie entscheiden können, ob
+                              der Mitarbeiter an der Schulung teilnehmen darf.
+                            </div>
+                          )}
                         </div>
                       </div>
-
                       <select
-                        {...register("userContactInformation", {
+                        {...register("department", {
                           required: true,
                         })}
-                        defaultValue={userInfomation.userContactInformation}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        defaultValue={userInfomation.department}
                       >
-                        <option value={aspLogistik}>Logistik</option>
-                        <option value={aspVertrieb}>Vertrieb</option>
-                        <option value={aspHR}>HR</option>
+                        <option value={"logistik"}>Logistik</option>
+                        <option value={"vertrieb"}>Vertrieb</option>
+                        <option value={"IT & Services"}>IT & Services</option>
+                        <option value={"fuhrpark"}>Fuhrpark</option>
+                        <option value={"HR & Training"}>HR & Training</option>
+                        <option value={"buchhaltung"}>Buchhaltung</option>
+                        <option value={"einkauf"}>Einkauf & Anmietung</option>
+                        <option value={"design & Planung"}>
+                          Design & Planung
+                        </option>
+                        <option value={"projektmanagement"}>
+                          Projektmanagement
+                        </option>
+                        <option value={"officemanagement"}>
+                          Office Management
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -188,8 +216,8 @@ export default function Register() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       >
                         <option value="admin">Admin</option>
-                        <option value="ASP">Ansprechpartner</option>
-                        <option value="teacher">Referent</option>
+                        <option value="ASP">Genehmiger*in</option>
+                        <option value="teacher">Referent*in</option>
                         <option value="user">User</option>
                       </select>
                     </div>
@@ -213,7 +241,6 @@ export default function Register() {
                       </select>
                     </div>
                   </div>
-
                   <div className="flex justify-center gap-4">
                     <button
                       type="submit"

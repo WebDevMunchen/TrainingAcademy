@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import RegisterdUserCard from "./RegisteredUserCard";
 import { AuthContext } from "../../context/AuthProvider";
+import RegisteredUserCardAdmin from "./RegisteredUserCardAdmin";
 
-export default function SingleClassDetails() {
+export default function SingleClassDetailsAdmin() {
   const { user } = useContext(AuthContext);
 
   const { id } = useParams();
@@ -37,6 +37,7 @@ export default function SingleClassDetails() {
   const formattedDate = `${day}/${month}/${year}`;
   const formatedDateprior = `${dayPrior}/${month}/${year}`;
   const formatedDatepriorGenehmigung = `${dayPriorGenehimgung}/${month}/${year}`;
+
   return (
     <>
       {!activity ? (
@@ -89,7 +90,7 @@ export default function SingleClassDetails() {
                     <div className="flex flex-col">
                       <div>
                         <p className="font-semibold">
-                        Registrierungsende:{" "}
+                          Registrierungsende:{" "}
                           <span className="font-normal">
                             {formatedDateprior} um {activity.time}
                           </span>
@@ -387,7 +388,7 @@ export default function SingleClassDetails() {
                 className="w-11/12 bg-white shadow overflow-hidden sm:rounded-md mx-auto mt-4 mb-6 lg:w-4/12"
               >
                 <li>
-                  <RegisterdUserCard
+                  <RegisteredUserCardAdmin
                     registeredUser={registeredUser}
                     activityId={id}
                     setActivity={setActivity}

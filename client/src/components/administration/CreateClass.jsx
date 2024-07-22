@@ -71,9 +71,9 @@ export default function CreateClass() {
     <>
       <div className="bg-gray-50/50 flex">
         <SideMenu />
-        <div className="flex mt-4 flex-col items-center w-11/12 lg:py-10 mx-auto lg:mt-0 lg:w-5/12">
+        <div className="flex mt-4 flex-col items-center w-11/12 lg:py-7 mx-auto lg:mt-0 lg:w-5/12">
           <div className="bg-white rounded-md shadow w-11/12 lg:6/12">
-            <div className="p-6 space-y-4 md:space-y-4 sm:p-6">
+            <div className="p-6 space-y-4 md:space-y-2 sm:p-6">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Neue Schulung erstellen
               </h1>
@@ -106,6 +106,21 @@ export default function CreateClass() {
                     {...register("description", { required: true })}
                     className="resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Gib eine kurze Beschreibung für die Schulung ein"
+                  />
+                </div>
+
+                <div className="flex gap-4">
+                  <label
+                    htmlFor="safetyBriefing"
+                    className="block text-sm font-medium text-gray-900 dark:text-white mt-1"
+                  >
+                    Jährliche Sicherheitsunterweisung:
+                  </label>
+                  <input
+                    type="checkbox" {...register("safetyBriefing", { required: false })}
+                    id="safetyBriefing"
+                    className="checkbox"
+                    
                   />
                 </div>
 
@@ -210,16 +225,15 @@ export default function CreateClass() {
                   </div>
                 </div>
 
-                <div className="flex justify-start gap-16"></div>
                 <div>
                   <label
                     htmlFor="teacher"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Referent:
+                    Referent*in:
                   </label>
                   <input
-                    placeholder="Wer unterrichtet die Schulung?"
+                    placeholder="Wer hält die Schulung?"
                     {...register("teacher", { required: true })}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   />

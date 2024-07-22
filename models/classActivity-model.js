@@ -30,6 +30,7 @@ const classActivitySchema = new Schema({
   usedCapacity: { type: Number, default: 0 },
   registeredUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],
   teacher: { type: String, required: true },
+  safetyBriefing: { type: Boolean, default:false}
 });
 
 const ClassActivity = model("ClassActivitie", classActivitySchema);

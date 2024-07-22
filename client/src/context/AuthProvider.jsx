@@ -11,6 +11,7 @@ export default function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
+  const [approver, setApprover] = useState(null);
   const [allUsers, setAllUsers] = useState(null);
   const [allActivities, setAllActivities] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,6 +50,15 @@ export default function AuthProvider({ children }) {
       })
       .catch((error) => {
         setAllUsers(null);
+      });
+
+    axiosClient
+      .get("/approver/approverList")
+      .then((response) => {
+        setApprover(response.data);
+      })
+      .catch((error) => {
+        setApprover(null);
       });
   }, [currentMonth, setAllActivities]);
 
@@ -114,11 +124,17 @@ export default function AuthProvider({ children }) {
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
+
+        return axiosClient.get(`/approver/approverList`);
+      })
+      .then((responseApprovers) => {
+        setApprover(responseApprovers.data);
       })
       .catch((error) => {
-        badCredentials()
+        badCredentials();
         setUser(null);
         setAllUsers(null);
+        setApprover(null);
       })
       .finally(() => {
         setIsLoading(false);
@@ -132,22 +148,21 @@ export default function AuthProvider({ children }) {
         setUser(null);
         navigate("/");
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const signup = async (data) => {
     axiosClient
       .post("/user/register", data)
       .then((response) => {
-
-        return(axiosClient.get(`user/getAllUsers`))
-      }).then((response) => {
-        setAllUsers(response.data)
+        return axiosClient.get(`user/getAllUsers`);
+      })
+      .then((response) => {
+        setAllUsers(response.data);
         navigate("/admin/users");
       })
       .catch((error) => {
-        notifyErrorRegister()
+        notifyErrorRegister();
       })
       .finally(() => {
         setIsLoading(false);
@@ -155,18 +170,21 @@ export default function AuthProvider({ children }) {
   };
 
   const notifyErrorRegister = () => {
-    toast.error(`Registrierung fehlgeschlagen. Benutzer bereits registriert oder ungültige Daten`, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mt-14 mr-6 w-80",
-    });
+    toast.error(
+      `Registrierung fehlgeschlagen. Benutzer bereits registriert oder ungültige Daten`,
+      {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        className: "mt-14 mr-6 w-80",
+      }
+    );
   };
 
   return (
@@ -183,6 +201,8 @@ export default function AuthProvider({ children }) {
           setAllActivities,
           setAllUsers,
           notifyErrorRegister,
+          setApprover,
+          approver,
           user,
           allUsers,
           allActivities,

@@ -67,31 +67,30 @@ export default function Dashboard() {
           <div className="mt-6">
             <div className="hidden lg:grid mb-6 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
               <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-                <div className="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+                <div className="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-green-600 to-green-400 text-white shadow-green-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="currentColor"
-                    className="w-6 h-6"
+                    aria-hidden="true"
+                    className="w-6 h-6 text-white"
                   >
-                    <path d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
-                    <path d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134 1.414.22 2.843.255 4.284a.75.75 0 0 1-.46.711 47.87 47.87 0 0 0-8.105 4.342.75.75 0 0 1-.832 0 47.87 47.87 0 0 0-8.104-4.342.75.75 0 0 1-.461-.71c.035-1.442.121-2.87.255-4.286.921.304 1.83.634 2.726.99v1.27a1.5 1.5 0 0 0-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.66a6.727 6.727 0 0 0 .551-1.607 1.5 1.5 0 0 0 .14-2.67v-.645a48.549 48.549 0 0 1 3.44 1.667 2.25 2.25 0 0 0 2.12 0Z" />
-                    <path d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
+                    <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z"></path>
                   </svg>
                 </div>
                 <div className="p-4 text-right">
-                  <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
-                    Schulungen in diesem Monat
+                  <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                    Anzahl der registrierten Mitarbeiter
                   </h6>
-                  <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                    {!allActivities ? <>0</> : allActivities.length}
+                  <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
+                    {!allUsers ? <>Loading</> : allUsers.length}
                   </h4>
                 </div>
                 <div className="flex gap-3 items-center border-t border-blue-gray-50 p-4">
-                  <p className="block antialiased font-sans text-base leading-relaxed font-semibold text-gray-400">
-                    Neue Schulung erstellen
+                  <p className="block antialiased  text-base leading-relaxed font-semibold text-gray-400">
+                    Neuen User registrieren
                   </p>
-                  <NavLink to={"/admin/createClass"}>
+                  <NavLink to={"/admin/register"}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -108,30 +107,31 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-                <div className="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-green-600 to-green-400 text-white shadow-green-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+                <div className="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="currentColor"
-                    aria-hidden="true"
-                    className="w-6 h-6 text-white"
+                    className="w-6 h-6"
                   >
-                    <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z"></path>
+                    <path d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
+                    <path d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134 1.414.22 2.843.255 4.284a.75.75 0 0 1-.46.711 47.87 47.87 0 0 0-8.105 4.342.75.75 0 0 1-.832 0 47.87 47.87 0 0 0-8.104-4.342.75.75 0 0 1-.461-.71c.035-1.442.121-2.87.255-4.286.921.304 1.83.634 2.726.99v1.27a1.5 1.5 0 0 0-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.66a6.727 6.727 0 0 0 .551-1.607 1.5 1.5 0 0 0 .14-2.67v-.645a48.549 48.549 0 0 1 3.44 1.667 2.25 2.25 0 0 0 2.12 0Z" />
+                    <path d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
                   </svg>
                 </div>
                 <div className="p-4 text-right">
-                  <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
-                    Anzahl der registrierten User
+                  <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                    Schulungen in diesem Monat
                   </h6>
-                  <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                    {!allUsers ? <>Loading</> : allUsers.length}
+                  <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
+                    {!allActivities ? <>0</> : allActivities.length}
                   </h4>
                 </div>
                 <div className="flex gap-3 items-center border-t border-blue-gray-50 p-4">
-                  <p className="block antialiased font-sans text-base leading-relaxed font-semibold text-gray-400">
-                    Neuen User registrieren
+                  <p className="block antialiased  text-base leading-relaxed font-semibold text-gray-400">
+                    Neue Schulung erstellen
                   </p>
-                  <NavLink to={"/admin/register"}>
+                  <NavLink to={"/admin/createClass"}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -164,15 +164,15 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div className="p-4 text-right">
-                  <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                  <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
                     Teilnehmer in diesem Monat
                   </h6>
-                  <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                  <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
                     {totalAttendees}
                   </h4>
                 </div>
                 <div className="border-t border-blue-gray-50 p-4">
-                  <p className="block antialiased font-sans text-base leading-relaxed font-semibold text-gray-400">
+                  <p className="block antialiased  text-base leading-relaxed font-semibold text-gray-400">
                     Insgesamt noch{" "}
                     <span className="font-bold text-cyan-600">
                       {" "}
@@ -204,15 +204,15 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div className="p-4 text-right">
-                  <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                  <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
                     Ausstehende Genehmigungen
                   </h6>
-                  <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                  <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
                     {pendingClassesCount}
                   </h4>
                 </div>
                 <div className="flex gap-3 items-center border-t border-blue-gray-50 p-4">
-                  <p className="block antialiased font-sans text-base leading-relaxed font-semibold text-gray-400">
+                  <p className="block antialiased  text-base leading-relaxed font-semibold text-gray-400">
                     Zur Schulungsübersicht
                   </p>
                   <NavLink to={"/classes"}>
@@ -232,7 +232,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="flex justify-between mb-4">
+            <div className="flex justify-between mb-4 mx-16">
               <button onClick={handlePreviousMonth}>
                 {" "}
                 <svg
@@ -267,49 +267,49 @@ export default function Dashboard() {
               </button>
             </div>
 
-            <div className="mx-auto w-10/12 mb-4 grid grid-cols-1 gap-6">
+            <div className="mx-auto w-11/12 mb-4 grid grid-cols-1 gap-6">
               <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
                 <div className="p-6 h-[calc(63.5vh-32px)] overflow-x-scroll px-0 pt-0 pb-2">
                   <table className="w-full min-w-[640px] table-auto">
                     <thead>
                       <tr>
-                        <th className="w-3/12 border-b border-blue-gray-50 py-3 px-6 text-left">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                        <th className="w-1/4 border-b border-blue-gray-50 py-3 px-6 text-left">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Thema
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
-                            Zeilgruppe
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
+                            Zielgruppe
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Location
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Datum
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Uhrzeit
                           </p>
                         </th>
-                        <th className="w-2/12 border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                        <th className="w-1/12 border-b border-blue-gray-50 py-3 px-6 text-center">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Ausstehende Genehmigungen
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Teilnehmer Angemeldet
                           </p>
                         </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
-                          <p className="block antialiased font-sans text-[11px] font-medium uppercase text-blue-gray-400">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Links
                           </p>
                         </th>

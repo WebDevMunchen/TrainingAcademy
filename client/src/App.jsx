@@ -18,6 +18,10 @@ import EditClass from "./components/administration/EditClass";
 import Report from "./components/administration/Report";
 import AuthorizeNonUser from "./components/AuthorizeNonUser";
 import { Bounce, ToastContainer } from "react-toastify";
+import Datenschutz from "./components/user/Datenschutz";
+import SingleClassDetailsAdmin from "./components/administration/SingleClassDetailsAdmin";
+import ApproverList from "./components/administration/ApproverList";
+import ApproverListSubstitute from "./components/administration/ApproverListSubstitute";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
@@ -45,12 +49,14 @@ function App() {
         <Route path="/" element={<Protected />}>
           <Route path="/classes" element={<ClassesSchedule />} />
           <Route path="/classesOverview" element={<ClassesOverview />} />
+          <Route path="/datenschutz" element={<Datenschutz />} />
 
           <Route
             path="/classInformation"
             element={<AuthorizeNonUser roles={allowedRoles} />}
           >
             <Route path=":id" element={<SingleClassDetails />} />
+            <Route path="participation/:id" element={<SingleClassDetailsAdmin />} />
           </Route>
           <Route path="/admin" element={<Authorize role="admin" />}>
             <Route path="register" element={<Register />} />
@@ -65,6 +71,8 @@ function App() {
             <Route path="createClass" element={<CreateClass />} />
             <Route path="editClass/:id" element={<EditClass />} />
             <Route path="report/:id" element={<Report />} />
+            <Route path="approverList" element={<ApproverList />} />
+            <Route path="approverListSubstitute" element={<ApproverListSubstitute />} />
           </Route>
         </Route>
       </Routes>
