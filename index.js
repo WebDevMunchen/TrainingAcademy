@@ -24,6 +24,8 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 
+app.use(express.static(path.resolve(__dirname, "client", "dist")));
+
 app.use("/api/user", userRouter);
 app.use("/api/classActivity", classActivityRouter);
 app.use("/api/approver", approverRouter);
