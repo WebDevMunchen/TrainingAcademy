@@ -29,27 +29,6 @@ export default function ClassScheduleCard({ activity }) {
       .catch((error) => {});
   };
 
-  const onSubmitCancel = () => {
-    axiosClient
-      .put(`/classActivity/cancelClass/${activity._id}`, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        return axiosClient.get("/user/profile");
-      })
-      .then((responseProfile) => {
-        setUser(responseProfile.data);
-
-        return axiosClient.get(
-          `/classActivity/allActivities?month=${currentMonth}`
-        );
-      })
-      .then((responseActivities) => {
-        setAllActivities(responseActivities.data);
-      })
-      .catch((error) => {});
-  };
-
   const showLegend = () => {
     document.getElementById("legend").showModal();
   };
@@ -85,14 +64,14 @@ export default function ClassScheduleCard({ activity }) {
       <div className="m-2 bg-white border p-4 relative group shadow-lg">
         <div className="absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2"></div>
         <div className="py-2 relative">
-        <div className="flex justify-between lg:hidden">
+          <div className="flex justify-between lg:hidden">
             <p className="font-semibold lg:hidden">
-                        Registrierungsende:{" "}
-                          <span className="font-normal">
-                            {formattedDatePrior} um {activity.time}
-                          </span>
-                        </p>
-                        <p className="w-48 inline font-semibold text-right lg:hidden">
+              Registrierungsende:{" "}
+              <span className="font-normal">
+                {formattedDatePrior} um {activity.time}
+              </span>
+            </p>
+            <p className="w-48 inline font-semibold text-right lg:hidden">
               Freie Plätze:{" "}
               {activity.capacity - activity.usedCapacity > 5 ? (
                 <span className="shrink-0 rounded-full bg-emerald-500 px-3 font-mono text-md font-medium tracking-tight text-white">
@@ -104,10 +83,11 @@ export default function ClassScheduleCard({ activity }) {
                 </span>
               )}
             </p>
-            </div>
+          </div>
           <div className="flex justify-center lg:justify-between">
-
-              <p className="hidden lg:inline invisible w-72">Placeholder Longer</p>
+            <p className="hidden lg:inline invisible w-72">
+              Placeholder Longer
+            </p>
             <h3 className="hidden lg:flex justify-center text-lg font-semibold text-black">
               {activity.title}
             </h3>
@@ -115,25 +95,25 @@ export default function ClassScheduleCard({ activity }) {
               {activity.title}
             </h3>
             <div className="flex flex-col">
-                        <p className="hidden lg:inline font-semibold text-right">
-              Freie Plätze:{" "}
-              {activity.capacity - activity.usedCapacity > 5 ? (
-                <span className="shrink-0 rounded-full bg-emerald-500 px-3 font-mono text-md font-medium tracking-tight text-white">
-                  {activity.capacity - activity.usedCapacity}
+              <p className="hidden lg:inline font-semibold text-right">
+                Freie Plätze:{" "}
+                {activity.capacity - activity.usedCapacity > 5 ? (
+                  <span className="shrink-0 rounded-full bg-emerald-500 px-3 font-mono text-md font-medium tracking-tight text-white">
+                    {activity.capacity - activity.usedCapacity}
+                  </span>
+                ) : (
+                  <span className="shrink-0 rounded-full bg-red-500 px-3 font-mono text-md font-medium tracking-tight text-white">
+                    {activity.capacity - activity.usedCapacity}
+                  </span>
+                )}
+              </p>
+              <p className="hidden lg:flex font-semibold">
+                Registrierungsende:{" "}
+                <span className="font-normal">
+                  {formattedDatePrior} um {activity.time}
                 </span>
-              ) : (
-                <span className="shrink-0 rounded-full bg-red-500 px-3 font-mono text-md font-medium tracking-tight text-white">
-                  {activity.capacity - activity.usedCapacity}
-                </span>
-              )}
-            </p>
-            <p className="hidden lg:flex font-semibold">
-                        Registrierungsende:{" "}
-                          <span className="font-normal">
-                            {formattedDatePrior} um {activity.time}
-                          </span>
-                        </p>
-                        </div>
+              </p>
+            </div>
           </div>
 
           <div className="flex justify-center mt-2 mb-1">
@@ -333,16 +313,16 @@ export default function ClassScheduleCard({ activity }) {
               <>
                 {activity.capacity - activity.usedCapacity > 0 ? (
                   <>
-                    {activity.registeredUsers.some(
-                      (userObj) => userObj._id === user._id
+                    {user.classesRegistered.some(
+                      (classObj) =>
+                        classObj.registeredClassID._id === activity._id
                     ) ? (
-                      <form onSubmit={handleSubmit(onSubmitCancel)}>
-                        <input
-                          type="submit"
-                          className="bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-                          value="Stornieren"
-                        />
-                      </form>
+                      <button
+                        className="bg-gradient-to-b from-green-500 to-green-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                        disabled
+                      >
+                        Angemeldet
+                      </button>
                     ) : (
                       <form onSubmit={handleSubmit(onSubmit)}>
                         <input
@@ -355,24 +335,12 @@ export default function ClassScheduleCard({ activity }) {
                   </>
                 ) : (
                   <>
-                    {activity.registeredUsers.some(
-                      (userObj) => userObj._id === user._id
-                    ) ? (
-                      <form onSubmit={handleSubmit(onSubmitCancel)}>
-                        <input
-                          type="submit"
-                          className="bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-                          value="Stornieren"
-                        />
-                      </form>
-                    ) : (
-                      <button
-                        className="mt-3 bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
-                        disabled
-                      >
-                        Ausgebucht
-                      </button>
-                    )}
+                    <button
+                      className="mt-3 bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                      disabled
+                    >
+                      Ausgebucht
+                    </button>
                   </>
                 )}
               </>
@@ -414,24 +382,28 @@ export default function ClassScheduleCard({ activity }) {
               !activityDatePassed &&
               !oneDayPrior && (
                 <>
-                  {activity.registeredUsers.some(
-                    (userObj) => userObj._id === user._id
-                  ) ? (
-                    <form onSubmit={handleSubmit(onSubmitCancel)}>
-                      <input
-                        type="submit"
-                        className="bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-                        value="Stornieren"
-                      />
-                    </form>
-                  ) : activity.capacity - activity.usedCapacity > 0 ? (
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                      <input
-                        type="submit"
-                        className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition hover:shadow-lg hover:-translate-y-0.5"
-                        value="Anmelden"
-                      />
-                    </form>
+                  {activity.capacity - activity.usedCapacity > 0 ? (
+                    <>
+                      {user.classesRegistered.some(
+                        (classObj) =>
+                          classObj.registeredClassID._id === activity._id
+                      ) ? (
+                        <button
+                          className="bg-gradient-to-b from-green-500 to-green-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                          disabled
+                        >
+                          Angemeldet
+                        </button>
+                      ) : (
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                          <input
+                            type="submit"
+                            className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition hover:shadow-lg hover:-translate-y-0.5"
+                            value="Anmelden"
+                          />
+                        </form>
+                      )}
+                    </>
                   ) : (
                     <button
                       className="mt-3 bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"

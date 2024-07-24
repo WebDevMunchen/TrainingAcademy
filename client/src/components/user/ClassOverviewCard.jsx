@@ -1,4 +1,34 @@
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthProvider";
+import { useForm } from "react-hook-form";
+import axiosClient from "../../utils/axiosClient";
+
 export default function ClassesOverviewCard({ activity }) {
+  const { setUser, setAllActivities, currentMonth } = useContext(AuthContext);
+  const { handleSubmit } = useForm();
+
+  const onSubmitCancel = () => {
+    axiosClient
+      .put(`/classActivity/cancelClass/${activity.registeredClassID._id}`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        return axiosClient.get("/user/profile");
+      })
+      .then((responseProfile) => {
+        setUser(responseProfile.data);
+
+        return axiosClient.get(
+          `/classActivity/allActivities?month=${currentMonth}`
+        );
+      })
+      .then((responseActivities) => {
+        setAllActivities(responseActivities.data);
+      })
+      .catch((error) => {
+      });
+  };
+
   const dateString = activity?.registeredClassID?.date;
   const date = new Date(dateString);
 
@@ -7,6 +37,7 @@ export default function ClassesOverviewCard({ activity }) {
   const year = date.getFullYear();
 
   const formattedDate = `${day}/${month}/${year}`;
+  const currentDateTime = new Date();
 
   let dPath = "";
   let spanStyle = "";
@@ -345,6 +376,19 @@ export default function ClassesOverviewCard({ activity }) {
                 {activity.registeredClassID?.teacher}
               </p>
             </div>
+          </div>
+          <div className="flex justify-center mt-2">
+            <form onSubmit={handleSubmit(onSubmitCancel)}>
+              {activity.status !== "abgelehnt" &&
+                new Date(activity.registeredClassID.date) >=
+                  currentDateTime && (
+                  <input
+                    type="submit"
+                    className="bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                    value="Stornieren"
+                  />
+                )}
+            </form>
           </div>
         </div>
       </div>
