@@ -16,7 +16,6 @@ export default function Register() {
   const [userInfomation, setUserInformation] = useState(null);
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
-
   useEffect(() => {
     axiosClient
       .get(`/user/profileInformation/${id}`)
@@ -30,6 +29,7 @@ export default function Register() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm();
 
   const onSubmit = (data) => {
@@ -51,8 +51,6 @@ export default function Register() {
   const handleTooltipToggle = () => {
     setIsTooltipVisible(!isTooltipVisible);
   };
-
-
 
   const notifyCopied = () =>
     toast.success("Kennwort in die Zwischenablage kopiert!", {

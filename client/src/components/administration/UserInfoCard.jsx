@@ -1,6 +1,6 @@
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import SideMenu from "./SideMenu";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { updatePBC } from "../../utils/updatePBC";
 import { useForm } from "react-hook-form";
@@ -29,6 +29,8 @@ export default function UserInfoCard() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    watch,
   } = useForm();
 
   const onSubmit = (data) => {
@@ -117,54 +119,52 @@ export default function UserInfoCard() {
       className: "mr-6",
     });
 
-    const generateRandomString = (length) => {
-      const characters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      let result = "";
-      const charactersLength = characters.length;
-      for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * charactersLength);
-        result += characters[randomIndex];
-      }
-      return result;
-    };
-  
-    const handleTooltipToggle = () => {
-      setIsTooltipVisible(!isTooltipVisible);
-    };
-  
-    const generatePassword = () => {
-      const randomString = generateRandomString(8);
-      setGeneratedPassword(randomString);
-      setValue("password", randomString);
-    };
-  
-    const togglePasswordVisibility = () => {
-      setPasswordVisible(!passwordVisible);
-    };
-  
-    const copyToClipboard = () => {
-      navigator.clipboard
-        .writeText(generatedPassword)
-        .then(() => {
-          notifyCopied();
-        })
-        .catch((err) => {});
-    };
-  
-    const notifyCopied = () =>
-      toast.success("Kennwort in die Zwischenablage kopiert!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        className: "mt-14 mr-6",
-      });
+  const generateRandomString = (length) => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charactersLength);
+      result += characters[randomIndex];
+    }
+    return result;
+  };
+
+  const generatePassword = () => {
+    const randomString = generateRandomString(8);
+    setGeneratedPassword(randomString);
+    setValue("password", randomString);
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(generatedPassword)
+      .then(() => {
+        notifyCopied();
+      })
+      .catch((err) => {});
+  };
+
+  const notifyCopied = () =>
+    toast.success("Kennwort in die Zwischenablage kopiert!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mt-14 mr-6",
+    });
+
+  const password = watch("password", "");
 
   return (
     <>
@@ -289,8 +289,12 @@ export default function UserInfoCard() {
                             {...register("password", { required: true })}
                             type={passwordVisible ? "text" : "password"}
                             placeholder="••••••••"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-38 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value={generatedPassword}
+                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-5/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            value={password}
+                            onChange={(e) => {
+                              setGeneratedPassword(e.target.value);
+                              setValue("password", e.target.value);
+                            }}
                           />
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
