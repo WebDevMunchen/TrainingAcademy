@@ -9,24 +9,26 @@ const {
   editClassActivity,
   cancelUserRegistration,
   decreaseClassCapacityOnCancel,
+  updateCancelationReason,
 } = require("../controllers/classActivity-controller.js");
 const { authenticate } = require("../middlewares/authentication.js");
 const { updateUserRegistration } = require("../controllers/user-controller.js");
+const upload = require("../utils/multerConfig.js");
 
 const classActivityRouter = express.Router();
 
 classActivityRouter.route("/allActivities").get(getAllActivities);
 classActivityRouter.route("/:id").get(getActivity);
-classActivityRouter.route("/create").post(authenticate, createClassActivity);
+classActivityRouter.route("/create").post(authenticate, upload.single('file'), createClassActivity);
 classActivityRouter
   .route("/registerClass/:id")
   .put(authenticate, registerClass, updateUserRegistration);
 classActivityRouter
   .route("/cancelClass/:id")
   .put(authenticate, cancelUserRegistration);
-// classActivityRouter
-//   .route("/decreaseClassCapacityCancel/:id")
-//   .put(authenticate, decreaseClassCapacityOnCancel);
+classActivityRouter
+  .route("/updateReason/:id")
+  .put(authenticate, updateCancelationReason);
 classActivityRouter
   .route("/editClass/:id")
   .put(authenticate, editClassActivity);

@@ -1,16 +1,28 @@
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
-import { useForm } from "react-hook-form";
 import axiosClient from "../../utils/axiosClient";
 
 export default function ClassesOverviewCard({ activity }) {
   const { setUser, setAllActivities, currentMonth } = useContext(AuthContext);
-  const { handleSubmit } = useForm();
 
-  const onSubmitCancel = () => {
+  const modalRef = useRef(null);
+
+  const [selectedReason, setSelectedReason] = useState("");
+
+  const cancelClass = (stornoReason) => {
     axiosClient
       .put(`/classActivity/cancelClass/${activity.registeredClassID._id}`, {
+        stornoReason: [stornoReason],
         withCredentials: true,
+      })
+      .then((response) => {
+        return axiosClient.put(
+          `/classActivity/updateReason/${activity.registeredClassID._id}`,
+          {
+            stornoReason: [stornoReason],
+            withCredentials: true,
+          }
+        );
       })
       .then((response) => {
         return axiosClient.get("/user/profile");
@@ -26,6 +38,7 @@ export default function ClassesOverviewCard({ activity }) {
         setAllActivities(responseActivities.data);
       })
       .catch((error) => {
+        console.error(error);
       });
   };
 
@@ -83,6 +96,27 @@ export default function ClassesOverviewCard({ activity }) {
   const showLegend = () => {
     document.getElementById("legend").showModal();
   };
+
+  const closeModal = () => {
+    if (modalRef.current) {
+      modalRef.current.close();
+    }
+  };
+
+  const handleCancelation = () => {
+    if (selectedReason) {
+      cancelClass(selectedReason);
+    }
+  };
+
+  const reasons = [
+    "Keine Interesse mehr",
+    "Am Tag der Schulung nicht im Unternehmen",
+    "Falsch gebucht",
+    "Terminkonflikt - Termin mit der höheren Priorität",
+    "Ich werde zu einem anderen Zeitpunkt teilnehmen",
+    "Kann nicht teilnehmen wegen erhöhter Auslastung",
+  ];
 
   return (
     <>
@@ -377,19 +411,115 @@ export default function ClassesOverviewCard({ activity }) {
               </p>
             </div>
           </div>
-          <div className="flex justify-center mt-2">
-            <form onSubmit={handleSubmit(onSubmitCancel)}>
-              {activity.status !== "abgelehnt" &&
-                new Date(activity.registeredClassID.date) >=
-                  currentDateTime && (
-                  <input
-                    type="submit"
+          {activity.status !== "abgelehnt" &&
+            new Date(activity.registeredClassID.date) >= currentDateTime && (
+              <>
+                <div className="flex justify-center">
+                  <button
                     className="bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-                    value="Stornieren"
-                  />
-                )}
-            </form>
-          </div>
+                    onClick={() => modalRef.current.showModal()}
+                  >
+                    <p>Stornieren</p>
+                  </button>
+                </div>
+
+                <dialog ref={modalRef} id="my_modal_1" className="modal">
+                  <div className="modal-box max-w-xl">
+                    <div
+                      class="flex items-center p-3 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
+                      role="alert"
+                    >
+                      <svg
+                        class="flex-shrink-0 inline w-4 h-4 me-3"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                      </svg>
+                      <span class="sr-only">Info</span>
+                      <div>
+                        <span class="font-medium">Achtung!</span> Du möchtest
+                        deine Anmeldung für den Kurs stornieren?
+                      </div>
+                    </div>
+                    <div
+                      class="flex p-3 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-blue-400"
+                      role="alert"
+                    >
+                      <span class="sr-only">Info</span>
+                      <div>
+                        <span class="font-medium">
+                          Bitte Folgendes beachten bei der Stornierung der
+                          Schulung:
+                        </span>
+                        <ul class="mt-1.5 list-disc list-inside">
+                          <li>
+                            Du musst einen Grund für die Stornierung angeben
+                          </li>
+                          <li>
+                            Bei abgelehntem Genehmigungsstatus,{" "}
+                            <span class="font-medium">
+                              keine Stornierung möglich
+                            </span>
+                          </li>
+                          <li>
+                            Bei Ablauf des Registrierungzeitraums,{" "}
+                            <span class="font-medium">
+                              keine Anmeldung mehr möglich
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="modal-action flex justify-center">
+                      <form method="dialog" className="flex gap-2">
+                        <div>
+                          <div className="w-72 mr-0 lg:w-full lg:mr-12">
+                            <label
+                              htmlFor="reason"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              Begründung:
+                            </label>
+                            <select
+                              id="reason"
+                              className="mb-4 mr-12 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              value={selectedReason}
+                              onChange={(e) =>
+                                setSelectedReason(e.target.value)
+                              }
+                            >
+                              <option value="" disabled>
+                                Wähle eine Begründung
+                              </option>
+                              {reasons.map((reason, index) => (
+                                <option key={index} value={reason}>
+                                  {reason}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="flex justify-end gap-2">
+                            <button
+                              type="button"
+                              className="btn w-fit bg-yellow-600 text-white hover:bg-yellow-700"
+                              onClick={handleCancelation}
+                            >
+                              Stornieren
+                            </button>
+                            <button className="btn w-28" onClick={closeModal}>
+                              Abbrechen
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </dialog>
+              </>
+            )}
         </div>
       </div>
     </>

@@ -303,6 +303,11 @@ export default function Dashboard() {
                             Ausstehende Genehmigungen
                           </p>
                         </th>
+                        <th className="w-1/12 border-b border-blue-gray-50 py-3 px-6 text-center">
+                          <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
+                            Stornierungen
+                          </p>
+                        </th>
                         <th className="border-b border-blue-gray-50 py-3 px-6 text-center">
                           <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Teilnehmer Angemeldet

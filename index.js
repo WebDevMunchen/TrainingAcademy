@@ -13,6 +13,7 @@ const errorHandler = require("./middlewares/errorHandler.js");
 const userRouter = require("./routers/user-router.js");
 const classActivityRouter = require("./routers/classActivity-router.js");
 const approverRouter = require("./routers/approver-router.js");
+const uploadRoute = require("./routers/routerUpload.js");
 
 app.use(
   cors({
@@ -29,6 +30,7 @@ app.use(express.static(path.resolve(__dirname, "client", "dist")));
 app.use("/api/user", userRouter);
 app.use("/api/classActivity", classActivityRouter);
 app.use("/api/approver", approverRouter);
+app.use("/api/uploadPPT", uploadRoute)
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));

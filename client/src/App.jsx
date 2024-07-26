@@ -22,6 +22,8 @@ import Datenschutz from "./components/user/Datenschutz";
 import SingleClassDetailsAdmin from "./components/administration/SingleClassDetailsAdmin";
 import ApproverList from "./components/administration/ApproverList";
 import ApproverListSubstitute from "./components/administration/ApproverListSubstitute";
+import PieChartSingle from "./components/administration/PieChartSingle";
+import PieChartSingleStatistics from "./components/administration/PieChartStatistics";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
@@ -73,6 +75,8 @@ function App() {
             <Route path="report/:id" element={<Report />} />
             <Route path="approverList" element={<ApproverList />} />
             <Route path="approverListSubstitute" element={<ApproverListSubstitute />} />
+            <Route path="cancelationStatistic/:id" element={<PieChartSingle />} />
+            <Route path="cancelationStatistic" element={<PieChartSingleStatistics />} />
           </Route>
         </Route>
       </Routes>

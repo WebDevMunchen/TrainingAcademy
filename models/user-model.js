@@ -32,6 +32,7 @@ const userSchema = new Schema({
         default: "in Prüfung",
       },
       reason: { type: String },
+
     },
   ],
 });

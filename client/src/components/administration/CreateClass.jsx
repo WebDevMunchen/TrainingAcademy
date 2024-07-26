@@ -7,11 +7,10 @@ import { useNavigate } from "react-router-dom";
 
 export default function CreateClass() {
   const { setAllActivities } = useContext(AuthContext);
-
   const navigate = useNavigate();
-
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [currentMonth, setCurrentMonth] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     const date = new Date();
@@ -49,22 +48,41 @@ export default function CreateClass() {
     }
   };
 
-  const onSubmit = (data) => {
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
+  const onSubmit = async (data) => {
     data.department = selectedDepartments;
-    axiosClient
-      .post(`/classActivity/create`, data, {
+
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+    if (selectedFile) {
+      formData.append("file", selectedFile);
+    }
+
+    formData.forEach((value, key) => {
+      console.log(key, value);
+    });
+
+    try {
+      await axiosClient.post(`/classActivity/create`, formData, {
         withCredentials: true,
-      })
-      .then((response) => {
-        return axiosClient.get(
-          `/classActivity/allActivities?month=${currentMonth}`
-        );
-      })
-      .then((activitiesResponse) => {
-        setAllActivities(activitiesResponse.data);
-        navigate("/admin/dashboard");
-      })
-      .catch((error) => {});
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const activitiesResponse = await axiosClient.get(
+        `/classActivity/allActivities?month=${currentMonth}`
+      );
+      setAllActivities(activitiesResponse.data);
+      navigate("/admin/dashboard");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -117,11 +135,25 @@ export default function CreateClass() {
                     Jährliche Sicherheitsunterweisung:
                   </label>
                   <input
-                    type="checkbox" {...register("safetyBriefing", { required: false })}
+                    type="checkbox"
+                    {...register("safetyBriefing", { required: false })}
                     id="safetyBriefing"
                     className="checkbox"
-                    
                   />
+
+                  <div>
+                    <label
+                      htmlFor="file"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Datei hochladen:
+                    </label>
+                    <input
+                      type="file"
+                      onChange={handleFileChange}
+                      className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex flex-col lg:flex-row lg:justify-between">
@@ -144,7 +176,7 @@ export default function CreateClass() {
                       <option value="juni">Juni</option>
                       <option value="juli">Juli</option>
                       <option value="august">August</option>
-                      <option value="spetember">Spetember</option>
+                      <option value="september">September</option>
                       <option value="oktober">Oktober</option>
                       <option value="november">November</option>
                       <option value="dezember">Dezember</option>

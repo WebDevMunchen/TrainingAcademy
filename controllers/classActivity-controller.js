@@ -2,6 +2,7 @@ const ClassActivity = require("../models/classActivity-model.js");
 const ErrorResponse = require("../utils/errorResponse.js");
 const asyncWrapper = require("../utils/asyncWrapper.js");
 const User = require("../models/user-model.js");
+const cloudinary = require('../utils/cloudinaryConfig.js');
 
 const createClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -18,6 +19,22 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     safetyBriefing,
   } = req.body;
 
+  let fileUrl = '';
+  if (req.file) {
+    try {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        resource_type: "auto"
+      });
+      fileUrl = result.secure_url;
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Error uploading file",
+        error: error.message
+      });
+    }
+  }
+
   const activity = await ClassActivity.create({
     title,
     description,
@@ -30,6 +47,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     time,
     teacher,
     safetyBriefing,
+    fileUrl
   });
 
   res.status(201).json(activity);
@@ -76,6 +94,28 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     res.status(201).json(activity);
   }
 });
+
+const updateCancelationReason = asyncWrapper(async (req, res, next) => {
+  const { stornoReason } = req.body;
+  const { id } = req.params;
+
+  if (!Array.isArray(stornoReason)) {
+    return res.status(400).json({ message: "stornoReason must be an array" });
+  }
+
+  const activity = await ClassActivity.findById(id);
+
+  if (!activity) {
+    throw new ErrorResponse(404, "Activity not found!");
+  }
+
+  activity.stornoReason = [...activity.stornoReason, ...stornoReason];
+
+  await activity.save();
+
+  res.status(201).json(activity);
+});
+
 
 const registerClass = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
@@ -229,5 +269,5 @@ module.exports = {
   decreaseClassCapacity,
   editClassActivity,
   cancelUserRegistration,
-  // decreaseClassCapacityOnCancel,
+  updateCancelationReason
 };
