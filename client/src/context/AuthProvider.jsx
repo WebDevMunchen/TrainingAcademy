@@ -47,7 +47,6 @@ export default function AuthProvider({ children }) {
       .get("/user/getAllUsers")
       .then((response) => {
         setAllUsers(response.data);
-        console.log(response.data)
       })
       .catch((error) => {
         setAllUsers(null);

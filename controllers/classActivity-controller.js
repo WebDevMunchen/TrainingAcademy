@@ -23,7 +23,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
   if (req.file) {
     try {
       const result = await cloudinary.uploader.upload(req.file.path, {
-        resource_type: "auto"
+        resource_type: "auto" // Changed to auto to support all file types
       });
       fileUrl = result.secure_url;
     } catch (error) {
@@ -52,6 +52,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
 
   res.status(201).json(activity);
 });
+
 
 const editClassActivity = asyncWrapper(async (req, res, next) => {
   const {

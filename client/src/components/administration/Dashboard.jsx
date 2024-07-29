@@ -324,7 +324,7 @@ export default function Dashboard() {
                       {!allActivities ? (
                         <>
                           <tr>
-                            <td colSpan="7">
+                            <td colSpan="9">
                               <img
                                 className="h-[calc(42vh-40px)] lg:mx-auto lg:h-[calc(53vh-32px)] lg:w-[calc(60vh-32px)]"
                                 src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715671755/symbols/freepik-export-20240514065734UGY2_wpm9md_rahv71.png"

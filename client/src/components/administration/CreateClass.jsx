@@ -11,6 +11,7 @@ export default function CreateClass() {
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [currentMonth, setCurrentMonth] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [hideFileUpload, setHideFileUpload] = useState("hidden");
 
   useEffect(() => {
     const date = new Date();
@@ -78,10 +79,19 @@ export default function CreateClass() {
       const activitiesResponse = await axiosClient.get(
         `/classActivity/allActivities?month=${currentMonth}`
       );
-      setAllActivities(activitiesResponse.data);
+      setAllActivities(activitiesResponse?.data);
+      console.log(activitiesResponse.data)
       navigate("/admin/dashboard");
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleHideFileUpload = () => {
+    if (hideFileUpload === "hidden") {
+      setHideFileUpload("visible");
+    } else {
+      setHideFileUpload("hidden");
     }
   };
 
@@ -127,10 +137,10 @@ export default function CreateClass() {
                   />
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex gap-2 items-center">
                   <label
                     htmlFor="safetyBriefing"
-                    className="block text-sm font-medium text-gray-900 dark:text-white mt-1"
+                    className="py-1.5 block text-sm font-medium text-gray-900 dark:text-white mt-1"
                   >
                     Jährliche Sicherheitsunterweisung:
                   </label>
@@ -139,20 +149,48 @@ export default function CreateClass() {
                     {...register("safetyBriefing", { required: false })}
                     id="safetyBriefing"
                     className="checkbox"
+                    onClick={handleHideFileUpload}
                   />
 
-                  <div>
+                  <div className={hideFileUpload}>
+                    {/* <label
+              htmlFor="file"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Datei hochladen:
+            </label>
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+            /> */}
+
                     <label
-                      htmlFor="file"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      for="file"
+                      class="flex bg-gray-800 hover:bg-gray-700 text-white text-base px-5 ml-3 py-1.5 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif]"
                     >
-                      Datei hochladen:
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="w-6 mr-2 fill-white inline"
+                        viewBox="0 0 32 32"
+                      >
+                        <path
+                          d="M23.75 11.044a7.99 7.99 0 0 0-15.5-.009A8 8 0 0 0 9 27h3a1 1 0 0 0 0-2H9a6 6 0 0 1-.035-12 1.038 1.038 0 0 0 1.1-.854 5.991 5.991 0 0 1 11.862 0A1.08 1.08 0 0 0 23 13a6 6 0 0 1 0 12h-3a1 1 0 0 0 0 2h3a8 8 0 0 0 .75-15.956z"
+                          data-original="#000000"
+                        />
+                        <path
+                          d="M20.293 19.707a1 1 0 0 0 1.414-1.414l-5-5a1 1 0 0 0-1.414 0l-5 5a1 1 0 0 0 1.414 1.414L15 16.414V29a1 1 0 0 0 2 0V16.414z"
+                          data-original="#000000"
+                        />
+                      </svg>
+                      Datei auswählen
+                      <input
+                        type="file"
+                        onChange={handleFileChange}
+                        id="file"
+                        class="hidden"
+                      />
                     </label>
-                    <input
-                      type="file"
-                      onChange={handleFileChange}
-                      className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    />
                   </div>
                 </div>
 

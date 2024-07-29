@@ -17,7 +17,6 @@ export default function SingleClassDetails() {
       .get(`/classActivity/${id}`)
       .then((response) => {
         setActivity(response.data);
-        console.log(response.data)
       })
       .catch((error) => {});
   }, []);
