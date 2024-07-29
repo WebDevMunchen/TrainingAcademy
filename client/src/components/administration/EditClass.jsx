@@ -13,6 +13,8 @@ export default function EditClass() {
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [activityInformation, setActivityInformation] = useState(null);
   const [fileUploadHidden, setFileUploadHidden] = useState("hidden");
+  const [selectedFile, setSelectedFile] = useState(null);
+
 
   const {
     register,
@@ -43,28 +45,38 @@ export default function EditClass() {
     }
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     data.department = selectedDepartments;
-    axiosClient
-      .put(`/classActivity/editClass/${id}`, data, {
+
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+    if (selectedFile) {
+      formData.append("file", selectedFile);
+    }
+
+    formData.forEach((value, key) => {
+      console.log(key, value);
+    });
+
+    try {
+      await axiosClient.put(`/classActivity/editClass/${id}`, formData, {
         withCredentials: true,
-      })
-      .then((response) => {
-        return axiosClient.get(
-          `/classActivity/allActivities?month=${currentMonth}`
-        );
-      })
-      .then((activitiesResponse) => {
-        setAllActivities(activitiesResponse.data);
-      })
-      .then((response) => {
-        return axiosClient.get(`/user/profile`);
-      })
-      .then((responseUserProfile) => {
-        setUser(responseUserProfile.data);
-        navigate("/admin/dashboard");
-      })
-      .catch((error) => {});
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const activitiesResponse = await axiosClient.get(
+        `/classActivity/allActivities?month=${currentMonth}`
+      );
+      setAllActivities(activitiesResponse?.data);
+      console.log(activitiesResponse.data)
+      navigate("/admin/dashboard");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const formatDate = (isoString) => {

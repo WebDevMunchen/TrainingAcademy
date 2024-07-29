@@ -31,7 +31,7 @@ classActivityRouter
   .put(authenticate, updateCancelationReason);
 classActivityRouter
   .route("/editClass/:id")
-  .put(authenticate, editClassActivity);
+  .put(authenticate,  upload.single('file'), editClassActivity);
 classActivityRouter
   .route("/increaseClassCapacity/:id")
   .put(authenticate, increaseClassCapacity);

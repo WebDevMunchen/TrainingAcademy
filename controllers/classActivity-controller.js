@@ -71,6 +71,25 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
 
   const { id } = req.params;
 
+  let fileUrl = '';
+  if (req.file) {
+    try {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        resource_type: "auto"
+      });
+      fileUrl = result.secure_url;
+      console.log("File URL:", fileUrl);
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Error uploading file",
+        error: error.message
+      });
+    }
+  }
+  
+
+
   const updatedClass = {
     title,
     description,
@@ -83,6 +102,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     time,
     teacher,
     safetyBriefing,
+    fileUrl
   };
 
   const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, {
