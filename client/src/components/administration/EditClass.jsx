@@ -6,7 +6,7 @@ import axiosClient from "../../utils/axiosClient";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditClass() {
-  const { setAllActivities, setUser, currentMonth } = useContext(AuthContext);
+  const { setAllActivities, setAllUsers, currentMonth } = useContext(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -72,7 +72,11 @@ export default function EditClass() {
         `/classActivity/allActivities?month=${currentMonth}`
       );
       setAllActivities(activitiesResponse?.data);
-      console.log(activitiesResponse.data)
+
+
+      const usersResponse = await axiosClient.get('/user/getAllUsers');
+      setAllUsers(usersResponse?.data);
+
       navigate("/admin/dashboard");
     } catch (error) {
       console.error(error);
