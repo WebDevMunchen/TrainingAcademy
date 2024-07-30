@@ -28,6 +28,7 @@ export default function MessageForm() {
         console.log(error);
       });
   };
+  
   return (
     <div className="bg-gray-50/50 flex">
       <SideMenu />

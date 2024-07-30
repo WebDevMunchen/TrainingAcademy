@@ -6,7 +6,8 @@ import axiosClient from "../../utils/axiosClient";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditClass() {
-  const { setAllActivities, setAllUsers, currentMonth } = useContext(AuthContext);
+  const { setAllActivities, setAllUsers, currentMonth } =
+    useContext(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -15,7 +16,6 @@ export default function EditClass() {
   const [fileUploadHidden, setFileUploadHidden] = useState("hidden");
   const [selectedFile, setSelectedFile] = useState(null);
 
-
   const {
     register,
     handleSubmit,
@@ -23,18 +23,20 @@ export default function EditClass() {
   } = useForm();
 
   useEffect(() => {
-    setFileUploadHidden(activityInformation?.safetyBriefing ? "visible" : "hidden");
+    setFileUploadHidden(
+      activityInformation?.safetyBriefing ? "visible" : "hidden"
+    );
     axiosClient
       .get(`/classActivity/${id}`)
       .then((response) => {
         setActivityInformation(response.data);
         setSelectedDepartments(response.data.department || []);
-        setFileUploadHidden(response.data.safetyBriefing ? "visible" : "hidden");
+        setFileUploadHidden(
+          response.data.safetyBriefing ? "visible" : "hidden"
+        );
       })
       .catch((error) => {});
   }, []);
-
-
 
   const handleDepartmentChange = (e) => {
     const department = e.target.value;
@@ -73,8 +75,7 @@ export default function EditClass() {
       );
       setAllActivities(activitiesResponse?.data);
 
-
-      const usersResponse = await axiosClient.get('/user/getAllUsers');
+      const usersResponse = await axiosClient.get("/user/getAllUsers");
       setAllUsers(usersResponse?.data);
 
       navigate("/admin/dashboard");
@@ -98,8 +99,31 @@ export default function EditClass() {
   };
 
   const handleHidingFileUpload = () => {
-    setFileUploadHidden(prevState => (prevState === "hidden" ? "visible" : "hidden"));
+    setFileUploadHidden((prevState) =>
+      prevState === "hidden" ? "visible" : "hidden"
+    );
   };
+
+  const cancelClass = () => {
+    axiosClient
+      .delete(`/classActivity/deleteClass/${id}`)
+      .then((response) => {
+
+        return axiosClient.get(`classActivity/allActivities?month=${currentMonth}`)
+      }).then((response) => {
+        setAllActivities(response.data)
+      }).then((response) => {
+        navigate("/admin/dashboard")
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  };
+
+  const notifyDelete = () => {
+    document.getElementById("deleteClass").showModal();
+  };
+
 
   return (
     <>
@@ -109,11 +133,80 @@ export default function EditClass() {
         <div className="bg-gray-50/50 flex">
           <SideMenu />
           <div className="flex mt-4 flex-col items-center w-11/12 lg:py-7 mx-auto lg:mt-0 lg:w-5/12">
+          <dialog id="deleteClass" className="modal">
+                <div className="modal-box  max-w-2xl">
+                <div
+                      class="flex items-center p-3 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-300 dark:border-red-800"
+                      role="alert"
+                    >
+                      <svg
+                        class="flex-shrink-0 inline w-4 h-4 me-3"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                      </svg>
+                      <span class="sr-only">Info</span>
+                      <div>
+                        <span class="font-medium">Achtung!</span> Du bist dabei, die Schulung zu löschen!
+                      </div>
+                    </div>
+                    <div
+                      class="flex p-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-blue-400"
+                      role="alert"
+                    >
+                      <span class="sr-only">Info</span>
+                      <div>
+                        <span class="font-medium">
+                          Bitte Folgendes beachten bei der Löschung der
+                          Schulung:
+                        </span>
+                        <ul class="mt-1.5 list-disc list-inside">
+                          <li>
+                            Alle Mitarbeiter bei dieser Schulung werden entfernt
+                          </li>
+                          <li>
+                            Alle Genehmiger werden per E-Mail informiert 
+                          </li>
+                          <li>
+                          Schick eine Nachricht aus dem Benachrichtigungscenter, um den Kollegen zu informieren
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  <div className="modal-action flex justify-center">
+                    <form method="dialog" className="flex gap-2">
+                      <button onClick={cancelClass} className="btn w-28 bg-red-500 text-white hover:bg-red-700">Löschen</button>
+                      <button className="btn w-28">Schließen</button>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
             <div className="bg-white rounded-md shadow w-11/12 lg:6/12">
               <div className="p-6 space-y-4 md:space-y-2 sm:p-6">
-                <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                  "{activityInformation.title}" bearbeiten:
-                </h1>
+                <div className="flex items-center justify-between">
+                  <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                    "{activityInformation.title}" bearbeiten:
+                  </h1>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="size-6 text-red-500 transform transition-transform duration-300 hover:scale-150 hover:cursor-pointer"
+                    // onClick={cancelClass}
+                    onClick={notifyDelete}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                    />
+                  </svg>
+                </div>
                 <form
                   className="space-y-4 w-full md:space-y-6"
                   onSubmit={handleSubmit(onSubmit)}

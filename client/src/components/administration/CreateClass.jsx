@@ -6,31 +6,31 @@ import axiosClient from "../../utils/axiosClient";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateClass() {
-  const { setAllActivities } = useContext(AuthContext);
+  const { setAllActivities, currentMonth } = useContext(AuthContext);
   const navigate = useNavigate();
   const [selectedDepartments, setSelectedDepartments] = useState([]);
-  const [currentMonth, setCurrentMonth] = useState("");
+  // const [currentMonth, setCurrentMonth] = useState(""); //leave for now for potential errors
   const [selectedFile, setSelectedFile] = useState(null);
   const [hideFileUpload, setHideFileUpload] = useState("hidden");
 
-  useEffect(() => {
-    const date = new Date();
-    const monthNames = [
-      "januar",
-      "februar",
-      "märz",
-      "april",
-      "mai",
-      "juni",
-      "juli",
-      "august",
-      "september",
-      "oktober",
-      "november",
-      "dezember",
-    ];
-    setCurrentMonth(monthNames[date.getMonth()]);
-  }, []);
+  // useEffect(() => { //leave for now for potential errors
+  //   const date = new Date();
+  //   const monthNames = [
+  //     "januar",
+  //     "februar",
+  //     "märz",
+  //     "april",
+  //     "mai",
+  //     "juni",
+  //     "juli",
+  //     "august",
+  //     "september",
+  //     "oktober",
+  //     "november",
+  //     "dezember",
+  //   ];
+  //   setCurrentMonth(monthNames[date.getMonth()]);
+  // }, []);
 
   const {
     register,
