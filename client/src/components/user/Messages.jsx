@@ -50,7 +50,7 @@ export default function Messages() {
   };
 
   const sortedMessages = user?.message.sort(
-    (a, b) => new Date(b.messageID.timeStamp) - new Date(a.messageID.timeStamp)
+    (a, b) => new Date(b?.messageID?.timeStamp) - new Date(a?.messageID?.timeStamp)
   );
 
   return (

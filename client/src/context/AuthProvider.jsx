@@ -25,7 +25,11 @@ export default function AuthProvider({ children }) {
     axiosClient
       .get("/user/profile")
       .then((response) => {
-        setUser(response.data);
+        if(response.data.status === "inaktiv") {
+          setUser(null)
+        } else {
+          setUser(response.data);
+        }
         console.log(response.data);
       })
       .catch((error) => {

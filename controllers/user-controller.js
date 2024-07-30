@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const ClassActivity = require("../models/classActivity-model.js");
 const Approver = require("../models/approver-model.js");
-const Message = require("../models/message-model.js");
 
 const createUser = asyncWrapper(async (req, res, next) => {
   const {
@@ -430,6 +429,10 @@ const login = asyncWrapper(async (req, res, next) => {
 
   if (!user) {
     return res.status(404).json({ error: "User not found!" });
+  }
+
+  if (user.status === "inaktiv") {
+    return res.status(403).json({ error: "User is inactive!" });
   }
 
   const match = await bcrypt.compare(password, user.password);
