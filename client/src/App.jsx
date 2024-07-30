@@ -24,6 +24,9 @@ import ApproverList from "./components/administration/ApproverList";
 import ApproverListSubstitute from "./components/administration/ApproverListSubstitute";
 import PieChartSingle from "./components/administration/PieChartSingle";
 import PieChartSingleStatistics from "./components/administration/PieChartStatistics";
+import Messages from "./components/user/Messages";
+import MessagesSide from "./components/user/MessagesSide";
+import MessageForm from "./components/administration/MessageForm";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
@@ -51,6 +54,7 @@ function App() {
         <Route path="/" element={<Protected />}>
           <Route path="/classes" element={<ClassesSchedule />} />
           <Route path="/classesOverview" element={<ClassesOverview />} />
+          <Route path="/messages" element={<Messages />} />
           <Route path="/datenschutz" element={<Datenschutz />} />
 
           <Route
@@ -74,6 +78,7 @@ function App() {
             <Route path="editClass/:id" element={<EditClass />} />
             <Route path="report/:id" element={<Report />} />
             <Route path="approverList" element={<ApproverList />} />
+            <Route path="sendMessage" element={<MessageForm />} />
             <Route path="approverListSubstitute" element={<ApproverListSubstitute />} />
             <Route path="cancelationStatistic/:id" element={<PieChartSingle />} />
             <Route path="cancelationStatistic" element={<PieChartSingleStatistics />} />

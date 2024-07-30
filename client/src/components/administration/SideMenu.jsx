@@ -248,6 +248,32 @@ export default function SideMenu() {
             </li>
             <li>
               <NavLink
+                to={"/admin/sendMessage"}
+                className={
+                  location.pathname === "/admin/sendMessage" ? "active" : ""
+                }
+              >
+                <button
+                  className={
+                    location.pathname === "/admin/sendMessage" 
+                      ? "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 active:opacity-[0.85] w-full flex items-center gap-4 px-4 capitalize"
+                      : "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
+                  }
+                  type="button"
+                >
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+</svg>
+
+
+                  <p className="block antialiased  text-base leading-relaxed text-inherit font-medium capitalize">
+                  Benachrichtigen
+                  </p>
+                </button>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
                 to={"/admin/cancelationStatistic"}
                 className={
                   location.pathname === "/admin/cancelationStatistic"

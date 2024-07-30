@@ -1,10 +1,15 @@
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
-import logo from "../assets/logo_profile.png";
 
 export default function Navbar() {
   const { isLoading, user, logout } = useContext(AuthContext);
+
+  const countUnreadMessages = (messages) => {
+    return messages.filter((message) => message.status === "unread").length;
+  };
+
+  const unreadMessagesCount = user ? countUnreadMessages(user.message) : 0;
 
   return (
     <>
@@ -12,7 +17,11 @@ export default function Navbar() {
         <nav className="flex justify-between lg:justify-between bg-gray-800 text-white w-full">
           <div className="px-2 xl:flex items-center">
             <NavLink to={"/"}>
-              <img className="max-w-none h-16" src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1720595800/logo_profile_b5hxd7.png" alt="logo" />
+              <img
+                className="max-w-none h-16"
+                src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1720595800/logo_profile_b5hxd7.png"
+                alt="logo"
+              />
             </NavLink>
           </div>
           {!user ? (
@@ -42,6 +51,33 @@ export default function Navbar() {
                       </li>
                       <li>
                         <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
+                      </li>
+                      <li className="relative">
+                        <NavLink to={"/messages"}>
+                          <svg
+                            class="w-8 h-8 text-amber-300 animate-wiggle"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 21 21"
+                          >
+                            <path
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M15.585 15.5H5.415A1.65 1.65 0 0 1 4 13a10.526 10.526 0 0 0 1.5-5.415V6.5a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v1.085c0 1.907.518 3.78 1.5 5.415a1.65 1.65 0 0 1-1.415 2.5zm1.915-11c-.267-.934-.6-1.6-1-2s-1.066-.733-2-1m-10.912 3c.209-.934.512-1.6.912-2s1.096-.733 2.088-1M13 17c-.667 1-1.5 1.5-2.5 1.5S8.667 18 8 17"
+                            />
+                          </svg>
+                          <span
+                            className={`${
+                              unreadMessagesCount === 0
+                                ? "hidden"
+                                : "px-2 bg-red-500 rounded-full text-center text-white text-sm absolute -top-3 -end-4"
+                            }`}
+                          >
+                            {unreadMessagesCount}
+                            <span className="absolute top-0 start-0 rounded-full -z-10 animate-ping bg-teal-200 w-full h-full"></span>
+                          </span>
+                        </NavLink>
                       </li>
                     </ul>
                   </div>
@@ -180,6 +216,7 @@ export default function Navbar() {
                       Abmelden
                     </NavLink>
                   </div>
+
                   <div className="lg:hidden dropdown dropdown-end mr-6 mt-1.5 items-center">
                     <div
                       tabIndex={0}

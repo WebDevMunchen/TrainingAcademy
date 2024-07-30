@@ -281,6 +281,12 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
   }
 });
 
+const deleteClass = asyncWrapper(async (req, res, next) => {
+  const {id} = req.params
+
+  
+})
+
 module.exports = {
   createClassActivity,
   getAllActivities,

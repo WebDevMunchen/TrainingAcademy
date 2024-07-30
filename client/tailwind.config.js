@@ -1,10 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: 'class', // Add dark mode configuration
   theme: {
     extend: {   
       fontFamily: {
         anek: ["Anek Devanagari", "sans-serif"],
+      },
+      keyframes: { // Add keyframes for animation
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        },
+      },
+      animation: { // Add animation
+        wiggle: 'wiggle 1s ease-in-out infinite',
       },
     },
   },

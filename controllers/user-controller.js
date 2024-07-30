@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const ClassActivity = require("../models/classActivity-model.js");
 const Approver = require("../models/approver-model.js");
+const Message = require("../models/message-model.js");
 
 const createUser = asyncWrapper(async (req, res, next) => {
   const {
@@ -46,17 +47,10 @@ const createUser = asyncWrapper(async (req, res, next) => {
 });
 
 const updateUser = asyncWrapper(async (req, res, next) => {
-  const {
-    logID,
-    firstName,
-    lastName,
-    role,
-    department,
-    status,
-  } = req.body;
+  const { logID, firstName, lastName, role, department, status } = req.body;
 
   const { id } = req.params;
-  const contactInformationID = "668e958729a4cd5bb513f562"
+  const contactInformationID = "668e958729a4cd5bb513f562";
 
   const updatedFields = {
     logID,
@@ -100,8 +94,8 @@ const getProfile = asyncWrapper(async (req, res, next) => {
 
   const user = await User.findById(id)
     .populate("classesRegistered.registeredClassID")
-    .populate("userContactInformation");
-
+    .populate("userContactInformation")
+    .populate("message.messageID");
   if (!user) {
     throw new ErrorResponse(404, "User not found!");
   } else {
@@ -127,6 +121,7 @@ const getAllUsers = asyncWrapper(async (req, res, next) => {
   const user = await User.find({})
     .populate("classesRegistered.registeredClassID")
     .populate("userContactInformation")
+    .populate("message.messageID")
     .sort({ status: 1 });
 
   res.json(user);
@@ -152,7 +147,8 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     { new: true }
   )
     .populate("classesRegistered.registeredClassID")
-    .populate("userContactInformation");
+    .populate("userContactInformation")
+    .populate("message.messageID");
 
   const approver = await Approver.findById(user.userContactInformation);
 
@@ -257,8 +253,7 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
   const sendMail = async (transporter, mailOptions) => {
     try {
       await transporter.sendMail(mailOptions);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   sendMail(transporter, mailOptions);
@@ -361,8 +356,7 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
     const sendMail = async (transporter, mailOptions) => {
       try {
         await transporter.sendMail(mailOptions);
-      } catch (error) {
-      }
+      } catch (error) {}
     };
 
     sendMail(transporter, mailOptions);
@@ -431,7 +425,8 @@ const login = asyncWrapper(async (req, res, next) => {
   const user = await User.findOne({ logID })
     .select("+password")
     .populate("classesRegistered.registeredClassID")
-    .populate("userContactInformation");
+    .populate("userContactInformation")
+    .populate("message.messageID");
 
   if (!user) {
     return res.status(404).json({ error: "User not found!" });
@@ -466,6 +461,30 @@ const logout = asyncWrapper(async (req, res, next) => {
     .json({ success: true });
 });
 
+const markRead = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params; // message ID
+  const { id: userId } = req.user;
+  const { status: newStatus } = req.body;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId, 'message.messageID': id },
+      { $set: { 'message.$.status': newStatus } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).send({ message: 'Message not found' });
+    }
+
+    res.status(200).send(updatedUser);
+  } catch (error) {
+    console.error('Error marking message as read:', error);
+    res.status(500).send({ error: 'Error marking message as read' });
+  }
+});
+
+
 module.exports = {
   createUser,
   getProfile,
@@ -478,5 +497,6 @@ module.exports = {
   updateNotAttended,
   getUserInformation,
   updateUser,
-  updatePassword
+  updatePassword,
+  markRead
 };
