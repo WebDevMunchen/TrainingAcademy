@@ -6,7 +6,7 @@ import envelope from "../../assets/envelope.png";
 
 export default function Messages() {
   const { user, setUser } = useContext(AuthContext);
-  
+
   const [selectedMessageID, setSelectedMessageID] = useState(null);
 
   const handleSelectMessage = (id) => {
@@ -40,18 +40,17 @@ export default function Messages() {
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
-    return date.toLocaleString('de-DE', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+    return date.toLocaleString("de-DE", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
-  // Sort messages from newest to oldest
-  const sortedMessages = user?.message.sort((a, b) => 
-    new Date(b.messageID.timeStamp) - new Date(a.messageID.timeStamp)
+  const sortedMessages = user?.message.sort(
+    (a, b) => new Date(b.messageID.timeStamp) - new Date(a.messageID.timeStamp)
   );
 
   return (

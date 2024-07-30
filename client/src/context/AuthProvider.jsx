@@ -26,7 +26,7 @@ export default function AuthProvider({ children }) {
       .get("/user/profile")
       .then((response) => {
         setUser(response.data);
-        console.log(response.data)
+        console.log(response.data);
       })
       .catch((error) => {
         setUser(null);
@@ -112,7 +112,7 @@ export default function AuthProvider({ children }) {
       .post("/user/login", data)
       .then((response) => {
         setUser(response.data);
-        console.log(response.data)
+        console.log(response.data);
         navigate("/");
 
         return axiosClient.get("/user/getAllUsers");

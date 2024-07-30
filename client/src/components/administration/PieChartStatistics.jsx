@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import SideMenu from "./SideMenu";
 
 export default function PieChartSingleStatistics() {
-  const [allActivities, setAllActivities] = useState([]);
   const [options, setOptions] = useState({
     series: [],
     labels: [],
@@ -54,27 +53,22 @@ export default function PieChartSingleStatistics() {
   };
 
   useEffect(() => {
-    axiosClient
-      .get(`/classActivity/allActivities`)
-      .then((response) => {
-        const data = response.data;
+    axiosClient.get(`/classActivity/allActivities`).then((response) => {
+      const data = response.data;
 
-        const reasonCounts = {};
+      const reasonCounts = {};
 
-        data.forEach((activity) => {
-          activity.stornoReason.forEach((reason) => {
-            reasonCounts[reason] = (reasonCounts[reason] || 0) + 1;
-          });
+      data.forEach((activity) => {
+        activity.stornoReason.forEach((reason) => {
+          reasonCounts[reason] = (reasonCounts[reason] || 0) + 1;
         });
-
-        const labels = Object.keys(reasonCounts);
-        const series = Object.values(reasonCounts);
-
-        setOptions(getChartOptions(labels, series));
-      })
-      .catch((error) => {
-        console.error("Error fetching activity data:", error);
       });
+
+      const labels = Object.keys(reasonCounts);
+      const series = Object.values(reasonCounts);
+
+      setOptions(getChartOptions(labels, series));
+    });
   }, []);
 
   return (

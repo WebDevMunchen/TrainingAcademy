@@ -334,7 +334,8 @@ export default function RegisteredUserCard({
             <span className="text-lg font-semibold text-gray-900">
               Abteilung:
             </span>{" "}
-            {registeredUser.department.charAt(0).toUpperCase() + registeredUser.department.slice(1)}
+            {registeredUser.department.charAt(0).toUpperCase() +
+              registeredUser.department.slice(1)}
           </p>
         </div>
         <div className="mt-2 flex items-center justify-between mx-2">

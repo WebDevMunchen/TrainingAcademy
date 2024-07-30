@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { AuthContext } from "../../context/AuthProvider";
+import React, { useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { useParams } from "react-router-dom";
 import { Bounce, toast } from "react-toastify";
@@ -134,7 +133,8 @@ export default function RegisteredUserCardAdmin({
             <span className="text-lg font-semibold text-gray-900">
               Abteilung:
             </span>{" "}
-            {registeredUser.department.charAt(0).toUpperCase() + registeredUser.department.slice(1)}
+            {registeredUser.department.charAt(0).toUpperCase() +
+              registeredUser.department.slice(1)}
           </p>
         </div>
         <div className="mt-2 flex items-center justify-between mx-2">

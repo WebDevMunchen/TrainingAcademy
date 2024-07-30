@@ -1,7 +1,10 @@
 const express = require("express");
 
 const { authenticate } = require("../middlewares/authentication.js");
-const { createMessage, findOneMessage } = require("../controllers/message-controller.js");
+const {
+  createMessage,
+  findOneMessage,
+} = require("../controllers/message-controller.js");
 
 const messageRouter = express.Router();
 

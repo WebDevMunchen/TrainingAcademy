@@ -1,13 +1,13 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const cloudinary = require("../utils/cloudinaryConfig.js");
 const upload = require("../utils/multerConfig.js");
 
-router.post('/upload', upload.single('image'), function (req, res) {
+router.post("/upload", upload.single("image"), function (req, res) {
   if (!req.file) {
     return res.status(400).json({
       success: false,
-      message: "No file uploaded"
+      message: "No file uploaded",
     });
   }
 
@@ -16,18 +16,16 @@ router.post('/upload', upload.single('image'), function (req, res) {
       console.log(err);
       return res.status(500).json({
         success: false,
-        message: "Error"
+        message: "Error",
       });
     }
 
     res.status(200).json({
       success: true,
       message: "Uploaded!",
-      data: result
+      data: result,
     });
   });
 });
-
-
 
 module.exports = router;

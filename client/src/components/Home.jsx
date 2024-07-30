@@ -1,4 +1,3 @@
-import { NavLink } from "react-router-dom";
 import taLogo from "../assets/taLogo.png"
 
 export default function Home() {

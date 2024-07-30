@@ -55,7 +55,6 @@ export default function PieChartSingle() {
       .then((response) => {
         const data = response.data;
         setActivity(data);
-        console.log(response.data);
 
         const reasonCounts = {};
         data.stornoReason.forEach((reason) => {
@@ -67,9 +66,7 @@ export default function PieChartSingle() {
 
         setOptions(getChartOptions(labels, series));
       })
-      .catch((error) => {
-        console.error("Error fetching activity data:", error);
-      });
+      .catch((error) => {});
   }, [id]);
 
   return (
@@ -90,13 +87,13 @@ export default function PieChartSingle() {
             </div>
           </div>
           <div className="flex justify-center mt-4">
-              <ReactApexChart
-                options={options}
-                series={options.series}
-                type="pie"
-                height={480}
-                width={680}
-              />
+            <ReactApexChart
+              options={options}
+              series={options.series}
+              type="pie"
+              height={480}
+              width={680}
+            />
           </div>
         </div>
       </div>

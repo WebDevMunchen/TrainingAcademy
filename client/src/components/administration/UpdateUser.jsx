@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { AuthContext } from "../../context/AuthProvider";
-import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
@@ -43,7 +42,6 @@ export default function Register() {
       .then((response) => {
         setAllUsers(response.data);
         navigate(`/admin/userProfile/${id}`);
-        notifySuccess();
       })
       .catch((error) => {});
   };
@@ -51,20 +49,6 @@ export default function Register() {
   const handleTooltipToggle = () => {
     setIsTooltipVisible(!isTooltipVisible);
   };
-
-  const notifyCopied = () =>
-    toast.success("Kennwort in die Zwischenablage kopiert!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mt-14 mr-6",
-    });
 
   return (
     <>

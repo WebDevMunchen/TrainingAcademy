@@ -64,10 +64,6 @@ export default function CreateClass() {
       formData.append("file", selectedFile);
     }
 
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
-
     try {
       await axiosClient.post(`/classActivity/create`, formData, {
         withCredentials: true,
@@ -80,11 +76,8 @@ export default function CreateClass() {
         `/classActivity/allActivities?month=${currentMonth}`
       );
       setAllActivities(activitiesResponse?.data);
-      console.log(activitiesResponse.data)
       navigate("/admin/dashboard");
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const handleHideFileUpload = () => {

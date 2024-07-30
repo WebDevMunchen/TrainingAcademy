@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function EditClass() {
   const { setAllActivities, setAllUsers, currentMonth } =
     useContext(AuthContext);
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -58,10 +59,6 @@ export default function EditClass() {
       formData.append("file", selectedFile);
     }
 
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
-
     try {
       await axiosClient.put(`/classActivity/editClass/${id}`, formData, {
         withCredentials: true,
@@ -79,9 +76,7 @@ export default function EditClass() {
       setAllUsers(usersResponse?.data);
 
       navigate("/admin/dashboard");
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const formatDate = (isoString) => {
@@ -108,22 +103,22 @@ export default function EditClass() {
     axiosClient
       .delete(`/classActivity/deleteClass/${id}`)
       .then((response) => {
-
-        return axiosClient.get(`classActivity/allActivities?month=${currentMonth}`)
-      }).then((response) => {
-        setAllActivities(response.data)
-      }).then((response) => {
-        navigate("/admin/dashboard")
+        return axiosClient.get(
+          `classActivity/allActivities?month=${currentMonth}`
+        );
       })
-      .catch((error) => {
-        console.log(error)
-      });
+      .then((response) => {
+        setAllActivities(response.data);
+      })
+      .then((response) => {
+        navigate("/admin/dashboard");
+      })
+      .catch((error) => {});
   };
 
   const notifyDelete = () => {
     document.getElementById("deleteClass").showModal();
   };
-
 
   return (
     <>
@@ -133,57 +128,61 @@ export default function EditClass() {
         <div className="bg-gray-50/50 flex">
           <SideMenu />
           <div className="flex mt-4 flex-col items-center w-11/12 lg:py-7 mx-auto lg:mt-0 lg:w-5/12">
-          <dialog id="deleteClass" className="modal">
-                <div className="modal-box  max-w-2xl">
+            <dialog id="deleteClass" className="modal">
+              <div className="modal-box  max-w-2xl">
                 <div
-                      class="flex items-center p-3 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-300 dark:border-red-800"
-                      role="alert"
-                    >
-                      <svg
-                        class="flex-shrink-0 inline w-4 h-4 me-3"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                      </svg>
-                      <span class="sr-only">Info</span>
-                      <div>
-                        <span class="font-medium">Achtung!</span> Du bist dabei, die Schulung zu löschen!
-                      </div>
-                    </div>
-                    <div
-                      class="flex p-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-blue-400"
-                      role="alert"
-                    >
-                      <span class="sr-only">Info</span>
-                      <div>
-                        <span class="font-medium">
-                          Bitte Folgendes beachten bei der Löschung der
-                          Schulung:
-                        </span>
-                        <ul class="mt-1.5 list-disc list-inside">
-                          <li>
-                            Alle Mitarbeiter bei dieser Schulung werden entfernt
-                          </li>
-                          <li>
-                            Alle Genehmiger werden per E-Mail informiert 
-                          </li>
-                          <li>
-                          Schick eine Nachricht aus dem Benachrichtigungscenter, um den Kollegen zu informieren
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  <div className="modal-action flex justify-center">
-                    <form method="dialog" className="flex gap-2">
-                      <button onClick={cancelClass} className="btn w-28 bg-red-500 text-white hover:bg-red-700">Löschen</button>
-                      <button className="btn w-28">Schließen</button>
-                    </form>
+                  class="flex items-center p-3 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-300 dark:border-red-800"
+                  role="alert"
+                >
+                  <svg
+                    class="flex-shrink-0 inline w-4 h-4 me-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                  </svg>
+                  <span class="sr-only">Info</span>
+                  <div>
+                    <span class="font-medium">Achtung!</span> Du bist dabei, die
+                    Schulung zu löschen!
                   </div>
                 </div>
-              </dialog>
+                <div
+                  class="flex p-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-blue-400"
+                  role="alert"
+                >
+                  <span class="sr-only">Info</span>
+                  <div>
+                    <span class="font-medium">
+                      Bitte Folgendes beachten bei der Löschung der Schulung:
+                    </span>
+                    <ul class="mt-1.5 list-disc list-inside">
+                      <li>
+                        Alle Mitarbeiter bei dieser Schulung werden entfernt
+                      </li>
+                      <li>Alle Genehmiger werden per E-Mail informiert</li>
+                      <li>
+                        Schick eine Nachricht aus dem Benachrichtigungscenter,
+                        um den Kollegen zu informieren
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="modal-action flex justify-center">
+                  <form method="dialog" className="flex gap-2">
+                    <button
+                      onClick={cancelClass}
+                      className="btn w-28 bg-red-500 text-white hover:bg-red-700"
+                    >
+                      Löschen
+                    </button>
+                    <button className="btn w-28">Schließen</button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
             <div className="bg-white rounded-md shadow w-11/12 lg:6/12">
               <div className="p-6 space-y-4 md:space-y-2 sm:p-6">
                 <div className="flex items-center justify-between">

@@ -2,7 +2,7 @@ const ClassActivity = require("../models/classActivity-model.js");
 const ErrorResponse = require("../utils/errorResponse.js");
 const asyncWrapper = require("../utils/asyncWrapper.js");
 const User = require("../models/user-model.js");
-const cloudinary = require('../utils/cloudinaryConfig.js');
+const cloudinary = require("../utils/cloudinaryConfig.js");
 
 const createClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -19,18 +19,18 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     safetyBriefing,
   } = req.body;
 
-  let fileUrl = '';
+  let fileUrl = "";
   if (req.file) {
     try {
       const result = await cloudinary.uploader.upload(req.file.path, {
-        resource_type: "auto" // Changed to auto to support all file types
+        resource_type: "auto",
       });
       fileUrl = result.secure_url;
     } catch (error) {
       return res.status(500).json({
         success: false,
         message: "Error uploading file",
-        error: error.message
+        error: error.message,
       });
     }
   }
@@ -47,12 +47,11 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     time,
     teacher,
     safetyBriefing,
-    fileUrl
+    fileUrl,
   });
 
   res.status(201).json(activity);
 });
-
 
 const editClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -71,11 +70,11 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
 
   const { id } = req.params;
 
-  let fileUrl = '';
+  let fileUrl = "";
   if (req.file) {
     try {
       const result = await cloudinary.uploader.upload(req.file.path, {
-        resource_type: "auto"
+        resource_type: "auto",
       });
       fileUrl = result.secure_url;
       console.log("File URL:", fileUrl);
@@ -83,12 +82,10 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
       return res.status(500).json({
         success: false,
         message: "Error uploading file",
-        error: error.message
+        error: error.message,
       });
     }
   }
-  
-
 
   const updatedClass = {
     title,
@@ -102,7 +99,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     time,
     teacher,
     safetyBriefing,
-    fileUrl
+    fileUrl,
   };
 
   const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, {
@@ -136,7 +133,6 @@ const updateCancelationReason = asyncWrapper(async (req, res, next) => {
 
   res.status(201).json(activity);
 });
-
 
 const registerClass = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
@@ -243,8 +239,6 @@ const decreaseClassCapacity = asyncWrapper(async (req, res, next) => {
   res.status(201).json(updatedCapacity);
 });
 
-
-
 const getActivity = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
@@ -286,7 +280,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
 
   const deletedClass = await ClassActivity.findByIdAndDelete(id);
   if (!deletedClass) {
-    return res.status(404).json({ message: 'Class not found' });
+    return res.status(404).json({ message: "Class not found" });
   }
 
   await User.updateMany(
@@ -294,7 +288,11 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     { $pull: { classesRegistered: { registeredClassID: id } } }
   );
 
-  res.status(200).json({ message: 'Class and related user registrations deleted successfully' });
+  res
+    .status(200)
+    .json({
+      message: "Class and related user registrations deleted successfully",
+    });
 });
 
 module.exports = {
@@ -307,5 +305,5 @@ module.exports = {
   editClassActivity,
   cancelUserRegistration,
   updateCancelationReason,
-  deleteClass
+  deleteClass,
 };

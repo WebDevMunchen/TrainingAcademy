@@ -462,28 +462,27 @@ const logout = asyncWrapper(async (req, res, next) => {
 });
 
 const markRead = asyncWrapper(async (req, res, next) => {
-  const { id } = req.params; // message ID
+  const { id } = req.params; 
   const { id: userId } = req.user;
   const { status: newStatus } = req.body;
 
   try {
     const updatedUser = await User.findOneAndUpdate(
-      { _id: userId, 'message.messageID': id },
-      { $set: { 'message.$.status': newStatus } },
+      { _id: userId, "message.messageID": id },
+      { $set: { "message.$.status": newStatus } },
       { new: true }
     );
 
     if (!updatedUser) {
-      return res.status(404).send({ message: 'Message not found' });
+      return res.status(404).send({ message: "Message not found" });
     }
 
     res.status(200).send(updatedUser);
   } catch (error) {
-    console.error('Error marking message as read:', error);
-    res.status(500).send({ error: 'Error marking message as read' });
+    console.error("Error marking message as read:", error);
+    res.status(500).send({ error: "Error marking message as read" });
   }
 });
-
 
 module.exports = {
   createUser,
@@ -498,5 +497,5 @@ module.exports = {
   getUserInformation,
   updateUser,
   updatePassword,
-  markRead
+  markRead,
 };

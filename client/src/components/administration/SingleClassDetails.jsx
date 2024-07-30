@@ -25,11 +25,12 @@ export default function SingleClassDetails() {
     document.getElementById("legend").showModal();
   };
 
-  const filteredRegisteredUsers = user.role === "admin" 
-  ? activity?.registeredUsers 
-  : activity?.registeredUsers?.filter(
-      (registeredUser) => registeredUser.department === user.department
-    );
+  const filteredRegisteredUsers =
+    user.role === "admin"
+      ? activity?.registeredUsers
+      : activity?.registeredUsers?.filter(
+          (registeredUser) => registeredUser.department === user.department
+        );
 
   const dateString = activity?.date;
   const date = new Date(dateString);
@@ -95,7 +96,7 @@ export default function SingleClassDetails() {
                     <div className="flex flex-col">
                       <div>
                         <p className="font-semibold">
-                        Registrierungsende:{" "}
+                          Registrierungsende:{" "}
                           <span className="font-normal">
                             {formatedDateprior} um {activity.time}
                           </span>

@@ -32,7 +32,7 @@ app.use("/api/user", userRouter);
 app.use("/api/classActivity", classActivityRouter);
 app.use("/api/approver", approverRouter);
 app.use("/api/message", messageRouter);
-app.use("/api/uploadPPT", uploadRoute)
+app.use("/api/uploadPPT", uploadRoute);
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));

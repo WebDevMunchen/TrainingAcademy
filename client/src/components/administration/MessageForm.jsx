@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function MessageForm() {
   const { user } = useContext(AuthContext);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const sender = user.firstName + " " + user.lastName;
   const sendersEmail = user.firstName + "." + user.lastName + "@partyrent.com";
@@ -22,13 +22,11 @@ export default function MessageForm() {
     axiosClient
       .post("/message/createNewMessage", data)
       .then((response) => {
-        navigate("/admin/dashboard")
+        navigate("/admin/dashboard");
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
-  
+
   return (
     <div className="bg-gray-50/50 flex">
       <SideMenu />
