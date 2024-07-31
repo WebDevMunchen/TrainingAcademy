@@ -25,12 +25,11 @@ export default function AuthProvider({ children }) {
     axiosClient
       .get("/user/profile")
       .then((response) => {
-        if(response.data.status === "inaktiv") {
-          setUser(null)
+        if (response.data.status === "inaktiv") {
+          setUser(null);
         } else {
           setUser(response.data);
         }
-        console.log(response.data);
       })
       .catch((error) => {
         setUser(null);
@@ -116,7 +115,6 @@ export default function AuthProvider({ children }) {
       .post("/user/login", data)
       .then((response) => {
         setUser(response.data);
-        console.log(response.data);
         navigate("/");
 
         return axiosClient.get("/user/getAllUsers");

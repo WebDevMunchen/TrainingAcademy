@@ -3,6 +3,8 @@ const ErrorResponse = require("../utils/errorResponse.js");
 const asyncWrapper = require("../utils/asyncWrapper.js");
 const User = require("../models/user-model.js");
 const cloudinary = require("../utils/cloudinaryConfig.js");
+const Approver = require("../models/approver-model.js");
+const nodemailer = require("nodemailer");
 
 const createClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -264,10 +266,6 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
       .populate("registeredUsers")
       .sort({ date: -1, time: -1 });
 
-    if (allActivities.length === 0) {
-      return res.status(404).json({ message: "No activities found" });
-    }
-
     res.json(allActivities);
   } catch (error) {
     console.error("Error fetching activities:", error);
@@ -277,6 +275,59 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
 
 const deleteClass = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
+  const approversId = "668e958729a4cd5bb513f562";
+
+  const findApprovers = await Approver.findById(approversId);
+  const notifyBeforeDelete = await ClassActivity.findById(id);
+
+  const usersRegistered = await User.find({
+    "classesRegistered.registeredClassID": id,
+  });
+
+  const userNames = usersRegistered.map(
+    (user) => `${user.firstName} ${user.lastName}`
+  );
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.USER,
+      pass: process.env.APP_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: {
+      name: "Schulung Abgesagt - No reply",
+      address: process.env.USER,
+    },
+    to: `${findApprovers.logistik}, ${findApprovers.vertrieb}, ${findApprovers.hr},${findApprovers.it},${findApprovers.fuhrpark},${findApprovers.buchhaltung},${findApprovers.einkauf},${findApprovers.design},${findApprovers.projektmanagement},${findApprovers.officemanagement},${findApprovers.logistikSubstitute},${findApprovers.vertriebSubstitute},${findApprovers.hrSubstitute},${findApprovers.itSubstitute},${findApprovers.fuhrparkSubstitute},${findApprovers.buchhaltungSubstitute},${findApprovers.einkaufSubstitute},${findApprovers.designSubstitute},${findApprovers.projektmanagementSubstitute},${findApprovers.officemanagementSubstitute}, `,
+    subject: "Training Academy - Rent Group München",
+    text: "Training Academy - Rent Group München",
+    html: `Hallo zusammen <br/><br/> Die Schulung "${
+      notifyBeforeDelete.title
+    }" wurde abgesagt.<br/><br/> Folgende mitarbeiter haben sich für diese Schulung angemeldet:<br/>
+      <ul>
+      ${userNames.map((name) => `<li>${name}</li>`).join("")}
+      </ul>
+      <br/>
+      Bitte die Mitarbeiter informieren, falls sie in deiner Abteilung arbeiten.<br/><br/>
+      Bei Fragen gerne melden.
+      `,
+  };
+
+  const sendMail = async (transporter, mailOptions) => {
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
+
+  await sendMail(transporter, mailOptions);
 
   const deletedClass = await ClassActivity.findByIdAndDelete(id);
   if (!deletedClass) {
@@ -288,11 +339,9 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     { $pull: { classesRegistered: { registeredClassID: id } } }
   );
 
-  res
-    .status(200)
-    .json({
-      message: "Class and related user registrations deleted successfully",
-    });
+  res.status(200).json({
+    message: "Class and related user registrations deleted successfully",
+  });
 });
 
 module.exports = {

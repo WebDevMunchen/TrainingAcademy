@@ -52,6 +52,9 @@ export default function PieChartSingleStatistics() {
     };
   };
 
+  const [noStatistics, setNoStatistics] = useState(false);
+
+
   useEffect(() => {
     axiosClient.get(`/classActivity/allActivities`).then((response) => {
       const data = response.data;
@@ -67,7 +70,12 @@ export default function PieChartSingleStatistics() {
       const labels = Object.keys(reasonCounts);
       const series = Object.values(reasonCounts);
 
-      setOptions(getChartOptions(labels, series));
+      if (series.length === 0) {
+        setNoStatistics(true);
+      } else {
+        setOptions(getChartOptions(labels, series));
+        setNoStatistics(false);
+      }
     });
   }, []);
 
@@ -89,13 +97,17 @@ export default function PieChartSingleStatistics() {
             </div>
           </div>
           <div className="flex justify-center mt-4">
-            <ReactApexChart
-              options={options}
-              series={options.series}
-              type="pie"
-              height={480}
-              width={680}
-            />
+            {noStatistics ? (
+              <p className="flex items-center text-md h-[calc(40vh-32px)] text-3xl font-medium text-gray-600">Noch keine Statistik vorhanden</p>
+            ) : (
+              <ReactApexChart
+                options={options}
+                series={options.series}
+                type="pie"
+                height={480}
+                width={680}
+              />
+            )}
           </div>
         </div>
       </div>

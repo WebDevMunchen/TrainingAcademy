@@ -76,8 +76,10 @@ export default function CreateClass() {
         `/classActivity/allActivities?month=${currentMonth}`
       );
       setAllActivities(activitiesResponse?.data);
+    } catch (error) {
+    } finally {
       navigate("/admin/dashboard");
-    } catch (error) {}
+    }
   };
 
   const handleHideFileUpload = () => {
@@ -147,12 +149,12 @@ export default function CreateClass() {
 
                   <div className={hideFileUpload}>
                     <label
-                      for="file"
-                      class="flex bg-gray-800 hover:bg-gray-700 text-white text-base px-5 ml-3 py-1.5 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif]"
+                      htmlFor="file"
+                      className="flex bg-gray-800 hover:bg-gray-700 text-white text-base px-5 ml-3 py-1.5 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif]"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="w-6 mr-2 fill-white inline"
+                        className="w-6 mr-2 fill-white inline"
                         viewBox="0 0 32 32"
                       >
                         <path
@@ -169,7 +171,7 @@ export default function CreateClass() {
                         type="file"
                         onChange={handleFileChange}
                         id="file"
-                        class="hidden"
+                        className="hidden"
                       />
                     </label>
                   </div>

@@ -75,8 +75,12 @@ export default function EditClass() {
       const usersResponse = await axiosClient.get("/user/getAllUsers");
       setAllUsers(usersResponse?.data);
 
+      
+    } catch (error) {
+
+    } finally {
       navigate("/admin/dashboard");
-    } catch (error) {}
+    }
   };
 
   const formatDate = (isoString) => {
@@ -113,7 +117,10 @@ export default function EditClass() {
       .then((response) => {
         navigate("/admin/dashboard");
       })
-      .catch((error) => {});
+      .catch((error) => {
+        setAllActivities(null)
+        navigate("/admin/dashboard");
+      });
   };
 
   const notifyDelete = () => {
@@ -131,11 +138,11 @@ export default function EditClass() {
             <dialog id="deleteClass" className="modal">
               <div className="modal-box  max-w-2xl">
                 <div
-                  class="flex items-center p-3 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-300 dark:border-red-800"
+                  className="flex items-center p-3 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-300 dark:border-red-800"
                   role="alert"
                 >
                   <svg
-                    class="flex-shrink-0 inline w-4 h-4 me-3"
+                    className="flex-shrink-0 inline w-4 h-4 me-3"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="currentColor"
@@ -143,29 +150,32 @@ export default function EditClass() {
                   >
                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                   </svg>
-                  <span class="sr-only">Info</span>
+                  <span className="sr-only">Info</span>
                   <div>
-                    <span class="font-medium">Achtung!</span> Du bist dabei, die
+                    <span className="font-medium">Achtung!</span> Du bist dabei, die
                     Schulung zu löschen!
                   </div>
                 </div>
                 <div
-                  class="flex p-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-blue-400"
+                  className="flex p-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-blue-400"
                   role="alert"
                 >
-                  <span class="sr-only">Info</span>
+                  <span className="sr-only">Info</span>
                   <div>
-                    <span class="font-medium">
+                    <span className="font-medium">
                       Bitte Folgendes beachten bei der Löschung der Schulung:
                     </span>
-                    <ul class="mt-1.5 list-disc list-inside">
+                    <ul className="mt-1.5 list-disc list-inside">
                       <li>
                         Alle Mitarbeiter bei dieser Schulung werden entfernt
                       </li>
                       <li>Alle Genehmiger werden per E-Mail informiert</li>
                       <li>
                         Schick eine Nachricht aus dem Benachrichtigungscenter,
-                        um den Kollegen zu informieren
+                        um den Mitarbeiter zu informieren
+                      </li>
+                      <li>
+                        Diese Schulung kann <span className="font-medium">nicht mehr</span> wiedegestellt werden!
                       </li>
                     </ul>
                   </div>
@@ -196,7 +206,6 @@ export default function EditClass() {
                     strokeWidth={2}
                     stroke="currentColor"
                     className="size-6 text-red-500 transform transition-transform duration-300 hover:scale-150 hover:cursor-pointer"
-                    // onClick={cancelClass}
                     onClick={notifyDelete}
                   >
                     <path
@@ -261,7 +270,7 @@ export default function EditClass() {
                     <div className={fileUploadHidden}>
                       <label
                         for="uploadFile1"
-                        class="flex bg-gray-800 hover:bg-gray-700 text-white ml-2 text-base px-4 py-1.5 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif]"
+                        className="flex bg-gray-800 hover:bg-gray-700 text-white ml-2 text-base px-4 py-1.5 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif]"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

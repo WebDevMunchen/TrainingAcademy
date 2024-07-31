@@ -486,6 +486,28 @@ const markRead = asyncWrapper(async (req, res, next) => {
     res.status(500).send({ error: "Error marking message as read" });
   }
 });
+const deleteMessage = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findOneAndUpdate(
+      { "message.messageID._id": id },
+      { $pull: { message: { "messageID._id": id } } },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).send({ message: "Message not found" });
+    }
+
+    res.status(200).send({ message: "Deleted", user });
+  } catch (error) {
+    console.error("Error deleting the message:", error);
+    res.status(500).send({ error: "Error deleting message" });
+  }
+});
+
+
 
 module.exports = {
   createUser,
@@ -501,4 +523,5 @@ module.exports = {
   updateUser,
   updatePassword,
   markRead,
+  deleteMessage
 };
