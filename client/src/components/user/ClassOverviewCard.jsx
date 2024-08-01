@@ -3,7 +3,7 @@ import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
 
 export default function ClassesOverviewCard({ activity }) {
-  const { setUser, setAllActivities, currentMonth } = useContext(AuthContext);
+  const { setUser, setAllActivities, currentMonth, currentYear } = useContext(AuthContext);
 
   const modalRef = useRef(null);
 
@@ -31,7 +31,7 @@ export default function ClassesOverviewCard({ activity }) {
         setUser(responseProfile.data);
 
         return axiosClient.get(
-          `/classActivity/allActivities?month=${currentMonth}`
+          `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
         );
       })
       .then((responseActivities) => {

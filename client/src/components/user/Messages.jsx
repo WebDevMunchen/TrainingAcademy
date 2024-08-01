@@ -144,7 +144,7 @@ export default function Messages() {
           <ul>
             {!user || user.message.length === 0 ? (
               <li className={`py-6 text-center border-b px-4 border-slate-300 transition 
-                 text-xl`}>
+                 text-xl font-semibold`}>
                 Du hast noch keine Nachrichten
               </li>
               

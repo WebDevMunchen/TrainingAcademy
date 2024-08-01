@@ -21,6 +21,26 @@ const classActivitySchema = new Schema({
     ],
     required: true,
   },
+  year: {
+    type: String,
+    enum: [
+      "2024",
+      "2025",
+      "2026",
+      "2027",
+      "2028",
+      "2029",
+      "2030",
+      "2031",
+      "2032",
+      "2033"
+    ],
+    // required: true,
+    // default: function() {
+    //   return new Date().getFullYear().toString();
+    // }
+    default: "2024"
+  },
   date: { type: Date, required: true },
   duration: { type: Number, required: true },
   time: { type: String, required: true },

@@ -20,16 +20,13 @@ export default function AuthProvider({ children }) {
       .toLocaleDateString("de-DE", { month: "long" })
       .toLocaleLowerCase()
   );
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear().toString());
 
   useEffect(() => {
     axiosClient
       .get("/user/profile")
       .then((response) => {
-        if (response.data.status === "inaktiv") {
-          setUser(null);
-        } else {
-          setUser(response.data);
-        }
+        setUser(response.data);
       })
       .catch((error) => {
         setUser(null);
@@ -39,7 +36,7 @@ export default function AuthProvider({ children }) {
       });
 
     axiosClient
-      .get(`/classActivity/allActivities?month=${currentMonth}`)
+      .get(`/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`)
       .then((response) => {
         setAllActivities(response.data);
       })
@@ -64,7 +61,7 @@ export default function AuthProvider({ children }) {
       .catch((error) => {
         setApprover(null);
       });
-  }, [currentMonth, setAllActivities]);
+  }, [currentMonth, currentYear]);
 
   const handleNextMonth = () => {
     const months = [
@@ -110,6 +107,10 @@ export default function AuthProvider({ children }) {
     setCurrentMonth(months[previousMonthIndex]);
   };
 
+  const handleYearChange = (e) => {
+    setCurrentYear(e.target.value);
+  };
+
   const login = async (data) => {
     axiosClient
       .post("/user/login", data)
@@ -123,7 +124,7 @@ export default function AuthProvider({ children }) {
         setAllUsers(usersResponse.data);
 
         return axiosClient.get(
-          `classActivity/allActivities?month=${currentMonth}`
+          `classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
         );
       })
       .then((responseAllActivities) => {
@@ -200,6 +201,7 @@ export default function AuthProvider({ children }) {
           signup,
           handleNextMonth,
           handlePreviousMonth,
+          handleYearChange,
           setUser,
           setIsLoading,
           setAllActivities,
@@ -212,6 +214,7 @@ export default function AuthProvider({ children }) {
           allActivities,
           isLoading,
           currentMonth,
+          currentYear,
         }}
       >
         {children}

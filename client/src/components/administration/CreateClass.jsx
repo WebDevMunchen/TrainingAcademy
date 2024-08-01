@@ -6,7 +6,7 @@ import axiosClient from "../../utils/axiosClient";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateClass() {
-  const { setAllActivities, currentMonth } = useContext(AuthContext);
+  const { setAllActivities, currentMonth, currentYear } = useContext(AuthContext);
   const navigate = useNavigate();
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   // const [currentMonth, setCurrentMonth] = useState(""); //leave for now for potential errors
@@ -73,7 +73,7 @@ export default function CreateClass() {
       });
 
       const activitiesResponse = await axiosClient.get(
-        `/classActivity/allActivities?month=${currentMonth}`
+        `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
       );
       setAllActivities(activitiesResponse?.data);
     } catch (error) {

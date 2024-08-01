@@ -10,7 +10,7 @@ export default function RegisteredUserCard({
   activityId,
   setActivity,
 }) {
-  const { user, setAllActivities, setUser, currentMonth } =
+  const { user, setAllActivities, setUser, currentMonth, currentYear } =
     useContext(AuthContext);
   const { id } = useParams();
   const modalRef = useRef(null);
@@ -57,7 +57,7 @@ export default function RegisteredUserCard({
         setActivity(responseSingleActivity.data);
 
         return axiosClient.get(
-          `/classActivity/allActivities?month=${currentMonth}`
+          `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
         );
       })
       .then((responseAllActivities) => {
@@ -91,7 +91,7 @@ export default function RegisteredUserCard({
         setActivity(responseSingleActivity.data);
 
         return axiosClient.get(
-          `/classActivity/allActivities?month=${currentMonth}`
+          `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
         );
       })
       .then((responseAllActivities) => {
@@ -130,7 +130,7 @@ export default function RegisteredUserCard({
         setActivity(responseSingleActivity.data);
 
         return axiosClient.get(
-          `/classActivity/allActivities?month=${currentMonth}`
+          `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
         );
       })
       .then((responseAllActivities) => {

@@ -244,9 +244,13 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     to: `${recipientEmail}, ${recipientEmailSubstitution}`,
     subject: "Training Academy - Rent Group München",
     text: "Training Academy - Rent Group München",
-    html: `${user.firstName + " " + user.lastName} hat sich für die Schulung "${
-      registeredClass.title
-    }" angemeldet! <br/ ><br /> Zum Genehmigungsprozess: http://localhost:5173/classInformation/${activity_id}`,
+    html: `
+    <p>Es gibt eine neue Anfrage zur Schulungsteilnahme</p>
+    <p><strong>${user.firstName} ${user.lastName}</strong> hat sich für die Schulung <em>"${registeredClass.title}"</em> angemeldet!</p>
+    <p>Link zum Genehmigungsprozess:</p>
+    <p><a href="http://localhost:5173/classInformation/${activity_id}">http://localhost:5173/classInformation/${activity_id}</a></p>
+    <br />
+  `,
   };
 
   const sendMail = async (transporter, mailOptions) => {
@@ -334,11 +338,27 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
 
     let mailHtml;
     if (newStatus === "abgelehnt") {
-      mailHtml = `Die Anfrage von ${user.firstName} ${user.lastName} für die Schulung "${activity.title}" wurde ${newStatus}! <br/><br/>Grund: ${reason}`;
+      mailHtml = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme.</p>
+          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em> wurde <span style="color: red;">${newStatus}</span>!</p>
+          <p><strong>Begründung:</strong> ${reason}</p>
+        </div>
+      `;
     } else if (newStatus === "genehmigt") {
-      mailHtml = `Die Anfrage von ${user.firstName} ${user.lastName} für die Schulung "${activity.title}" wurde ${newStatus}!`;
+      mailHtml = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme.</p>
+          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em> wurde <span style="color: green;">${newStatus}</span>!</p>
+        </div>
+      `;
     } else {
-      mailHtml = `Die Anfrage von ${user.firstName} ${user.lastName} für die Schulung "${activity.title}" wurde ${newStatus}!`;
+      mailHtml = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme.</p>
+          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em> wurde <span style="color: blue;">${newStatus}</span>!</p>
+        </div>
+      `;
     }
 
     const mailOptions = {

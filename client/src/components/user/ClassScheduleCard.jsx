@@ -5,7 +5,7 @@ import axiosClient from "../../utils/axiosClient";
 import { NavLink } from "react-router-dom";
 
 export default function ClassScheduleCard({ activity }) {
-  const { setUser, user, setAllActivities, currentMonth } =
+  const { setUser, user, setAllActivities, currentMonth, currentYear } =
     useContext(AuthContext);
   const { handleSubmit } = useForm();
 
@@ -20,7 +20,7 @@ export default function ClassScheduleCard({ activity }) {
       .then((responseProfile) => {
         setUser(responseProfile.data);
         return axiosClient.get(
-          `/classActivity/allActivities?month=${currentMonth}`
+          `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
         );
       })
       .then((responseActivities) => {
@@ -47,7 +47,7 @@ export default function ClassScheduleCard({ activity }) {
   const formattedDatePrior = `${dayPrior}/${monthPrior}/${yearPrior}`;
 
   const activityDate = new Date(activity.date);
-  const activityTime = activity.time.split(":");
+  const activityTime = activity?.time?.split(":");
   activityDate.setHours(activityTime[0], activityTime[1]);
 
   const currentTime = new Date();

@@ -16,6 +16,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     department,
     capacity,
     month,
+    year,
     time,
     teacher,
     safetyBriefing,
@@ -46,6 +47,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     department,
     capacity,
     month,
+    year,
     time,
     teacher,
     safetyBriefing,
@@ -54,6 +56,68 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
 
   res.status(201).json(activity);
 });
+
+// const editClassActivity = asyncWrapper(async (req, res, next) => {
+//   const {
+//     title,
+//     description,
+//     date,
+//     duration,
+//     location,
+//     department,
+//     capacity,
+//     month,
+//     year,
+//     time,
+//     teacher,
+//     safetyBriefing,
+//   } = req.body;
+
+//   const { id } = req.params;
+
+//   let fileUrl = "";
+//   if (req.file) {
+//     try {
+//       const result = await cloudinary.uploader.upload(req.file.path, {
+//         resource_type: "auto",
+//       });
+//       fileUrl = result.secure_url;
+//       console.log("File URL:", fileUrl);
+//     } catch (error) {
+//       return res.status(500).json({
+//         success: false,
+//         message: "Error uploading file",
+//         error: error.message,
+//       });
+//     }
+//   }
+
+//   const updatedClass = {
+//     title,
+//     description,
+//     date,
+//     duration,
+//     location,
+//     department,
+//     capacity,
+//     month,
+//     year,
+//     time,
+//     teacher,
+//     safetyBriefing,
+//     fileUrl,
+//   };
+
+//   const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, {
+//     new: true,
+//   });
+
+//   if (!activity) {
+//     throw new ErrorResponse(404, "Activity not found!");
+//   } else {
+//     res.status(201).json(activity);
+//   }
+// });
 
 const editClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -65,12 +129,22 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     department,
     capacity,
     month,
+    year,
     time,
     teacher,
     safetyBriefing,
   } = req.body;
 
   const { id } = req.params;
+
+  // Fetch existing class activity data
+  const existingActivity = await ClassActivity.findById(id);
+  if (!existingActivity) {
+    return res.status(404).json({
+      success: false,
+      message: "Aktivität nicht gefunden!",
+    });
+  }
 
   let fileUrl = "";
   if (req.file) {
@@ -83,7 +157,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     } catch (error) {
       return res.status(500).json({
         success: false,
-        message: "Error uploading file",
+        message: "Fehler beim Hochladen der Datei",
         error: error.message,
       });
     }
@@ -98,23 +172,135 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     department,
     capacity,
     month,
+    year,
     time,
     teacher,
     safetyBriefing,
     fileUrl,
   };
 
-  const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, {
-    new: true,
-  });
+  try {
+    // Update the class activity
+    const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, {
+      new: true,
+    });
 
-  if (!activity) {
-    throw new ErrorResponse(404, "Activity not found!");
-  } else {
-    res.status(201).json(activity);
+    // Prepare email data
+    const approversId = "668e958729a4cd5bb513f562";
+    const findApprovers = await Approver.findById(approversId);
+
+    const toAddresses = [
+      findApprovers.logistik,
+      findApprovers.vertrieb,
+      findApprovers.hr,
+      findApprovers.it,
+      findApprovers.fuhrpark,
+      findApprovers.buchhaltung,
+      findApprovers.einkauf,
+      findApprovers.design,
+      findApprovers.projektmanagement,
+      findApprovers.officemanagement,
+      findApprovers.logistikSubstitute,
+      findApprovers.vertriebSubstitute,
+      findApprovers.hrSubstitute,
+      findApprovers.itSubstitute,
+      findApprovers.fuhrparkSubstitute,
+      findApprovers.buchhaltungSubstitute,
+      findApprovers.einkaufSubstitute,
+      findApprovers.designSubstitute,
+      findApprovers.projektmanagementSubstitute,
+      findApprovers.officemanagementSubstitute,
+    ].join(", ");
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.USER,
+        pass: process.env.APP_PASSWORD,
+      },
+    });
+
+    const mailHtml = `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+      <p>Hallo zusammen,</p>
+      <p>Es gab Änderungen bei der Schulung: <em>"${updatedClass.title}"</em></p>
+      <p><strong>Hier sind die Details der Änderungen:</strong></p>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <thead>
+          <tr>
+            <th style="border: 1px solid #ddd; padding: 8px; text-align: left; background-color: #f4f4f4;"></th>
+            <th style="border: 1px solid #ddd; padding: 8px; text-align: left; background-color: #f4f4f4;">Alte Daten</th>
+            <th style="border: 1px solid #ddd; padding: 8px; text-align: left; background-color: #f4f4f4;">Neue Daten</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Datum</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.date}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.date}</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Dauer</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.duration} Minuten</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.duration} Minuten</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Ort</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.location}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.location}</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Uhrzeit</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.time}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.time}</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Referent*in</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.teacher}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.teacher}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Bitte die Kollegen aus eurer Abteilung informieren, falls sie betroffen sind, und passt gegebenenfalls deren Genehmigungsstatus an.</p>
+      <p>Bei Fragen gerne melden.</p>
+      <p>Euer Training Abteilung</p>
+    </div>
+  `;
+
+    const mailOptions = {
+      from: {
+        name: "Schulung Aktualisiert - No reply",
+        address: process.env.USER,
+      },
+      to: toAddresses,
+      subject: "Training Academy - Rent Group München - Schulung Aktualisiert",
+      text: "Training Academy - Rent Group München - Schulung Aktualisiert",
+      html: mailHtml,
+    };
+
+    const sendMail = async (transporter, mailOptions) => {
+      try {
+        await transporter.sendMail(mailOptions);
+      } catch (error) {
+        console.error("Fehler beim Versenden der E-Mail:", error);
+      }
+    };
+
+    await sendMail(transporter, mailOptions);
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Aktivität erfolgreich aktualisiert und Benachrichtigung gesendet",
+      data: activity,
+    });
+  } catch (error) {
+    next(error);
   }
 });
-
 const updateCancelationReason = asyncWrapper(async (req, res, next) => {
   const { stornoReason } = req.body;
   const { id } = req.params;
@@ -255,11 +441,15 @@ const getActivity = asyncWrapper(async (req, res, next) => {
 
 const getAllActivities = asyncWrapper(async (req, res, next) => {
   try {
-    const { month } = req.query;
+    const { month, year } = req.query;
     let query = {};
 
     if (month) {
       query.month = month;
+    }
+
+    if (year) {
+      query.year = year;
     }
 
     const allActivities = await ClassActivity.find(query)
@@ -299,24 +489,70 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     },
   });
 
+  const toAddresses = [
+    findApprovers.logistik,
+    findApprovers.vertrieb,
+    findApprovers.hr,
+    findApprovers.it,
+    findApprovers.fuhrpark,
+    findApprovers.buchhaltung,
+    findApprovers.einkauf,
+    findApprovers.design,
+    findApprovers.projektmanagement,
+    findApprovers.officemanagement,
+    findApprovers.logistikSubstitute,
+    findApprovers.vertriebSubstitute,
+    findApprovers.hrSubstitute,
+    findApprovers.itSubstitute,
+    findApprovers.fuhrparkSubstitute,
+    findApprovers.buchhaltungSubstitute,
+    findApprovers.einkaufSubstitute,
+    findApprovers.designSubstitute,
+    findApprovers.projektmanagementSubstitute,
+    findApprovers.officemanagementSubstitute,
+  ].join(", ");
+
+  let mailHtml;
+
+  if (userNames.length > 0) {
+    mailHtml = `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <p>Hallo zusammen,</p>
+        <p>Die Schulung <em>"${
+          notifyBeforeDelete.title
+        }"</em> wurde abgesagt.</p>
+        <p>Folgende Mitarbeiter haben sich für diese Schulung angemeldet:</p>
+        <ul>
+          ${userNames.map((name) => `<li>${name}</li>`).join("")}
+        </ul>
+         <p>Bitte die Kollegen aus eurer Abteilung informieren, wenn sie betroffen sind.</p>
+        <p>Bei Fragen gerne melden.</p>
+        <p>Euer Training Abteilung</p>
+
+      </div>
+    `;
+  } else {
+    mailHtml = `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <p>Hallo zusammen,</p>
+        <p>Die Schulung <em>"${notifyBeforeDelete.title}"</em> wurde abgesagt.</p>
+        <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p>
+        <p>Bei Fragen gerne melden.</p>
+        <p>Euer Training Abteilung</p>
+
+      </div>
+    `;
+  }
+
   const mailOptions = {
     from: {
       name: "Schulung Abgesagt - No reply",
       address: process.env.USER,
     },
-    to: `${findApprovers.logistik}, ${findApprovers.vertrieb}, ${findApprovers.hr},${findApprovers.it},${findApprovers.fuhrpark},${findApprovers.buchhaltung},${findApprovers.einkauf},${findApprovers.design},${findApprovers.projektmanagement},${findApprovers.officemanagement},${findApprovers.logistikSubstitute},${findApprovers.vertriebSubstitute},${findApprovers.hrSubstitute},${findApprovers.itSubstitute},${findApprovers.fuhrparkSubstitute},${findApprovers.buchhaltungSubstitute},${findApprovers.einkaufSubstitute},${findApprovers.designSubstitute},${findApprovers.projektmanagementSubstitute},${findApprovers.officemanagementSubstitute}, `,
+    to: toAddresses,
     subject: "Training Academy - Rent Group München",
     text: "Training Academy - Rent Group München",
-    html: `Hallo zusammen <br/><br/> Die Schulung "${
-      notifyBeforeDelete.title
-    }" wurde abgesagt.<br/><br/> Folgende mitarbeiter haben sich für diese Schulung angemeldet:<br/>
-      <ul>
-      ${userNames.map((name) => `<li>${name}</li>`).join("")}
-      </ul>
-      <br/>
-      Bitte die Mitarbeiter informieren, falls sie in deiner Abteilung arbeiten.<br/><br/>
-      Bei Fragen gerne melden.
-      `,
+    html: mailHtml,
   };
 
   const sendMail = async (transporter, mailOptions) => {
