@@ -465,7 +465,7 @@ const logout = asyncWrapper(async (req, res, next) => {
 });
 
 const markRead = asyncWrapper(async (req, res, next) => {
-  const { id } = req.params; 
+  const { id } = req.params;
   const { id: userId } = req.user;
   const { status: newStatus } = req.body;
 
@@ -486,28 +486,55 @@ const markRead = asyncWrapper(async (req, res, next) => {
     res.status(500).send({ error: "Error marking message as read" });
   }
 });
-const deleteMessage = asyncWrapper(async (req, res, next) => {
+
+const markNotRead = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
+  const { id: userId } = req.user;
+  const { status: newStatus } = req.body;
 
   try {
-    const user = await User.findOneAndUpdate(
-      { "message.messageID._id": id },
-      { $pull: { message: { "messageID._id": id } } },
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId, "message.messageID": id },
+      { $set: { "message.$.status": newStatus } },
       { new: true }
     );
 
-    if (!user) {
+    if (!updatedUser) {
       return res.status(404).send({ message: "Message not found" });
     }
 
-    res.status(200).send({ message: "Deleted", user });
+    res.status(200).send(updatedUser);
+  } catch (error) {
+    console.error("Error marking message as not read:", error);
+    res.status(500).send({ error: "Error marking message as not read" });
+  }
+});
+
+const deleteMessage = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const { id: userId } = req.user;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId, "message.messageID": id },
+      { $pull: { message: { messageID: id } } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res
+        .status(404)
+        .send({
+          message: "Message not found or not authorized to delete this message",
+        });
+    }
+
+    res.status(200).send({ message: "Deleted", user: updatedUser });
   } catch (error) {
     console.error("Error deleting the message:", error);
     res.status(500).send({ error: "Error deleting message" });
   }
 });
-
-
 
 module.exports = {
   createUser,
@@ -523,5 +550,6 @@ module.exports = {
   updateUser,
   updatePassword,
   markRead,
-  deleteMessage
+  markNotRead,
+  deleteMessage,
 };

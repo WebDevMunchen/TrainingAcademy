@@ -14,6 +14,7 @@ const {
   updatePassword,
   markRead,
   deleteMessage,
+  markNotRead,
 } = require("../controllers/user-controller");
 
 const { authenticate } = require("../middlewares/authentication");
@@ -21,6 +22,7 @@ const { authenticate } = require("../middlewares/authentication");
 const userRouter = express.Router();
 
 userRouter.route("/markRead/:id").put(authenticate, markRead);
+userRouter.route("/markNotRead/:id").put(authenticate, markNotRead);
 userRouter.route("/deleteMessage/:id").delete(authenticate, deleteMessage);
 userRouter.route("/register").post(authenticate, createUser);
 userRouter.route("/login").post(login);

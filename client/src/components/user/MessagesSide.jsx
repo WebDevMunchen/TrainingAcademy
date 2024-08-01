@@ -11,11 +11,16 @@ const formatDate = (timestamp) => {
   });
 };
 
-export default function MessagesSide({ message, onClick }) {
+
+export default function MessagesSide({ message, onClick, selected }) {
   return (
+    <>
+
     <li
       className={`py-5 border-y px-3 border-slate-300 transition hover:bg-indigo-100 hover:cursor-pointer ${
-        message?.status === "read"
+        selected
+          ? "bg-blue-200"
+          : message?.status === "read"
           ? "font-normal bg-white"
           : "font-semibold bg-slate-200"
       }`}
@@ -27,15 +32,25 @@ export default function MessagesSide({ message, onClick }) {
             message?.status === "read" ? "font-medium" : "font-bold"
           }`}
         >
-          {message?.messageID?.messageTitle}
+          {message?.messageID?.messageTitle || "No Title"}
         </h3>
-        <p className="text-md text-gray-400">
-          {formatDate(message?.messageID?.timeStamp)}
+        <p
+          className={`text-md text-gray-400 ${
+            message?.status === "read" ? "font-normal" : "font-semibold"
+          }`}
+        >
+          {formatDate(message?.messageID?.timeStamp) || "No Date"}
         </p>
       </div>
-      <div className="text-md italic text-gray-400">
-        {message?.messageID?.messageType}
+      <div
+        className={`text-md italic text-gray-400 ${
+          message?.status === "read" ? "font-normal" : "font-semibold"
+        }`}
+      >
+        {message?.messageID?.messageType || "No Type"}
       </div>
     </li>
+    </>
+
   );
 }

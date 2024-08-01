@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/AuthProvider";
 import SideMenu from "./SideMenu";
 import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axiosClient from "../../utils/axiosClient";
 
 export default function Register() {
   const { signup } = useContext(AuthContext);
