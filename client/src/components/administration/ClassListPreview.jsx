@@ -25,6 +25,9 @@ export default function ClassListPreview({ activity }) {
 
   const formattedDate = `${day}/${month}/${year}`;
 
+  const now = new Date();
+  const hoursDifference = (date - now) / 3600000;
+
   return (
     <tr>
       <td className="py-3 px-5 border-b border-blue-gray-50">
@@ -127,7 +130,7 @@ export default function ClassListPreview({ activity }) {
         </NavLink>
         <NavLink
           to={`/admin/editClass/${activity._id}`}
-          className="mb-2 block antialiased  text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
+          className={`mb-2 block antialiased  text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150 ${hoursDifference > 48 ? "visible" : "hidden"}`}
         >
           Bearbeiten
         </NavLink>

@@ -341,7 +341,7 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
           <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme.</p>
-          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em> wurde <span style="color: red;">${newStatus}</span>!</p>
+          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${activity.date} stattfindet, wurde <span style="color: red;">${newStatus}</span>!</p>
           <p><strong>Begründung:</strong> ${reason}</p>
         </div>
       `;
@@ -349,7 +349,7 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
           <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme.</p>
-          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em> wurde <span style="color: green;">${newStatus}</span>!</p>
+          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${activity.date} stattfindet, wurde <span style="color: green;">${newStatus}</span>!</p>
         </div>
       `;
     } else {

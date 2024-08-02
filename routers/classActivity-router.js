@@ -8,7 +8,6 @@ const {
   decreaseClassCapacity,
   editClassActivity,
   cancelUserRegistration,
-  decreaseClassCapacityOnCancel,
   updateCancelationReason,
   deleteClass,
 } = require("../controllers/classActivity-controller.js");

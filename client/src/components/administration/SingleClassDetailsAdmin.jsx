@@ -25,18 +25,45 @@ export default function SingleClassDetailsAdmin() {
     document.getElementById("legend").showModal();
   };
 
+  // const dateString = activity?.date;
+  // const date = new Date(dateString);
+
+  // const day = date.getDate();
+  // const dayPrior = date.getDate() - 2;
+  // const dayPriorGenehimgung = date.getDate() - 1;
+  // const month = date.getMonth() + 1;
+  // const year = date.getFullYear();
+
+  // const formattedDate = `${day}/${month}/${year}`;
+  // const formatedDateprior = `${dayPrior}/${month}/${year}`;
+  // const formatedDatepriorGenehmigung = `${dayPriorGenehimgung}/${month}/${year}`;
+
+  // const currentTime = new Date();
+
+  const adjustDate = (date, days) => {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + days);
+    return newDate;
+  };
+
+  const formatDateString = (date) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
   const dateString = activity?.date;
   const date = new Date(dateString);
+  const datePrior = adjustDate(date, -2);
+  const datePriorGenehmigung = adjustDate(date, -1);
 
-  const day = date.getDate();
-  const dayPrior = date.getDate() - 2;
-  const dayPriorGenehimgung = date.getDate() - 1;
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
+  const formattedDate = formatDateString(date);
+  const formatedDatePrior = formatDateString(datePrior);
+  const formatedDatePriorGenehmigung = formatDateString(datePriorGenehmigung);
 
-  const formattedDate = `${day}/${month}/${year}`;
-  const formatedDateprior = `${dayPrior}/${month}/${year}`;
-  const formatedDatepriorGenehmigung = `${dayPriorGenehimgung}/${month}/${year}`;
+
+  const now = new Date();
+  const hoursDifference = (date - now) / 3600000;
 
   return (
     <>
@@ -59,7 +86,7 @@ export default function SingleClassDetailsAdmin() {
                 <div className=" absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
                 <div className="py-2 relative  ">
                   <div className="hidden lg:flex justify-between">
-                    {user.role === "admin" ? (
+                    {user.role === "admin" && hoursDifference > 48 ? (
                       <div className="flex text-right mt-1 mr-12">
                         <NavLink
                           to={`/admin/editClass/${activity._id}`}
@@ -92,7 +119,7 @@ export default function SingleClassDetailsAdmin() {
                         <p className="font-semibold">
                           Registrierungsende:{" "}
                           <span className="font-normal">
-                            {formatedDateprior} um {activity.time}
+                            {formatedDatePrior} um {activity.time}
                           </span>
                         </p>
                       </div>
@@ -100,7 +127,7 @@ export default function SingleClassDetailsAdmin() {
                         <p className="font-semibold mt-1">
                           Genehmigungsende:{" "}
                           <span className="font-normal">
-                            {formatedDatepriorGenehmigung} um {activity.time}
+                            {formatedDatePriorGenehmigung} um {activity.time}
                           </span>
                         </p>
                       </div>

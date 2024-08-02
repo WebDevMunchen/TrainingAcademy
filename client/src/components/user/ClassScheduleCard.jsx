@@ -59,6 +59,7 @@ export default function ClassScheduleCard({ activity }) {
   const oneDayPrior =
     currentTime > oneDayBeforeActivity && currentTime < activityDate;
 
+
   return (
     <>
       <div className="m-2 bg-white border p-4 relative group shadow-lg">
@@ -109,7 +110,7 @@ export default function ClassScheduleCard({ activity }) {
               </p>
               <p className="hidden lg:flex font-semibold">
                 Registrierungsende:{" "}
-                <span className="font-normal">
+                <span className="font-normal ml-1">
                   {formattedDatePrior} um {activity.time}
                 </span>
               </p>
