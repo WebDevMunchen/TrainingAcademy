@@ -1,9 +1,7 @@
-import { NavLink } from "react-router-dom";
 import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 
-export default function UserListCard({ user }) {
-  const currentYear = new Date().getFullYear();
-
+export default function UserListCard({ user, selectedYear }) {
   const [fileUrl, setFileUrl] = useState(null);
 
   useEffect(() => {
@@ -14,14 +12,14 @@ export default function UserListCard({ user }) {
       return (
         registeredClass.registeredClassID.safetyBriefing &&
         registeredClass.statusAttended === "teilgenommen" &&
-        attendedYear === currentYear
+        attendedYear === selectedYear
       );
     });
 
     if (findURL && findURL.registeredClassID) {
       setFileUrl(findURL.registeredClassID.fileUrl);
     }
-  }, [user, currentYear]);
+  }, [user, selectedYear]); // Update dependencies to include selectedYear
 
   const handleDownload = async () => {
     if (!fileUrl) {
@@ -63,7 +61,7 @@ export default function UserListCard({ user }) {
       return (
         registeredClass.registeredClassID.safetyBriefing &&
         registeredClass.statusAttended === "teilgenommen" &&
-        attendedYear === currentYear
+        attendedYear === selectedYear
       );
     }
   );
@@ -71,6 +69,7 @@ export default function UserListCard({ user }) {
   return (
     <>
       <tr className="text-center">
+        {/* User information */}
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="text-sm font-medium text-gray-900">
             {user.firstName}

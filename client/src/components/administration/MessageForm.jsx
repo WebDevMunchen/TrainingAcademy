@@ -62,7 +62,7 @@ export default function MessageForm() {
                   htmlFor="sender"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Betreff:
+                  Sender:
                 </label>
                 <input
                   {...register("sender", { required: true })}
@@ -76,7 +76,7 @@ export default function MessageForm() {
                   htmlFor="sendersEmail"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Betreff:
+                  Senders Email:
                 </label>
                 <input
                   {...register("sendersEmail", { required: true })}

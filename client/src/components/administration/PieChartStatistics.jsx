@@ -4,10 +4,13 @@ import { useEffect, useState } from "react";
 import SideMenu from "./SideMenu";
 
 export default function PieChartSingleStatistics() {
+  const currentYear = new Date().getFullYear();
+  const [selectedYear, setSelectedYear] = useState(currentYear);
   const [options, setOptions] = useState({
     series: [],
     labels: [],
   });
+  const [noStatistics, setNoStatistics] = useState(false);
 
   const getChartOptions = (labels = [], series = []) => {
     return {
@@ -52,19 +55,19 @@ export default function PieChartSingleStatistics() {
     };
   };
 
-  const [noStatistics, setNoStatistics] = useState(false);
-
-
-  useEffect(() => {
-    axiosClient.get(`/classActivity/allActivities`).then((response) => {
+  const fetchData = async (year) => {
+    try {
+      const response = await axiosClient.get(`/classActivity/allActivities`);
       const data = response.data;
 
       const reasonCounts = {};
 
       data.forEach((activity) => {
-        activity.stornoReason.forEach((reason) => {
-          reasonCounts[reason] = (reasonCounts[reason] || 0) + 1;
-        });
+        if (activity.year === year.toString()) {
+          activity.stornoReason.forEach((reason) => {
+            reasonCounts[reason] = (reasonCounts[reason] || 0) + 1;
+          });
+        }
       });
 
       const labels = Object.keys(reasonCounts);
@@ -76,8 +79,18 @@ export default function PieChartSingleStatistics() {
         setOptions(getChartOptions(labels, series));
         setNoStatistics(false);
       }
-    });
-  }, []);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(selectedYear);
+  }, [selectedYear]);
+
+  const handleYearChange = (event) => {
+    setSelectedYear(Number(event.target.value));
+  };
 
   return (
     <div className="bg-gray-50/50 flex">
@@ -90,15 +103,26 @@ export default function PieChartSingleStatistics() {
                 <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white me-1">
                   Stornierungsstatistik
                 </h5>
-                <p className="mt-2 block antialiased text-md font-medium text-blue-gray-600">
-                  {2024}
-                </p>
+                <select
+                  value={selectedYear}
+                  onChange={handleYearChange}
+                  className="mt-2 form-select bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
+                >
+                  {[currentYear, currentYear - 1, currentYear - 2].map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
           <div className="flex justify-center mt-4">
             {noStatistics ? (
-              <p className="flex items-center text-md h-[calc(40vh-32px)] text-3xl font-medium text-gray-600">Noch keine Statistik vorhanden</p>
+              <p className="flex items-center text-md h-[calc(40vh-32px)] text-3xl font-medium text-gray-600">
+                Noch keine Statistik vorhanden
+              </p>
             ) : (
               <ReactApexChart
                 options={options}
