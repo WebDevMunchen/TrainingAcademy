@@ -17,7 +17,7 @@ const classActivitySchema = new Schema({
       "september",
       "oktober",
       "november",
-      "december",
+      "dezember",
     ],
     required: true,
   },
@@ -35,11 +35,10 @@ const classActivitySchema = new Schema({
       "2032",
       "2033"
     ],
-    // required: true,
-    // default: function() {
-    //   return new Date().getFullYear().toString();
-    // }
-    default: "2024"
+    required: true,
+    default: function() {
+      return new Date().getFullYear().toString();
+    }
   },
   date: { type: Date, required: true },
   duration: { type: Number, required: true },

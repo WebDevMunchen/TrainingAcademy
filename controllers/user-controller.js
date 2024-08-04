@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const ClassActivity = require("../models/classActivity-model.js");
 const Approver = require("../models/approver-model.js");
+const { format } = require('date-fns');
 
 const createUser = asyncWrapper(async (req, res, next) => {
   const {
@@ -153,10 +154,10 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 
   let recipientEmail;
   switch (user.department) {
-    case "logistik":
+    case "Logistik":
       recipientEmail = approver.logistik;
       break;
-    case "vertrieb":
+    case "Vertrieb":
       recipientEmail = approver.vertrieb;
       break;
     case "HR & Training":
@@ -165,22 +166,22 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     case "IT & Services":
       recipientEmail = approver.it;
       break;
-    case "fuhrpark":
+    case "Fuhrpark":
       recipientEmail = approver.fuhrpark;
       break;
-    case "buchhaltung":
+    case "Buchhaltung":
       recipientEmail = approver.buchhaltung;
       break;
-    case "einkauf":
+    case "Einkauf":
       recipientEmail = approver.einkauf;
       break;
-    case "design & Planung":
+    case "Design & Planung":
       recipientEmail = approver.design;
       break;
-    case "projektmanagement":
+    case "Projektmanagement":
       recipientEmail = approver.projektmanagement;
       break;
-    case "officemanagement":
+    case "Officemanagement":
       recipientEmail = approver.officemanagement;
       break;
     default:
@@ -190,10 +191,10 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 
   let recipientEmailSubstitution;
   switch (user.department) {
-    case "logistik":
+    case "Logistik":
       recipientEmailSubstitution = approver.logistikSubstitute;
       break;
-    case "vertrieb":
+    case "Vertrieb":
       recipientEmailSubstitution = approver.vertriebSubstitute;
       break;
     case "HR & Training":
@@ -202,22 +203,22 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     case "IT & Services":
       recipientEmailSubstitution = approver.itSubstitute;
       break;
-    case "fuhrpark":
+    case "Fuhrpark":
       recipientEmailSubstitution = approver.fuhrparkSubstitute;
       break;
-    case "buchhaltung":
+    case "Buchhaltung":
       recipientEmailSubstitution = approver.buchhaltungSubstitute;
       break;
-    case "einkauf":
+    case "Einkauf":
       recipientEmailSubstitution = approver.einkaufSubstitute;
       break;
-    case "design & Planung":
+    case "Design & Planung":
       recipientEmailSubstitution = approver.designSubstitute;
       break;
-    case "projektmanagement":
+    case "Projektmanagement":
       recipientEmailSubstitution = approver.projektmanagementSubstitute;
       break;
-    case "officemanagement":
+    case "Officemanagement":
       recipientEmailSubstitution = approver.officemanagementSubstitute;
       break;
     default:
@@ -238,12 +239,12 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 
   const mailOptions = {
     from: {
-      name: "Ausstehende Genehmigung - No reply",
+      name: "Ausstehende Genehmigung - Training Academy - No reply",
       address: process.env.USER,
     },
     to: `${recipientEmail}, ${recipientEmailSubstitution}`,
-    subject: "Training Academy - Rent Group München",
-    text: "Training Academy - Rent Group München",
+    subject: "Training Academy - Rent.Group München - Ausstehende Genehmigung",
+    text: "Training Academy - Rent.Group München - Ausstehende Genehmigung",
     html: `
     <p>Es gibt eine neue Anfrage zur Schulungsteilnahme</p>
     <p><strong>${user.firstName} ${user.lastName}</strong> hat sich für die Schulung <em>"${registeredClass.title}"</em> angemeldet!</p>
@@ -267,10 +268,10 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 const updateClassStatus = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
   const { classId, newStatus, reason } = req.body;
+  const {id: approverId} = req.user
 
   try {
     const user = await User.findById(id);
-
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -323,7 +324,12 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       user.classesRegistered[classIndex].reason = reason;
     }
 
+    const formattedDate = format(new Date(activity.date), 'dd.MM.yyyy');
+    const formattedTime = activity.time;
+
     await user.save();
+
+    const approver = await User.findById(approverId);
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -338,24 +344,25 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
 
     let mailHtml;
     if (newStatus === "abgelehnt") {
+      const displayReason = reason.trim() ? reason : "Kein Grund angegeben";
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme.</p>
-          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${activity.date} stattfindet, wurde <span style="color: red;">${newStatus}</span>!</p>
-          <p><strong>Begründung:</strong> ${reason}</p>
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von <strong>${approver.firstName + " " + approver.lastName}</strong>.</p>
+          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: red;">${newStatus}</span>!</p>
+          <p><strong>Begründung:</strong> ${displayReason}</p>
         </div>
       `;
     } else if (newStatus === "genehmigt") {
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme.</p>
-          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${activity.date} stattfindet, wurde <span style="color: green;">${newStatus}</span>!</p>
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${approver.firstName + " " + approver.lastName}.</p>
+          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: green;">${newStatus}</span>!</p>
         </div>
       `;
     } else {
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme.</p>
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${approver.firstName + " " + approver.lastName}.</p>
           <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em> wurde <span style="color: blue;">${newStatus}</span>!</p>
         </div>
       `;
@@ -363,12 +370,12 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
 
     const mailOptions = {
       from: {
-        name: "Antwort ausstehende Anfrage",
+        name: "Antwort auf Ausstehende Genehmigung - No reply",
         address: process.env.USER,
       },
       to: `${user.inbox}`,
-      subject: "Training Academy - Rent Group München",
-      text: "Training Academy - Rent Group München",
+      subject: "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
+      text: "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
       html: mailHtml,
     };
 

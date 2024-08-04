@@ -179,20 +179,20 @@ export default function Register() {
                       })}
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option value={"logistik"}>Logistik</option>
-                      <option value={"vertrieb"}>Vertrieb</option>
+                      <option value={"Logistik"}>Logistik</option>
+                      <option value={"Vertrieb"}>Vertrieb</option>
                       <option value={"IT & Services"}>IT & Services</option>
-                      <option value={"fuhrpark"}>Fuhrpark</option>
+                      <option value={"Fuhrpark"}>Fuhrpark</option>
                       <option value={"HR & Training"}>HR & Training</option>
-                      <option value={"buchhaltung"}>Buchhaltung</option>
-                      <option value={"einkauf"}>Einkauf & Anmietung</option>
-                      <option value={"design & Planung"}>
+                      <option value={"Buchhaltung"}>Buchhaltung</option>
+                      <option value={"Einkauf"}>Einkauf & Anmietung</option>
+                      <option value={"Design & Planung"}>
                         Design & Planung
                       </option>
-                      <option value={"projektmanagement"}>
+                      <option value={"Projektmanagement"}>
                         Projektmanagement
                       </option>
-                      <option value={"officemanagement"}>
+                      <option value={"Officemanagement"}>
                         Office Management
                       </option>
                     </select>

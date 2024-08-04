@@ -25,7 +25,6 @@ import ApproverListSubstitute from "./components/administration/ApproverListSubs
 import PieChartSingle from "./components/administration/PieChartSingle";
 import PieChartSingleStatistics from "./components/administration/PieChartStatistics";
 import Messages from "./components/user/Messages";
-import MessagesSide from "./components/user/MessagesSide";
 import MessageForm from "./components/administration/MessageForm";
 
 function App() {

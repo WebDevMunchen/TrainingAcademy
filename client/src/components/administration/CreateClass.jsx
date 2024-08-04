@@ -6,31 +6,12 @@ import axiosClient from "../../utils/axiosClient";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateClass() {
-  const { setAllActivities, currentMonth, currentYear } = useContext(AuthContext);
+  const { setAllActivities, currentMonth, currentYear } =
+    useContext(AuthContext);
   const navigate = useNavigate();
   const [selectedDepartments, setSelectedDepartments] = useState([]);
-  // const [currentMonth, setCurrentMonth] = useState(""); //leave for now for potential errors
   const [selectedFile, setSelectedFile] = useState(null);
   const [hideFileUpload, setHideFileUpload] = useState("hidden");
-
-  // useEffect(() => { //leave for now for potential errors
-  //   const date = new Date();
-  //   const monthNames = [
-  //     "januar",
-  //     "februar",
-  //     "märz",
-  //     "april",
-  //     "mai",
-  //     "juni",
-  //     "juli",
-  //     "august",
-  //     "september",
-  //     "oktober",
-  //     "november",
-  //     "dezember",
-  //   ];
-  //   setCurrentMonth(monthNames[date.getMonth()]);
-  // }, []);
 
   const {
     register,
@@ -41,11 +22,9 @@ export default function CreateClass() {
   const handleDepartmentChange = (e) => {
     const department = e.target.value;
     if (e.target.checked) {
-      setSelectedDepartments([...selectedDepartments, department]);
+      setSelectedDepartments((prev) => [...prev, department]);
     } else {
-      setSelectedDepartments(
-        selectedDepartments.filter((d) => d !== department)
-      );
+      setSelectedDepartments((prev) => prev.filter((d) => d !== department));
     }
   };
 
@@ -54,11 +33,15 @@ export default function CreateClass() {
   };
 
   const onSubmit = async (data) => {
-    data.department = selectedDepartments;
+    data.department = selectedDepartments; // Ensure department is an array of strings
 
     const formData = new FormData();
     for (const key in data) {
-      formData.append(key, data[key]);
+      if (Array.isArray(data[key])) {
+        data[key].forEach((value) => formData.append(key, value));
+      } else {
+        formData.append(key, data[key]);
+      }
     }
     if (selectedFile) {
       formData.append("file", selectedFile);
@@ -76,18 +59,16 @@ export default function CreateClass() {
         `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
       );
       setAllActivities(activitiesResponse?.data);
+
     } catch (error) {
+      console.error("Error during form submission:", error);
     } finally {
       navigate("/admin/dashboard");
     }
   };
 
   const handleHideFileUpload = () => {
-    if (hideFileUpload === "hidden") {
-      setHideFileUpload("visible");
-    } else {
-      setHideFileUpload("hidden");
-    }
+    setHideFileUpload(hideFileUpload === "hidden" ? "visible" : "hidden");
   };
 
   return (

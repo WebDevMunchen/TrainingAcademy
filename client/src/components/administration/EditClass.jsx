@@ -6,7 +6,7 @@ import axiosClient from "../../utils/axiosClient";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditClass() {
-  const { setAllActivities, setAllUsers, currentMonth, currentYear } =
+  const { setAllActivities, setAllUsers, currentMonth, currentYear, setUser } =
     useContext(AuthContext);
 
   const { id } = useParams();
@@ -44,7 +44,9 @@ export default function EditClass() {
     if (e.target.checked) {
       setSelectedDepartments((prev) => [...prev, department]);
     } else {
-      setSelectedDepartments((prev) => prev.filter((d) => d !== department));
+      setSelectedDepartments((prev) =>
+        prev.filter((d) => d !== department)
+      );
     }
   };
 
@@ -53,10 +55,11 @@ export default function EditClass() {
 
     const formData = new FormData();
     for (const key in data) {
-      formData.append(key, data[key]);
-    }
-    if (selectedFile) {
-      formData.append("file", selectedFile);
+      if (Array.isArray(data[key])) {
+        data[key].forEach((value) => formData.append(key, value));
+      } else {
+        formData.append(key, data[key]);
+      }
     }
 
     try {
@@ -75,7 +78,9 @@ export default function EditClass() {
       const usersResponse = await axiosClient.get("/user/getAllUsers");
       setAllUsers(usersResponse?.data);
 
-      
+      const userResponse = await axiosClient.get("/user/profile");
+
+      setUser(userResponse?.data);
     } catch (error) {
 
     } finally {
@@ -113,6 +118,11 @@ export default function EditClass() {
       })
       .then((response) => {
         setAllActivities(response.data);
+      }).then((response) => {
+        return axiosClient.get("/user/profile");
+      })
+      .then((responseProfile) => {
+        setUser(responseProfile.data);
       })
       .then((response) => {
         navigate("/admin/dashboard");

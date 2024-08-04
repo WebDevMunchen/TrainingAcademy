@@ -111,7 +111,7 @@ export default function AuthProvider({ children }) {
     setCurrentYear(e.target.value);
   };
 
-  const login = async (data) => {
+  const login = async (data, redirectUrl) => {
     axiosClient
       .post("/user/login", data)
       .then((response) => {
@@ -134,6 +134,8 @@ export default function AuthProvider({ children }) {
       })
       .then((responseApprovers) => {
         setApprover(responseApprovers.data);
+
+        navigate(redirectUrl || "/");
       })
       .catch((error) => {
         badCredentials();

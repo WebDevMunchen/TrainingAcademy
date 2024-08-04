@@ -6,11 +6,15 @@ import { AuthContext } from "../../context/AuthProvider";
 
 export default function SingleClassDetails() {
   const { user } = useContext(AuthContext);
-
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [activity, setActivity] = useState(null);
+  const [isWithin48Hours, setIsWithin48Hours] = useState(false);
+  const [formattedDate, setFormattedDate] = useState("");
+  const [formattedDatePrior, setFormattedDatePrior] = useState("");
+  const [formattedDatePriorGenehmigung, setFormattedDatePriorGenehmigung] =
+    useState("");
 
   useEffect(() => {
     axiosClient
@@ -18,8 +22,51 @@ export default function SingleClassDetails() {
       .then((response) => {
         setActivity(response.data);
       })
-      .catch((error) => {});
-  }, []);
+      .catch((error) => {
+        console.error("Error fetching activity:", error);
+      });
+  }, [id]);
+
+  useEffect(() => {
+    if (activity?.date && activity?.time) {
+      // Parse the date and time separately
+      const datePart = activity.date.split("T")[0]; // "2024-01-01"
+      const [hours, minutes] = activity.time.split(":").map(Number); // 16 and 00
+
+      // Create a new Date object with the local time
+      const [year, month, day] = datePart.split("-").map(Number);
+      const date = new Date(year, month - 1, day, hours, minutes);
+
+      const adjustDate = (date, days) => {
+        const newDate = new Date(date);
+        newDate.setDate(newDate.getDate() + days);
+        return newDate;
+      };
+
+      const formatDateString = (date) => {
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      };
+
+      const datePrior = adjustDate(date, -2);
+      const datePriorGenehmigung = adjustDate(date, -1);
+
+      setFormattedDate(formatDateString(date));
+      setFormattedDatePrior(formatDateString(datePrior));
+      setFormattedDatePriorGenehmigung(formatDateString(datePriorGenehmigung));
+      console.log(formattedDate);
+      console.log(formattedDatePrior);
+      console.log(formattedDatePriorGenehmigung);
+
+      const now = new Date();
+      const hoursDifference = (date.getTime() - now.getTime()) / 3600000;
+      setIsWithin48Hours(hoursDifference <= 48);
+
+      console.log(isWithin48Hours);
+    }
+  }, [activity]);
 
   const showLegend = () => {
     document.getElementById("legend").showModal();
@@ -31,42 +78,6 @@ export default function SingleClassDetails() {
       : activity?.registeredUsers?.filter(
           (registeredUser) => registeredUser.department === user.department
         );
-
-        const adjustDate = (date, days) => {
-          const newDate = new Date(date);
-          newDate.setDate(newDate.getDate() + days);
-          return newDate;
-        };
-        
-        const formatDateString = (date) => {
-          const day = date.getDate();
-          const month = date.getMonth() + 1;
-          const year = date.getFullYear();
-          return `${day}/${month}/${year}`;
-        };
-        
-        const dateString = activity?.date;
-        const date = new Date(dateString);
-        const datePrior = adjustDate(date, -2);
-        const datePriorGenehmigung = adjustDate(date, -1);
-        
-        const formattedDate = formatDateString(date);
-        const formattedDatePrior = formatDateString(datePrior);
-        const formattedDatePriorGenehmigung = formatDateString(datePriorGenehmigung);
-        
-        const now = new Date();
-        const hoursDifference = (date.getTime() - now.getTime()) / 3600000;
-        
-        console.log(date, now);
-        console.log(hoursDifference);
-        
-        // Hide the 'Bearbeiten' button if the activity date is within 48 hours
-        const isWithin48Hours = hoursDifference <= 48;
-        
-        // Use the isWithin48Hours variable to conditionally render the 'Bearbeiten' button in your component
-        
-
-  console.log(isWithin48Hours)
   return (
     <>
       {!activity ? (
@@ -88,11 +99,13 @@ export default function SingleClassDetails() {
                 <div className=" absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
                 <div className="py-2 relative  ">
                   <div className="hidden lg:flex justify-between">
-                    {user.role === "admin" && isWithin48Hours ? (
+                    {user.role === "admin" ? (
                       <div className="flex text-right mt-1 mr-12">
                         <NavLink
                           to={`/admin/editClass/${activity._id}`}
-                          className="flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                          className={`${
+                            isWithin48Hours ? "hidden" : "visible"
+                          } flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5`}
                         >
                           Bearbeiten
                         </NavLink>
@@ -142,7 +155,13 @@ export default function SingleClassDetails() {
                           ) : (
                             <>
                               <span className="mr-2">Freie Plätze:</span>
-                              <span className="shrink-0 rounded-full bg-green-500 px-3 font-mono text-md font-medium tracking-tight text-white">
+                              <span
+                                className={`shrink-0 rounded-full ${
+                                  activity.capacity - activity.usedCapacity > 5
+                                    ? "bg-green-500"
+                                    : "bg-red-500"
+                                } px-3 font-mono text-md font-medium tracking-tight text-white`}
+                              >
                                 {activity.capacity - activity.usedCapacity}
                               </span>
                             </>
