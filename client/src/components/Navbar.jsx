@@ -204,7 +204,7 @@ export default function Navbar() {
                       <li>
                         <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
                       </li>
-                      <li className="relative">
+                      {/* <li className="relative">
                         <NavLink to={"/messages"}>
                           <svg
                             className="w-8 h-8 text-amber-300 animate-wiggle"
@@ -230,7 +230,7 @@ export default function Navbar() {
                             <span className="absolute top-0 start-0 rounded-full -z-10 animate-ping bg-teal-200 w-full h-full"></span>
                           </span>
                         </NavLink>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                   <div className="px-2 xl:px-12 py-3 flex items-center">
