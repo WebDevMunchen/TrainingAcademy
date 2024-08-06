@@ -63,6 +63,8 @@ export default function Dashboard() {
 
   const years = Array.from({ length: 10 }, (_, i) => (new Date().getFullYear() + i).toString());
 
+  console.log(allActivities)
+
   return (
     <>
       <div className="bg-gray-50/50 flex">
@@ -355,12 +357,12 @@ export default function Dashboard() {
                       </tr>
                     </thead>
                     <tbody>
-                      {!allActivities ? (
+                      {allActivities.length === 0 ? (
                         <>
                           <tr>
                             <td colSpan="9">
                               <img
-                                className="h-[calc(42vh-40px)] lg:mx-auto lg:h-[calc(53vh-32px)] lg:w-[calc(60vh-32px)]"
+                                className="h-[calc(42vh-40px)] lg:mx-auto lg:h-[calc(48vh-32px)] lg:w-[calc(55vh-32px)]"
                                 src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715671755/symbols/freepik-export-20240514065734UGY2_wpm9md_rahv71.png"
                                 alt="logo"
                               />

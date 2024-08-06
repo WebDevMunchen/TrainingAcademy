@@ -1,13 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { useParams } from "react-router-dom";
 import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "../../context/AuthProvider";
+import attended from "../../assets/attended.png";
+import approved from "../../assets/approved.png";
+import pending from "../../assets/pending.png";
+import declined from "../../assets/declined.png";
+import notAttended from "../../assets/notAttended.png";
 
 export default function RegisteredUserCardAdmin({
   registeredUser,
   activityId,
+  setActivity
 }) {
+  const {
+    setAllActivities,
+    setUser,
+    currentMonth,
+    currentYear,
+  } = useContext(AuthContext);
   const { id } = useParams();
 
   const [hideAttendedBtn, setHideAttendedBtn] = useState(false);
@@ -32,7 +45,24 @@ export default function RegisteredUserCardAdmin({
         newStatusAttended: status,
       })
       .then((response) => {
-        notifySuccessAttended();
+        return axiosClient.get("/user/profile");
+      })
+      .then((responseProfile) => {
+        setUser(responseProfile.data);
+      })
+      .then((response) => {
+        return axiosClient.get(`/classActivity/${id}`);
+      })
+      .then((responseSingleActivity) => {
+        setActivity(responseSingleActivity.data);
+
+        return axiosClient.get(
+          `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
+        );
+      })
+      .then((responseAllActivities) => {
+        setAllActivities(responseAllActivities.data);
+        notifySuccess();
       })
       .catch((error) => {});
   };
@@ -44,7 +74,24 @@ export default function RegisteredUserCardAdmin({
         newStatusAttended: status,
       })
       .then((response) => {
-        notifySuccessAttended();
+        return axiosClient.get("/user/profile");
+      })
+      .then((responseProfile) => {
+        setUser(responseProfile.data);
+      })
+      .then((response) => {
+        return axiosClient.get(`/classActivity/${id}`);
+      })
+      .then((responseSingleActivity) => {
+        setActivity(responseSingleActivity.data);
+
+        return axiosClient.get(
+          `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
+        );
+      })
+      .then((responseAllActivities) => {
+        setAllActivities(responseAllActivities.data);
+        notifySuccess();
       })
       .catch((error) => {});
   };
@@ -70,7 +117,7 @@ export default function RegisteredUserCardAdmin({
   };
 
   const notifySuccessAttended = () =>
-    toast.success("Status geändert. Bitte die Seite aktualisieren!", {
+    toast.success("Teilnahmestatus geändert!", {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -138,41 +185,42 @@ export default function RegisteredUserCardAdmin({
           </p>
         </div>
         <div className="mt-2 flex items-center justify-between mx-2">
-          <p className="flex flex-col items-start text-sm font-medium text-gray-500">
-            <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
-              Teilnahmestatus:{" "}
-            </span>
+          <div className="flex flex-col items-start text-sm font-medium text-gray-500">
             {registeredUser.classesRegistered.map((element, index) => {
               if (element.registeredClassID === activityId)
                 return (
                   <React.Fragment key={element.registeredClassID}>
-                    {element.status === "genehmigt" ? (
-                      <span
-                        className={`inline-flex items-center rounded-full px-3 text-sm text-white py-1.5 font-medium ${
-                          element.statusAttended === "teilgenommen"
-                            ? "bg-green-600"
-                            : element.statusAttended === "nicht teilgenommen"
-                            ? "bg-red-500"
-                            : "bg-orange-500"
-                        }`}
-                      >
-                        {element.statusAttended}
-                      </span>
-                    ) : element.status === "ausstehend" ? (
-                      <span className="inline-flex items-center bg-orange-500 rounded-full px-3 text-sm text-white py-1.5 font-medium">
-                        auf Genehmigung warten
-                      </span>
+              {element.statusAttended === "teilgenommen" ? (
+                      <>
+                        <span
+                          className={`${registeredUser} mx-auto mb-1 text-md font-semibold text-gray-900 hidden lg:inline`}
+                        >
+                          Teilnahmestatus:{" "}
+                        </span>
+                        <img src={attended} width={150} alt="teilgenommen" />
+                      </>
+                    ) : element.statusAttended === "nicht teilgenommen" ? (
+                      <>
+                        <span
+                          className={`${registeredUser} mx-auto mb-1 text-md font-semibold text-gray-900 hidden lg:inline`}
+                        >
+                          Teilnahmestatus:{" "}
+                        </span>
+                        <img
+                          src={notAttended}
+                          width={150}
+                          alt="nichtTeilgenommen"
+                        />
+                      </>
                     ) : (
-                      <span className="inline-flex items-center bg-slate-400 rounded-full px-3 text-sm text-white py-1.5 font-medium">
-                        nicht angemeldet
-                      </span>
+                      <span className="hidden">Placeholder</span>
                     )}
                   </React.Fragment>
                 );
             })}
-          </p>
+          </div>
 
-          <p className="flex flex-col items-end text-sm font-medium text-gray-500">
+          <div className="flex flex-col items-end text-sm font-medium text-gray-500">
             <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
               Genehmigungsstatus:{" "}
             </span>
@@ -180,26 +228,11 @@ export default function RegisteredUserCardAdmin({
               if (element.registeredClassID === activityId)
                 return (
                   <React.Fragment key={element.registeredClassID}>
-                    {element.status === "genehmigt" ? (
-                      <span className="inline-flex items-center bg-green-600 rounded-full px-3 text-sm text-white py-1 font-medium">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-6 h-6 mr-2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                          />
-                        </svg>
-                        {element.status}
-                      </span>
+                        {element.status === "genehmigt" ? (
+                                              <img src={approved} width={150} alt="genehmigt" />
+
                     ) : element.status === "abgelehnt" ? (
-                      <span className="flex items-center">
+                      <div className="flex items-center">
                         <span
                           className="tooltip mr-1 hover:cursor-pointer"
                           style={{ width: "auto", height: "auto" }}
@@ -222,47 +255,17 @@ export default function RegisteredUserCardAdmin({
                             />
                           </svg>
                         </span>
-                        <span className="inline-flex items-center bg-red-600 rounded-full px-3 text-sm text-white py-1 font-medium">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6 mr-2"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                            />
-                          </svg>
-                          {element.status}
-                        </span>
-                      </span>
+                        <img src={declined} width={150} alt="abgelehnt" />
+
+                      </div>
                     ) : (
-                      <span className="inline-flex items-center bg-orange-500 rounded-full px-3 text-sm text-white py-1 font-medium">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-6 h-6 mr-2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
-                          />
-                        </svg>
-                        {element.status}
-                      </span>
+                      <img src={pending} width={150} alt="ausstehend" />
+
                     )}
                   </React.Fragment>
                 );
             })}
-          </p>
+          </div>
         </div>
       </div>
       {differenceHours < 24 && differenceHours > 0 ? (

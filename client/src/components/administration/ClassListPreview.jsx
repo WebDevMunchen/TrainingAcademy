@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export default function ClassListPreview({ activity }) {
   const [ausstehendCount, setAusstehendCount] = useState(0);
+  const [isButtonVisible, setIsButtonVisible] = useState(true);
 
   useEffect(() => {
     const ausstehendUsers = activity.registeredUsers.filter((user) => {
@@ -16,6 +17,20 @@ export default function ClassListPreview({ activity }) {
     setAusstehendCount(ausstehendUsers.length);
   }, [activity]);
 
+  useEffect(() => {
+    const dateString = activity?.date;
+    const timeString = activity?.time;
+    const [hoursStr, minutesStr] = timeString.split(":");
+    const classDate = new Date(dateString);
+    classDate.setHours(parseInt(hoursStr, 10));
+    classDate.setMinutes(parseInt(minutesStr, 10));
+
+    const now = new Date();
+    const hoursDifference = (classDate - now) / 3600000;
+
+    setIsButtonVisible(hoursDifference > 48);
+  }, [activity]);
+
   const dateString = activity?.date;
   const date = new Date(dateString);
 
@@ -24,9 +39,6 @@ export default function ClassListPreview({ activity }) {
   const year = date.getFullYear();
 
   const formattedDate = `${day}/${month}/${year}`;
-
-  const now = new Date();
-  const hoursDifference = (date - now) / 3600000;
 
   return (
     <tr>
@@ -128,12 +140,14 @@ export default function ClassListPreview({ activity }) {
         >
           Details
         </NavLink>
+        {isButtonVisible && (
         <NavLink
           to={`/admin/editClass/${activity._id}`}
-          className={`mb-2 block antialiased  text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150 ${hoursDifference > 48 ? "visible" : "hidden"}`}
+          className="mb-2 block antialiased text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
         >
           Bearbeiten
         </NavLink>
+      )}
         <NavLink
           to={`/admin/report/${activity._id}`}
           className="block antialiased  text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"

@@ -29,11 +29,9 @@ export default function SingleClassDetails() {
 
   useEffect(() => {
     if (activity?.date && activity?.time) {
-      // Parse the date and time separately
-      const datePart = activity.date.split("T")[0]; // "2024-01-01"
-      const [hours, minutes] = activity.time.split(":").map(Number); // 16 and 00
+      const datePart = activity.date.split("T")[0];
+      const [hours, minutes] = activity.time.split(":").map(Number); 
 
-      // Create a new Date object with the local time
       const [year, month, day] = datePart.split("-").map(Number);
       const date = new Date(year, month - 1, day, hours, minutes);
 
@@ -56,15 +54,11 @@ export default function SingleClassDetails() {
       setFormattedDate(formatDateString(date));
       setFormattedDatePrior(formatDateString(datePrior));
       setFormattedDatePriorGenehmigung(formatDateString(datePriorGenehmigung));
-      console.log(formattedDate);
-      console.log(formattedDatePrior);
-      console.log(formattedDatePriorGenehmigung);
 
       const now = new Date();
       const hoursDifference = (date.getTime() - now.getTime()) / 3600000;
       setIsWithin48Hours(hoursDifference <= 48);
 
-      console.log(isWithin48Hours);
     }
   }, [activity]);
 
@@ -73,11 +67,13 @@ export default function SingleClassDetails() {
   };
 
   const filteredRegisteredUsers =
-    user.role === "admin"
+    user.role === "admin" || user.role === "teacher"
       ? activity?.registeredUsers
       : activity?.registeredUsers?.filter(
           (registeredUser) => registeredUser.department === user.department
         );
+        console.log(activity)
+
   return (
     <>
       {!activity ? (

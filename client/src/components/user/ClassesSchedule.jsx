@@ -80,7 +80,7 @@ export default function ClassesSchedule() {
               </div>
             </div>
             <div className="grid grid-cols-1 gap-2 mt-12 sm:grid-cols-1 mt-2 w-[23rem] lg:mt-2 lg:w-10/12 mx-auto">
-              {!allActivities ? (
+              {allActivities.length === 0 ? (
                 <>
                   <img
                     className="mx-auto h-[calc(70vh-32px)] lg:hidden"
@@ -88,7 +88,7 @@ export default function ClassesSchedule() {
                     alt="logo"
                   />
                   <img
-                    className="hidden lg:inline mx-auto h-[calc(85vh-32px)]"
+                    className="hidden lg:inline mx-auto h-[calc(70vh-32px)] w-[calc(70vh-32px)]"
                     src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715669996/symbols/freepik-export-20240514065734UGY2_wpm9md.png"
                     alt="logo"
                   />

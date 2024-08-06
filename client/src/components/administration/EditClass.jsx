@@ -35,9 +35,32 @@ export default function EditClass() {
         setFileUploadHidden(
           response.data.safetyBriefing ? "visible" : "hidden"
         );
+        const currentDate = new Date();
+        const { date, time } = response.data;
+
+        if (date && time) {
+          const [hoursStr, minutesStr] = time.split(":");
+          const classDate = new Date(date);
+          classDate.setHours(parseInt(hoursStr, 10));
+          classDate.setMinutes(parseInt(minutesStr, 10));
+
+          console.log(classDate)
+
+          const differenceMs = classDate.getTime() - currentDate.getTime();
+          const differenceHours = differenceMs / (1000 * 60 * 60);
+
+          console.log(differenceHours)
+
+          if (differenceHours < 48) {
+            navigate("/admin/dashboard");
+          }
+    }
+
       })
       .catch((error) => {});
-  }, []);
+
+
+  }, [id, navigate]);
 
   const handleDepartmentChange = (e) => {
     const department = e.target.value;
@@ -49,6 +72,8 @@ export default function EditClass() {
       );
     }
   };
+
+
 
   const onSubmit = async (data) => {
     data.department = selectedDepartments;
@@ -279,7 +304,7 @@ export default function EditClass() {
 
                     <div className={fileUploadHidden}>
                       <label
-                        for="uploadFile1"
+                        htmlFor="uploadFile1"
                         className="flex bg-gray-800 hover:bg-gray-700 text-white ml-2 text-base px-4 py-1.5 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif]"
                       >
                         <svg

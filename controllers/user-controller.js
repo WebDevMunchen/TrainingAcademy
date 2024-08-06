@@ -417,6 +417,8 @@ const updateAttended = asyncWrapper(async (req, res, next) => {
   user.classesRegistered[classIndex].statusAttended = newStatusAttended;
 
   await user.save();
+
+  res.json(user)
 });
 
 const updateNotAttended = asyncWrapper(async (req, res, next) => {
@@ -443,6 +445,8 @@ const updateNotAttended = asyncWrapper(async (req, res, next) => {
   user.classesRegistered[classIndex].statusAttended = newStatusAttended;
 
   await user.save();
+
+  res.json(user)
 });
 
 const login = asyncWrapper(async (req, res, next) => {

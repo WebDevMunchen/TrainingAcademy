@@ -25,21 +25,6 @@ export default function SingleClassDetailsAdmin() {
     document.getElementById("legend").showModal();
   };
 
-  // const dateString = activity?.date;
-  // const date = new Date(dateString);
-
-  // const day = date.getDate();
-  // const dayPrior = date.getDate() - 2;
-  // const dayPriorGenehimgung = date.getDate() - 1;
-  // const month = date.getMonth() + 1;
-  // const year = date.getFullYear();
-
-  // const formattedDate = `${day}/${month}/${year}`;
-  // const formatedDateprior = `${dayPrior}/${month}/${year}`;
-  // const formatedDatepriorGenehmigung = `${dayPriorGenehimgung}/${month}/${year}`;
-
-  // const currentTime = new Date();
-
   const adjustDate = (date, days) => {
     const newDate = new Date(date);
     newDate.setDate(newDate.getDate() + days);
