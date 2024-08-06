@@ -6,6 +6,7 @@ const cloudinary = require("../utils/cloudinaryConfig.js");
 const Approver = require("../models/approver-model.js");
 const nodemailer = require("nodemailer");
 const { format } = require("date-fns");
+const cron = require('node-cron');
 
 const createClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -605,6 +606,51 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     message: "Class and related user registrations deleted successfully",
   });
 });
+
+const checkAndUpdateClassRegistrations = async () => {
+  const now = new Date();
+  const in48Hours = new Date(now.getTime() + 48 * 60 * 60 * 1000);
+
+  try {
+    const classes = await ClassActivity.find({
+      date: { $lte: in48Hours, $gte: now }
+    });
+
+    for (const classActivity of classes) {
+      const registeredUserIds = classActivity.registeredUsers;
+
+      await User.updateMany(
+        {
+          _id: { $in: registeredUserIds },
+          'classesRegistered': {
+            $elemMatch: {
+              registeredClassID: classActivity._id,
+              status: 'ausstehend'
+            }
+          }
+        },
+        {
+          $set: {
+            'classesRegistered.$.status': 'abgelehnt',
+            'classesRegistered.$.reason': 'Automatisch abgelehnt, da keine Antwort vom Genehmiger oder seinem Vertreter einging'
+          }
+        }
+      );
+    }
+
+    console.log('Class registrations checked and updated successfully.');
+  } catch (error) {
+    console.error('Error checking and updating class registrations:', error);
+  }
+};
+
+cron.schedule('30 17 * * *', () => {
+  checkAndUpdateClassRegistrations();
+}, {
+  scheduled: true,
+  timezone: "Europe/Berlin" 
+});
+
 
 module.exports = {
   createClassActivity,
