@@ -19,11 +19,10 @@ export default function UserListCard({ user, selectedYear }) {
     if (findURL && findURL.registeredClassID) {
       setFileUrl(findURL.registeredClassID.fileUrl);
     }
-  }, [user, selectedYear]); // Update dependencies to include selectedYear
+  }, [user, selectedYear]);
 
   const handleDownload = async () => {
     if (!fileUrl) {
-      console.error("File URL is not defined.");
       return;
     }
 
@@ -49,7 +48,6 @@ export default function UserListCard({ user, selectedYear }) {
       URL.revokeObjectURL(url);
       document.body.removeChild(link);
     } catch (error) {
-      console.error("Error downloading the file:", error);
     }
   };
 
@@ -69,7 +67,6 @@ export default function UserListCard({ user, selectedYear }) {
   return (
     <>
       <tr className="text-center">
-        {/* User information */}
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="text-sm font-medium text-gray-900">
             {user.firstName}

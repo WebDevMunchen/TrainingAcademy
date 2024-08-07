@@ -12,7 +12,9 @@ export default function ClassesSchedule() {
     currentYear,
   } = useContext(AuthContext);
 
-  const years = Array.from({ length: 10 }, (_, i) => (new Date().getFullYear() + i).toString());
+  const years = Array.from({ length: 10 }, (_, i) =>
+    (new Date().getFullYear() + i).toString()
+  );
 
   return (
     <section className="w-10/12 bg-blue-500ray-50 lg:mx-auto">
@@ -54,7 +56,6 @@ export default function ClassesSchedule() {
                 </button>
               </div>
               <div className="relative inline-flex mt-4">
-
                 <svg
                   className="w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none"
                   xmlns="http://www.w3.org/2000/svg"

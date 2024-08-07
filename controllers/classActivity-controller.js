@@ -6,7 +6,7 @@ const cloudinary = require("../utils/cloudinaryConfig.js");
 const Approver = require("../models/approver-model.js");
 const nodemailer = require("nodemailer");
 const { format } = require("date-fns");
-const cron = require('node-cron');
+const cron = require("node-cron");
 
 const createClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -78,9 +78,10 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
   const existingActivity = await ClassActivity.findById(id).populate({
-    path: 'registeredUsers',
-    match: { 'classesRegistered.status': { $in: ['ausstehend', 'genehmigt'] } },
-    select: 'firstName lastName department classesRegistered',});
+    path: "registeredUsers",
+    match: { "classesRegistered.status": { $in: ["ausstehend", "genehmigt"] } },
+    select: "firstName lastName department classesRegistered",
+  });
 
   if (!existingActivity) {
     return res.status(404).json({
@@ -96,7 +97,6 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
         resource_type: "auto",
       });
       fileUrl = result.secure_url;
-      console.log("File URL:", fileUrl);
     } catch (error) {
       return res.status(500).json({
         success: false,
@@ -167,17 +167,17 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
       existingActivity.location.trim() !== updatedClass.location.trim() ||
       existingActivity.teacher.trim() !== updatedClass.teacher.trim();
 
-      const userNames = existingActivity.registeredUsers
-      .filter(user => 
+    const userNames = existingActivity.registeredUsers
+      .filter((user) =>
         user.classesRegistered.some(
-          registration => registration.registeredClassID.equals(id) &&
-                          ['ausstehend', 'genehmigt'].includes(registration.status)
+          (registration) =>
+            registration.registeredClassID.equals(id) &&
+            ["ausstehend", "genehmigt"].includes(registration.status)
         )
       )
-      .map(user => `${user.firstName} ${user.lastName} (${user.department})`);
+      .map((user) => `${user.firstName} ${user.lastName} (${user.department})`);
 
     if (fieldsChanged) {
-      
       const transporter = nodemailer.createTransport({
         service: "gmail",
         host: "smtp.gmail.com",
@@ -189,11 +189,9 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
         },
       });
 
-      console.log(userNames)
+      let mailHtml = "";
 
-      let mailHtml = ""
-
-      if(userNames.length === 0) {
+      if (userNames.length === 0) {
         mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
           <p>Hallo zusammen,</p>
@@ -243,7 +241,9 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
       } else {
         mailHtml = `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
         <p>Hallo zusammen,</p>
-        <p>Es gab Änderungen bei der Schulung: <em>"${updatedClass.title}"</em></p>
+        <p>Es gab Änderungen bei der Schulung: <em>"${
+          updatedClass.title
+        }"</em></p>
         <p><strong>Hier sind die Details der Änderungen:</strong></p>
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
           <thead>
@@ -266,18 +266,30 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Ort</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.location}</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.location}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${
+                existingActivity.location
+              }</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${
+                updatedClass.location
+              }</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Dauer</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.duration} Minuten</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.duration} Minuten</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${
+                existingActivity.duration
+              } Minuten</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${
+                updatedClass.duration
+              } Minuten</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Referent*in</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.teacher}</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.teacher}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${
+                existingActivity.teacher
+              }</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${
+                updatedClass.teacher
+              }</td>
             </tr>
           </tbody>
         </table>
@@ -289,9 +301,8 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
         <p>Bei Fragen gerne melden.</p>
         <p>Euer Training Abteilung</p>
       </div>
-    `
+    `;
       }
-
 
       const mailOptions = {
         from: {
@@ -308,9 +319,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
       const sendMail = async (transporter, mailOptions) => {
         try {
           await transporter.sendMail(mailOptions);
-        } catch (error) {
-          console.error("Fehler beim Versenden der E-Mail:", error);
-        }
+        } catch (error) {}
       };
 
       await sendMail(transporter, mailOptions);
@@ -418,7 +427,6 @@ const cancelUserRegistration = asyncWrapper(async (req, res, next) => {
 
     res.json({ message: "Success", updatedCapacity: updatedClassActivity });
   } catch (error) {
-    console.error("Error in cancelUserRegistration:", error);
     next(error);
   }
 });
@@ -485,7 +493,6 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
 
     res.json(allActivities);
   } catch (error) {
-    console.error("Error fetching activities:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -585,9 +592,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
   const sendMail = async (transporter, mailOptions) => {
     try {
       await transporter.sendMail(mailOptions);
-    } catch (error) {
-      console.error("Error sending email:", error);
-    }
+    } catch (error) {}
   };
 
   await sendMail(transporter, mailOptions);
@@ -613,7 +618,7 @@ const checkAndUpdateClassRegistrations = async () => {
 
   try {
     const classes = await ClassActivity.find({
-      date: { $lte: in48Hours, $gte: now }
+      date: { $lte: in48Hours, $gte: now },
     });
 
     for (const classActivity of classes) {
@@ -622,35 +627,35 @@ const checkAndUpdateClassRegistrations = async () => {
       await User.updateMany(
         {
           _id: { $in: registeredUserIds },
-          'classesRegistered': {
+          classesRegistered: {
             $elemMatch: {
               registeredClassID: classActivity._id,
-              status: 'ausstehend'
-            }
-          }
+              status: "ausstehend",
+            },
+          },
         },
         {
           $set: {
-            'classesRegistered.$.status': 'abgelehnt',
-            'classesRegistered.$.reason': 'Automatisch abgelehnt, da keine Antwort vom Genehmiger oder seinem Vertreter einging'
-          }
+            "classesRegistered.$.status": "abgelehnt",
+            "classesRegistered.$.reason":
+              "Automatisch abgelehnt, da keine Antwort vom Genehmiger oder seinem Vertreter einging",
+          },
         }
       );
     }
-
-    console.log('Class registrations checked and updated successfully.');
-  } catch (error) {
-    console.error('Error checking and updating class registrations:', error);
-  }
+  } catch (error) {}
 };
 
-cron.schedule('30 17 * * *', () => {
-  checkAndUpdateClassRegistrations();
-}, {
-  scheduled: true,
-  timezone: "Europe/Berlin" 
-});
-
+cron.schedule(
+  "30 17 * * *",
+  () => {
+    checkAndUpdateClassRegistrations();
+  },
+  {
+    scheduled: true,
+    timezone: "Europe/Berlin",
+  }
+);
 
 module.exports = {
   createClassActivity,

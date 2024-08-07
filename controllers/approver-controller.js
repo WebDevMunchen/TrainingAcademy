@@ -23,7 +23,7 @@ const createApprover = asyncWrapper(async (req, res, next) => {
     einkaufSubstitute,
     designSubstitute,
     projektmanagementSubstitute,
-    officemanagementSubstitute
+    officemanagementSubstitute,
   } = req.body;
 
   const approver = await Approver.create({
@@ -46,7 +46,7 @@ const createApprover = asyncWrapper(async (req, res, next) => {
     einkaufSubstitute,
     designSubstitute,
     projektmanagementSubstitute,
-    officemanagementSubstitute
+    officemanagementSubstitute,
   });
 
   res.status(201).json(approver);
@@ -73,7 +73,7 @@ const editApprover = asyncWrapper(async (req, res, next) => {
     einkaufSubstitute,
     designSubstitute,
     projektmanagementSubstitute,
-    officemanagementSubstitute
+    officemanagementSubstitute,
   } = req.body;
 
   const { id } = req.params;
@@ -98,7 +98,7 @@ const editApprover = asyncWrapper(async (req, res, next) => {
     einkaufSubstitute,
     designSubstitute,
     projektmanagementSubstitute,
-    officemanagementSubstitute
+    officemanagementSubstitute,
   };
 
   const approver = await Approver.findByIdAndUpdate(id, updateApprover, {
@@ -113,13 +113,13 @@ const editApprover = asyncWrapper(async (req, res, next) => {
 });
 
 const getAllApprovers = asyncWrapper(async (req, res, next) => {
-    const approvers = await Approver.find({})
-  
-    res.status(201).json(approvers);
-  });
+  const approvers = await Approver.find({});
+
+  res.status(201).json(approvers);
+});
 
 module.exports = {
   createApprover,
   editApprover,
-  getAllApprovers
+  getAllApprovers,
 };

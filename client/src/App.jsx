@@ -34,18 +34,18 @@ function App() {
     <>
       <Navbar />
       <ToastContainer
-                    position="top-right"
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick={false}
-                    rtl={false}
-                    pauseOnFocusLoss={false}
-                    draggable={false}
-                    pauseOnHover={false}
-                    theme="light"
-                    transition={Bounce}
-                  />
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme="light"
+        transition={Bounce}
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -61,7 +61,10 @@ function App() {
             element={<AuthorizeNonUser roles={allowedRoles} />}
           >
             <Route path=":id" element={<SingleClassDetails />} />
-            <Route path="participation/:id" element={<SingleClassDetailsAdmin />} />
+            <Route
+              path="participation/:id"
+              element={<SingleClassDetailsAdmin />}
+            />
           </Route>
           <Route path="/admin" element={<Authorize role="admin" />}>
             <Route path="register" element={<Register />} />
@@ -78,9 +81,18 @@ function App() {
             <Route path="report/:id" element={<Report />} />
             <Route path="approverList" element={<ApproverList />} />
             <Route path="sendMessage" element={<MessageForm />} />
-            <Route path="approverListSubstitute" element={<ApproverListSubstitute />} />
-            <Route path="cancelationStatistic/:id" element={<PieChartSingle />} />
-            <Route path="cancelationStatistic" element={<PieChartSingleStatistics />} />
+            <Route
+              path="approverListSubstitute"
+              element={<ApproverListSubstitute />}
+            />
+            <Route
+              path="cancelationStatistic/:id"
+              element={<PieChartSingle />}
+            />
+            <Route
+              path="cancelationStatistic"
+              element={<PieChartSingleStatistics />}
+            />
           </Route>
         </Route>
       </Routes>

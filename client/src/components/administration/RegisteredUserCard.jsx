@@ -17,6 +17,7 @@ export default function RegisteredUserCard({
 }) {
   const { user, setAllActivities, setUser, currentMonth, currentYear } =
     useContext(AuthContext);
+
   const { id } = useParams();
   const modalRef = useRef(null);
 
@@ -70,7 +71,6 @@ export default function RegisteredUserCard({
         notifySuccess();
       })
       .catch((error) => {
-        notifyError();
         setHideChangedBtn(false);
         setSubmitedChangedStatus(true);
       });
@@ -105,7 +105,6 @@ export default function RegisteredUserCard({
       })
       .catch((error) => {
         if (error.name === "AxiosError") {
-          notifyError();
           setHideChangedBtn(false);
           setSubmitedChangedStatus(true);
         }
@@ -144,7 +143,6 @@ export default function RegisteredUserCard({
       })
       .catch((error) => {
         if (error.name === "AxiosError") {
-          notifyError();
           setHideChangedBtn(false);
           setSubmitedChangedStatus(true);
         }
@@ -288,20 +286,6 @@ export default function RegisteredUserCard({
       className: "mt-14 mr-6",
     });
 
-  const notifyError = () =>
-    toast.error(`Die Genehmigung könnte nicht geändert werden`, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mt-14 mr-6",
-    });
-
   const currentDate = new Date();
   const isoDateString =
     currentDate.getFullYear() +
@@ -320,8 +304,6 @@ export default function RegisteredUserCard({
 
   const timeFromJson = activitySingleInformation?.time;
   const dateString = activitySingleInformation?.date;
-
-
 
   if (timeFromJson && dateString) {
     const [hoursStr, minutesStr] = timeFromJson.split(":");
@@ -403,8 +385,7 @@ export default function RegisteredUserCard({
                 return (
                   <React.Fragment key={element.registeredClassID}>
                     {element.status === "genehmigt" ? (
-                                              <img src={approved} width={150} alt="genehmigt" />
-
+                      <img src={approved} width={150} alt="genehmigt" />
                     ) : element.status === "abgelehnt" ? (
                       <div className="flex items-center">
                         <span
@@ -430,11 +411,9 @@ export default function RegisteredUserCard({
                           </svg>
                         </span>
                         <img src={declined} width={150} alt="abgelehnt" />
-
                       </div>
                     ) : (
                       <img src={pending} width={150} alt="ausstehend" />
-
                     )}
                   </React.Fragment>
                 );

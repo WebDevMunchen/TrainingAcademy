@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import SideMenu from "./SideMenu";
 
 export default function PieChartSingleStatistics() {
+  
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [options, setOptions] = useState({
@@ -107,13 +108,14 @@ export default function PieChartSingleStatistics() {
                   value={selectedYear}
                   onChange={handleYearChange}
                   className="mt-2 form-select bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-
                 >
-                  {[currentYear, currentYear - 1, currentYear - 2].map((year) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
+                  {[currentYear, currentYear - 1, currentYear - 2].map(
+                    (year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    )
+                  )}
                 </select>
               </div>
             </div>

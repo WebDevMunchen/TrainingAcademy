@@ -40,26 +40,20 @@ export default function EditClass() {
 
         if (date && time) {
           const [hoursStr, minutesStr] = time.split(":");
+
           const classDate = new Date(date);
           classDate.setHours(parseInt(hoursStr, 10));
           classDate.setMinutes(parseInt(minutesStr, 10));
 
-          console.log(classDate)
-
           const differenceMs = classDate.getTime() - currentDate.getTime();
           const differenceHours = differenceMs / (1000 * 60 * 60);
-
-          console.log(differenceHours)
 
           if (differenceHours < 48) {
             navigate("/admin/dashboard");
           }
-    }
-
+        }
       })
       .catch((error) => {});
-
-
   }, [id, navigate]);
 
   const handleDepartmentChange = (e) => {
@@ -67,13 +61,9 @@ export default function EditClass() {
     if (e.target.checked) {
       setSelectedDepartments((prev) => [...prev, department]);
     } else {
-      setSelectedDepartments((prev) =>
-        prev.filter((d) => d !== department)
-      );
+      setSelectedDepartments((prev) => prev.filter((d) => d !== department));
     }
   };
-
-
 
   const onSubmit = async (data) => {
     data.department = selectedDepartments;
@@ -107,7 +97,6 @@ export default function EditClass() {
 
       setUser(userResponse?.data);
     } catch (error) {
-
     } finally {
       navigate("/admin/dashboard");
     }
@@ -143,7 +132,8 @@ export default function EditClass() {
       })
       .then((response) => {
         setAllActivities(response.data);
-      }).then((response) => {
+      })
+      .then((response) => {
         return axiosClient.get("/user/profile");
       })
       .then((responseProfile) => {
@@ -153,7 +143,7 @@ export default function EditClass() {
         navigate("/admin/dashboard");
       })
       .catch((error) => {
-        setAllActivities(null)
+        setAllActivities(null);
         navigate("/admin/dashboard");
       });
   };
@@ -187,8 +177,8 @@ export default function EditClass() {
                   </svg>
                   <span className="sr-only">Info</span>
                   <div>
-                    <span className="font-medium">Achtung!</span> Du bist dabei, die
-                    Schulung zu löschen!
+                    <span className="font-medium">Achtung!</span> Du bist dabei,
+                    die Schulung zu löschen!
                   </div>
                 </div>
                 <div
@@ -210,7 +200,9 @@ export default function EditClass() {
                         um den Mitarbeiter zu informieren
                       </li>
                       <li>
-                        Diese Schulung kann <span className="font-medium">nicht mehr</span> wiedegestellt werden!
+                        Diese Schulung kann{" "}
+                        <span className="font-medium">nicht mehr</span>{" "}
+                        wiedegestellt werden!
                       </li>
                     </ul>
                   </div>

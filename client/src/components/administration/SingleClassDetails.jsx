@@ -6,6 +6,7 @@ import { AuthContext } from "../../context/AuthProvider";
 
 export default function SingleClassDetails() {
   const { user } = useContext(AuthContext);
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -22,15 +23,13 @@ export default function SingleClassDetails() {
       .then((response) => {
         setActivity(response.data);
       })
-      .catch((error) => {
-        console.error("Error fetching activity:", error);
-      });
+      .catch((error) => {});
   }, [id]);
 
   useEffect(() => {
     if (activity?.date && activity?.time) {
       const datePart = activity.date.split("T")[0];
-      const [hours, minutes] = activity.time.split(":").map(Number); 
+      const [hours, minutes] = activity.time.split(":").map(Number);
 
       const [year, month, day] = datePart.split("-").map(Number);
       const date = new Date(year, month - 1, day, hours, minutes);
@@ -58,7 +57,6 @@ export default function SingleClassDetails() {
       const now = new Date();
       const hoursDifference = (date.getTime() - now.getTime()) / 3600000;
       setIsWithin48Hours(hoursDifference <= 48);
-
     }
   }, [activity]);
 
@@ -72,7 +70,6 @@ export default function SingleClassDetails() {
       : activity?.registeredUsers?.filter(
           (registeredUser) => registeredUser.department === user.department
         );
-        console.log(activity)
 
   return (
     <>

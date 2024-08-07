@@ -6,9 +6,9 @@ import envelope from "../../assets/envelope.png";
 
 export default function Messages() {
   const { user, setUser } = useContext(AuthContext);
+
   const [selectedMessageID, setSelectedMessageID] = useState(null);
   const [readStatus, setReadStatus] = useState(null);
-  console.log(user);
 
   const handleSelectMessage = (id) => {
     setSelectedMessageID(id);
@@ -36,9 +36,7 @@ export default function Messages() {
         setUser(updatedUser);
         setReadStatus("read");
       })
-      .catch((error) => {
-        console.error("Error marking message as read:", error);
-      });
+      .catch((error) => {});
   };
 
   const toggleReadStatus = (messageId) => {
@@ -62,9 +60,7 @@ export default function Messages() {
         setUser(updatedUser);
         setReadStatus(newStatus);
       })
-      .catch((error) => {
-        console.error(`Error marking message as ${newStatus}:`, error);
-      });
+      .catch((error) => {});
   };
 
   const formatDate = (timestamp) => {
@@ -94,13 +90,8 @@ export default function Messages() {
           ),
         };
         setUser(updatedUser);
-        console.log("Deleted");
-        console.log(updatedUser);
-        console.log(user);
       })
-      .catch((error) => {
-        console.error("Error deleting message:", error);
-      });
+      .catch((error) => {});
   };
 
   const goToPreviousMessage = () => {
@@ -143,11 +134,12 @@ export default function Messages() {
         <section className="flex flex-col w-4/12 bg-gray-50 h-[calc(75.5vh-32px)] rounded-tl-md rounded-bl-md overflow-y-scroll shadow-md">
           <ul>
             {!user || user.message.length === 0 ? (
-              <li className={`py-6 text-center border-b px-4 border-slate-300 transition 
-                 text-xl font-semibold`}>
+              <li
+                className={`py-6 text-center border-b px-4 border-slate-300 transition 
+                 text-xl font-semibold`}
+              >
                 Du hast noch keine Nachrichten
               </li>
-              
             ) : (
               sortedMessages.map((message, index) => (
                 <MessagesSide

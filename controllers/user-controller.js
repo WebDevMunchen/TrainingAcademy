@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const ClassActivity = require("../models/classActivity-model.js");
 const Approver = require("../models/approver-model.js");
-const { format } = require('date-fns');
+const { format } = require("date-fns");
 
 const createUser = asyncWrapper(async (req, res, next) => {
   const {
@@ -268,7 +268,7 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 const updateClassStatus = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
   const { classId, newStatus, reason } = req.body;
-  const {id: approverId} = req.user
+  const { id: approverId } = req.user;
 
   try {
     const user = await User.findById(id);
@@ -324,7 +324,7 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       user.classesRegistered[classIndex].reason = reason;
     }
 
-    const formattedDate = format(new Date(activity.date), 'dd.MM.yyyy');
+    const formattedDate = format(new Date(activity.date), "dd.MM.yyyy");
     const formattedTime = activity.time;
 
     await user.save();
@@ -347,23 +347,41 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       const displayReason = reason.trim() ? reason : "Kein Grund angegeben";
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von <strong>${approver.firstName + " " + approver.lastName}</strong>.</p>
-          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: red;">${newStatus}</span>!</p>
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von <strong>${
+            approver.firstName + " " + approver.lastName
+          }</strong>.</p>
+          <p>Die Anfrage von <strong>${user.firstName} ${
+        user.lastName
+      }</strong> für die Schulung <em>"${
+        activity.title
+      }"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: red;">${newStatus}</span>!</p>
           <p><strong>Begründung:</strong> ${displayReason}</p>
         </div>
       `;
     } else if (newStatus === "genehmigt") {
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${approver.firstName + " " + approver.lastName}.</p>
-          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: green;">${newStatus}</span>!</p>
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${
+            approver.firstName + " " + approver.lastName
+          }.</p>
+          <p>Die Anfrage von <strong>${user.firstName} ${
+        user.lastName
+      }</strong> für die Schulung <em>"${
+        activity.title
+      }"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: green;">${newStatus}</span>!</p>
         </div>
       `;
     } else {
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${approver.firstName + " " + approver.lastName}.</p>
-          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em> wurde <span style="color: blue;">${newStatus}</span>!</p>
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${
+            approver.firstName + " " + approver.lastName
+          }.</p>
+          <p>Die Anfrage von <strong>${user.firstName} ${
+        user.lastName
+      }</strong> für die Schulung <em>"${
+        activity.title
+      }"</em> wurde <span style="color: blue;">${newStatus}</span>!</p>
         </div>
       `;
     }
@@ -374,7 +392,8 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
         address: process.env.USER,
       },
       to: `${user.inbox}`,
-      subject: "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
+      subject:
+        "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
       text: "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
       html: mailHtml,
     };
@@ -418,7 +437,7 @@ const updateAttended = asyncWrapper(async (req, res, next) => {
 
   await user.save();
 
-  res.json(user)
+  res.json(user);
 });
 
 const updateNotAttended = asyncWrapper(async (req, res, next) => {
@@ -446,7 +465,7 @@ const updateNotAttended = asyncWrapper(async (req, res, next) => {
 
   await user.save();
 
-  res.json(user)
+  res.json(user);
 });
 
 const login = asyncWrapper(async (req, res, next) => {
@@ -513,7 +532,6 @@ const markRead = asyncWrapper(async (req, res, next) => {
 
     res.status(200).send(updatedUser);
   } catch (error) {
-    console.error("Error marking message as read:", error);
     res.status(500).send({ error: "Error marking message as read" });
   }
 });
@@ -536,7 +554,6 @@ const markNotRead = asyncWrapper(async (req, res, next) => {
 
     res.status(200).send(updatedUser);
   } catch (error) {
-    console.error("Error marking message as not read:", error);
     res.status(500).send({ error: "Error marking message as not read" });
   }
 });
@@ -553,16 +570,13 @@ const deleteMessage = asyncWrapper(async (req, res, next) => {
     );
 
     if (!updatedUser) {
-      return res
-        .status(404)
-        .send({
-          message: "Message not found or not authorized to delete this message",
-        });
+      return res.status(404).send({
+        message: "Message not found or not authorized to delete this message",
+      });
     }
 
     res.status(200).send({ message: "Deleted", user: updatedUser });
   } catch (error) {
-    console.error("Error deleting the message:", error);
     res.status(500).send({ error: "Error deleting message" });
   }
 });

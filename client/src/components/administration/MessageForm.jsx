@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function MessageForm() {
   const { user } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const sender = user.firstName + " " + user.lastName;

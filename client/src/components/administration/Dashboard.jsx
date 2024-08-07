@@ -63,8 +63,6 @@ export default function Dashboard() {
 
   const years = Array.from({ length: 10 }, (_, i) => (new Date().getFullYear() + i).toString());
 
-  console.log(allActivities)
-
   return (
     <>
       <div className="bg-gray-50/50 flex">

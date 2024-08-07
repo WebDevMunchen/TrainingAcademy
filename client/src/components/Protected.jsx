@@ -7,6 +7,19 @@ export default function Protected() {
   const location = useLocation();
 
   return (
-    <>{!isLoading && <> {user ? <Outlet /> : <Navigate to={`/login?redirect=${location.pathname}${location.search}`} />}</>}</>
+    <>
+      {!isLoading && (
+        <>
+          {" "}
+          {user ? (
+            <Outlet />
+          ) : (
+            <Navigate
+              to={`/login?redirect=${location.pathname}${location.search}`}
+            />
+          )}
+        </>
+      )}
+    </>
   );
 }

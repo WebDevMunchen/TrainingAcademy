@@ -46,7 +46,6 @@ export default function SingleClassDetailsAdmin() {
   const formatedDatePrior = formatDateString(datePrior);
   const formatedDatePriorGenehmigung = formatDateString(datePriorGenehmigung);
 
-
   const now = new Date();
   const hoursDifference = (date - now) / 3600000;
 

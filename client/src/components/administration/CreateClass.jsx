@@ -8,7 +8,9 @@ import { useNavigate } from "react-router-dom";
 export default function CreateClass() {
   const { setAllActivities, currentMonth, currentYear } =
     useContext(AuthContext);
+
   const navigate = useNavigate();
+
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [hideFileUpload, setHideFileUpload] = useState("hidden");
@@ -33,7 +35,7 @@ export default function CreateClass() {
   };
 
   const onSubmit = async (data) => {
-    data.department = selectedDepartments; // Ensure department is an array of strings
+    data.department = selectedDepartments;
 
     const formData = new FormData();
     for (const key in data) {
@@ -59,7 +61,6 @@ export default function CreateClass() {
         `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
       );
       setAllActivities(activitiesResponse?.data);
-
     } catch (error) {
       console.error("Error during form submission:", error);
     } finally {
