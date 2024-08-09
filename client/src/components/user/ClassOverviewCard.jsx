@@ -73,13 +73,19 @@ export default function ClassesOverviewCard({ activity }) {
     }
   };
 
+
+
   const reasons = [
-    "Keine Interesse mehr",
-    "Am Tag der Schulung nicht im Unternehmen",
-    "Falsch gebucht",
-    "Terminkonflikt - Termin mit der höheren Priorität",
-    "Ich werde zu einem anderen Zeitpunkt teilnehmen",
-    "Kann nicht teilnehmen wegen erhöhter Auslastung",
+    "Ich bin krank",
+    "Ich muss kurzfristig auf ein Projekt",
+    "Ich mache Home Office",
+    "Ich habe kurzfristig Urlaub",
+    "Ich habe einen anderen Termin reinbekommen",
+    "Ich habe mich fälschlicherweise angemeldet",
+    "Meine Arbeitsauslastung ist zu hoch",
+    "Ich habe doch keinen Bedarf mehr",
+    "Ich habe keine Lust",
+    "Sonstiges"
   ];
 
   return (
@@ -94,7 +100,7 @@ export default function ClassesOverviewCard({ activity }) {
               Tailnahmestatus{" "}
             </span>
             }
-            {activity.status === "abgelehnt" || activity.status === "ausstehend" ? (
+            {activity.statusAttended === "in Prüfung" ? (
               <img className="invisible" src={attended} width={150} alt="teilgenommen" />
             )  : activity.statusAttended === "teilgenommen" ? 
               <img src={attended} width={150} alt="teilgenommen" /> : <img src={notAttended} width={150} alt="nichtTeilgenommen" /> 

@@ -1,9 +1,11 @@
 import { useForm } from "react-hook-form";
 import SideMenu from "./SideMenu";
 import axiosClient from "../../utils/axiosClient";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import Quill styles
 
 export default function MessageForm() {
   const { user } = useContext(AuthContext);
@@ -16,9 +18,15 @@ export default function MessageForm() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue, // This is important to manually set the value in React Hook Form
   } = useForm({});
 
+  const [messageContent, setMessageContent] = useState("");
+
   const onSubmit = (data) => {
+    // Include the message content in the form data
+    data.messageContent = messageContent;
+
     axiosClient
       .post("/message/createNewMessage", data)
       .then((response) => {
@@ -97,17 +105,18 @@ export default function MessageForm() {
                     {...register("messageType", { required: true })}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   >
-                    <option value="Absage der Schulung">
-                      Absage der Schulung
+                    <option value="Teilnahmebestätigung für Nachzügler">
+                      Teilnahmebestätigung für Nachzügler
                     </option>
                     <option value="Änderung der Schulung">
                       Änderung der Schulung
                     </option>
-                    <option value="Erstellung neuer Schulung">
-                      Erstellung neuer Schulungen
+                    <option value="Neue Schulungen">Neue Schulungen</option>
+                    <option value="Absage der Schulung">
+                      Absage der Schulung
                     </option>
-                    <option value="Allgemeine Nachricht">
-                      Allgemeine Nachricht
+                    <option value="Allgemeine Information">
+                      Allgemeine Information
                     </option>
                   </select>
                 </div>
@@ -119,16 +128,19 @@ export default function MessageForm() {
                 >
                   Nachricht:
                 </label>
-                <textarea
-                  {...register("messageContent", { required: true })}
-                  className="resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full h-52 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Füll den Inhalt der Nachricht aus"
+                <ReactQuill
+                  value={messageContent}
+                  onChange={(content) => {
+                    setMessageContent(content);
+                    setValue("messageContent", content); // Manually set the value in React Hook Form
+                  }}
+                  className="h-52"
                 />
               </div>
               <div className="flex justify-center">
                 <button
                   type="submit"
-                  className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/2 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                  className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-12 md:p-2 text-white uppercase w-1/2 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                 >
                   Senden
                 </button>

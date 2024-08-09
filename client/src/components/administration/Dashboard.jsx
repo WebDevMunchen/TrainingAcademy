@@ -20,14 +20,14 @@ export default function Dashboard() {
   const [pendingClassesCount, setPendingClassesCount] = useState(0);
 
   useEffect(() => {
-    if (allActivities && allActivities.length > 0) {
+    if (allActivities && allActivities?.length > 0) {
       const registeredAttendees = allActivities.reduce((total, activity) => {
-        return total + activity.usedCapacity;
+        return total + activity?.usedCapacity;
       }, 0);
       setTotalAttendees(registeredAttendees);
 
       const capacity = allActivities.reduce((total, activity) => {
-        return total + activity.capacity;
+        return total + activity?.capacity;
       }, 0);
       setTotalCapacity(capacity);
     } else {
@@ -35,16 +35,16 @@ export default function Dashboard() {
       setTotalCapacity(0);
     }
 
-    if (allActivities && allActivities.length > 0) {
+    if (allActivities && allActivities?.length > 0) {
       let count = 0;
       allActivities.forEach((activity) => {
-        if (activity.registeredUsers && activity.registeredUsers.length > 0) {
-          activity.registeredUsers.forEach((user) => {
-            if (user.classesRegistered && user.classesRegistered.length > 0) {
-              user.classesRegistered.forEach((classRegistered) => {
+        if (activity?.registeredUsers && activity?.registeredUsers?.length > 0) {
+          activity?.registeredUsers.forEach((user) => {
+            if (user?.classesRegistered && user?.classesRegistered?.length > 0) {
+              user?.classesRegistered.forEach((classRegistered) => {
                 if (
-                  classRegistered.status === "ausstehend" &&
-                  classRegistered.registeredClassID === activity._id
+                  classRegistered?.status === "ausstehend" &&
+                  classRegistered?.registeredClassID === activity?._id
                 ) {
                   count++;
                 }
@@ -62,8 +62,6 @@ export default function Dashboard() {
   const remainingSpots = totalCapacity - totalAttendees;
 
   const years = Array.from({ length: 10 }, (_, i) => (new Date().getFullYear() + i).toString());
-
-  console.log(allActivities)
 
   return (
     <>
@@ -89,7 +87,7 @@ export default function Dashboard() {
                     Anzahl der registrierten Mitarbeiter
                   </h6>
                   <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
-                    {!allUsers ? <>Loading</> : allUsers.length}
+                    {!allUsers ? <>Loading</> : allUsers?.length}
                   </h4>
                 </div>
                 <div className="flex gap-3 items-center border-t border-blue-gray-50 p-4">
@@ -130,7 +128,7 @@ export default function Dashboard() {
                     Schulungen in diesem Monat
                   </h6>
                   <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
-                    {!allActivities ? <>0</> : allActivities.length}
+                    {!allActivities ? <>0</> : allActivities?.length}
                   </h4>
                 </div>
                 <div className="flex gap-3 items-center border-t border-blue-gray-50 p-4">
@@ -357,7 +355,7 @@ export default function Dashboard() {
                       </tr>
                     </thead>
                     <tbody>
-                      {allActivities.length === 0 ? (
+                      {allActivities?.length === 0 ? (
                         <>
                           <tr>
                             <td colSpan="9">

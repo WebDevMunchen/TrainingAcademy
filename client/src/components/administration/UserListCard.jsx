@@ -7,10 +7,10 @@ export default function UserListCard({ user, selectedYear }) {
   useEffect(() => {
     const findURL = user?.classesRegistered?.find((registeredClass) => {
       const attendedYear = new Date(
-        registeredClass.registeredClassID.date
+        registeredClass?.registeredClassID?.date
       ).getFullYear();
       return (
-        registeredClass.registeredClassID.safetyBriefing &&
+        registeredClass?.registeredClassID?.safetyBriefing &&
         registeredClass.statusAttended === "teilgenommen" &&
         attendedYear === selectedYear
       );
@@ -19,7 +19,7 @@ export default function UserListCard({ user, selectedYear }) {
     if (findURL && findURL.registeredClassID) {
       setFileUrl(findURL.registeredClassID.fileUrl);
     }
-  }, [user, selectedYear]); // Update dependencies to include selectedYear
+  }, [user, selectedYear]);
 
   const handleDownload = async () => {
     if (!fileUrl) {
@@ -56,11 +56,11 @@ export default function UserListCard({ user, selectedYear }) {
   const hasAttendedSafetyBriefingThisYear = user?.classesRegistered?.some(
     (registeredClass) => {
       const attendedYear = new Date(
-        registeredClass.registeredClassID.date
+        registeredClass?.registeredClassID?.date
       ).getFullYear();
       return (
-        registeredClass.registeredClassID.safetyBriefing &&
-        registeredClass.statusAttended === "teilgenommen" &&
+        registeredClass?.registeredClassID?.safetyBriefing &&
+        registeredClass?.statusAttended === "teilgenommen" &&
         attendedYear === selectedYear
       );
     }

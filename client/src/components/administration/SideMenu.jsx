@@ -293,7 +293,7 @@ export default function SideMenu() {
               >
                 <button
                   className={
-                    location.pathname === "/admin/cancelationStatistic"
+                    location.pathname === "/admin/cancelationStatistic" || location.pathname === "/admin/approverCancelationStatistic"
                       ? "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 active:opacity-[0.85] w-full flex items-center gap-4 px-4 capitalize"
                       : "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
                   }
@@ -320,7 +320,7 @@ export default function SideMenu() {
                   </svg>
 
                   <p className="block antialiased  text-base leading-relaxed text-inherit font-medium capitalize">
-                    Stornierungsstatistik
+                    Statistik
                   </p>
                 </button>
               </NavLink>

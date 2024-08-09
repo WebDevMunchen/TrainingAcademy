@@ -23,29 +23,32 @@ import SingleClassDetailsAdmin from "./components/administration/SingleClassDeta
 import ApproverList from "./components/administration/ApproverList";
 import ApproverListSubstitute from "./components/administration/ApproverListSubstitute";
 import PieChartSingle from "./components/administration/PieChartSingle";
-import PieChartSingleStatistics from "./components/administration/PieChartStatistics";
 import Messages from "./components/user/Messages";
 import MessageForm from "./components/administration/MessageForm";
+import AuthorizeMessages from "./components/AuthorizeMessages";
+import PieCharStatisticsDecline from "./components/administration/PieChartStatisticsDecline";
+import PieChartStornoStatistics from "./components/administration/PieChartStornoStatistics";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
+  const allowedRolesMessage = ["user", "ASP"];
 
   return (
     <>
       <Navbar />
       <ToastContainer
-                    position="top-right"
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick={false}
-                    rtl={false}
-                    pauseOnFocusLoss={false}
-                    draggable={false}
-                    pauseOnHover={false}
-                    theme="light"
-                    transition={Bounce}
-                  />
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme="light"
+        transition={Bounce}
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -53,15 +56,25 @@ function App() {
         <Route path="/" element={<Protected />}>
           <Route path="/classes" element={<ClassesSchedule />} />
           <Route path="/classesOverview" element={<ClassesOverview />} />
-          <Route path="/messages" element={<Messages />} />
+
           <Route path="/datenschutz" element={<Datenschutz />} />
+
+          <Route
+            path="/"
+            element={<AuthorizeMessages roles={allowedRolesMessage} />}
+          >
+            <Route path="messages" element={<Messages />} />
+          </Route>
 
           <Route
             path="/classInformation"
             element={<AuthorizeNonUser roles={allowedRoles} />}
           >
             <Route path=":id" element={<SingleClassDetails />} />
-            <Route path="participation/:id" element={<SingleClassDetailsAdmin />} />
+            <Route
+              path="participation/:id"
+              element={<SingleClassDetailsAdmin />}
+            />
           </Route>
           <Route path="/admin" element={<Authorize role="admin" />}>
             <Route path="register" element={<Register />} />
@@ -78,9 +91,22 @@ function App() {
             <Route path="report/:id" element={<Report />} />
             <Route path="approverList" element={<ApproverList />} />
             <Route path="sendMessage" element={<MessageForm />} />
-            <Route path="approverListSubstitute" element={<ApproverListSubstitute />} />
-            <Route path="cancelationStatistic/:id" element={<PieChartSingle />} />
-            <Route path="cancelationStatistic" element={<PieChartSingleStatistics />} />
+            <Route
+              path="approverListSubstitute"
+              element={<ApproverListSubstitute />}
+            />
+            <Route
+              path="cancelationStatistic/:id"
+              element={<PieChartSingle />}
+            />
+            <Route
+              path="cancelationStatistic"
+              element={<PieChartStornoStatistics />}
+            />
+            <Route
+              path="approverCancelationStatistic"
+              element={<PieCharStatisticsDecline />}
+            />
           </Route>
         </Route>
       </Routes>

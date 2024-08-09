@@ -8,7 +8,6 @@ export default function Messages() {
   const { user, setUser } = useContext(AuthContext);
   const [selectedMessageID, setSelectedMessageID] = useState(null);
   const [readStatus, setReadStatus] = useState(null);
-  console.log(user);
 
   const handleSelectMessage = (id) => {
     setSelectedMessageID(id);
@@ -82,7 +81,19 @@ export default function Messages() {
     (a, b) =>
       new Date(b?.messageID?.timeStamp) - new Date(a?.messageID?.timeStamp)
   );
-
+  const testContent = `
+  <h1>A</h1>
+  <p><strong>A</strong></p>
+  <p>A</p>
+  <p><em>A</em></p>
+  <p><em><u>A</u></em></p>
+  <ol><li>a</li></ol>
+  <ul>
+    <li>a</li>
+    <li><a href="http://www.google.com" rel="noopener noreferrer" target="_blank">sadsda</a></li>
+    <li><br></li>
+  </ul>
+`;
   const deleteMessage = (messageId) => {
     axiosClient
       .delete(`/user/deleteMessage/${messageId}`)
@@ -143,11 +154,12 @@ export default function Messages() {
         <section className="flex flex-col w-4/12 bg-gray-50 h-[calc(75.5vh-32px)] rounded-tl-md rounded-bl-md overflow-y-scroll shadow-md">
           <ul>
             {!user || user.message.length === 0 ? (
-              <li className={`py-6 text-center border-b px-4 border-slate-300 transition 
-                 text-xl font-semibold`}>
+              <li
+                className={`py-6 text-center border-b px-4 border-slate-300 transition 
+                 text-xl font-semibold`}
+              >
                 Du hast noch keine Nachrichten
               </li>
-              
             ) : (
               sortedMessages.map((message, index) => (
                 <MessagesSide
@@ -160,8 +172,8 @@ export default function Messages() {
             )}
           </ul>
         </section>
-        <section className="w-5/12 px-4 flex flex-col bg-white rounded-r-md shadow-md">
-          <div className="flex justify-between items-center h-48 border-b-2 mb-8">
+        <section className="w-5/12 px-4 py-6 flex flex-col bg-white rounded-r-md shadow-md h-[calc(75.5vh-32px)] overflow-y-scroll">
+          <div className="flex justify-between items-center h-48 border-b-2 mb-2">
             {!selectedMessage ? (
               <div className="flex flex-col justify-center items-center text-center">
                 <p className="text-gray-500 text-xl">
@@ -169,7 +181,7 @@ export default function Messages() {
                 </p>
               </div>
             ) : (
-              <div className="flex items-center w-full justify-between">
+              <div className="flex items-center w-full justify-between mb-6">
                 <div className="flex flex-col">
                   <h3 className="font-semibold text-lg">
                     <span></span>Von: {selectedMessage?.messageID?.sender}
@@ -254,7 +266,13 @@ export default function Messages() {
             <section>
               <article className="mt-2 text-gray-500 leading-6 tracking-wider break-words">
                 <p className="mb-6">Hallo {user.firstName},</p>
-                <p>{selectedMessage?.messageID?.messageContent}</p>
+                <div
+                  className="mt-2 content text-gray-500 leading-6 tracking-wider break-words"
+                  dangerouslySetInnerHTML={{
+                    __html: selectedMessage?.messageID?.messageContent,
+                  }}
+                ></div>
+  
                 <div className="mt-6">
                   <p className="mb-3">
                     Bei Fragen komm gerne auf uns zu oder schreib uns per E-Mail

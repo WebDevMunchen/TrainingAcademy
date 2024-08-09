@@ -2,8 +2,9 @@ import ReactApexChart from "react-apexcharts";
 import axiosClient from "../../utils/axiosClient";
 import { useEffect, useState } from "react";
 import SideMenu from "./SideMenu";
+import { NavLink } from "react-router-dom";
 
-export default function PieChartSingleStatistics() {
+export default function PieChartStornoStatistics() {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [options, setOptions] = useState({
@@ -59,6 +60,7 @@ export default function PieChartSingleStatistics() {
     try {
       const response = await axiosClient.get(`/classActivity/allActivities`);
       const data = response.data;
+      console.log(data);
 
       const reasonCounts = {};
 
@@ -100,22 +102,42 @@ export default function PieChartSingleStatistics() {
           <div className="flex justify-between items-start w-full">
             <div className="flex-col items-center">
               <div className="flex-col items-center mb-1">
-                <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white me-1">
-                  Stornierungsstatistik
-                </h5>
+                <p className="text-xl py-1.5 px-2.5 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                  Jahresüberischt
+                </p>
                 <select
                   value={selectedYear}
                   onChange={handleYearChange}
-                  className="mt-2 form-select bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-
+                  className="mt-2 px-2.5 ml-2 form-select bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
-                  {[currentYear, currentYear - 1, currentYear - 2].map((year) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
+                  {[currentYear, currentYear - 1, currentYear - 2].map(
+                    (year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    )
+                  )}
                 </select>
               </div>
+            </div>
+            <div className="flex flex-col gap-1 mb-8">
+
+              <NavLink
+                to={"/admin/approverCancelationStatistic"}
+                className="text-xl py-1.5 px-3 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+              >
+                Ablehnungsstatistik
+              </NavLink>
+              <NavLink
+                to={"/admin/cancelationStatistic"}
+                className={
+                  location.pathname === "/admin/cancelationStatistic"
+                    ? "text-xl px-3.5 py-1.5 rounded-lg bg-[#293751] font-semibold leading-tight tracking-tight text-white md:text-2xl dark:text-white"
+                    : "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
+                }
+              >
+                Stornierungsstatistik
+              </NavLink>
             </div>
           </div>
           <div className="flex justify-center mt-4">

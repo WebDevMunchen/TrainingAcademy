@@ -13,7 +13,7 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [approver, setApprover] = useState(null);
   const [allUsers, setAllUsers] = useState(null);
-  const [allActivities, setAllActivities] = useState(null);
+  const [allActivities, setAllActivities] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentMonth, setCurrentMonth] = useState(
     new Date()
