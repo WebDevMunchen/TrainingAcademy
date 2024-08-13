@@ -11,7 +11,7 @@ export default function ClassScheduleCard({ activity }) {
 
   const onSubmit = () => {
     axiosClient
-      .put(`/classActivity/registerClass/${activity._id}`, {
+      .put(`/classActivity/registerClass/${activity?._id}`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -316,7 +316,7 @@ export default function ClassScheduleCard({ activity }) {
                   <>
                     {user.classesRegistered.some(
                       (classObj) =>
-                        classObj.registeredClassID._id === activity._id
+                        classObj.registeredClassID?._id === activity?._id
                     ) ? (
                       <button
                         className="bg-gradient-to-b from-green-500 to-green-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
@@ -362,7 +362,7 @@ export default function ClassScheduleCard({ activity }) {
               user.role === "admin" ||
               user.role === "teacher") && (
               <NavLink
-                to={`/classInformation/${activity._id}`}
+                to={`/classInformation/${activity?._id}`}
                 className="text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
               >
                 Details Anzeigen
@@ -370,7 +370,7 @@ export default function ClassScheduleCard({ activity }) {
             )}
             {user.role === "admin" && (
               <NavLink
-                to={`/classInformation/participation/${activity._id}`}
+                to={`/classInformation/participation/${activity?._id}`}
                 className="text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
               >
                 Teilnahme verwalten
@@ -387,7 +387,7 @@ export default function ClassScheduleCard({ activity }) {
                     <>
                       {user.classesRegistered.some(
                         (classObj) =>
-                          classObj.registeredClassID._id === activity._id
+                          classObj.registeredClassID?._id === activity?._id
                       ) ? (
                         <button
                           className="bg-gradient-to-b from-green-500 to-green-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
