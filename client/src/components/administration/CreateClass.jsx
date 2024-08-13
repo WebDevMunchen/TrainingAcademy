@@ -29,13 +29,6 @@ export default function CreateClass() {
     }
   };
 
-  // const handleFileChange = (e) => {
-  //   setSelectedFile(e.target.files[0]);
-  //   if(file) {
-  //     setFileName(file.name)
-  //   }
-  // };
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);

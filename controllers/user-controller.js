@@ -347,22 +347,22 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       const displayReason = reason.trim() ? reason : "Kein Grund angegeben";
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von <strong>${approver.firstName + " " + approver.lastName}</strong>.</p>
-          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: red;">${newStatus}</span>!</p>
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von <strong>${approver.firstName + " " + approver.lastName}</strong>.</p><br />
+          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: red;">${newStatus}</span>!</p><br />
           <p><strong>Begründung:</strong> ${displayReason}</p>
         </div>
       `;
     } else if (newStatus === "genehmigt") {
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${approver.firstName + " " + approver.lastName}.</p>
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${approver.firstName + " " + approver.lastName}.</p><br />
           <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: green;">${newStatus}</span>!</p>
         </div>
       `;
     } else {
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${approver.firstName + " " + approver.lastName}.</p>
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${approver.firstName + " " + approver.lastName}.</p><br />
           <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em> wurde <span style="color: blue;">${newStatus}</span>!</p>
         </div>
       `;
