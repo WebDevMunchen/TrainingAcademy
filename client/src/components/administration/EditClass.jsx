@@ -44,12 +44,8 @@ export default function EditClass() {
           classDate.setHours(parseInt(hoursStr, 10));
           classDate.setMinutes(parseInt(minutesStr, 10));
 
-          console.log(classDate)
-
           const differenceMs = classDate.getTime() - currentDate.getTime();
           const differenceHours = differenceMs / (1000 * 60 * 60);
-
-          console.log(differenceHours)
 
           if (differenceHours < 48) {
             navigate("/admin/dashboard");

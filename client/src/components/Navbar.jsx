@@ -123,6 +123,9 @@ export default function Navbar() {
                         </NavLink>
                       </li>
                       <li>
+                        <NavLink to={"/messages"}>Nachrichten</NavLink>
+                      </li>
+                      <li>
                         <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
                       </li>
                       <li>

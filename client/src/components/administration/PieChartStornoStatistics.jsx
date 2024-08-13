@@ -60,7 +60,6 @@ export default function PieChartStornoStatistics() {
     try {
       const response = await axiosClient.get(`/classActivity/allActivities`);
       const data = response.data;
-      console.log(data);
 
       const reasonCounts = {};
 
@@ -98,13 +97,34 @@ export default function PieChartStornoStatistics() {
     <div className="bg-gray-50/50 flex">
       <SideMenu />
       <div className="mt-4 bg-white p-4 shadow rounded-lg h-[calc(93vh-32px)] w-10/12 mr-auto ml-auto">
-        <div className="mx-auto mt-12 max-w-3xl w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+        <div className="mx-auto mt-12 max-w-5xl h-[calc(62vh-32px)] w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
           <div className="flex justify-between items-start w-full">
+            <div className="flex gap-1 mb-8">
+              <NavLink
+                to={"/admin/allClassesStatistic"}
+                className="text-xl py-1.5 px-6 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+              >
+                Schulungsstatistik
+              </NavLink>
+              <NavLink
+                to={"/admin/approverCancelationStatistic"}
+                className="text-xl py-1.5 px-6 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+              >
+                Ablehnungsstatistik
+              </NavLink>
+              <NavLink
+                to={"/admin/cancelationStatistic"}
+                className={
+                  location.pathname === "/admin/cancelationStatistic"
+                    ? "text-xl px-6 py-1.5 rounded-lg bg-[#293751] font-semibold leading-tight tracking-tight text-white md:text-2xl dark:text-white"
+                    : "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
+                }
+              >
+                Stornierungsstatistik
+              </NavLink>
+            </div>
             <div className="flex-col items-center">
               <div className="flex-col items-center mb-1">
-                <p className="text-xl py-1.5 px-2.5 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                  Jahresüberischt
-                </p>
                 <select
                   value={selectedYear}
                   onChange={handleYearChange}
@@ -120,38 +140,19 @@ export default function PieChartStornoStatistics() {
                 </select>
               </div>
             </div>
-            <div className="flex flex-col gap-1 mb-8">
-
-              <NavLink
-                to={"/admin/approverCancelationStatistic"}
-                className="text-xl py-1.5 px-3 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
-              >
-                Ablehnungsstatistik
-              </NavLink>
-              <NavLink
-                to={"/admin/cancelationStatistic"}
-                className={
-                  location.pathname === "/admin/cancelationStatistic"
-                    ? "text-xl px-3.5 py-1.5 rounded-lg bg-[#293751] font-semibold leading-tight tracking-tight text-white md:text-2xl dark:text-white"
-                    : "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
-                }
-              >
-                Stornierungsstatistik
-              </NavLink>
-            </div>
           </div>
           <div className="flex justify-center mt-4">
             {noStatistics ? (
               <p className="flex items-center text-md h-[calc(40vh-32px)] text-3xl font-medium text-gray-600">
-                Noch keine Statistik vorhanden
+                Keine Statistik vorhanden
               </p>
             ) : (
               <ReactApexChart
                 options={options}
                 series={options.series}
                 type="pie"
-                height={480}
-                width={680}
+                height={380}
+                width={480}
               />
             )}
           </div>

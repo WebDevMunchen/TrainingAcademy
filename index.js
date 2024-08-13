@@ -15,6 +15,7 @@ const classActivityRouter = require("./routers/classActivity-router.js");
 const approverRouter = require("./routers/approver-router.js");
 const uploadRoute = require("./routers/routerUpload.js");
 const messageRouter = require("./routers/message.router.js");
+const deletedClassActivityRouter = require("./routers/deletedClassActivity-router.js");
 
 app.use(
   cors({
@@ -33,6 +34,7 @@ app.use("/api/classActivity", classActivityRouter);
 app.use("/api/approver", approverRouter);
 app.use("/api/message", messageRouter);
 app.use("/api/uploadPPT", uploadRoute);
+app.use("/api/deletedClassActivities", deletedClassActivityRouter);
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));

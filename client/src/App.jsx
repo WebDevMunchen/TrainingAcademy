@@ -28,6 +28,7 @@ import MessageForm from "./components/administration/MessageForm";
 import AuthorizeMessages from "./components/AuthorizeMessages";
 import PieCharStatisticsDecline from "./components/administration/PieChartStatisticsDecline";
 import PieChartStornoStatistics from "./components/administration/PieChartStornoStatistics";
+import PieChartAllClasses from "./components/administration/PieChartAllClasses";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
@@ -106,6 +107,10 @@ function App() {
             <Route
               path="approverCancelationStatistic"
               element={<PieCharStatisticsDecline />}
+            />
+            <Route
+              path="allClassesStatistic"
+              element={<PieChartAllClasses />}
             />
           </Route>
         </Route>

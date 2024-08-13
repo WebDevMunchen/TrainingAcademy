@@ -321,8 +321,6 @@ export default function RegisteredUserCard({
   const timeFromJson = activitySingleInformation?.time;
   const dateString = activitySingleInformation?.date;
 
-
-
   if (timeFromJson && dateString) {
     const [hoursStr, minutesStr] = timeFromJson.split(":");
     const hoursToAdd = parseInt(hoursStr, 10);
@@ -345,20 +343,20 @@ export default function RegisteredUserCard({
   return (
     <>
       <div className="px-4 py-4">
-        <div className="flex items-center justify-between mx-2">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
+        <div className="flex items-center justify-between">
+          <h3 className="leading-6 font-medium text-gray-900 lg:text-lg">
             {registeredUser.firstName + " " + registeredUser.lastName}
           </h3>
 
           <p className="font-medium text-gray-500">
-            <span className="text-lg font-semibold text-gray-900">
+            <span className="font-semibold text-gray-900 lg:text-lg">
               Abteilung:
             </span>{" "}
             {registeredUser.department.charAt(0).toUpperCase() +
               registeredUser.department.slice(1)}
           </p>
         </div>
-        <div className="mt-2 flex items-center justify-between mx-2">
+        <div className="mt-2 flex items-center justify-between">
           <div className="flex flex-col items-start text-sm font-medium text-gray-500">
             {registeredUser.classesRegistered.map((element, index) => {
               if (element.registeredClassID === activityId)
@@ -371,7 +369,11 @@ export default function RegisteredUserCard({
                         >
                           Teilnahmestatus:{" "}
                         </span>
-                        <img src={attended} width={150} alt="teilgenommen" />
+                        <img
+                          className={`w-[130px] lg:w-[150px]`}
+                          src={attended}
+                          alt="teilgenommen"
+                        />
                       </>
                     ) : element.statusAttended === "nicht teilgenommen" ? (
                       <>
@@ -381,8 +383,8 @@ export default function RegisteredUserCard({
                           Teilnahmestatus:{" "}
                         </span>
                         <img
+                          className={`w-[130px] lg:w-[150px]`}
                           src={notAttended}
-                          width={150}
                           alt="nichtTeilgenommen"
                         />
                       </>
@@ -403,8 +405,11 @@ export default function RegisteredUserCard({
                 return (
                   <React.Fragment key={element.registeredClassID}>
                     {element.status === "genehmigt" ? (
-                                              <img src={approved} width={150} alt="genehmigt" />
-
+                      <img
+                        className={`w-[130px] lg:w-[150px]`}
+                        src={approved}
+                        alt="genehmigt"
+                      />
                     ) : element.status === "abgelehnt" ? (
                       <div className="flex items-center">
                         <span
@@ -429,12 +434,18 @@ export default function RegisteredUserCard({
                             />
                           </svg>
                         </span>
-                        <img src={declined} width={150} alt="abgelehnt" />
-
+                        <img
+                          className={`w-[130px] lg:w-[150px]`}
+                          src={declined}
+                          alt="abgelehnt"
+                        />
                       </div>
                     ) : (
-                      <img src={pending} width={150} alt="ausstehend" />
-
+                      <img
+                        className={`w-[130px] lg:w-[150px]`}
+                        src={pending}
+                        alt="ausstehend"
+                      />
                     )}
                   </React.Fragment>
                 );
@@ -445,7 +456,7 @@ export default function RegisteredUserCard({
       {user.role === "ASP" || user.role === "admin" ? (
         <>
           <div
-            className={`flex justify-center gap-4 px-4 py-6 ${
+            className={`flex justify-center gap-4 px-4 pt-2 pb-6 ${
               differenceHours > -24 ? "flex" : "hidden"
             }`}
           >
@@ -463,7 +474,7 @@ export default function RegisteredUserCard({
             </label>
           </div>
           <div
-            className={`flex justify-center gap-4 px-4 py-6 ${
+            className={`flex justify-center gap-4 px-4 pt-2 pb-6 ${
               differenceHours < -24 ? "flex" : "hidden"
             }`}
           >
@@ -822,7 +833,7 @@ export default function RegisteredUserCard({
                 </div>
               </div>
             ) : (
-              <div className="flex justify-center gap-4 px-4 py-6">
+              <div className="flex justify-center gap-4 px-4 pt-2 pb-6">
                 <div className="shadow-md border w-fit max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:p-4">
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center justify-between">
@@ -835,7 +846,7 @@ export default function RegisteredUserCard({
               </div>
             )
           ) : (
-            <div className="flex justify-center gap-4 px-4 py-6">
+            <div className="flex justify-center gap-4 px-4 pt-2 pb-6">
               <div className="shadow-md border w-fit max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:p-4">
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-between">

@@ -90,10 +90,10 @@ export default function ClassesOverviewCard({ activity }) {
 
   return (
     <>
-      <div className="bg-white border m-2 p-4 relative group shadow-lg">
+      <div className="bg-white border m-2 p-2 relative group shadow-lg">
 
         <div className="absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
-        <div className="flex justify-center lg:justify-between px-6 mt-4 mr-4 items-center ">
+        <div className="flex px-0 justify-between gap-4 lg:justify-between lg:px-6 lg:mt-4 lg:mr-4 lg:items-center ">
           <div className="flex flex-col items-center">
             {activity.statusAttended === "in Prüfung" ? <span className="invisible">Placeholder</span> :
           <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
@@ -103,10 +103,10 @@ export default function ClassesOverviewCard({ activity }) {
             {activity.statusAttended === "in Prüfung" ? (
               <img className="invisible" src={attended} width={150} alt="teilgenommen" />
             )  : activity.statusAttended === "teilgenommen" ? 
-              <img src={attended} width={150} alt="teilgenommen" /> : <img src={notAttended} width={150} alt="nichtTeilgenommen" /> 
+              <img src={attended} width={150} alt="teilgenommen" /> : <img width={150} src={notAttended} alt="nichtTeilgenommen" /> 
             }
           </div>
-          <div className="flex flex-col ml-6">
+          <div className="flex flex-col lg:ml-6">
           <h3 className="flex justify-center text-lg font-semibold text-black">
             {activity.registeredClassID?.title}
           </h3>
@@ -115,7 +115,7 @@ export default function ClassesOverviewCard({ activity }) {
           </div>
           <div className="mt-4 flex justify-center">
             {activity.registeredClassID?.department.map((dept, index) => (
-              <img key={index} src={dept} className="w-12 h-12" />
+              <img key={index} src={dept} className="w-12 h-12 " />
             ))}
           </div>
           <div className="flex items-center justify-center">
@@ -262,14 +262,14 @@ export default function ClassesOverviewCard({ activity }) {
           </dialog>
 
           </div>
-          <div className="flex flex-col items-center">
+          <div className="flex ml-2 flex-col items-center">
             <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
               Genehmigungsstatus:{" "}
             </span>
-            <div className="flex items-center">
+            <div className="flex items-center flex-col lg:flex-row lg:items-center">
               {activity.status === "abgelehnt" && (
                 <span
-                  className="tooltip mr-2 hover:cursor-pointer"
+                  className="tooltip mr-0 hover:cursor-pointer lg:mr-2"
                   style={{ width: "auto", height: "auto" }}
                   data-tip={
                     /^[^a-zA-Z]*$/.test(activity.reason)
@@ -308,7 +308,7 @@ export default function ClassesOverviewCard({ activity }) {
         <div className="py-2 relative">
 
           <div className="grid grid-cols-3 grid-rows-1 text-center lg:text-left justify-items-center">
-            <div className="flex flex-col mr-2">
+            <div className="flex flex-col px-2 mr-2">
               <p className="mt-4 text-base text-gray-600 lg:hidden">
                 <span className="font-bold">Kapazität:</span>{" "}
                 {activity.registeredClassID?.capacity + " Teilneh."}
@@ -321,7 +321,7 @@ export default function ClassesOverviewCard({ activity }) {
                 <span className="font-bold">Datum:</span> {formattedDate}
               </p>
             </div>
-            <div className="flex flex-col mr-2">
+            <div className="flex flex-col px-2 mr-2">
               <p className="mt-4 text-base text-gray-600 ">
                 <span className="font-bold">Uhrzeit:</span>{" "}
                 {activity.registeredClassID?.time}
@@ -390,16 +390,16 @@ export default function ClassesOverviewCard({ activity }) {
                           Schulung:
                         </span>
                         <ul className="mt-1.5 list-disc list-inside">
-                          <li>
+                          <li className="mb-1">
                             Du musst einen Grund für die Stornierung angeben
                           </li>
-                          <li>
+                          <li className="mb-1">
                             Bei abgelehntem Genehmigungsstatus,{" "}
                             <span className="font-medium">
                               keine Stornierung möglich
                             </span>
                           </li>
-                          <li>
+                          <li className="mb-1">
                             Bei Ablauf des Registrierungzeitraums,{" "}
                             <span className="font-medium">
                               keine Anmeldung mehr möglich

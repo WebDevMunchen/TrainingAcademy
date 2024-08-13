@@ -72,7 +72,6 @@ export default function SingleClassDetails() {
       : activity?.registeredUsers?.filter(
           (registeredUser) => registeredUser.department === user.department
         );
-        console.log(activity)
 
   return (
     <>

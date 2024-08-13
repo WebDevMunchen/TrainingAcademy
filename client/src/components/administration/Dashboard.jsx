@@ -12,7 +12,7 @@ export default function Dashboard() {
     handleNextMonth,
     currentMonth,
     handleYearChange,
-    currentYear
+    currentYear,
   } = useContext(AuthContext);
 
   const [totalAttendees, setTotalAttendees] = useState(0);
@@ -38,9 +38,15 @@ export default function Dashboard() {
     if (allActivities && allActivities?.length > 0) {
       let count = 0;
       allActivities.forEach((activity) => {
-        if (activity?.registeredUsers && activity?.registeredUsers?.length > 0) {
+        if (
+          activity?.registeredUsers &&
+          activity?.registeredUsers?.length > 0
+        ) {
           activity?.registeredUsers.forEach((user) => {
-            if (user?.classesRegistered && user?.classesRegistered?.length > 0) {
+            if (
+              user?.classesRegistered &&
+              user?.classesRegistered?.length > 0
+            ) {
               user?.classesRegistered.forEach((classRegistered) => {
                 if (
                   classRegistered?.status === "ausstehend" &&
@@ -61,7 +67,9 @@ export default function Dashboard() {
 
   const remainingSpots = totalCapacity - totalAttendees;
 
-  const years = Array.from({ length: 10 }, (_, i) => (new Date().getFullYear() + i).toString());
+  const years = Array.from({ length: 10 }, (_, i) =>
+    (new Date().getFullYear() + i).toString()
+  );
 
   return (
     <>
@@ -237,67 +245,65 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="flex flex-col">
-
-            <div className="flex justify-between mb-2 mt-2 mx-16">
-              <button onClick={handlePreviousMonth}>
-                {" "}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-10 h-10 mr-2 mt-0.5 transition-transform duration-300 transform hover:scale-125"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-4.28 9.22a.75.75 0 0 0 0 1.06l3 3a.75.75 0 1 0 1.06-1.06l-1.72-1.72h5.69a.75.75 0 0 0 0-1.5h-5.69l1.72-1.72a.75.75 0 0 0-1.06-1.06l-3 3Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-              <p className="font-anek text-4xl font-semibold tracking-widest text-g uppercase">
-                {currentMonth}
-              </p>
-              <button onClick={handleNextMonth}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-10 h-10 ml-2 mt-0.5 transition-transform duration-300 transform hover:scale-125"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm4.28 10.28a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 1 0-1.06 1.06l1.72 1.72H8.25a.75.75 0 0 0 0 1.5h5.69l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="flex justify-center mb-2">
-            <div className="relative inline-flex">
-
-                <svg
-                  className="w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 412 232"
-                >
-                  <path
-                    d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z"
-                    fill="#648299"
-                    fillRule="nonzero"
-                  />
-                </svg>
-                <select
-                  className="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
-                  value={currentYear}
-                  onChange={handleYearChange}
-                >
-                  {years.map((year) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
-                </select>
+              <div className="flex justify-between mb-2 mt-2 mx-16">
+                <button onClick={handlePreviousMonth}>
+                  {" "}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-10 h-10 mr-2 mt-0.5 transition-transform duration-300 transform hover:scale-125"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-4.28 9.22a.75.75 0 0 0 0 1.06l3 3a.75.75 0 1 0 1.06-1.06l-1.72-1.72h5.69a.75.75 0 0 0 0-1.5h-5.69l1.72-1.72a.75.75 0 0 0-1.06-1.06l-3 3Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <p className="font-anek text-4xl font-semibold tracking-widest text-g uppercase">
+                  {currentMonth}
+                </p>
+                <button onClick={handleNextMonth}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-10 h-10 ml-2 mt-0.5 transition-transform duration-300 transform hover:scale-125"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm4.28 10.28a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 1 0-1.06 1.06l1.72 1.72H8.25a.75.75 0 0 0 0 1.5h5.69l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
               </div>
+              <div className="flex justify-center mb-2">
+                <div className="relative inline-flex">
+                  <svg
+                    className="w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 412 232"
+                  >
+                    <path
+                      d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z"
+                      fill="#648299"
+                      fillRule="nonzero"
+                    />
+                  </svg>
+                  <select
+                    className="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
+                    value={currentYear}
+                    onChange={handleYearChange}
+                  >
+                    {years.map((year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
 

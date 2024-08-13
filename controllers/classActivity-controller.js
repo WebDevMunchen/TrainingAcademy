@@ -1,4 +1,5 @@
 const ClassActivity = require("../models/classActivity-model.js");
+const DeletedClassActivity = require("../models/deletedClassActivity-model.js");
 const ErrorResponse = require("../utils/errorResponse.js");
 const asyncWrapper = require("../utils/asyncWrapper.js");
 const User = require("../models/user-model.js");
@@ -96,7 +97,6 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
         resource_type: "auto",
       });
       fileUrl = result.secure_url;
-      console.log("File URL:", fileUrl);
     } catch (error) {
       return res.status(500).json({
         success: false,
@@ -188,8 +188,6 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
           pass: process.env.APP_PASSWORD,
         },
       });
-
-      console.log(userNames)
 
       let mailHtml = ""
 
@@ -497,6 +495,13 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
   const findApprovers = await Approver.findById(approversId);
   const notifyBeforeDelete = await ClassActivity.findById(id);
 
+  if (!notifyBeforeDelete) {
+    return res.status(404).json({ message: "Class not found" });
+  }
+
+  const deletedClassData = { ...notifyBeforeDelete.toObject(), storno: true };
+  await DeletedClassActivity.create(deletedClassData);
+
   const usersRegistered = await User.find({
     "classesRegistered.registeredClassID": id,
   });
@@ -592,10 +597,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
 
   await sendMail(transporter, mailOptions);
 
-  const deletedClass = await ClassActivity.findByIdAndDelete(id);
-  if (!deletedClass) {
-    return res.status(404).json({ message: "Class not found" });
-  }
+  await ClassActivity.findByIdAndDelete(id);
 
   await User.updateMany(
     { "classesRegistered.registeredClassID": id },
@@ -606,6 +608,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     message: "Class and related user registrations deleted successfully",
   });
 });
+
 
 const checkAndUpdateClassRegistrations = async () => {
   const now = new Date();
@@ -638,7 +641,6 @@ const checkAndUpdateClassRegistrations = async () => {
       );
     }
 
-    console.log('Class registrations checked and updated successfully.');
   } catch (error) {
     console.error('Error checking and updating class registrations:', error);
   }

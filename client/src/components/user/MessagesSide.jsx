@@ -17,7 +17,7 @@ export default function MessagesSide({ message, onClick, selected }) {
     <>
 
     <li
-      className={`py-5 border-y px-3 border-slate-300 transition hover:bg-indigo-100 hover:cursor-pointer ${
+      className={`py-2 border-y px-3 border-slate-300 transition hover:bg-indigo-100 hover:cursor-pointer lg:py-5 ${
         selected
           ? "bg-blue-200"
           : message?.status === "read"

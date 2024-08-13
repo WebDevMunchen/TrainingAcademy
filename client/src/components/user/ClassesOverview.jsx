@@ -6,16 +6,17 @@ export default function ClassesOverview() {
   const { user } = useContext(AuthContext);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
+  const getYearFromDate = (date) => date ? new Date(date).getFullYear() : null;
+
   const compareDates = (a, b) => {
-    const dateA = new Date(a?.registeredClassID?.date);
-    const dateB = new Date(b?.registeredClassID?.date);
+    const dateA = a?.registeredClassID?.date ? new Date(a.registeredClassID.date) : 0;
+    const dateB = b?.registeredClassID?.date ? new Date(b.registeredClassID.date) : 0;
     return dateB - dateA;
   };
 
-  const getYearFromDate = (date) => new Date(date).getFullYear();
-
   const filterByYear = (classes, year) => {
-    return classes.filter((activity) => getYearFromDate(activity?.registeredClassID?.date) === year);
+    const filteredClasses = classes.filter((activity) => getYearFromDate(activity?.registeredClassID?.date) === year);
+    return filteredClasses;
   };
 
   const years = useMemo(() => {
@@ -27,8 +28,8 @@ export default function ClassesOverview() {
   return (
     <section className="bg-blue-500ray-50">
       <div className="py-6 sm:py-16 block lg:py-8 relative bg-opacity-50">
-        <div className="relative mx-auto h-full px-4 pb-20 md:pb-10 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8">
-          <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 relative">
+        <div className="relative mx-auto h-full px-2 pb-20 md:pb-10 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8">
+          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 relative">
             <div className="max-w-xl mx-auto text-center">
               <div className="inline-flex px-4 py-1.5 mx-auto rounded-full">
                 <p className="font-anek text-4xl font-semibold tracking-widest text-g uppercase">
@@ -52,7 +53,10 @@ export default function ClassesOverview() {
                 <select
                   className="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
                   value={selectedYear}
-                  onChange={(e) => setSelectedYear(Number(e.target.value))}
+                  onChange={(e) => {
+                    const selected = Number(e.target.value);
+                    setSelectedYear(selected);
+                  }}
                 >
                   {years.map((year) => (
                     <option key={year} value={year}>

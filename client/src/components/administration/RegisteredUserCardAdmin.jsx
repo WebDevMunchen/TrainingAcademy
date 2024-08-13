@@ -361,7 +361,7 @@ export default function RegisteredUserCardAdmin({
             </div>
           </div>
         ) : (
-          <div className="flex justify-center gap-4 px-4 py-6">
+          <div className="flex justify-center gap-4 px-4 pt-2 pb-6">
             <div className="shadow-md border w-fit max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:p-4">
               <div className="flex flex-col gap-1">
                 <div className="flex items-center justify-between">
@@ -374,7 +374,7 @@ export default function RegisteredUserCardAdmin({
           </div>
         )
       ) : (
-        <div className="flex justify-center gap-4 px-4 py-6">
+        <div className="flex justify-center gap-4 px-4 pt-2 pb-6">
           <div className="shadow-md border w-fit max-w-xl rounded-md bg-white p-3 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-red-400 peer-checked:ring-offset-2 lg:p-4">
             <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between">
