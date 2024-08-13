@@ -82,7 +82,9 @@ export default function EditClass() {
         formData.append(key, data[key]);
       }
     }
-
+    if (selectedFile) {
+      formData.append("file", selectedFile);
+    }
     try {
       await axiosClient.put(`/classActivity/editClass/${id}`, formData, {
         withCredentials: true,
