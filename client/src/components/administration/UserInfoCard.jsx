@@ -100,8 +100,8 @@ export default function UserInfoCard() {
     return notAttendedClasses.length;
   };
   const sortedClasses = userInfomation?.classesRegistered.sort((a, b) => {
-    const dateA = new Date(a.registeredClassID.date);
-    const dateB = new Date(b.registeredClassID.date);
+    const dateA = new Date(a.registeredClassID?.date);
+    const dateB = new Date(b.registeredClassID?.date);
     return dateB - dateA;
   });
 
@@ -451,7 +451,7 @@ export default function UserInfoCard() {
 
                             <td className="py-3 px-5 border-b border-blue-gray-50">
                               <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
-                                {formatDate(activity.registeredClassID.date)}
+                                {formatDate(activity.registeredClassID?.date)}
                               </p>
                             </td>
 
