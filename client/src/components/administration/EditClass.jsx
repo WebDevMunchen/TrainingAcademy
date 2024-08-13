@@ -348,7 +348,7 @@ export default function EditClass() {
                         <option value="juni">Juni</option>
                         <option value="juli">Juli</option>
                         <option value="august">August</option>
-                        <option value="spetember">Spetember</option>
+                        <option value="september">September</option>
                         <option value="oktober">Oktober</option>
                         <option value="november">November</option>
                         <option value="dezember">Dezember</option>
