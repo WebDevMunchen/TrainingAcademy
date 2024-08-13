@@ -219,7 +219,7 @@ export default function UserInfoCard() {
               </div>
               <div className="mt-12 text-center border-b pb-6">
                 <h1 className="text-4xl font-medium text-gray-700">
-                  {userInfomation.firstName + " " + userInfomation.lastName}
+                  {userInfomation?.firstName + " " + userInfomation?.lastName}
                 </h1>
                 <p className="font-light text-gray-600 mt-3">
                   <span className="font-medium">Registriert seit:</span>{" "}
@@ -230,7 +230,7 @@ export default function UserInfoCard() {
                   <span
                     className={`px-2 inline-flex text-sm leading-5 font-semibold rounded-full ml-2  
     ${
-      userInfomation.status === "aktiv"
+      userInfomation?.status === "aktiv"
         ? "bg-green-100 text-green-800"
         : "bg-red-200 text-red-700"
     }`}
@@ -241,15 +241,15 @@ export default function UserInfoCard() {
 
                 <p className="mt-8 text-gray-600">
                   <span className="font-medium">Abteilung:</span>{" "}
-                  {userInfomation.department.charAt(0).toUpperCase() +
-                    userInfomation.department.slice(1)}{" "}
+                  {userInfomation?.department.charAt(0).toUpperCase() +
+                    userInfomation?.department.slice(1)}{" "}
                   - <span className="font-medium">Rolle: </span>
                   {userInfomation.role.charAt(0).toUpperCase() +
                     userInfomation.role.slice(1)}
                 </p>
                 <p className="mt-2 text-gray-600">
                   <span className="font-medium"> Kürzel:</span>{" "}
-                  {userInfomation.logID}
+                  {userInfomation?.logID}
                 </p>
                 <div className="flex items-center justify-center">
                   <div>
@@ -264,7 +264,7 @@ export default function UserInfoCard() {
                 <div>
                   <div className="mt-1 flex items-center justify-center lg:hidden">
                     <NavLink
-                      to={`/admin/userProfile/update/${userInfomation._id}`}
+                      to={`/admin/userProfile/update/${userInfomation?._id}`}
                       className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125"
                     >
                       Benutzerinformationen bearbeiten
@@ -421,14 +421,14 @@ export default function UserInfoCard() {
                             <td className="py-3 px-5 border-b border-blue-gray-50">
                               <div className="flex items-center gap-4">
                                 <p className="block antialiased  text-sm leading-normal text-blue-gray-900 font-bold">
-                                  {activity.registeredClassID.title}
+                                  {activity.registeredClassID?.title}
                                 </p>
                               </div>
                             </td>
 
                             <td className="py-3 px-5 border-b border-blue-gray-50">
                               <div className="flex justify-center">
-                                {activity.registeredClassID.department.map(
+                                {activity.registeredClassID?.department.map(
                                   (image, index) => {
                                     return (
                                       <img
@@ -445,7 +445,7 @@ export default function UserInfoCard() {
 
                             <td className="py-3 px-5 border-b border-blue-gray-50">
                               <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
-                                {activity.registeredClassID.location}
+                                {activity.registeredClassID?.location}
                               </p>
                             </td>
 
@@ -457,7 +457,7 @@ export default function UserInfoCard() {
 
                             <td className="py-3 px-5 border-b border-blue-gray-50">
                               <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
-                                {activity.registeredClassID.time}
+                                {activity.registeredClassID?.time}
                               </p>
                             </td>
 
@@ -467,26 +467,26 @@ export default function UserInfoCard() {
                                   className={`px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full 
       ${
         activity
-          ? activity.status === "genehmigt"
+          ? activity?.status === "genehmigt"
             ? "bg-green-100 text-green-800"
-            : activity.status === "ausstehend"
+            : activity?.status === "ausstehend"
             ? "bg-orange-100 text-orange-800"
             : "bg-red-200 text-red-700"
           : ""
       }`}
                                 >
                                   {activity
-                                    ? activity.status
+                                    ? activity?.status
                                     : "nicht registriert"}
                                 </span>
-                                {activity && activity.status === "abgelehnt" ? (
+                                {activity && activity?.status === "abgelehnt" ? (
                                   <span
                                     className="tooltip ml-2 hover:cursor-pointer"
                                     style={{ width: "auto", height: "auto" }}
                                     data-tip={
-                                      /^[^a-zA-Z]*$/.test(activity.reason)
+                                      /^[^a-zA-Z]*$/.test(activity?.reason)
                                         ? "Kein Grund vorhanden"
-                                        : activity.reason
+                                        : activity?.reason
                                     }
                                   >
                                     <svg
@@ -521,8 +521,8 @@ export default function UserInfoCard() {
 
                             <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
                               {activity &&
-                              (activity.status === "abgelehnt" ||
-                                activity.status === "ausstehend") ? (
+                              (activity?.status === "abgelehnt" ||
+                                activity?.status === "ausstehend") ? (
                                 <span className="px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full text-gray-500 bg-gray-200 text-gray-800">
                                   nicht angemeldet
                                 </span>
@@ -531,16 +531,16 @@ export default function UserInfoCard() {
                                   className={`px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full 
         ${
           activity
-            ? activity.statusAttended === "teilgenommen"
+            ? activity?.statusAttended === "teilgenommen"
               ? "bg-green-100 text-green-800"
-              : activity.statusAttended === "in Prüfung"
+              : activity?.statusAttended === "in Prüfung"
               ? "bg-orange-100 text-orange-800"
               : "bg-red-200 text-red-700"
             : ""
         }`}
                                 >
                                   {activity
-                                    ? activity.statusAttended
+                                    ? activity?.statusAttended
                                     : "nicht registriert"}
                                 </span>
                               )}
