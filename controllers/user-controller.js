@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const ClassActivity = require("../models/classActivity-model.js");
 const Approver = require("../models/approver-model.js");
+const { format } = require('date-fns');
 
 const createUser = asyncWrapper(async (req, res, next) => {
   const {
@@ -46,17 +47,10 @@ const createUser = asyncWrapper(async (req, res, next) => {
 });
 
 const updateUser = asyncWrapper(async (req, res, next) => {
-  const {
-    logID,
-    firstName,
-    lastName,
-    role,
-    department,
-    status,
-  } = req.body;
+  const { logID, firstName, lastName, role, department, status } = req.body;
 
   const { id } = req.params;
-  const contactInformationID = "668e958729a4cd5bb513f562"
+  const contactInformationID = "668e958729a4cd5bb513f562";
 
   const updatedFields = {
     logID,
@@ -100,8 +94,8 @@ const getProfile = asyncWrapper(async (req, res, next) => {
 
   const user = await User.findById(id)
     .populate("classesRegistered.registeredClassID")
-    .populate("userContactInformation");
-
+    .populate("userContactInformation")
+    .populate("message.messageID");
   if (!user) {
     throw new ErrorResponse(404, "User not found!");
   } else {
@@ -127,6 +121,7 @@ const getAllUsers = asyncWrapper(async (req, res, next) => {
   const user = await User.find({})
     .populate("classesRegistered.registeredClassID")
     .populate("userContactInformation")
+    .populate("message.messageID")
     .sort({ status: 1 });
 
   res.json(user);
@@ -152,16 +147,17 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     { new: true }
   )
     .populate("classesRegistered.registeredClassID")
-    .populate("userContactInformation");
+    .populate("userContactInformation")
+    .populate("message.messageID");
 
   const approver = await Approver.findById(user.userContactInformation);
 
   let recipientEmail;
   switch (user.department) {
-    case "logistik":
+    case "Logistik":
       recipientEmail = approver.logistik;
       break;
-    case "vertrieb":
+    case "Vertrieb":
       recipientEmail = approver.vertrieb;
       break;
     case "HR & Training":
@@ -170,22 +166,22 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     case "IT & Services":
       recipientEmail = approver.it;
       break;
-    case "fuhrpark":
+    case "Fuhrpark":
       recipientEmail = approver.fuhrpark;
       break;
-    case "buchhaltung":
+    case "Buchhaltung":
       recipientEmail = approver.buchhaltung;
       break;
-    case "einkauf":
+    case "Einkauf":
       recipientEmail = approver.einkauf;
       break;
-    case "design & Planung":
+    case "Design & Planung":
       recipientEmail = approver.design;
       break;
-    case "projektmanagement":
+    case "Projektmanagement":
       recipientEmail = approver.projektmanagement;
       break;
-    case "officemanagement":
+    case "Officemanagement":
       recipientEmail = approver.officemanagement;
       break;
     default:
@@ -195,10 +191,10 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 
   let recipientEmailSubstitution;
   switch (user.department) {
-    case "logistik":
+    case "Logistik":
       recipientEmailSubstitution = approver.logistikSubstitute;
       break;
-    case "vertrieb":
+    case "Vertrieb":
       recipientEmailSubstitution = approver.vertriebSubstitute;
       break;
     case "HR & Training":
@@ -207,22 +203,22 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     case "IT & Services":
       recipientEmailSubstitution = approver.itSubstitute;
       break;
-    case "fuhrpark":
+    case "Fuhrpark":
       recipientEmailSubstitution = approver.fuhrparkSubstitute;
       break;
-    case "buchhaltung":
+    case "Buchhaltung":
       recipientEmailSubstitution = approver.buchhaltungSubstitute;
       break;
-    case "einkauf":
+    case "Einkauf":
       recipientEmailSubstitution = approver.einkaufSubstitute;
       break;
-    case "design & Planung":
+    case "Design & Planung":
       recipientEmailSubstitution = approver.designSubstitute;
       break;
-    case "projektmanagement":
+    case "Projektmanagement":
       recipientEmailSubstitution = approver.projektmanagementSubstitute;
       break;
-    case "officemanagement":
+    case "Officemanagement":
       recipientEmailSubstitution = approver.officemanagementSubstitute;
       break;
     default:
@@ -243,24 +239,25 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 
   const mailOptions = {
     from: {
-      name: "Ausstehende Genehmigung - No reply",
+      name: "Ausstehende Genehmigung - Training Academy - No reply",
       address: process.env.USER,
     },
     to: `${recipientEmail}, ${recipientEmailSubstitution}`,
-    subject: "Training Academy - Rent Group München",
-    text: "Training Academy - Rent Group München",
-    html: `${user.firstName + " " + user.lastName} hat sich für die Schulung "${
-      registeredClass.title
-    }" angemeldet! <br/ ><br /> Zum Genehmigungsprozess: http://localhost:5173/classInformation/${activity_id}`,
+    subject: "Training Academy - Rent.Group München - Ausstehende Genehmigung",
+    text: "Training Academy - Rent.Group München - Ausstehende Genehmigung",
+    html: `
+    <p>Es gibt eine neue Anfrage zur Schulungsteilnahme</p>
+    <p><strong>${user.firstName} ${user.lastName}</strong> hat sich für die Schulung <em>"${registeredClass.title}"</em> angemeldet!</p>
+    <p>Link zum Genehmigungsprozess:</p>
+    <p><a href="http://localhost:5173/classInformation/${activity_id}">http://localhost:5173/classInformation/${activity_id}</a></p>
+    <br />
+  `,
   };
 
   const sendMail = async (transporter, mailOptions) => {
     try {
       await transporter.sendMail(mailOptions);
-      console.log("Success");
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   sendMail(transporter, mailOptions);
@@ -271,10 +268,10 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 const updateClassStatus = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
   const { classId, newStatus, reason } = req.body;
+  const {id: approverId} = req.user
 
   try {
     const user = await User.findById(id);
-
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -327,7 +324,12 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       user.classesRegistered[classIndex].reason = reason;
     }
 
+    const formattedDate = format(new Date(activity.date), 'dd.MM.yyyy');
+    const formattedTime = activity.time;
+
     await user.save();
+
+    const approver = await User.findById(approverId);
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -342,38 +344,51 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
 
     let mailHtml;
     if (newStatus === "abgelehnt") {
-      mailHtml = `Die Anfrage von ${user.firstName} ${user.lastName} für die Schulung "${activity.title}" wurde ${newStatus}! <br/><br/>Grund: ${reason}`;
+      const displayReason = reason.trim() ? reason : "Kein Grund angegeben";
+      mailHtml = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von <strong>${approver.firstName + " " + approver.lastName}</strong>.</p><br />
+          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: red;">${newStatus}</span>!</p><br />
+          <p><strong>Begründung:</strong> ${displayReason}</p>
+        </div>
+      `;
     } else if (newStatus === "genehmigt") {
-      mailHtml = `Die Anfrage von ${user.firstName} ${user.lastName} für die Schulung "${activity.title}" wurde ${newStatus}!`;
+      mailHtml = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${approver.firstName + " " + approver.lastName}.</p><br />
+          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: green;">${newStatus}</span>!</p>
+        </div>
+      `;
     } else {
-      mailHtml = `Die Anfrage von ${user.firstName} ${user.lastName} für die Schulung "${activity.title}" wurde ${newStatus}!`;
+      mailHtml = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${approver.firstName + " " + approver.lastName}.</p><br />
+          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em> wurde <span style="color: blue;">${newStatus}</span>!</p>
+        </div>
+      `;
     }
 
     const mailOptions = {
       from: {
-        name: "Antwort ausstehende Anfrage",
+        name: "Antwort auf Ausstehende Genehmigung - No reply",
         address: process.env.USER,
       },
       to: `${user.inbox}`,
-      subject: "Training Academy - Rent Group München",
-      text: "Training Academy - Rent Group München",
+      subject: "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
+      text: "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
       html: mailHtml,
     };
 
     const sendMail = async (transporter, mailOptions) => {
       try {
         await transporter.sendMail(mailOptions);
-        console.log("Success");
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
 
     sendMail(transporter, mailOptions);
 
     res.status(200).json({ message: "Class status updated successfully" });
   } catch (error) {
-    console.error("Error updating class status:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -402,6 +417,8 @@ const updateAttended = asyncWrapper(async (req, res, next) => {
   user.classesRegistered[classIndex].statusAttended = newStatusAttended;
 
   await user.save();
+
+  res.json(user)
 });
 
 const updateNotAttended = asyncWrapper(async (req, res, next) => {
@@ -428,6 +445,8 @@ const updateNotAttended = asyncWrapper(async (req, res, next) => {
   user.classesRegistered[classIndex].statusAttended = newStatusAttended;
 
   await user.save();
+
+  res.json(user)
 });
 
 const login = asyncWrapper(async (req, res, next) => {
@@ -436,10 +455,15 @@ const login = asyncWrapper(async (req, res, next) => {
   const user = await User.findOne({ logID })
     .select("+password")
     .populate("classesRegistered.registeredClassID")
-    .populate("userContactInformation");
+    .populate("userContactInformation")
+    .populate("message.messageID");
 
   if (!user) {
     return res.status(404).json({ error: "User not found!" });
+  }
+
+  if (user.status === "inaktiv") {
+    return res.status(403).json({ error: "User is inactive!" });
   }
 
   const match = await bcrypt.compare(password, user.password);
@@ -471,6 +495,78 @@ const logout = asyncWrapper(async (req, res, next) => {
     .json({ success: true });
 });
 
+const markRead = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const { id: userId } = req.user;
+  const { status: newStatus } = req.body;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId, "message.messageID": id },
+      { $set: { "message.$.status": newStatus } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).send({ message: "Message not found" });
+    }
+
+    res.status(200).send(updatedUser);
+  } catch (error) {
+    console.error("Error marking message as read:", error);
+    res.status(500).send({ error: "Error marking message as read" });
+  }
+});
+
+const markNotRead = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const { id: userId } = req.user;
+  const { status: newStatus } = req.body;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId, "message.messageID": id },
+      { $set: { "message.$.status": newStatus } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).send({ message: "Message not found" });
+    }
+
+    res.status(200).send(updatedUser);
+  } catch (error) {
+    console.error("Error marking message as not read:", error);
+    res.status(500).send({ error: "Error marking message as not read" });
+  }
+});
+
+const deleteMessage = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const { id: userId } = req.user;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId, "message.messageID": id },
+      { $pull: { message: { messageID: id } } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res
+        .status(404)
+        .send({
+          message: "Message not found or not authorized to delete this message",
+        });
+    }
+
+    res.status(200).send({ message: "Deleted", user: updatedUser });
+  } catch (error) {
+    console.error("Error deleting the message:", error);
+    res.status(500).send({ error: "Error deleting message" });
+  }
+});
+
 module.exports = {
   createUser,
   getProfile,
@@ -483,5 +579,8 @@ module.exports = {
   updateNotAttended,
   getUserInformation,
   updateUser,
-  updatePassword
+  updatePassword,
+  markRead,
+  markNotRead,
+  deleteMessage,
 };

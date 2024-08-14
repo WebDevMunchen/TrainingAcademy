@@ -1,7 +1,13 @@
 const ClassActivity = require("../models/classActivity-model.js");
+const DeletedClassActivity = require("../models/deletedClassActivity-model.js");
 const ErrorResponse = require("../utils/errorResponse.js");
 const asyncWrapper = require("../utils/asyncWrapper.js");
 const User = require("../models/user-model.js");
+const cloudinary = require("../utils/cloudinaryConfig.js");
+const Approver = require("../models/approver-model.js");
+const nodemailer = require("nodemailer");
+const { format } = require("date-fns");
+const cron = require('node-cron');
 
 const createClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -13,10 +19,27 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     department,
     capacity,
     month,
+    year,
     time,
     teacher,
     safetyBriefing,
   } = req.body;
+
+  let fileUrl = "";
+  if (req.file) {
+    try {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        resource_type: "auto",
+      });
+      fileUrl = result.secure_url;
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Error uploading file",
+        error: error.message,
+      });
+    }
+  }
 
   const activity = await ClassActivity.create({
     title,
@@ -27,9 +50,11 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     department,
     capacity,
     month,
+    year,
     time,
     teacher,
     safetyBriefing,
+    fileUrl,
   });
 
   res.status(201).json(activity);
@@ -45,6 +70,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     department,
     capacity,
     month,
+    year,
     time,
     teacher,
     safetyBriefing,
@@ -52,29 +78,273 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
 
   const { id } = req.params;
 
+  // Find the existing class activity by ID
+  const existingActivity = await ClassActivity.findById(id).populate({
+    path: 'registeredUsers',
+    match: { 'classesRegistered.status': { $in: ['ausstehend', 'genehmigt'] } },
+    select: 'firstName lastName department classesRegistered',
+  });
+
+  if (!existingActivity) {
+    return res.status(404).json({
+      success: false,
+      message: "Aktivität nicht gefunden!",
+    });
+  }
+
+  // Initialize fileUrl with the existing file URL
+  let fileUrl = existingActivity.fileUrl;
+
+  // If a new file is uploaded, update the fileUrl
+  if (req.file) {
+    try {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        resource_type: "auto",
+      });
+      fileUrl = result.secure_url;
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Fehler beim Hochladen der Datei",
+        error: error.message,
+      });
+    }
+  }
+
+  // Prepare the updated class activity data
   const updatedClass = {
     title,
     description,
-    date,
+    date: new Date(date),
     duration,
     location,
     department,
     capacity,
     month,
+    year,
     time,
     teacher,
     safetyBriefing,
+    fileUrl,  // Use the updated or existing fileUrl
   };
 
-  const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, {
-    new: true,
-  });
+  try {
+    // Update the class activity in the database
+    const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, {
+      new: true,
+    });
+
+    // Check if any key fields have changed for sending notifications
+    const approversId = "668e958729a4cd5bb513f562";
+    const findApprovers = await Approver.findById(approversId);
+
+    const toAddresses = [
+      findApprovers.logistik,
+      findApprovers.vertrieb,
+      findApprovers.hr,
+      findApprovers.it,
+      findApprovers.fuhrpark,
+      findApprovers.buchhaltung,
+      findApprovers.einkauf,
+      findApprovers.design,
+      findApprovers.projektmanagement,
+      findApprovers.officemanagement,
+      findApprovers.logistikSubstitute,
+      findApprovers.vertriebSubstitute,
+      findApprovers.hrSubstitute,
+      findApprovers.itSubstitute,
+      findApprovers.fuhrparkSubstitute,
+      findApprovers.buchhaltungSubstitute,
+      findApprovers.einkaufSubstitute,
+      findApprovers.designSubstitute,
+      findApprovers.projektmanagementSubstitute,
+      findApprovers.officemanagementSubstitute,
+    ]
+      .filter(Boolean)
+      .join(", ");
+
+    const formattedDate = format(new Date(existingActivity.date), "dd.MM.yyyy");
+    const formattedTime = existingActivity.time;
+    const formattedDateUpdated = format(updatedClass.date, "dd.MM.yyyy");
+    const formattedTimeUpdated = updatedClass.time;
+
+    const fieldsChanged =
+      JSON.stringify(existingActivity.date) !== JSON.stringify(updatedClass.date) ||
+      existingActivity.time.trim() !== updatedClass.time.trim() ||
+      existingActivity.location.trim() !== updatedClass.location.trim() ||
+      existingActivity.teacher.trim() !== updatedClass.teacher.trim();
+
+    const userNames = existingActivity.registeredUsers
+      .filter(user => 
+        user.classesRegistered.some(
+          registration => registration.registeredClassID.equals(id) &&
+                          ['ausstehend', 'genehmigt'].includes(registration.status)
+        )
+      )
+      .map(user => `${user.firstName} ${user.lastName} (${user.department})`);
+
+    if (fieldsChanged) {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        auth: {
+          user: process.env.USER,
+          pass: process.env.APP_PASSWORD,
+        },
+      });
+
+      let mailHtml = "";
+
+      if (userNames.length === 0) {
+        mailHtml = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <p>Hallo zusammen,</p>
+          <p>Es gab Änderungen bei der Schulung: <em>"${updatedClass.title}"</em></p>
+          <p><strong>Hier sind die Details der Änderungen:</strong></p>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+              <tr>
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left; background-color: #f4f4f4;"></th>
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left; background-color: #f4f4f4;">Alte Informationen</th>
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left; background-color: #f4f4f4;">Neue Informationen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Datum</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${formattedDate}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${formattedDateUpdated}</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Uhrzeit</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${formattedTime}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${formattedTimeUpdated}</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Ort</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.location}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.location}</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Dauer</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.duration} Minuten</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.duration} Minuten</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Referent*in</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.teacher}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.teacher}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p>
+          <p>Bei Fragen gerne melden.</p>
+          <p>Euer Training Abteilung</p>
+        </div>
+      `;
+      } else {
+        mailHtml = `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <p>Hallo zusammen,</p>
+        <p>Es gab Änderungen bei der Schulung: <em>"${updatedClass.title}"</em></p>
+        <p><strong>Hier sind die Details der Änderungen:</strong></p>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+          <thead>
+            <tr>
+              <th style="border: 1px solid #ddd; padding: 8px; text-align: left; background-color: #f4f4f4;"></th>
+              <th style="border: 1px solid #ddd; padding: 8px; text-align: left; background-color: #f4f4f4;">Alte Informationen</th>
+              <th style="border: 1px solid #ddd; padding: 8px; text-align: left; background-color: #f4f4f4;">Neue Informationen</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Datum</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${formattedDate}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${formattedDateUpdated}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Uhrzeit</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${formattedTime}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${formattedTimeUpdated}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Ort</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.location}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.location}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Dauer</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.duration} Minuten</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.duration} Minuten</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Referent*in</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.teacher}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.teacher}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Diese Benutzer haben sich bereits angemeldet und sollten benachrichtigt werden:</p>
+        <ul>
+          ${userNames.map(userName => `<li>${userName}</li>`).join('')}
+        </ul>
+        <p>Bitte meldet euch bei den jeweiligen Abteilungen, um die Änderungen zu koordinieren.</p>
+        <p>Bei Fragen gerne melden.</p>
+        <p>Euer Training Abteilung</p>
+      </div>`;
+      }
+
+      const mailOptions = {
+        from: process.env.USER,
+        to: toAddresses,
+        subject: `Änderungen bei der Schulung: "${updatedClass.title}"`,
+        html: mailHtml,
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error("Error sending email:", error);
+        } else {
+          console.log("Email sent:", info.response);
+        }
+      });
+    }
+
+    // Send a success response with the updated activity data
+    res.status(200).json({
+      success: true,
+      message:
+        "Aktivität erfolgreich aktualisiert" +
+        (fieldsChanged ? " und Benachrichtigung gesendet" : ""),
+      data: activity,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
+const updateCancelationReason = asyncWrapper(async (req, res, next) => {
+  const { stornoReason } = req.body;
+  const { id } = req.params;
+
+  if (!Array.isArray(stornoReason)) {
+    return res.status(400).json({ message: "stornoReason must be an array" });
+  }
+
+  const activity = await ClassActivity.findById(id);
 
   if (!activity) {
     throw new ErrorResponse(404, "Activity not found!");
-  } else {
-    res.status(201).json(activity);
   }
+
+  activity.stornoReason = [...activity.stornoReason, ...stornoReason];
+
+  await activity.save();
+
+  res.status(201).json(activity);
 });
 
 const registerClass = asyncWrapper(async (req, res, next) => {
@@ -182,61 +452,6 @@ const decreaseClassCapacity = asyncWrapper(async (req, res, next) => {
   res.status(201).json(updatedCapacity);
 });
 
-// const decreaseClassCapacityOnCancel = asyncWrapper(async (req, res, next) => {
-//   const { id } = req.params;
-//   const { id: userID } = req.user;
-
-//   try {
-//     console.log("Class ID:", id);
-//     console.log("Fetching user with ID:", userID);
-
-//     const user = await User.findById(userID);
-
-//     if (!user) {
-//       console.log("User not found");
-//       return res.status(404).json({ message: "User not found." });
-//     }
-
-//     console.log("User fetched:", user);
-//     const classIdStr = id.toString();
-//     console.log("Class ID string:", classIdStr);
-
-//     user.classesRegistered.forEach(classReg => {
-//       console.log(`Checking classReg: ${classReg.registeredClassID.toString()} with status: ${classReg.status}`);
-//     });
-
-//     const registeredClass = user.classesRegistered.find(
-//       (classReg) => classReg.registeredClassID.toString() === classIdStr && classReg.status === "genehmigt"
-//     );
-
-//     if (!registeredClass) {
-//       console.log("User is not registered for this class or status is not 'genehmigt'.");
-//       return res.status(400).json({ message: "User is not registered for this class or status is not 'genehmigt'." });
-//     }
-
-//     console.log("User is registered for the class with status 'genehmigt'. Decreasing capacity.");
-
-//     const updatedCapacity = await ClassActivity.findByIdAndUpdate(
-//       id,
-//       { $inc: { usedCapacity: -1 } },
-//       { new: true }
-//     ).populate("registeredUsers");
-
-//     if (!updatedCapacity) {
-//       console.log("ClassActivity not found or capacity not updated.");
-//       return res.status(404).json({ message: "ClassActivity not found or capacity not updated." });
-//     }
-
-//     console.log("Updated Capacity:", updatedCapacity);
-//     await updatedCapacity.save();
-
-//     res.status(201).json(updatedCapacity);
-//   } catch (error) {
-//     console.error("Error in decreaseClassCapacityOnCancel:", error);
-//     next(error);
-//   }
-// });
-
 const getActivity = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
@@ -251,20 +466,20 @@ const getActivity = asyncWrapper(async (req, res, next) => {
 
 const getAllActivities = asyncWrapper(async (req, res, next) => {
   try {
-    const { month } = req.query;
+    const { month, year } = req.query;
     let query = {};
 
     if (month) {
       query.month = month;
     }
 
+    if (year) {
+      query.year = year;
+    }
+
     const allActivities = await ClassActivity.find(query)
       .populate("registeredUsers")
       .sort({ date: -1, time: -1 });
-
-    if (allActivities.length === 0) {
-      return res.status(404).json({ message: "No activities found" });
-    }
 
     res.json(allActivities);
   } catch (error) {
@@ -272,6 +487,172 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+const deleteClass = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const approversId = "668e958729a4cd5bb513f562";
+
+  const findApprovers = await Approver.findById(approversId);
+  const notifyBeforeDelete = await ClassActivity.findById(id);
+
+  if (!notifyBeforeDelete) {
+    return res.status(404).json({ message: "Class not found" });
+  }
+
+  const deletedClassData = { ...notifyBeforeDelete.toObject(), storno: true };
+  await DeletedClassActivity.create(deletedClassData);
+
+  const usersRegistered = await User.find({
+    "classesRegistered.registeredClassID": id,
+  });
+
+  const userNames = usersRegistered.map(
+    (user) => `${user.firstName} ${user.lastName}`
+  );
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.USER,
+      pass: process.env.APP_PASSWORD,
+    },
+  });
+
+  const toAddresses = [
+    findApprovers.logistik,
+    findApprovers.vertrieb,
+    findApprovers.hr,
+    findApprovers.it,
+    findApprovers.fuhrpark,
+    findApprovers.buchhaltung,
+    findApprovers.einkauf,
+    findApprovers.design,
+    findApprovers.projektmanagement,
+    findApprovers.officemanagement,
+    findApprovers.logistikSubstitute,
+    findApprovers.vertriebSubstitute,
+    findApprovers.hrSubstitute,
+    findApprovers.itSubstitute,
+    findApprovers.fuhrparkSubstitute,
+    findApprovers.buchhaltungSubstitute,
+    findApprovers.einkaufSubstitute,
+    findApprovers.designSubstitute,
+    findApprovers.projektmanagementSubstitute,
+    findApprovers.officemanagementSubstitute,
+  ].join(", ");
+
+  let mailHtml;
+
+  if (userNames.length > 0) {
+    mailHtml = `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <p>Hallo zusammen,</p>
+        <p>Die Schulung <em>"${
+          notifyBeforeDelete.title
+        }"</em> wurde abgesagt.</p>
+        <p>Folgende Mitarbeiter haben sich für diese Schulung angemeldet:</p>
+        <ul>
+          ${userNames.map((name) => `<li>${name}</li>`).join("")}
+        </ul>
+         <p>Bitte die Kollegen aus eurer Abteilung informieren, wenn sie betroffen sind.</p>
+        <p>Bei Fragen gerne melden.</p>
+        <p>Euer Training Abteilung</p>
+
+      </div>
+    `;
+  } else {
+    mailHtml = `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <p>Hallo zusammen,</p>
+        <p>Die Schulung <em>"${notifyBeforeDelete.title}"</em> wurde abgesagt.</p>
+        <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p>
+        <p>Bei Fragen gerne melden.</p>
+        <p>Euer Training Abteilung</p>
+
+      </div>
+    `;
+  }
+
+  const mailOptions = {
+    from: {
+      name: "Schulung Abgesagt - Training Academy - No reply",
+      address: process.env.USER,
+    },
+    to: toAddresses,
+    subject: "Training Academy - Rent.Group München - Schulung Abgesagt",
+    text: "Training Academy - Rent.Group München - Schulung Abgesagt",
+    html: mailHtml,
+  };
+
+  const sendMail = async (transporter, mailOptions) => {
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
+
+  await sendMail(transporter, mailOptions);
+
+  await ClassActivity.findByIdAndDelete(id);
+
+  await User.updateMany(
+    { "classesRegistered.registeredClassID": id },
+    { $pull: { classesRegistered: { registeredClassID: id } } }
+  );
+
+  res.status(200).json({
+    message: "Class and related user registrations deleted successfully",
+  });
+});
+
+
+const checkAndUpdateClassRegistrations = async () => {
+  const now = new Date();
+  const in48Hours = new Date(now.getTime() + 48 * 60 * 60 * 1000);
+
+  try {
+    const classes = await ClassActivity.find({
+      date: { $lte: in48Hours, $gte: now }
+    });
+
+    for (const classActivity of classes) {
+      const registeredUserIds = classActivity.registeredUsers;
+
+      await User.updateMany(
+        {
+          _id: { $in: registeredUserIds },
+          'classesRegistered': {
+            $elemMatch: {
+              registeredClassID: classActivity._id,
+              status: 'ausstehend'
+            }
+          }
+        },
+        {
+          $set: {
+            'classesRegistered.$.status': 'abgelehnt',
+            'classesRegistered.$.reason': 'Automatisch abgelehnt, da keine Antwort vom Genehmiger oder seinem Vertreter einging'
+          }
+        }
+      );
+    }
+
+  } catch (error) {
+    console.error('Error checking and updating class registrations:', error);
+  }
+};
+
+cron.schedule('30 17 * * *', () => {
+  checkAndUpdateClassRegistrations();
+}, {
+  scheduled: true,
+  timezone: "Europe/Berlin" 
+});
+
 
 module.exports = {
   createClassActivity,
@@ -282,5 +663,6 @@ module.exports = {
   decreaseClassCapacity,
   editClassActivity,
   cancelUserRegistration,
-  // decreaseClassCapacityOnCancel,
+  updateCancelationReason,
+  deleteClass,
 };

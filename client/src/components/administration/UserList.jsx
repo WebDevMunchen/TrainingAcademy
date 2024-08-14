@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import UserListCard from "./UserListCard";
 import { NavLink } from "react-router-dom";
@@ -6,10 +6,15 @@ import SideMenu from "./SideMenu";
 
 export default function UserList() {
   const { allUsers } = useContext(AuthContext);
-
   const date = new Date();
-
   const currentYear = date.getFullYear();
+
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+
+  // Function to handle year change
+  const handleYearChange = (event) => {
+    setSelectedYear(Number(event.target.value));
+  };
 
   return (
     <>
@@ -50,7 +55,18 @@ export default function UserList() {
                             Abteilung
                           </th>
                           <th className="w-2/12 px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
-                            Jährliche Unterweisung in {currentYear}
+                          <span>Jährliche Sicherheitsunterweisung in</span>
+                            <select
+                              value={selectedYear}
+                              onChange={handleYearChange}
+                              className="form-select font-extrabold text-blue-500 hover:cursor-pointer"
+                            >
+                              {[currentYear, currentYear - 1, currentYear - 2].map((year) => (
+                                <option key={year} value={year}>
+                                  {year}
+                                </option>
+                              ))}
+                            </select>
                           </th>
                           <th className="px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Details
@@ -59,7 +75,9 @@ export default function UserList() {
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {allUsers.map((user) => {
-                          return <UserListCard key={user._id} user={user} />;
+                          return (
+                            <UserListCard key={user._id} user={user} selectedYear={selectedYear} />
+                          );
                         })}
                       </tbody>
                     </table>

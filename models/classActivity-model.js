@@ -17,9 +17,28 @@ const classActivitySchema = new Schema({
       "september",
       "oktober",
       "november",
-      "december",
+      "dezember",
     ],
     required: true,
+  },
+  year: {
+    type: String,
+    enum: [
+      "2024",
+      "2025",
+      "2026",
+      "2027",
+      "2028",
+      "2029",
+      "2030",
+      "2031",
+      "2032",
+      "2033"
+    ],
+    required: true,
+    default: function() {
+      return new Date().getFullYear().toString();
+    }
   },
   date: { type: Date, required: true },
   duration: { type: Number, required: true },
@@ -30,7 +49,9 @@ const classActivitySchema = new Schema({
   usedCapacity: { type: Number, default: 0 },
   registeredUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],
   teacher: { type: String, required: true },
-  safetyBriefing: { type: Boolean, default:false}
+  safetyBriefing: { type: Boolean, default: false },
+  stornoReason: [{ type: String }],
+  fileUrl: { type: String },
 });
 
 const ClassActivity = model("ClassActivitie", classActivitySchema);

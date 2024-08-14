@@ -32,10 +32,7 @@ export default function ApproverList() {
 
         notifySuccess();
       })
-
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const notifySuccess = () =>

@@ -6,31 +6,13 @@ import axiosClient from "../../utils/axiosClient";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateClass() {
-  const { setAllActivities } = useContext(AuthContext);
-
+  const { setAllActivities, currentMonth, currentYear } =
+    useContext(AuthContext);
   const navigate = useNavigate();
-
   const [selectedDepartments, setSelectedDepartments] = useState([]);
-  const [currentMonth, setCurrentMonth] = useState("");
-
-  useEffect(() => {
-    const date = new Date();
-    const monthNames = [
-      "januar",
-      "februar",
-      "märz",
-      "april",
-      "mai",
-      "juni",
-      "juli",
-      "august",
-      "september",
-      "oktober",
-      "november",
-      "dezember",
-    ];
-    setCurrentMonth(monthNames[date.getMonth()]);
-  }, []);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [hideFileUpload, setHideFileUpload] = useState("hidden");
+  const [fileName, setFileName] = useState("");
 
   const {
     register,
@@ -41,30 +23,56 @@ export default function CreateClass() {
   const handleDepartmentChange = (e) => {
     const department = e.target.value;
     if (e.target.checked) {
-      setSelectedDepartments([...selectedDepartments, department]);
+      setSelectedDepartments((prev) => [...prev, department]);
     } else {
-      setSelectedDepartments(
-        selectedDepartments.filter((d) => d !== department)
-      );
+      setSelectedDepartments((prev) => prev.filter((d) => d !== department));
     }
   };
 
-  const onSubmit = (data) => {
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    if (file) {
+      setFileName(file.name);
+    }
+  };
+
+  const onSubmit = async (data) => {
     data.department = selectedDepartments;
-    axiosClient
-      .post(`/classActivity/create`, data, {
+
+    const formData = new FormData();
+    for (const key in data) {
+      if (Array.isArray(data[key])) {
+        data[key].forEach((value) => formData.append(key, value));
+      } else {
+        formData.append(key, data[key]);
+      }
+    }
+    if (selectedFile) {
+      formData.append("file", selectedFile);
+    }
+
+    try {
+      await axiosClient.post(`/classActivity/create`, formData, {
         withCredentials: true,
-      })
-      .then((response) => {
-        return axiosClient.get(
-          `/classActivity/allActivities?month=${currentMonth}`
-        );
-      })
-      .then((activitiesResponse) => {
-        setAllActivities(activitiesResponse.data);
-        navigate("/admin/dashboard");
-      })
-      .catch((error) => {});
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const activitiesResponse = await axiosClient.get(
+        `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
+      );
+      setAllActivities(activitiesResponse?.data);
+    } catch (error) {
+      console.error("Error during form submission:", error);
+    } finally {
+      navigate("/admin/dashboard");
+    }
+  };
+
+  const handleHideFileUpload = () => {
+    setHideFileUpload(hideFileUpload === "hidden" ? "visible" : "hidden");
   };
 
   return (
@@ -109,19 +117,65 @@ export default function CreateClass() {
                   />
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex gap-2 items-center">
                   <label
                     htmlFor="safetyBriefing"
-                    className="block text-sm font-medium text-gray-900 dark:text-white mt-1"
+                    className="py-1.5 block text-sm font-medium text-gray-900 dark:text-white mt-1"
                   >
                     Jährliche Sicherheitsunterweisung:
                   </label>
                   <input
-                    type="checkbox" {...register("safetyBriefing", { required: false })}
+                    type="checkbox"
+                    {...register("safetyBriefing", { required: false })}
                     id="safetyBriefing"
                     className="checkbox"
-                    
+                    onClick={handleHideFileUpload}
                   />
+
+                  <div className={`${hideFileUpload} flex items-center gap-3`}>
+                    <label
+                      htmlFor="file"
+                      className="flex bg-gray-800 hover:bg-gray-700 text-white text-base px-5 ml-3 py-1.5 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif]"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-6 mr-2 fill-white inline"
+                        viewBox="0 0 32 32"
+                      >
+                        <path
+                          d="M23.75 11.044a7.99 7.99 0 0 0-15.5-.009A8 8 0 0 0 9 27h3a1 1 0 0 0 0-2H9a6 6 0 0 1-.035-12 1.038 1.038 0 0 0 1.1-.854 5.991 5.991 0 0 1 11.862 0A1.08 1.08 0 0 0 23 13a6 6 0 0 1 0 12h-3a1 1 0 0 0 0 2h3a8 8 0 0 0 .75-15.956z"
+                          data-original="#000000"
+                        />
+                        <path
+                          d="M20.293 19.707a1 1 0 0 0 1.414-1.414l-5-5a1 1 0 0 0-1.414 0l-5 5a1 1 0 0 0 1.414 1.414L15 16.414V29a1 1 0 0 0 2 0V16.414z"
+                          data-original="#000000"
+                        />
+                      </svg>
+                      Datei auswählen
+                      <input
+                        type="file"
+                        onChange={handleFileChange}
+                        id="file"
+                        className="hidden"
+                      />
+                    </label>
+                    {fileName && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-8 text-green-600"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+                        />
+                      </svg>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex flex-col lg:flex-row lg:justify-between">
@@ -144,7 +198,7 @@ export default function CreateClass() {
                       <option value="juni">Juni</option>
                       <option value="juli">Juli</option>
                       <option value="august">August</option>
-                      <option value="spetember">Spetember</option>
+                      <option value="september">September</option>
                       <option value="oktober">Oktober</option>
                       <option value="november">November</option>
                       <option value="dezember">Dezember</option>

@@ -18,7 +18,8 @@ export default function ReportCard({ registeredUser, activity }) {
 
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="text-sm font-medium text-gray-900">
-          {registeredUser.department.charAt(0).toUpperCase() + registeredUser.department.slice(1)}
+          {registeredUser.department.charAt(0).toUpperCase() +
+            registeredUser.department.slice(1)}
         </div>
       </td>
 

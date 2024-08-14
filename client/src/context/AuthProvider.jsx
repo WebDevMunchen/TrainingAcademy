@@ -13,13 +13,14 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [approver, setApprover] = useState(null);
   const [allUsers, setAllUsers] = useState(null);
-  const [allActivities, setAllActivities] = useState(null);
+  const [allActivities, setAllActivities] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentMonth, setCurrentMonth] = useState(
     new Date()
       .toLocaleDateString("de-DE", { month: "long" })
       .toLocaleLowerCase()
   );
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear().toString());
 
   useEffect(() => {
     axiosClient
@@ -35,7 +36,7 @@ export default function AuthProvider({ children }) {
       });
 
     axiosClient
-      .get(`/classActivity/allActivities?month=${currentMonth}`)
+      .get(`/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`)
       .then((response) => {
         setAllActivities(response.data);
       })
@@ -60,7 +61,7 @@ export default function AuthProvider({ children }) {
       .catch((error) => {
         setApprover(null);
       });
-  }, [currentMonth, setAllActivities]);
+  }, [currentMonth, currentYear]);
 
   const handleNextMonth = () => {
     const months = [
@@ -106,7 +107,11 @@ export default function AuthProvider({ children }) {
     setCurrentMonth(months[previousMonthIndex]);
   };
 
-  const login = async (data) => {
+  const handleYearChange = (e) => {
+    setCurrentYear(e.target.value);
+  };
+
+  const login = async (data, redirectUrl) => {
     axiosClient
       .post("/user/login", data)
       .then((response) => {
@@ -119,7 +124,7 @@ export default function AuthProvider({ children }) {
         setAllUsers(usersResponse.data);
 
         return axiosClient.get(
-          `classActivity/allActivities?month=${currentMonth}`
+          `classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
         );
       })
       .then((responseAllActivities) => {
@@ -129,6 +134,8 @@ export default function AuthProvider({ children }) {
       })
       .then((responseApprovers) => {
         setApprover(responseApprovers.data);
+
+        navigate(redirectUrl || "/");
       })
       .catch((error) => {
         badCredentials();
@@ -196,6 +203,7 @@ export default function AuthProvider({ children }) {
           signup,
           handleNextMonth,
           handlePreviousMonth,
+          handleYearChange,
           setUser,
           setIsLoading,
           setAllActivities,
@@ -208,6 +216,7 @@ export default function AuthProvider({ children }) {
           allActivities,
           isLoading,
           currentMonth,
+          currentYear,
         }}
       >
         {children}

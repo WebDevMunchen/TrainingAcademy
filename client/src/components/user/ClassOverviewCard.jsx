@@ -1,4 +1,52 @@
+import { useContext, useRef, useState } from "react";
+import { AuthContext } from "../../context/AuthProvider";
+import axiosClient from "../../utils/axiosClient";
+import attended from "../../assets/attended.png"
+import approved from "../../assets/approved.png"
+import pending from "../../assets/pending.png"
+import declined from "../../assets/declined.png"
+import notAttended from "../../assets/notAttended.png"
+
 export default function ClassesOverviewCard({ activity }) {
+  const { setUser, setAllActivities, currentMonth, currentYear } = useContext(AuthContext);
+
+  const modalRef = useRef(null);
+
+  const [selectedReason, setSelectedReason] = useState("");
+
+  const cancelClass = (stornoReason) => {
+    axiosClient
+      .put(`/classActivity/cancelClass/${activity.registeredClassID._id}`, {
+        stornoReason: [stornoReason],
+        withCredentials: true,
+      })
+      .then((response) => {
+        return axiosClient.put(
+          `/classActivity/updateReason/${activity.registeredClassID._id}`,
+          {
+            stornoReason: [stornoReason],
+            withCredentials: true,
+          }
+        );
+      })
+      .then((response) => {
+        return axiosClient.get("/user/profile");
+      })
+      .then((responseProfile) => {
+        setUser(responseProfile.data);
+
+        return axiosClient.get(
+          `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
+        );
+      })
+      .then((responseActivities) => {
+        setAllActivities(responseActivities.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const dateString = activity?.registeredClassID?.date;
   const date = new Date(dateString);
 
@@ -7,150 +55,58 @@ export default function ClassesOverviewCard({ activity }) {
   const year = date.getFullYear();
 
   const formattedDate = `${day}/${month}/${year}`;
-
-  let dPath = "";
-  let spanStyle = "";
-
-  if (activity.status === "abgelehnt") {
-    spanStyle =
-      "inline-flex items-center bg-red-600 rounded-full px-3 text-sm text-white py-1 font-medium";
-    dPath =
-      "m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z";
-  } else if (activity.status === "genehmigt") {
-    spanStyle =
-      "inline-flex items-center bg-green-600 rounded-full px-3 text-sm text-white py-1 font-medium";
-    dPath = "M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z";
-  } else {
-    spanStyle =
-      "inline-flex items-center bg-orange-500 rounded-full px-3 text-sm text-white py-1 font-medium";
-    dPath =
-      "M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z";
-  }
-
-  let dPath2 = "";
-  let spanStyle2 = "";
-
-  if (activity.statusAttended === "nicht teilgenommen") {
-    spanStyle2 =
-      "inline-flex items-center bg-red-600 rounded-full px-3 text-sm text-white py-1 font-medium";
-    dPath2 =
-      "m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z";
-  } else if (activity.statusAttended === "teilgenommen") {
-    spanStyle2 =
-      "inline-flex items-center bg-green-600 rounded-full px-3 text-sm text-white py-1 font-medium";
-    dPath2 = "M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z";
-  } else if (activity.status === "abgelehnt") {
-    spanStyle2 =
-      "inline-flex items-center bg-slate-400 rounded-full px-4 py-1.5 text-sm text-white py-1 font-medium";
-  } else {
-    spanStyle2 =
-      "inline-flex items-center bg-orange-500 rounded-full px-3 text-sm text-white py-1 font-medium";
-    dPath2 =
-      "M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z";
-  }
+  const currentDateTime = new Date();
 
   const showLegend = () => {
     document.getElementById("legend").showModal();
   };
 
+  const closeModal = () => {
+    if (modalRef.current) {
+      modalRef.current.close();
+    }
+  };
+
+  const handleCancelation = () => {
+    if (selectedReason) {
+      cancelClass(selectedReason);
+    }
+  };
+
+
+
+  const reasons = [
+    "Ich bin krank",
+    "Ich muss kurzfristig auf ein Projekt",
+    "Ich mache Home Office",
+    "Ich habe kurzfristig Urlaub",
+    "Ich habe einen anderen Termin reinbekommen",
+    "Ich habe mich fälschlicherweise angemeldet",
+    "Meine Arbeitsauslastung ist zu hoch",
+    "Ich habe doch keinen Bedarf mehr",
+    "Ich habe keine Lust",
+    "Sonstiges"
+  ];
+
   return (
     <>
-      <div className="bg-white border m-2 p-4 relative group shadow-lg">
-        <div className="absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
-        <div className="flex justify-center lg:justify-between px-6 mt-4 mr-4 items-center ">
-          <div className="flex flex-col items-center">
-            <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
-              Teilnahmestatus:{" "}
-            </span>
-            {activity.status === "abgelehnt" ? (
-              <span className={spanStyle2}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-5.5 mr-2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
-                  />
-                </svg>
-                nicht angemeldet
-              </span>
-            ) : (
-              <span className={spanStyle2}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6 mr-2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d={dPath2}
-                  />
-                </svg>
-                {activity.statusAttended}
-              </span>
-            )}
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
-              Genehmigungsstatus:{" "}
-            </span>
-            <div className="flex items-center">
-              {activity.status === "abgelehnt" && (
-                <span
-                  className="tooltip mr-2 hover:cursor-pointer"
-                  style={{ width: "auto", height: "auto" }}
-                  data-tip={
-                    /^[^a-zA-Z]*$/.test(activity.reason)
-                      ? "Kein Grund vorhanden"
-                      : activity.reason
-                  }
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="#ffb951"
-                    className="w-8 h-8"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </span>
-              )}
+      <div className="bg-white border m-2 p-2 relative group shadow-lg">
 
-              <span className={spanStyle}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6 mr-2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d={dPath}
-                  />
-                </svg>
-                {activity.status}
-              </span>
-            </div>
+        <div className="absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
+        <div className="flex px-0 justify-between gap-4 lg:justify-between lg:px-6 lg:mt-4 lg:mr-4 lg:items-center ">
+          <div className="flex flex-col items-center">
+            {activity.statusAttended === "in Prüfung" ? <span className="invisible">Placeholder</span> :
+          <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
+              Tailnahmestatus{" "}
+            </span>
+            }
+            {activity.statusAttended === "in Prüfung" ? (
+              <img className="invisible" src={attended} width={150} alt="teilgenommen" />
+            )  : activity.statusAttended === "teilgenommen" ? 
+              <img src={attended} width={150} alt="teilgenommen" /> : <img width={150} src={notAttended} alt="nichtTeilgenommen" /> 
+            }
           </div>
-        </div>
-        <div className="py-2 relative">
+          <div className="flex flex-col lg:ml-6">
           <h3 className="flex justify-center text-lg font-semibold text-black">
             {activity.registeredClassID?.title}
           </h3>
@@ -159,7 +115,7 @@ export default function ClassesOverviewCard({ activity }) {
           </div>
           <div className="mt-4 flex justify-center">
             {activity.registeredClassID?.department.map((dept, index) => (
-              <img key={index} src={dept} className="w-12 h-12" />
+              <img key={index} src={dept} className="w-12 h-12 " />
             ))}
           </div>
           <div className="flex items-center justify-center">
@@ -304,11 +260,55 @@ export default function ClassesOverviewCard({ activity }) {
               </div>
             </div>
           </dialog>
-          <p className="text-center lg:flex justify-center mt-2 text-base text-gray-600">
+
+          </div>
+          <div className="flex ml-2 flex-col items-center">
+            <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
+              Genehmigungsstatus:{" "}
+            </span>
+            <div className="flex items-center flex-col lg:flex-row lg:items-center">
+              {activity.status === "abgelehnt" && (
+                <span
+                  className="tooltip mr-0 hover:cursor-pointer lg:mr-2"
+                  style={{ width: "auto", height: "auto" }}
+                  data-tip={
+                    /^[^a-zA-Z]*$/.test(activity.reason)
+                      ? "Kein Grund vorhanden"
+                      : activity.reason
+                  }
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="#ffb951"
+                    className="w-8 h-8"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+              )}
+
+             {activity.status === "abgelehnt" ?
+            <img src={declined} width={150} alt="abgelehnt" /> : activity.status === "genehmigt" ? <img src={approved} width={150} alt="genehmigt" /> :
+            <img src={pending} width={150} alt="ausstehend" />
+
+            }
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-center">
+        <p className="text-center lg:flex justify-center text-base text-gray-600">
             {activity.registeredClassID?.description}
           </p>
+        </div>
+        <div className="py-2 relative">
+
           <div className="grid grid-cols-3 grid-rows-1 text-center lg:text-left justify-items-center">
-            <div className="flex flex-col mr-2">
+            <div className="flex flex-col px-2 mr-2">
               <p className="mt-4 text-base text-gray-600 lg:hidden">
                 <span className="font-bold">Kapazität:</span>{" "}
                 {activity.registeredClassID?.capacity + " Teilneh."}
@@ -321,7 +321,7 @@ export default function ClassesOverviewCard({ activity }) {
                 <span className="font-bold">Datum:</span> {formattedDate}
               </p>
             </div>
-            <div className="flex flex-col mr-2">
+            <div className="flex flex-col px-2 mr-2">
               <p className="mt-4 text-base text-gray-600 ">
                 <span className="font-bold">Uhrzeit:</span>{" "}
                 {activity.registeredClassID?.time}
@@ -346,6 +346,115 @@ export default function ClassesOverviewCard({ activity }) {
               </p>
             </div>
           </div>
+          {activity.status !== "abgelehnt" &&
+            new Date(activity.registeredClassID.date) >= currentDateTime && (
+              <>
+                <div className="flex justify-center">
+                  <button
+                    className="bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                    onClick={() => modalRef.current.showModal()}
+                  >
+                    <p>Stornieren</p>
+                  </button>
+                </div>
+
+                <dialog ref={modalRef} id="my_modal_1" className="modal">
+                  <div className="modal-box max-w-xl">
+                    <div
+                      className="flex items-center p-3 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
+                      role="alert"
+                    >
+                      <svg
+                        className="flex-shrink-0 inline w-4 h-4 me-3"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                      </svg>
+                      <span className="sr-only">Info</span>
+                      <div>
+                        <span className="font-medium">Achtung!</span> Du möchtest
+                        deine Anmeldung für den Kurs stornieren?
+                      </div>
+                    </div>
+                    <div
+                      className="flex p-3 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-blue-400"
+                      role="alert"
+                    >
+                      <span className="sr-only">Info</span>
+                      <div>
+                        <span className="font-medium">
+                          Bitte Folgendes beachten bei der Stornierung der
+                          Schulung:
+                        </span>
+                        <ul className="mt-1.5 list-disc list-inside">
+                          <li className="mb-1">
+                            Du musst einen Grund für die Stornierung angeben
+                          </li>
+                          <li className="mb-1">
+                            Bei abgelehntem Genehmigungsstatus,{" "}
+                            <span className="font-medium">
+                              keine Stornierung möglich
+                            </span>
+                          </li>
+                          <li className="mb-1">
+                            Bei Ablauf des Registrierungzeitraums,{" "}
+                            <span className="font-medium">
+                              keine Anmeldung mehr möglich
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="modal-action flex justify-center">
+                      <form method="dialog" className="flex gap-2">
+                        <div>
+                          <div className="w-72 mr-0 lg:w-full lg:mr-12">
+                            <label
+                              htmlFor="reason"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              Begründung:
+                            </label>
+                            <select
+                              id="reason"
+                              className="mb-4 mr-12 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              value={selectedReason}
+                              onChange={(e) =>
+                                setSelectedReason(e.target.value)
+                              }
+                            >
+                              <option value="" disabled>
+                                Wähle eine Begründung
+                              </option>
+                              {reasons.map((reason, index) => (
+                                <option key={index} value={reason}>
+                                  {reason}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="flex justify-end gap-2">
+                            <button
+                              type="button"
+                              className="btn w-fit bg-yellow-600 text-white hover:bg-yellow-700"
+                              onClick={handleCancelation}
+                            >
+                              Stornieren
+                            </button>
+                            <button className="btn w-28" onClick={closeModal}>
+                              Abbrechen
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </dialog>
+              </>
+            )}
         </div>
       </div>
     </>

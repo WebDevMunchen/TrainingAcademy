@@ -11,17 +11,12 @@ export default function SideMenu() {
     <>
       <aside className="hidden lg:inline bg-gradient-to-br from-gray-800 to-gray-900 -translate-x-80 inset-0 z-50 my-4 ml-4 h-[calc(93vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0">
         <div className="relative border-b border-white/20">
-          <p
-            className="flex items-center justify-center gap-4 pt-6 pb-4 px-8"
-          >
+          <p className="flex items-center justify-center gap-4 pt-6 pb-4 px-8">
             <span className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-white">
               Training Academy
             </span>
           </p>
-          <p
-            className="flex items-center justify-center gap-4 px-8 mb-4"
-            
-          >
+          <p className="flex items-center justify-center gap-4 px-8 mb-4">
             <span className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-white">
               Rent.Group | München
             </span>
@@ -223,7 +218,8 @@ export default function SideMenu() {
               >
                 <button
                   className={
-                    location.pathname === "/admin/approverList" || location.pathname === "/admin/approverListSubstitute"
+                    location.pathname === "/admin/approverList" ||
+                    location.pathname === "/admin/approverListSubstitute"
                       ? "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 active:opacity-[0.85] w-full flex items-center gap-4 px-4 capitalize"
                       : "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
                   }
@@ -246,6 +242,88 @@ export default function SideMenu() {
 
                   <p className="block antialiased  text-base leading-relaxed text-inherit font-medium capitalize">
                     Genehmiger
+                  </p>
+                </button>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to={"/admin/sendMessage"}
+                className={
+                  location.pathname === "/admin/sendMessage" ? "active" : ""
+                }
+              >
+                <button
+                  className={
+                    location.pathname === "/admin/sendMessage"
+                      ? "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 active:opacity-[0.85] w-full flex items-center gap-4 px-4 capitalize"
+                      : "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
+                  }
+                  type="button"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                    />
+                  </svg>
+
+                  <p className="block antialiased  text-base leading-relaxed text-inherit font-medium capitalize">
+                    Benachrichtigen
+                  </p>
+                </button>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to={"/admin/allClassesStatistic"}
+                className={
+                  location.pathname === "/admin/allClassesStatistic"
+                    ? "active"
+                    : ""
+                }
+              >
+                <button
+                  className={
+                    location.pathname === "/admin/cancelationStatistic" ||
+                    location.pathname ===
+                      "/admin/approverCancelationStatistic" ||
+                    location.pathname === "/admin/allClassesStatistic"
+                      ? "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 active:opacity-[0.85] w-full flex items-center gap-4 px-4 capitalize"
+                      : "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
+                  }
+                  type="button"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-7"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z"
+                    />
+                  </svg>
+
+                  <p className="block antialiased  text-base leading-relaxed text-inherit font-medium capitalize">
+                    Statistik
                   </p>
                 </button>
               </NavLink>

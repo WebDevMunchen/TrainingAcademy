@@ -6,11 +6,15 @@ import { AuthContext } from "../../context/AuthProvider";
 
 export default function SingleClassDetails() {
   const { user } = useContext(AuthContext);
-
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [activity, setActivity] = useState(null);
+  const [isWithin48Hours, setIsWithin48Hours] = useState(false);
+  const [formattedDate, setFormattedDate] = useState("");
+  const [formattedDatePrior, setFormattedDatePrior] = useState("");
+  const [formattedDatePriorGenehmigung, setFormattedDatePriorGenehmigung] =
+    useState("");
 
   useEffect(() => {
     axiosClient
@@ -18,25 +22,57 @@ export default function SingleClassDetails() {
       .then((response) => {
         setActivity(response.data);
       })
-      .catch((error) => {});
-  }, []);
+      .catch((error) => {
+        console.error("Error fetching activity:", error);
+      });
+  }, [id]);
+
+  useEffect(() => {
+    if (activity?.date && activity?.time) {
+      const datePart = activity.date.split("T")[0];
+      const [hours, minutes] = activity.time.split(":").map(Number); 
+
+      const [year, month, day] = datePart.split("-").map(Number);
+      const date = new Date(year, month - 1, day, hours, minutes);
+
+      const adjustDate = (date, days) => {
+        const newDate = new Date(date);
+        newDate.setDate(newDate.getDate() + days);
+        return newDate;
+      };
+
+      const formatDateString = (date) => {
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      };
+
+      const datePrior = adjustDate(date, -2);
+      const datePriorGenehmigung = adjustDate(date, -1);
+
+      setFormattedDate(formatDateString(date));
+      setFormattedDatePrior(formatDateString(datePrior));
+      setFormattedDatePriorGenehmigung(formatDateString(datePriorGenehmigung));
+
+      const now = new Date();
+      const hoursDifference = (date.getTime() - now.getTime()) / 3600000;
+      setIsWithin48Hours(hoursDifference <= 48);
+
+    }
+  }, [activity]);
 
   const showLegend = () => {
     document.getElementById("legend").showModal();
   };
 
-  const dateString = activity?.date;
-  const date = new Date(dateString);
+  const filteredRegisteredUsers =
+    user.role === "admin" || user.role === "teacher"
+      ? activity?.registeredUsers
+      : activity?.registeredUsers?.filter(
+          (registeredUser) => registeredUser.department === user.department
+        );
 
-  const day = date.getDate();
-  const dayPrior = date.getDate() - 2;
-  const dayPriorGenehimgung = date.getDate() - 1;
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
-
-  const formattedDate = `${day}/${month}/${year}`;
-  const formatedDateprior = `${dayPrior}/${month}/${year}`;
-  const formatedDatepriorGenehmigung = `${dayPriorGenehimgung}/${month}/${year}`;
   return (
     <>
       {!activity ? (
@@ -62,7 +98,9 @@ export default function SingleClassDetails() {
                       <div className="flex text-right mt-1 mr-12">
                         <NavLink
                           to={`/admin/editClass/${activity._id}`}
-                          className="flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                          className={`${
+                            isWithin48Hours ? "hidden" : "visible"
+                          } flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5`}
                         >
                           Bearbeiten
                         </NavLink>
@@ -89,9 +127,9 @@ export default function SingleClassDetails() {
                     <div className="flex flex-col">
                       <div>
                         <p className="font-semibold">
-                        Registrierungsende:{" "}
+                          Registrierungsende:{" "}
                           <span className="font-normal">
-                            {formatedDateprior} um {activity.time}
+                            {formattedDatePrior} um {activity.time}
                           </span>
                         </p>
                       </div>
@@ -99,7 +137,7 @@ export default function SingleClassDetails() {
                         <p className="font-semibold mt-1">
                           Genehmigungsende:{" "}
                           <span className="font-normal">
-                            {formatedDatepriorGenehmigung} um {activity.time}
+                            {formattedDatePriorGenehmigung} um {activity.time}
                           </span>
                         </p>
                       </div>
@@ -112,7 +150,13 @@ export default function SingleClassDetails() {
                           ) : (
                             <>
                               <span className="mr-2">Freie Plätze:</span>
-                              <span className="shrink-0 rounded-full bg-green-500 px-3 font-mono text-md font-medium tracking-tight text-white">
+                              <span
+                                className={`shrink-0 rounded-full ${
+                                  activity.capacity - activity.usedCapacity > 5
+                                    ? "bg-green-500"
+                                    : "bg-red-500"
+                                } px-3 font-mono text-md font-medium tracking-tight text-white`}
+                              >
                                 {activity.capacity - activity.usedCapacity}
                               </span>
                             </>
@@ -380,7 +424,7 @@ export default function SingleClassDetails() {
               </div>
             </>
           )}
-          {activity.registeredUsers.map((registeredUser) => {
+          {filteredRegisteredUsers.map((registeredUser) => {
             return (
               <ul
                 key={registeredUser._id}

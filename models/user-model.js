@@ -1,7 +1,9 @@
 const bcrypt = require("bcrypt");
 const { Schema, model, default: mongoose } = require("mongoose");
 
-const defaultApproverId = new mongoose.Types.ObjectId("668e958729a4cd5bb513f562");
+const defaultApproverId = new mongoose.Types.ObjectId(
+  "668e958729a4cd5bb513f562"
+);
 
 const userSchema = new Schema({
   logID: { type: String, required: true },
@@ -15,7 +17,11 @@ const userSchema = new Schema({
     default: "user",
   },
   dateOfRegistration: { type: Date, default: Date.now() },
-  userContactInformation: { type: Schema.Types.ObjectId, ref: "Approver", default: defaultApproverId },
+  userContactInformation: {
+    type: Schema.Types.ObjectId,
+    ref: "Approver",
+    default: defaultApproverId,
+  },
   status: { type: String, enum: ["aktiv", "inaktiv"], default: "aktiv" },
   inbox: { type: String, default: "webdevmunchen@gmail.com" },
   classesRegistered: [
@@ -32,6 +38,16 @@ const userSchema = new Schema({
         default: "in Prüfung",
       },
       reason: { type: String },
+    },
+  ],
+  message: [
+    {
+      messageID: { type: Schema.Types.ObjectId, ref: "Message" },
+      status: {
+        type: String,
+        enum: ["read", "unread"],
+        default: "unread",
+      },
     },
   ],
 });

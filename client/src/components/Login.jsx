@@ -2,9 +2,11 @@ import { useForm } from "react-hook-form";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { forgotPassword } from "../utils/forgotPassword";
+import { useLocation } from "react-router-dom";
 
 export default function Login() {
   const { login } = useContext(AuthContext);
+  const location = useLocation();
 
   const {
     register,
@@ -13,7 +15,8 @@ export default function Login() {
   } = useForm();
 
   const onSubmit = (data) => {
-    login(data);
+    const redirectUrl = new URLSearchParams(location.search).get("redirect");
+    login(data, redirectUrl);
   };
 
   return (

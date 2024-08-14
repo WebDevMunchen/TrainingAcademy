@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export default function ClassListPreview({ activity }) {
   const [ausstehendCount, setAusstehendCount] = useState(0);
+  const [isButtonVisible, setIsButtonVisible] = useState(true);
 
   useEffect(() => {
     const ausstehendUsers = activity.registeredUsers.filter((user) => {
@@ -14,6 +15,20 @@ export default function ClassListPreview({ activity }) {
       });
     });
     setAusstehendCount(ausstehendUsers.length);
+  }, [activity]);
+
+  useEffect(() => {
+    const dateString = activity?.date;
+    const timeString = activity?.time;
+    const [hoursStr, minutesStr] = timeString.split(":");
+    const classDate = new Date(dateString);
+    classDate.setHours(parseInt(hoursStr, 10));
+    classDate.setMinutes(parseInt(minutesStr, 10));
+
+    const now = new Date();
+    const hoursDifference = (classDate - now) / 3600000;
+
+    setIsButtonVisible(hoursDifference > 48);
   }, [activity]);
 
   const dateString = activity?.date;
@@ -57,7 +72,7 @@ export default function ClassListPreview({ activity }) {
         </p>
       </td>
 
-      <td className="py-3 px-5 border-b border-blue-gray-50">
+      <td className="py-3 px-2 border-b border-blue-gray-50">
         <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
           {activity.time}
         </p>
@@ -70,6 +85,38 @@ export default function ClassListPreview({ activity }) {
         <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
           {ausstehendCount}
         </p>
+      </td>
+
+      <td className="py-3 px-5 border-b border-blue-gray-50">
+        <div className="flex gap-2 justify-center items-center">
+          <p className="block antialiased text-sm font-medium text-blue-gray-600 text-center">
+            {activity.stornoReason.length}
+          </p>
+          <NavLink
+            to={`/admin/cancelationStatistic/${activity._id}`}
+            className="block antialiased  text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z"
+              />
+            </svg>
+          </NavLink>
+        </div>
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50 flex justify-center">
@@ -93,12 +140,14 @@ export default function ClassListPreview({ activity }) {
         >
           Details
         </NavLink>
+        {isButtonVisible && (
         <NavLink
           to={`/admin/editClass/${activity._id}`}
-          className="mb-2 block antialiased  text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
+          className="mb-2 block antialiased text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
         >
           Bearbeiten
         </NavLink>
+      )}
         <NavLink
           to={`/admin/report/${activity._id}`}
           className="block antialiased  text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"

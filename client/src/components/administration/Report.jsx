@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import SideMenu from "./SideMenu";
 import ReportCard from "./ReportCard";
 
 export default function Report() {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const [activity, setActivity] = useState(null);
 

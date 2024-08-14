@@ -8,7 +8,6 @@ import { Bounce, toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
-
 export default function ApproverListSubstitute() {
   const { approver, setApprover } = useContext(AuthContext);
 
@@ -29,12 +28,10 @@ export default function ApproverListSubstitute() {
       .then((responseApprovers) => {
         setApprover(responseApprovers.data);
 
-        notifySuccess()
+        notifySuccess();
       })
 
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const notifySuccess = () =>
@@ -61,19 +58,23 @@ export default function ApproverListSubstitute() {
           <div className="flex flex-col items-center px-0 py-8 lg:py-12 lg:px-6 mx-auto w-10/12">
             <div className="bg-white rounded-md shadow w-full lg:w-5/12">
               <div className="p-6 space-y-4 md:space-y-2.5 sm:p-8">
-              <div className="flex justify-around gap-16 mb-8">
-                <NavLink to={"/admin/approverList"} className="text-xl py-1.5 px-2.5 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Hauptverantwortung
-                </NavLink>
-                <NavLink to={"/admin/approverListSubstitute"} 
+                <div className="flex justify-around gap-16 mb-8">
+                  <NavLink
+                    to={"/admin/approverList"}
+                    className="text-xl py-1.5 px-2.5 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+                  >
+                    Hauptverantwortung
+                  </NavLink>
+                  <NavLink
+                    to={"/admin/approverListSubstitute"}
                     className={
                       location.pathname === "/admin/approverListSubstitute"
                         ? "text-xl px-2.5 py-1.5 rounded-lg bg-[#293751] font-semibold leading-tight tracking-tight text-white md:text-2xl dark:text-white"
                         : "middle none  font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
                     }
-                >
-                  Stellvertretung
-                </NavLink>
+                  >
+                    Stellvertretung
+                  </NavLink>
                 </div>
                 <form
                   className="space-y-4 w-full md:space-y-7"
@@ -118,7 +119,9 @@ export default function ApproverListSubstitute() {
                         HR & Training:
                       </label>
                       <input
-                        {...register("hrSubstituteSubstitute", { required: true })}
+                        {...register("hrSubstituteSubstitute", {
+                          required: true,
+                        })}
                         defaultValue={approver[0].hrSubstitute}
                         placeholder="tbd"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -164,7 +167,9 @@ export default function ApproverListSubstitute() {
                         Buchhaltung:
                       </label>
                       <input
-                        {...register("buchhaltungSubstitute", { required: true })}
+                        {...register("buchhaltungSubstitute", {
+                          required: true,
+                        })}
                         defaultValue={approver[0].buchhaltungSubstitute}
                         placeholder="tbd"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -211,7 +216,9 @@ export default function ApproverListSubstitute() {
                         Projektmanagement:
                       </label>
                       <input
-                        {...register("projektmanagementSubstitute", { required: true })}
+                        {...register("projektmanagementSubstitute", {
+                          required: true,
+                        })}
                         defaultValue={approver[0].projektmanagementSubstitute}
                         placeholder="tbd"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -226,7 +233,9 @@ export default function ApproverListSubstitute() {
                         Officemanagement:
                       </label>
                       <input
-                        {...register("officemanagementSubstitute", { required: true })}
+                        {...register("officemanagementSubstitute", {
+                          required: true,
+                        })}
                         defaultValue={approver[0].officemanagementSubstitute}
                         placeholder="tbd"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

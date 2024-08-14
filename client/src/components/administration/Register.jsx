@@ -17,6 +17,7 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
     setValue,
+    watch,
   } = useForm();
 
   const onSubmit = (data) => {
@@ -71,6 +72,8 @@ export default function Register() {
       transition: Bounce,
       className: "mt-14 mr-6",
     });
+
+  const password = watch("password", "");
 
   return (
     <>
@@ -175,20 +178,20 @@ export default function Register() {
                       })}
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option value={"logistik"}>Logistik</option>
-                      <option value={"vertrieb"}>Vertrieb</option>
+                      <option value={"Logistik"}>Logistik</option>
+                      <option value={"Vertrieb"}>Vertrieb</option>
                       <option value={"IT & Services"}>IT & Services</option>
-                      <option value={"fuhrpark"}>Fuhrpark</option>
+                      <option value={"Fuhrpark"}>Fuhrpark</option>
                       <option value={"HR & Training"}>HR & Training</option>
-                      <option value={"buchhaltung"}>Buchhaltung</option>
-                      <option value={"einkauf"}>Einkauf & Anmietung</option>
-                      <option value={"design & Planung"}>
+                      <option value={"Buchhaltung"}>Buchhaltung</option>
+                      <option value={"Einkauf"}>Einkauf & Anmietung</option>
+                      <option value={"Design & Planung"}>
                         Design & Planung
                       </option>
-                      <option value={"projektmanagement"}>
+                      <option value={"Projektmanagement"}>
                         Projektmanagement
                       </option>
-                      <option value={"officemanagement"}>
+                      <option value={"Officemanagement"}>
                         Office Management
                       </option>
                     </select>
@@ -208,7 +211,11 @@ export default function Register() {
                         type={passwordVisible ? "text" : "password"}
                         placeholder="••••••••"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        value={generatedPassword}
+                        value={password}
+                        onChange={(e) => {
+                          setGeneratedPassword(e.target.value);
+                          setValue("password", e.target.value);
+                        }}
                       />
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -247,23 +254,22 @@ export default function Register() {
                         />
                       </svg>
                       <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6 cursor-pointer transition-transform duration-300 transform hover:scale-125 hover:text-blue-600"
-                            onClick={generatePassword}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"
-                            />
-                          </svg>
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-6 cursor-pointer transition-transform duration-300 transform hover:scale-125 hover:text-blue-600"
+                        onClick={generatePassword}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"
+                        />
+                      </svg>
                     </div>
                   </div>
-
                 </div>
 
                 <div className="flex justify-center">

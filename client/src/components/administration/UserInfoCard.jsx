@@ -1,6 +1,6 @@
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import SideMenu from "./SideMenu";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { updatePBC } from "../../utils/updatePBC";
 import { useForm } from "react-hook-form";
@@ -29,6 +29,8 @@ export default function UserInfoCard() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    watch,
   } = useForm();
 
   const onSubmit = (data) => {
@@ -98,8 +100,8 @@ export default function UserInfoCard() {
     return notAttendedClasses.length;
   };
   const sortedClasses = userInfomation?.classesRegistered.sort((a, b) => {
-    const dateA = new Date(a.registeredClassID.date);
-    const dateB = new Date(b.registeredClassID.date);
+    const dateA = new Date(a.registeredClassID?.date);
+    const dateB = new Date(b.registeredClassID?.date);
     return dateB - dateA;
   });
 
@@ -117,54 +119,52 @@ export default function UserInfoCard() {
       className: "mr-6",
     });
 
-    const generateRandomString = (length) => {
-      const characters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      let result = "";
-      const charactersLength = characters.length;
-      for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * charactersLength);
-        result += characters[randomIndex];
-      }
-      return result;
-    };
-  
-    const handleTooltipToggle = () => {
-      setIsTooltipVisible(!isTooltipVisible);
-    };
-  
-    const generatePassword = () => {
-      const randomString = generateRandomString(8);
-      setGeneratedPassword(randomString);
-      setValue("password", randomString);
-    };
-  
-    const togglePasswordVisibility = () => {
-      setPasswordVisible(!passwordVisible);
-    };
-  
-    const copyToClipboard = () => {
-      navigator.clipboard
-        .writeText(generatedPassword)
-        .then(() => {
-          notifyCopied();
-        })
-        .catch((err) => {});
-    };
-  
-    const notifyCopied = () =>
-      toast.success("Kennwort in die Zwischenablage kopiert!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        className: "mt-14 mr-6",
-      });
+  const generateRandomString = (length) => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charactersLength);
+      result += characters[randomIndex];
+    }
+    return result;
+  };
+
+  const generatePassword = () => {
+    const randomString = generateRandomString(8);
+    setGeneratedPassword(randomString);
+    setValue("password", randomString);
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(generatedPassword)
+      .then(() => {
+        notifyCopied();
+      })
+      .catch((err) => {});
+  };
+
+  const notifyCopied = () =>
+    toast.success("Kennwort in die Zwischenablage kopiert!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mt-14 mr-6",
+    });
+
+  const password = watch("password", "");
 
   return (
     <>
@@ -219,7 +219,7 @@ export default function UserInfoCard() {
               </div>
               <div className="mt-12 text-center border-b pb-6">
                 <h1 className="text-4xl font-medium text-gray-700">
-                  {userInfomation.firstName + " " + userInfomation.lastName}
+                  {userInfomation?.firstName + " " + userInfomation?.lastName}
                 </h1>
                 <p className="font-light text-gray-600 mt-3">
                   <span className="font-medium">Registriert seit:</span>{" "}
@@ -230,7 +230,7 @@ export default function UserInfoCard() {
                   <span
                     className={`px-2 inline-flex text-sm leading-5 font-semibold rounded-full ml-2  
     ${
-      userInfomation.status === "aktiv"
+      userInfomation?.status === "aktiv"
         ? "bg-green-100 text-green-800"
         : "bg-red-200 text-red-700"
     }`}
@@ -241,15 +241,15 @@ export default function UserInfoCard() {
 
                 <p className="mt-8 text-gray-600">
                   <span className="font-medium">Abteilung:</span>{" "}
-                  {userInfomation.department.charAt(0).toUpperCase() +
-                    userInfomation.department.slice(1)}{" "}
+                  {userInfomation?.department.charAt(0).toUpperCase() +
+                    userInfomation?.department.slice(1)}{" "}
                   - <span className="font-medium">Rolle: </span>
                   {userInfomation.role.charAt(0).toUpperCase() +
                     userInfomation.role.slice(1)}
                 </p>
                 <p className="mt-2 text-gray-600">
                   <span className="font-medium"> Kürzel:</span>{" "}
-                  {userInfomation.logID}
+                  {userInfomation?.logID}
                 </p>
                 <div className="flex items-center justify-center">
                   <div>
@@ -264,7 +264,7 @@ export default function UserInfoCard() {
                 <div>
                   <div className="mt-1 flex items-center justify-center lg:hidden">
                     <NavLink
-                      to={`/admin/userProfile/update/${userInfomation._id}`}
+                      to={`/admin/userProfile/update/${userInfomation?._id}`}
                       className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125"
                     >
                       Benutzerinformationen bearbeiten
@@ -289,8 +289,12 @@ export default function UserInfoCard() {
                             {...register("password", { required: true })}
                             type={passwordVisible ? "text" : "password"}
                             placeholder="••••••••"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-38 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value={generatedPassword}
+                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-5/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            value={password}
+                            onChange={(e) => {
+                              setGeneratedPassword(e.target.value);
+                              setValue("password", e.target.value);
+                            }}
                           />
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -417,14 +421,14 @@ export default function UserInfoCard() {
                             <td className="py-3 px-5 border-b border-blue-gray-50">
                               <div className="flex items-center gap-4">
                                 <p className="block antialiased  text-sm leading-normal text-blue-gray-900 font-bold">
-                                  {activity.registeredClassID.title}
+                                  {activity.registeredClassID?.title}
                                 </p>
                               </div>
                             </td>
 
                             <td className="py-3 px-5 border-b border-blue-gray-50">
                               <div className="flex justify-center">
-                                {activity.registeredClassID.department.map(
+                                {activity.registeredClassID?.department.map(
                                   (image, index) => {
                                     return (
                                       <img
@@ -441,19 +445,19 @@ export default function UserInfoCard() {
 
                             <td className="py-3 px-5 border-b border-blue-gray-50">
                               <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
-                                {activity.registeredClassID.location}
+                                {activity.registeredClassID?.location}
                               </p>
                             </td>
 
                             <td className="py-3 px-5 border-b border-blue-gray-50">
                               <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
-                                {formatDate(activity.registeredClassID.date)}
+                                {formatDate(activity.registeredClassID?.date)}
                               </p>
                             </td>
 
                             <td className="py-3 px-5 border-b border-blue-gray-50">
                               <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
-                                {activity.registeredClassID.time}
+                                {activity.registeredClassID?.time}
                               </p>
                             </td>
 
@@ -463,26 +467,26 @@ export default function UserInfoCard() {
                                   className={`px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full 
       ${
         activity
-          ? activity.status === "genehmigt"
+          ? activity?.status === "genehmigt"
             ? "bg-green-100 text-green-800"
-            : activity.status === "ausstehend"
+            : activity?.status === "ausstehend"
             ? "bg-orange-100 text-orange-800"
             : "bg-red-200 text-red-700"
           : ""
       }`}
                                 >
                                   {activity
-                                    ? activity.status
+                                    ? activity?.status
                                     : "nicht registriert"}
                                 </span>
-                                {activity && activity.status === "abgelehnt" ? (
+                                {activity && activity?.status === "abgelehnt" ? (
                                   <span
                                     className="tooltip ml-2 hover:cursor-pointer"
                                     style={{ width: "auto", height: "auto" }}
                                     data-tip={
-                                      /^[^a-zA-Z]*$/.test(activity.reason)
+                                      /^[^a-zA-Z]*$/.test(activity?.reason)
                                         ? "Kein Grund vorhanden"
-                                        : activity.reason
+                                        : activity?.reason
                                     }
                                   >
                                     <svg
@@ -517,8 +521,8 @@ export default function UserInfoCard() {
 
                             <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
                               {activity &&
-                              (activity.status === "abgelehnt" ||
-                                activity.status === "ausstehend") ? (
+                              (activity?.status === "abgelehnt" ||
+                                activity?.status === "ausstehend") ? (
                                 <span className="px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full text-gray-500 bg-gray-200 text-gray-800">
                                   nicht angemeldet
                                 </span>
@@ -527,16 +531,16 @@ export default function UserInfoCard() {
                                   className={`px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full 
         ${
           activity
-            ? activity.statusAttended === "teilgenommen"
+            ? activity?.statusAttended === "teilgenommen"
               ? "bg-green-100 text-green-800"
-              : activity.statusAttended === "in Prüfung"
+              : activity?.statusAttended === "in Prüfung"
               ? "bg-orange-100 text-orange-800"
               : "bg-red-200 text-red-700"
             : ""
         }`}
                                 >
                                   {activity
-                                    ? activity.statusAttended
+                                    ? activity?.statusAttended
                                     : "nicht registriert"}
                                 </span>
                               )}
