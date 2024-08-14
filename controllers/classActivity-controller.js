@@ -292,9 +292,13 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
       }
 
       const mailOptions = {
-        from: process.env.USER,
+        from: {
+          name: "Schulung geändert - Training Academy - No reply",
+          address: process.env.USER,
+        },
         to: toAddresses,
-        subject: `Änderungen bei der Schulung: "${updatedClass.title}"`,
+        subject: "Training Academy - Rent.Group München - Schulung geändert",
+        text: "Training Academy - Rent.Group München - Schulung geändert",
         html: mailHtml,
       };
 
