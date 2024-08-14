@@ -70,10 +70,10 @@ export default function PieChartAllClasses() {
       const deletedClassesData = deletedClassesResponse.data;
 
       const totalClasses = allClassesData.filter(
-        (activity) => activity.year === year.toString()
+        (activity) => activity?.year === year.toString()
       ).length;
       const deletedClasses = deletedClassesData.filter(
-        (activity) => activity.year === year.toString()
+        (activity) => activity?.year === year.toString()
       ).length;
 
       setTotalActivities(totalClasses);
@@ -98,7 +98,7 @@ export default function PieChartAllClasses() {
       allUsers.forEach((user) => {
         user.classesRegistered.forEach((registeredClass) => {
           const classYear = new Date(
-            registeredClass.registeredClassID.year
+            registeredClass.registeredClassID?.year
           ).getFullYear();
           if (classYear === year) {
             if (registeredClass.status === "genehmigt") {
