@@ -54,7 +54,12 @@ export default function ApproverList() {
       <div className="bg-gray-50/50 flex">
         <SideMenu />
         {!approver ? (
-          <p>Loading...</p>
+          <div class="flex mt-2 justify-center">
+            <div class="relative">
+              <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+              <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+            </div>
+          </div>
         ) : (
           <div className="flex flex-col items-center px-0 py-8 lg:py-12 lg:px-6 mx-auto w-10/12">
             <div className="bg-white rounded-md shadow w-full lg:w-5/12">

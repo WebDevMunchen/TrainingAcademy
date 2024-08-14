@@ -178,7 +178,13 @@ export default function EditClass() {
   return (
     <>
       {!activityInformation ? (
-        <p>Loading...</p>
+                  <div class="flex mt-2 justify-center">
+          <div class="relative">
+              <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+              <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
+              </div>
+          </div>
+      </div>
       ) : (
         <div className="bg-gray-50/50 flex">
           <SideMenu />

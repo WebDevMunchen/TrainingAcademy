@@ -68,7 +68,13 @@ export default function ClassesOverview() {
             </div>
             <div className="grid grid-cols-1 gap-2 mt-12 sm:grid-cols-1 mt-2 lg:mt-2 sm:w-11/12 lg:w-10/12 mx-auto">
               {!user ? (
-                <p>Loading</p>
+                                  <div class="flex mt-8 justify-center">
+                  <div class="relative">
+                      <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+                      <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
+                      </div>
+                  </div>
+              </div>
               ) : (
                 filterByYear(user.classesRegistered, selectedYear)
                   .slice()

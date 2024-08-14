@@ -498,6 +498,10 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     return res.status(404).json({ message: "Class not found" });
   }
 
+  const isRelevantStatus = ["ausstehend", "genehmigt"].includes(
+    notifyBeforeDelete.status
+  );
+
   const deletedClassData = { ...notifyBeforeDelete.toObject(), storno: true };
   await DeletedClassActivity.create(deletedClassData);
 
@@ -505,9 +509,11 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     "classesRegistered.registeredClassID": id,
   });
 
-  const userNames = usersRegistered.map(
-    (user) => `${user.firstName} ${user.lastName} (${user.department})`
-  );
+  const userNames = isRelevantStatus
+    ? usersRegistered.map(
+        (user) => `${user.firstName} ${user.lastName} (${user.department})`
+      )
+    : [];
 
   const transporter = nodemailer.createTransport({
     service: "gmail",

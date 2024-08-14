@@ -67,9 +67,8 @@ export default function Dashboard() {
 
   const remainingSpots = totalCapacity - totalAttendees;
 
-  const years = Array.from({ length: 10 }, (_, i) =>
-    (new Date().getFullYear() + i).toString()
-  );
+  const startYear = 2020;
+  const years = Array.from({ length: 11 }, (_, i) => (startYear + i).toString());
 
   return (
     <>
@@ -95,7 +94,13 @@ export default function Dashboard() {
                     Anzahl der registrierten Mitarbeiter
                   </h6>
                   <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
-                    {!allUsers ? <>Loading</> : allUsers?.length}
+                    {!allUsers ?                   <div class="flex mt-8 justify-center">
+                  <div class="relative">
+                      <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+                      <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
+                      </div>
+                  </div>
+              </div> : allUsers?.length}
                   </h4>
                 </div>
                 <div className="flex gap-3 items-center border-t border-blue-gray-50 p-4">
