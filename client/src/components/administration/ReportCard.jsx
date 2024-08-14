@@ -67,7 +67,8 @@ export default function ReportCard({ registeredUser, activity }) {
       </td>
 
       <td className="px-6 py-4 whitespace-nowrap">
-        {registration?.status === "abgelehnt" ? (
+        {registration?.status === "abgelehnt" ||
+        registration?.status === "ausstehend" ? (
           <span className="bg-slate-200 text-white-800 px-2 inline-flex text-sm leading-5 font-semibold rounded-full">
             nicht angemeldet
           </span>
@@ -84,7 +85,7 @@ export default function ReportCard({ registeredUser, activity }) {
             : ""
         }`}
           >
-            {registration ? registration?.statusAttended : "Not Registered"}
+            {registration ? registration?.statusAttended : "nicht registriert"}
           </span>
         )}
       </td>

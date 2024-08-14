@@ -479,7 +479,8 @@ export default function UserInfoCard() {
                                     ? activity?.status
                                     : "nicht registriert"}
                                 </span>
-                                {activity && activity?.status === "abgelehnt" ? (
+                                {activity &&
+                                activity?.status === "abgelehnt" ? (
                                   <span
                                     className="tooltip ml-2 hover:cursor-pointer"
                                     style={{ width: "auto", height: "auto" }}
