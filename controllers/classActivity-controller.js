@@ -78,7 +78,6 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
 
   const { id } = req.params;
 
-  // Find the existing class activity by ID
   const existingActivity = await ClassActivity.findById(id).populate({
     path: 'registeredUsers',
     match: { 'classesRegistered.status': { $in: ['ausstehend', 'genehmigt'] } },
@@ -92,10 +91,8 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     });
   }
 
-  // Initialize fileUrl with the existing file URL
   let fileUrl = existingActivity.fileUrl;
 
-  // If a new file is uploaded, update the fileUrl
   if (req.file) {
     try {
       const result = await cloudinary.uploader.upload(req.file.path, {
@@ -111,7 +108,6 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     }
   }
 
-  // Prepare the updated class activity data
   const updatedClass = {
     title,
     description,
@@ -125,16 +121,16 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     time,
     teacher,
     safetyBriefing,
-    fileUrl,  // Use the updated or existing fileUrl
+    fileUrl,
   };
 
   try {
-    // Update the class activity in the database
+   
     const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, {
       new: true,
     });
 
-    // Check if any key fields have changed for sending notifications
+   
     const approversId = "668e958729a4cd5bb513f562";
     const findApprovers = await Approver.findById(approversId);
 
@@ -239,7 +235,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
               </tr>
             </tbody>
           </table>
-          <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p>
+          <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p><br />
           <p>Bei Fragen gerne melden.</p>
           <p>Euer Training Abteilung</p>
         </div>
@@ -285,11 +281,11 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
             </tr>
           </tbody>
         </table>
-        <p>Diese Benutzer haben sich bereits angemeldet und sollten benachrichtigt werden:</p>
+        <p>Diese Benutzer haben sich bereits angemeldet:</p>
         <ul>
           ${userNames.map(userName => `<li>${userName}</li>`).join('')}
         </ul>
-        <p>Bitte meldet euch bei den jeweiligen Abteilungen, um die Änderungen zu koordinieren.</p>
+        <p>Bitte die Mitarbeiter aus eurer Abteilung informieren, falls sie betroffen sind.</p>
         <p>Bei Fragen gerne melden.</p>
         <p>Euer Training Abteilung</p>
       </div>`;
@@ -311,7 +307,6 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
       });
     }
 
-    // Send a success response with the updated activity data
     res.status(200).json({
       success: true,
       message:
@@ -507,7 +502,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
   });
 
   const userNames = usersRegistered.map(
-    (user) => `${user.firstName} ${user.lastName}`
+    (user) => `${user.firstName} ${user.lastName} (${user.department})`
   );
 
   const transporter = nodemailer.createTransport({
@@ -557,7 +552,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
         <ul>
           ${userNames.map((name) => `<li>${name}</li>`).join("")}
         </ul>
-         <p>Bitte die Kollegen aus eurer Abteilung informieren, wenn sie betroffen sind.</p>
+         <p>Bitte die Kollegen aus eurer Abteilung informieren, falls sie betroffen sind.</p>
         <p>Bei Fragen gerne melden.</p>
         <p>Euer Training Abteilung</p>
 
