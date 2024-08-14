@@ -46,7 +46,6 @@ export default function SingleClassDetailsAdmin() {
   const formatedDatePrior = formatDateString(datePrior);
   const formatedDatePriorGenehmigung = formatDateString(datePriorGenehmigung);
 
-
   const now = new Date();
   const hoursDifference = (date - now) / 3600000;
 
@@ -72,31 +71,37 @@ export default function SingleClassDetailsAdmin() {
                 <div className="py-2 relative  ">
                   <div className="hidden lg:flex justify-between">
                     {user.role === "admin" && hoursDifference > 48 ? (
-                      <div className="flex text-right mt-1 mr-12">
-                        <NavLink
-                          to={`/admin/editClass/${activity._id}`}
-                          className="flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-                        >
-                          Bearbeiten
-                        </NavLink>
+                      <div className="flex gap-2 text-right mt-1">
                         <button
                           onClick={() => navigate("/classes")}
                           className="ml-2 flex items-center text-white  h-[40px] px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                         >
                           Übersicht
                         </button>
+                        <NavLink
+                          to={`/admin/editClass/${activity._id}`}
+                          className="flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                        >
+                          Bearbeiten
+                        </NavLink>
                       </div>
                     ) : (
-                      <div className="flex text-right mt-1 mr-40">
+                      <div className="flex text-right mt-1">
                         <button
                           onClick={() => navigate("/classes")}
                           className="ml-2 flex items-center text-white  h-[40px]  px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                         >
                           Überischt
                         </button>
+                        <NavLink
+                          to={`/admin/editClass/${activity._id}`}
+                          className="invisible flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                        >
+                          Bearbeiten
+                        </NavLink>
                       </div>
                     )}
-                    <h3 className="flex justify-center text-lg font-semibold text-black">
+                    <h3 className="flex ml-10 justify-center text-lg font-semibold text-black">
                       {activity.title}
                     </h3>
                     <div className="flex flex-col">

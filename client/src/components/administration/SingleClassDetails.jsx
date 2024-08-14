@@ -95,24 +95,24 @@ export default function SingleClassDetails() {
                 <div className="py-2 relative  ">
                   <div className="hidden lg:flex justify-between">
                     {user.role === "admin" ? (
-                      <div className="flex text-right mt-1 mr-12">
-                        <NavLink
-                          to={`/admin/editClass/${activity._id}`}
-                          className={`${
-                            isWithin48Hours ? "hidden" : "visible"
-                          } flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5`}
-                        >
-                          Bearbeiten
-                        </NavLink>
+                      <div className="flex gap-2 text-right mt-1">
                         <button
                           onClick={() => navigate("/classes")}
                           className="ml-2 flex items-center text-white  h-[40px] px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                         >
                           Übersicht
                         </button>
+                        <NavLink
+                          to={`/admin/editClass/${activity._id}`}
+                          className={`${
+                            isWithin48Hours ? "invisible" : "visible"
+                          } flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5`}
+                        >
+                          Bearbeiten
+                        </NavLink>
                       </div>
                     ) : (
-                      <div className="flex text-right mt-1 mr-40">
+                      <div className="flex text-right mt-1">
                         <button
                           onClick={() => navigate("/classes")}
                           className="ml-2 flex items-center text-white  h-[40px]  px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
@@ -121,7 +121,7 @@ export default function SingleClassDetails() {
                         </button>
                       </div>
                     )}
-                    <h3 className="flex justify-center text-lg font-semibold text-black">
+                    <h3 className="flex ml-10 justify-center text-lg font-semibold text-black">
                       {activity.title}
                     </h3>
                     <div className="flex flex-col">
