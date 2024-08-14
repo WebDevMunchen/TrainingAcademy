@@ -16,6 +16,9 @@ export default function EditClass() {
   const [activityInformation, setActivityInformation] = useState(null);
   const [fileUploadHidden, setFileUploadHidden] = useState("hidden");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [fileName, setFileName] = useState("");
+
+  console.log(activityInformation)
 
   const {
     register,
@@ -35,6 +38,14 @@ export default function EditClass() {
         setFileUploadHidden(
           response.data.safetyBriefing ? "visible" : "hidden"
         );
+
+        if (response.data.fileUrl) {
+          const fileUrl = response.data.fileUrl;
+          const fileName = fileUrl.split("/").pop(); // Extract the file name from the URL
+          setSelectedFile(fileUrl); // Assuming the file URL is sufficient as a default value
+          setFileName(fileName);
+        }
+
         const currentDate = new Date();
         const { date, time } = response.data;
 
@@ -69,8 +80,6 @@ export default function EditClass() {
     }
   };
 
-
-
   const onSubmit = async (data) => {
     data.department = selectedDepartments;
 
@@ -82,8 +91,10 @@ export default function EditClass() {
         formData.append(key, data[key]);
       }
     }
-    if (selectedFile) {
+    if (selectedFile && typeof selectedFile !== "string") {
       formData.append("file", selectedFile);
+    } else if (activityInformation?.fileUrl) {
+      formData.append("existingFileUrl", activityInformation?.fileUrl);
     }
     try {
       await axiosClient.put(`/classActivity/editClass/${id}`, formData, {
@@ -122,7 +133,11 @@ export default function EditClass() {
   const formattedDate = formatDate(activityInformation?.date);
 
   const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    if (file) {
+      setFileName(file.name);
+    }
   };
 
   const handleHidingFileUpload = () => {
@@ -300,7 +315,7 @@ export default function EditClass() {
                       />
                     </div>
 
-                    <div className={fileUploadHidden}>
+                    <div className={`flex items-center gap-3 ${fileUploadHidden}`}>
                       <label
                         htmlFor="uploadFile1"
                         className="flex bg-gray-800 hover:bg-gray-700 text-white ml-2 text-base px-4 py-1.5 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif]"
@@ -327,6 +342,22 @@ export default function EditClass() {
                           className="hidden"
                         />
                       </label>
+                      {fileName && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-8 text-green-600"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+                        />
+                      </svg>
+                    )}
                     </div>
                   </div>
                   <div className="flex flex-col lg:flex-row lg:justify-between">

@@ -78,10 +78,12 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
 
   const { id } = req.params;
 
+  // Find the existing class activity by ID
   const existingActivity = await ClassActivity.findById(id).populate({
     path: 'registeredUsers',
     match: { 'classesRegistered.status': { $in: ['ausstehend', 'genehmigt'] } },
-    select: 'firstName lastName department classesRegistered',});
+    select: 'firstName lastName department classesRegistered',
+  });
 
   if (!existingActivity) {
     return res.status(404).json({
@@ -90,7 +92,10 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     });
   }
 
-  let fileUrl = "";
+  // Initialize fileUrl with the existing file URL
+  let fileUrl = existingActivity.fileUrl;
+
+  // If a new file is uploaded, update the fileUrl
   if (req.file) {
     try {
       const result = await cloudinary.uploader.upload(req.file.path, {
@@ -106,6 +111,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     }
   }
 
+  // Prepare the updated class activity data
   const updatedClass = {
     title,
     description,
@@ -119,14 +125,16 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     time,
     teacher,
     safetyBriefing,
-    fileUrl,
+    fileUrl,  // Use the updated or existing fileUrl
   };
 
   try {
+    // Update the class activity in the database
     const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, {
       new: true,
     });
 
+    // Check if any key fields have changed for sending notifications
     const approversId = "668e958729a4cd5bb513f562";
     const findApprovers = await Approver.findById(approversId);
 
@@ -161,13 +169,12 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     const formattedTimeUpdated = updatedClass.time;
 
     const fieldsChanged =
-      JSON.stringify(existingActivity.date) !==
-        JSON.stringify(updatedClass.date) ||
+      JSON.stringify(existingActivity.date) !== JSON.stringify(updatedClass.date) ||
       existingActivity.time.trim() !== updatedClass.time.trim() ||
       existingActivity.location.trim() !== updatedClass.location.trim() ||
       existingActivity.teacher.trim() !== updatedClass.teacher.trim();
 
-      const userNames = existingActivity.registeredUsers
+    const userNames = existingActivity.registeredUsers
       .filter(user => 
         user.classesRegistered.some(
           registration => registration.registeredClassID.equals(id) &&
@@ -177,7 +184,6 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
       .map(user => `${user.firstName} ${user.lastName} (${user.department})`);
 
     if (fieldsChanged) {
-      
       const transporter = nodemailer.createTransport({
         service: "gmail",
         host: "smtp.gmail.com",
@@ -189,9 +195,9 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
         },
       });
 
-      let mailHtml = ""
+      let mailHtml = "";
 
-      if(userNames.length === 0) {
+      if (userNames.length === 0) {
         mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
           <p>Hallo zusammen,</p>
@@ -279,41 +285,33 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
             </tr>
           </tbody>
         </table>
-        <p>Folgende Mitarbeiter warten auf eine Genehmigung oder sind schon genehmigt:</p>
+        <p>Diese Benutzer haben sich bereits angemeldet und sollten benachrichtigt werden:</p>
         <ul>
-          ${userNames.map((name) => `<li>${name}</li>`).join("")}
+          ${userNames.map(userName => `<li>${userName}</li>`).join('')}
         </ul>
-        <p>Bitte die Kollegen aus eurer Abteilung informieren, falls sie betroffen sind, und passt gegebenenfalls deren Genehmigungsstatus an.</p>
+        <p>Bitte meldet euch bei den jeweiligen Abteilungen, um die Änderungen zu koordinieren.</p>
         <p>Bei Fragen gerne melden.</p>
         <p>Euer Training Abteilung</p>
-      </div>
-    `
+      </div>`;
       }
 
-
       const mailOptions = {
-        from: {
-          name: "Schulung Aktualisiert - No reply",
-          address: process.env.USER,
-        },
+        from: process.env.USER,
         to: toAddresses,
-        subject:
-          "Training Academy - Rent.Group München - Schulung Aktualisiert",
-        text: "Training Academy - Rent.Group München - Schulung Aktualisiert",
+        subject: `Änderungen bei der Schulung: "${updatedClass.title}"`,
         html: mailHtml,
       };
 
-      const sendMail = async (transporter, mailOptions) => {
-        try {
-          await transporter.sendMail(mailOptions);
-        } catch (error) {
-          console.error("Fehler beim Versenden der E-Mail:", error);
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error("Error sending email:", error);
+        } else {
+          console.log("Email sent:", info.response);
         }
-      };
-
-      await sendMail(transporter, mailOptions);
+      });
     }
 
+    // Send a success response with the updated activity data
     res.status(200).json({
       success: true,
       message:
@@ -325,6 +323,8 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     next(error);
   }
 });
+
+
 
 const updateCancelationReason = asyncWrapper(async (req, res, next) => {
   const { stornoReason } = req.body;
