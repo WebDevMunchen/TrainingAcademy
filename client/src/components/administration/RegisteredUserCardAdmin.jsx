@@ -13,14 +13,10 @@ import notAttended from "../../assets/notAttended.png";
 export default function RegisteredUserCardAdmin({
   registeredUser,
   activityId,
-  setActivity
+  setActivity,
 }) {
-  const {
-    setAllActivities,
-    setUser,
-    currentMonth,
-    currentYear,
-  } = useContext(AuthContext);
+  const { setAllActivities, setUser, currentMonth, currentYear, setAllUsers } =
+    useContext(AuthContext);
   const { id } = useParams();
 
   const [hideAttendedBtn, setHideAttendedBtn] = useState(false);
@@ -62,6 +58,11 @@ export default function RegisteredUserCardAdmin({
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
+
+        return axiosClient.get("/user/getAllUsers");
+      })
+      .then((responseUsers) => {
+        setAllUsers(responseUsers.data);
         notifySuccess();
       })
       .catch((error) => {});
@@ -91,6 +92,11 @@ export default function RegisteredUserCardAdmin({
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
+
+        return axiosClient.get("/user/getAllUsers");
+      })
+      .then((responseUsers) => {
+        setAllUsers(responseUsers.data);
         notifySuccess();
       })
       .catch((error) => {});
@@ -190,7 +196,7 @@ export default function RegisteredUserCardAdmin({
               if (element.registeredClassID === activityId)
                 return (
                   <React.Fragment key={element.registeredClassID}>
-              {element.statusAttended === "teilgenommen" ? (
+                    {element.statusAttended === "teilgenommen" ? (
                       <>
                         <span
                           className={`${registeredUser} mx-auto mb-1 text-md font-semibold text-gray-900 hidden lg:inline`}
@@ -228,9 +234,8 @@ export default function RegisteredUserCardAdmin({
               if (element.registeredClassID === activityId)
                 return (
                   <React.Fragment key={element.registeredClassID}>
-                        {element.status === "genehmigt" ? (
-                                              <img src={approved} width={150} alt="genehmigt" />
-
+                    {element.status === "genehmigt" ? (
+                      <img src={approved} width={150} alt="genehmigt" />
                     ) : element.status === "abgelehnt" ? (
                       <div className="flex items-center">
                         <span
@@ -256,11 +261,9 @@ export default function RegisteredUserCardAdmin({
                           </svg>
                         </span>
                         <img src={declined} width={150} alt="abgelehnt" />
-
                       </div>
                     ) : (
                       <img src={pending} width={150} alt="ausstehend" />
-
                     )}
                   </React.Fragment>
                 );
