@@ -130,7 +130,7 @@ export default function PieChartStornoStatistics() {
                   onChange={handleYearChange}
                   className="mt-2 px-2.5 ml-2 form-select bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
-                  {[currentYear, currentYear - 1, currentYear - 2].map(
+                  {Array.from({ length: 11 }, (_, i) => 2020 + i).map(
                     (year) => (
                       <option key={year} value={year}>
                         {year}

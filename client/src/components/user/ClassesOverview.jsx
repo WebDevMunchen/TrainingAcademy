@@ -6,24 +6,25 @@ export default function ClassesOverview() {
   const { user } = useContext(AuthContext);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-  const getYearFromDate = (date) => date ? new Date(date).getFullYear() : null;
+  const filterByYear = (classes, year) => {
+    return classes.filter(
+      (activity) => activity?.registeredClassID?.year === String(year)
+    );
+  };
+
+  const years = useMemo(() => {
+    if (!user?.classesRegistered) return [];
+    const uniqueYears = Array.from(
+      new Set(user.classesRegistered.map((activity) => activity?.registeredClassID?.year))
+    );
+    return uniqueYears.sort((a, b) => b - a);
+  }, [user?.classesRegistered]);
 
   const compareDates = (a, b) => {
     const dateA = a?.registeredClassID?.date ? new Date(a.registeredClassID.date) : 0;
     const dateB = b?.registeredClassID?.date ? new Date(b.registeredClassID.date) : 0;
     return dateB - dateA;
   };
-
-  const filterByYear = (classes, year) => {
-    const filteredClasses = classes.filter((activity) => getYearFromDate(activity?.registeredClassID?.date) === year);
-    return filteredClasses;
-  };
-
-  const years = useMemo(() => {
-    if (!user?.classesRegistered) return [];
-    const uniqueYears = Array.from(new Set(user.classesRegistered.map((activity) => getYearFromDate(activity?.registeredClassID?.date))));
-    return uniqueYears.sort((a, b) => b - a);
-  }, [user?.classesRegistered]);
 
   return (
     <section className="bg-blue-500ray-50">
@@ -68,13 +69,13 @@ export default function ClassesOverview() {
             </div>
             <div className="grid grid-cols-1 gap-2 mt-12 sm:grid-cols-1 mt-2 lg:mt-2 sm:w-11/12 lg:w-10/12 mx-auto">
               {!user ? (
-                                  <div class="flex mt-8 justify-center">
-                  <div class="relative">
-                      <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-                      <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
-                      </div>
+                <div className="flex mt-8 justify-center">
+                  <div className="relative">
+                    <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+                    <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
+                    </div>
                   </div>
-              </div>
+                </div>
               ) : (
                 filterByYear(user.classesRegistered, selectedYear)
                   .slice()

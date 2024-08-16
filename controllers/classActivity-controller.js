@@ -174,7 +174,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
       .filter(user => 
         user.classesRegistered.some(
           registration => registration.registeredClassID.equals(id) &&
-                          ['ausstehend', 'genehmigt'].includes(registration.status)
+                          ['genehmigt'].includes(registration.status)
         )
       )
       .map(user => `${user.firstName} ${user.lastName} (${user.department})`);
@@ -281,7 +281,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
             </tr>
           </tbody>
         </table>
-        <p>Diese Benutzer haben sich bereits angemeldet:</p>
+        <p>Die Anfrage dieser Benutzer wurde bereits genehmigt:</p>
         <ul>
           ${userNames.map(userName => `<li>${userName}</li>`).join('')}
         </ul>
@@ -510,9 +510,19 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
   });
 
   const userNames = isRelevantStatus
-    ? usersRegistered.map(
-        (user) => `${user.firstName} ${user.lastName} (${user.department})`
-      )
+    ? usersRegistered
+        .map((user) => {
+          const registeredClass = user.classesRegistered.find(
+            (registration) =>
+              registration.registeredClassID.toString() === id &&
+              registration.status === "genehmigt"
+          );
+
+          return registeredClass
+            ? `${user.firstName} ${user.lastName} (${user.department})`
+            : null;
+        })
+        .filter(Boolean)
     : [];
 
   const transporter = nodemailer.createTransport({
@@ -558,25 +568,25 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
         <p>Die Schulung <em>"${
           notifyBeforeDelete.title
         }"</em> wurde abgesagt.</p>
-        <p>Folgende Mitarbeiter haben sich für diese Schulung angemeldet:</p>
+        <p>Die Anfrage dieser Mitarbeiter wurde bereits genehmigt:</p>
         <ul>
           ${userNames.map((name) => `<li>${name}</li>`).join("")}
         </ul>
          <p>Bitte die Kollegen aus eurer Abteilung informieren, falls sie betroffen sind.</p>
         <p>Bei Fragen gerne melden.</p>
         <p>Euer Training Abteilung</p>
-
       </div>
     `;
   } else {
     mailHtml = `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
         <p>Hallo zusammen,</p>
-        <p>Die Schulung <em>"${notifyBeforeDelete.title}"</em> wurde abgesagt.</p>
+        <p>Die Schulung <em>"${
+          notifyBeforeDelete.title
+        }"</em> wurde abgesagt.</p>
         <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p>
         <p>Bei Fragen gerne melden.</p>
         <p>Euer Training Abteilung</p>
-
       </div>
     `;
   }
@@ -613,6 +623,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     message: "Class and related user registrations deleted successfully",
   });
 });
+
 
 
 const checkAndUpdateClassRegistrations = async () => {

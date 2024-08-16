@@ -37,7 +37,7 @@ const userSchema = new Schema({
         enum: ["teilgenommen", "nicht teilgenommen", "in Prüfung"],
         default: "in Prüfung",
       },
-      reason: { type: String },
+      reason: { type: String, default: "None" },
     },
   ],
   message: [

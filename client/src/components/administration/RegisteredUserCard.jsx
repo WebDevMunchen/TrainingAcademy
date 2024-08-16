@@ -295,20 +295,6 @@ export default function RegisteredUserCard({
       className: "mt-14 mr-6",
     });
 
-  const notifySuccessAttended = () =>
-    toast.success("Teilnahmestatus geändert!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mt-14 mr-6",
-    });
-
   const notifyError = () =>
     toast.error(`Die Genehmigung könnte nicht geändert werden`, {
       position: "top-right",
@@ -360,6 +346,12 @@ export default function RegisteredUserCard({
   const differenceMs = date1.getTime() - date2.getTime();
 
   const differenceHours = differenceMs / (1000 * 60 * 60) + 2;
+
+  const declineReasons = [
+    "Auslastung zu hoch",
+    "In der Zeit für dich nicht relevant",
+    "Es wird dir nichts beibringen" 
+  ];
 
   return (
     <>
@@ -606,12 +598,23 @@ export default function RegisteredUserCard({
                             >
                               Begründung:
                             </label>
-                            <textarea
-                              className="mb-4 w-full resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 lg:w-full"
-                              placeholder="Gib eine Begründung ein..."
+                            <select
+                              id="reason"
+                              className="mb-4 mr-12 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                               value={declineReason}
-                              onChange={(e) => setDeclineReason(e.target.value)}
-                            />
+                              onChange={(e) =>
+                                setDeclineReason(e.target.value)
+                              }
+                            >
+                              <option value="" disabled>
+                                Wähle eine Begründung
+                              </option>
+                              {declineReasons.map((reason, index) => (
+                                <option key={index} value={reason}>
+                                  {reason}
+                                </option>
+                              ))}
+                            </select>
                           </div>
                           <div className="flex justify-end gap-2">
                             <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
@@ -711,14 +714,23 @@ export default function RegisteredUserCard({
                                 >
                                   Begründung:
                                 </label>
-                                <textarea
-                                  className="mb-4 mr-12 resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                  placeholder="Gib eine Begründung ein..."
-                                  value={declineReason}
-                                  onChange={(e) =>
-                                    setDeclineReason(e.target.value)
-                                  }
-                                />
+                                <select
+                              id="reason"
+                              className="mb-4 mr-12 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              value={declineReason}
+                              onChange={(e) =>
+                                setDeclineReason(e.target.value)
+                              }
+                            >
+                              <option value="" disabled>
+                                Wähle eine Begründung
+                              </option>
+                              {declineReasons.map((reason, index) => (
+                                <option key={index} value={reason}>
+                                  {reason}
+                                </option>
+                              ))}
+                            </select>
                               </div>
                               <div className="flex justify-end gap-2">
                                 <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">

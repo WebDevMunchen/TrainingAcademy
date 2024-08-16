@@ -268,7 +268,7 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 const updateClassStatus = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
   const { classId, newStatus, reason } = req.body;
-  const {id: approverId} = req.user
+  const { id: approverId } = req.user;
 
   try {
     const user = await User.findById(id);
@@ -319,9 +319,12 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
         .json({ error: "Activity capacity is already full" });
     }
 
+    // Update status and handle reason
     user.classesRegistered[classIndex].status = newStatus;
     if (newStatus === "abgelehnt") {
       user.classesRegistered[classIndex].reason = reason;
+    } else if (newStatus === "genehmigt") {
+      user.classesRegistered[classIndex].reason = "None"; // Revert to default if approved
     }
 
     const formattedDate = format(new Date(activity.date), 'dd.MM.yyyy');
@@ -382,7 +385,9 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
     const sendMail = async (transporter, mailOptions) => {
       try {
         await transporter.sendMail(mailOptions);
-      } catch (error) {}
+      } catch (error) {
+        // Handle email sending error
+      }
     };
 
     sendMail(transporter, mailOptions);
@@ -392,6 +397,7 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 const updateAttended = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;

@@ -58,27 +58,23 @@ export default function PieCharStatisticsDecline() {
 
   const fetchData = async (year) => {
     try {
-      const response = await axiosClient.get(`/classActivity/allActivities`);
-      const data = response.data;
-
+      const response = await axiosClient.get(`/user/getAllUsers`);
+      const users = response.data;
+  
       const reasonCounts = {};
-
-      data.forEach((activity) => {
-        if (activity.year === year.toString()) {
-          activity.registeredUsers.forEach((user) => {
-            user.classesRegistered.forEach((reg) => {
-              if (reg.reason) {
-                reasonCounts[reg.reason.trim()] =
-                  (reasonCounts[reg.reason.trim()] || 0) + 1;
-              }
-            });
-          });
-        }
+  
+      users.forEach((user) => {
+        user.classesRegistered.forEach((reg) => {
+          if (reg.status === "abgelehnt" && reg.reason && reg.reason !== "None") {
+            const trimmedReason = reg.reason.trim();
+            reasonCounts[trimmedReason] = (reasonCounts[trimmedReason] || 0) + 1;
+          }
+        });
       });
-
+  
       const labels = Object.keys(reasonCounts);
       const series = Object.values(reasonCounts);
-
+  
       if (series.length === 0) {
         setNoStatistics(true);
       } else {
@@ -135,7 +131,7 @@ export default function PieCharStatisticsDecline() {
                   onChange={handleYearChange}
                   className="mt-2 px-2.5 ml-2 form-select bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
-                  {[currentYear, currentYear - 1, currentYear - 2].map(
+                   {Array.from({ length: 11 }, (_, i) => 2020 + i).map(
                     (year) => (
                       <option key={year} value={year}>
                         {year}
