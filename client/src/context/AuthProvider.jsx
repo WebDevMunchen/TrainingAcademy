@@ -27,7 +27,6 @@ export default function AuthProvider({ children }) {
       .get("/user/profile")
       .then((response) => {
         setUser(response.data);
-        console.log(response.data)
       })
       .catch((error) => {
         setUser(null);

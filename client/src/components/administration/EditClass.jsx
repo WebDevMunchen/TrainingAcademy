@@ -18,8 +18,6 @@ export default function EditClass() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
 
-  console.log(activityInformation)
-
   const {
     register,
     handleSubmit,
@@ -178,10 +176,10 @@ export default function EditClass() {
   return (
     <>
       {!activityInformation ? (
-                  <div class="flex mt-2 justify-center">
-          <div class="relative">
-              <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-              <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
+                  <div className="flex mt-2 justify-center">
+          <div className="relative">
+              <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+              <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
               </div>
           </div>
       </div>
