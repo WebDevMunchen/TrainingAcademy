@@ -41,36 +41,22 @@ export default function ClassesOverviewCard({ activity }) {
         setAllActivities(responseActivities.data);
       })
       .catch((error) => {
-        console.error(error);
       });
   };
 
-// Combine the date and time into a single Date object
 const dateString = activity?.registeredClassID?.date;
 const timeString = activity?.registeredClassID?.time;
 const date = new Date(dateString);
 
-// Ensure the time string is in a format that can be used to set hours, minutes, etc.
 const timeParts = timeString.split(':');
 if (timeParts.length === 2) {
   date.setHours(parseInt(timeParts[0], 10));
   date.setMinutes(parseInt(timeParts[1], 10));
 }
 
-// Convert the class start date to the local time zone (if needed)
 const localDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
-
-// Create a new Date object for the current date and time
 const currentDateTime = new Date();
-
-// Add 2 hours to the current date and time
 const adjustedCurrentDateTime = new Date(currentDateTime.getTime() + 2 * 60 * 60 * 1000);
-
-// Add debugging logs
-console.log('Activity Date:', localDate.toISOString());
-console.log('Adjusted Current DateTime (+2 hours):', adjustedCurrentDateTime.toISOString());
-
-// Comparison logic
 const canCancel = localDate >= adjustedCurrentDateTime;
 
   const showLegend = () => {
