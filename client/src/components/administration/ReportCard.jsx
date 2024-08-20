@@ -43,11 +43,7 @@ export default function ReportCard({ registeredUser, activity }) {
             <span
               className="tooltip mr-2 hover:cursor-pointer"
               style={{ width: "auto", height: "auto" }}
-              data-tip={
-                /^[^a-zA-Z]*$/.test(registration.reason)
-                  ? "Kein Grund vorhanden"
-                  : registration.reason
-              }
+              data-tip={registration.reason}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

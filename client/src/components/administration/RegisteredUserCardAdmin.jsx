@@ -241,11 +241,7 @@ export default function RegisteredUserCardAdmin({
                         <span
                           className="tooltip mr-1 hover:cursor-pointer"
                           style={{ width: "auto", height: "auto" }}
-                          data-tip={
-                            /^[^a-zA-Z]*$/.test(element.reason)
-                              ? "Kein Grund vorhanden"
-                              : element.reason
-                          }
+                          data-tip={element.reason}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"

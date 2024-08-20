@@ -169,13 +169,12 @@ export default function UserInfoCard() {
   return (
     <>
       {!userInfomation ? (
-                          <div class="flex mt-8 justify-center">
-                  <div class="relative">
-                      <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-                      <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
-                      </div>
-                  </div>
-              </div>
+        <div class="flex mt-8 justify-center">
+          <div class="relative">
+            <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+            <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+          </div>
+        </div>
       ) : (
         <div className="bg-gray-50/50 flex">
           <SideMenu />
@@ -490,11 +489,7 @@ export default function UserInfoCard() {
                                   <span
                                     className="tooltip ml-2 hover:cursor-pointer"
                                     style={{ width: "auto", height: "auto" }}
-                                    data-tip={
-                                      /^[^a-zA-Z]*$/.test(activity?.reason)
-                                        ? "Kein Grund vorhanden"
-                                        : activity?.reason
-                                    }
+                                    data-tip={activity?.reason}
                                   >
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"

@@ -493,6 +493,7 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
       .sort({ date: -1, time: -1 });
 
     res.json(allActivities);
+    
   } catch (error) {
     console.error("Error fetching activities:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -512,6 +513,29 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     return res.status(404).json({ message: "Class not found" });
   }
 
+  const deletedClassData = {
+    title: notifyBeforeDelete.title,
+    description: notifyBeforeDelete.description,
+    month: notifyBeforeDelete.month,
+    year: notifyBeforeDelete.year,
+    date: notifyBeforeDelete.date,
+    duration: notifyBeforeDelete.duration,
+    time: notifyBeforeDelete.time,
+    location: notifyBeforeDelete.location,
+    department: notifyBeforeDelete.department,
+    capacity: notifyBeforeDelete.capacity,
+    usedCapacity: notifyBeforeDelete.usedCapacity,
+    registeredUsers: notifyBeforeDelete.registeredUsers,
+    teacher: notifyBeforeDelete.teacher,
+    safetyBriefing: notifyBeforeDelete.safetyBriefing,
+    stornoReason: [],
+    fileUrl: notifyBeforeDelete.fileUrl,
+    storno: true, 
+  };
+
+  const duplicatedClass = new DeletedClassActivity(deletedClassData);
+  await duplicatedClass.save();
+
   const allUsers = await User.find({})
     .populate("classesRegistered.registeredClassID")
     .populate("userContactInformation")
@@ -521,8 +545,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     const hasMatchingClass = user.classesRegistered.some(
       (singleClass) =>
         singleClass.registeredClassID._id.toString() === id &&
-        (singleClass.status === "ausstehend" ||
-          singleClass.status === "genehmigt")
+        (singleClass.status === "ausstehend" || singleClass.status === "genehmigt")
     );
 
     if (hasMatchingClass) {
@@ -627,6 +650,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     message: "Class and related user registrations deleted successfully",
   });
 });
+
 
 const checkAndUpdateClassRegistrations = async () => {
   const now = new Date();

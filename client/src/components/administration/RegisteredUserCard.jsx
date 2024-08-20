@@ -32,7 +32,7 @@ export default function RegisteredUserCard({
   const [hideAttendedBtn, setHideAttendedBtn] = useState(false);
   const [submitedAttended, setSubmitedAttended] = useState(true);
 
-  const [declineReason, setDeclineReason] = useState("");
+  const [declineReason, setDeclineReason] = useState("Kein Grund angegeben");
 
   const [activitySingleInformation, setActivitySingleInformation] =
     useState(null);
@@ -296,7 +296,7 @@ export default function RegisteredUserCard({
     });
 
   const notifyError = () =>
-    toast.error(`Die Genehmigung könnte nicht geändert werden`, {
+    toast.error(`Genehmigung könnte nicht geändert werden!`, {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -350,7 +350,7 @@ export default function RegisteredUserCard({
   const declineReasons = [
     "Auslastung zu hoch",
     "In der Zeit für dich nicht relevant",
-    "Es wird dir nichts beibringen" 
+    "Es wird dir nichts beibringen",
   ];
 
   return (
@@ -428,11 +428,7 @@ export default function RegisteredUserCard({
                         <span
                           className="tooltip mr-1 hover:cursor-pointer"
                           style={{ width: "auto", height: "auto" }}
-                          data-tip={
-                            /^[^a-zA-Z]*$/.test(element.reason)
-                              ? "Kein Grund vorhanden"
-                              : element.reason
-                          }
+                          data-tip={element.reason}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -602,9 +598,7 @@ export default function RegisteredUserCard({
                               id="reason"
                               className="mb-4 mr-12 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                               value={declineReason}
-                              onChange={(e) =>
-                                setDeclineReason(e.target.value)
-                              }
+                              onChange={(e) => setDeclineReason(e.target.value)}
                             >
                               <option value="" disabled>
                                 Wähle eine Begründung
@@ -715,22 +709,22 @@ export default function RegisteredUserCard({
                                   Begründung:
                                 </label>
                                 <select
-                              id="reason"
-                              className="mb-4 mr-12 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              value={declineReason}
-                              onChange={(e) =>
-                                setDeclineReason(e.target.value)
-                              }
-                            >
-                              <option value="" disabled>
-                                Wähle eine Begründung
-                              </option>
-                              {declineReasons.map((reason, index) => (
-                                <option key={index} value={reason}>
-                                  {reason}
-                                </option>
-                              ))}
-                            </select>
+                                  id="reason"
+                                  className="mb-4 mr-12 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                  value={declineReason}
+                                  onChange={(e) =>
+                                    setDeclineReason(e.target.value)
+                                  }
+                                >
+                                  <option value="">
+                                    Wähle eine Begründung
+                                  </option>
+                                  {declineReasons.map((reason, index) => (
+                                    <option key={index} value={reason}>
+                                      {reason}
+                                    </option>
+                                  ))}
+                                </select>
                               </div>
                               <div className="flex justify-end gap-2">
                                 <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">

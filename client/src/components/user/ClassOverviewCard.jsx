@@ -1,17 +1,15 @@
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
-import attended from "../../assets/attended.png"
-import approved from "../../assets/approved.png"
-import pending from "../../assets/pending.png"
-import declined from "../../assets/declined.png"
-import notAttended from "../../assets/notAttended.png"
+import attended from "../../assets/attended.png";
+import approved from "../../assets/approved.png";
+import pending from "../../assets/pending.png";
+import declined from "../../assets/declined.png";
+import notAttended from "../../assets/notAttended.png";
 
 export default function ClassesOverviewCard({ activity }) {
   const { setUser, setAllActivities, currentMonth, currentYear } = useContext(AuthContext);
-
   const modalRef = useRef(null);
-
   const [selectedReason, setSelectedReason] = useState("");
 
   const cancelClass = (stornoReason) => {
@@ -20,7 +18,7 @@ export default function ClassesOverviewCard({ activity }) {
         stornoReason: [stornoReason],
         withCredentials: true,
       })
-      .then((response) => {
+      .then(() => {
         return axiosClient.put(
           `/classActivity/updateReason/${activity.registeredClassID._id}`,
           {
@@ -29,7 +27,7 @@ export default function ClassesOverviewCard({ activity }) {
           }
         );
       })
-      .then((response) => {
+      .then(() => {
         return axiosClient.get("/user/profile");
       })
       .then((responseProfile) => {
@@ -47,15 +45,33 @@ export default function ClassesOverviewCard({ activity }) {
       });
   };
 
-  const dateString = activity?.registeredClassID?.date;
-  const date = new Date(dateString);
+// Combine the date and time into a single Date object
+const dateString = activity?.registeredClassID?.date;
+const timeString = activity?.registeredClassID?.time;
+const date = new Date(dateString);
 
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
+// Ensure the time string is in a format that can be used to set hours, minutes, etc.
+const timeParts = timeString.split(':');
+if (timeParts.length === 2) {
+  date.setHours(parseInt(timeParts[0], 10));
+  date.setMinutes(parseInt(timeParts[1], 10));
+}
 
-  const formattedDate = `${day}/${month}/${year}`;
-  const currentDateTime = new Date();
+// Convert the class start date to the local time zone (if needed)
+const localDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+
+// Create a new Date object for the current date and time
+const currentDateTime = new Date();
+
+// Add 2 hours to the current date and time
+const adjustedCurrentDateTime = new Date(currentDateTime.getTime() + 2 * 60 * 60 * 1000);
+
+// Add debugging logs
+console.log('Activity Date:', localDate.toISOString());
+console.log('Adjusted Current DateTime (+2 hours):', adjustedCurrentDateTime.toISOString());
+
+// Comparison logic
+const canCancel = localDate >= adjustedCurrentDateTime;
 
   const showLegend = () => {
     document.getElementById("legend").showModal();
@@ -73,8 +89,6 @@ export default function ClassesOverviewCard({ activity }) {
     }
   };
 
-
-
   const reasons = [
     "Ich bin krank",
     "Ich muss kurzfristig auf ein Projekt",
@@ -87,7 +101,6 @@ export default function ClassesOverviewCard({ activity }) {
     "Ich habe keine Lust",
     "Sonstiges"
   ];
-
   return (
     <>
       <div className="bg-white border m-2 p-2 relative group shadow-lg">
@@ -271,11 +284,7 @@ export default function ClassesOverviewCard({ activity }) {
                 <span
                   className="tooltip mr-0 hover:cursor-pointer lg:mr-2"
                   style={{ width: "auto", height: "auto" }}
-                  data-tip={
-                    /^[^a-zA-Z]*$/.test(activity.reason)
-                      ? "Kein Grund vorhanden"
-                      : activity.reason
-                  }
+                  data-tip={activity.reason}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -318,7 +327,7 @@ export default function ClassesOverviewCard({ activity }) {
                 {activity.registeredClassID?.capacity + " Teilnehmer"}
               </p>
               <p className="mt-4 text-base text-gray-600 ">
-                <span className="font-bold">Datum:</span> {formattedDate}
+                {/* <span className="font-bold">Datum:</span> {formattedDate} */}
               </p>
             </div>
             <div className="flex flex-col px-2 mr-2">
@@ -346,8 +355,8 @@ export default function ClassesOverviewCard({ activity }) {
               </p>
             </div>
           </div>
-          {activity.status !== "abgelehnt" &&
-            new Date(activity.registeredClassID.date) >= currentDateTime && (
+          {activity.status !== "abgelehnt" && canCancel &&
+             (
               <>
                 <div className="flex justify-center">
                   <button
