@@ -69,7 +69,6 @@ export default function UserListCard({ user, selectedYear }) {
   return (
     <>
       <tr className="text-center">
-        {/* User information */}
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="text-sm font-medium text-gray-900">
             {user.firstName}
@@ -96,6 +95,10 @@ export default function UserListCard({ user, selectedYear }) {
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
             Referent*in
           </td>
+        ) : user.role === "ASP" ? (
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              Genehmiger*in
+            </td>
         ) : (
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
             {user.role.charAt(0).toUpperCase() + user.role.slice(1)}

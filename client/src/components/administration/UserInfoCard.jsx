@@ -249,8 +249,16 @@ export default function UserInfoCard() {
                   {userInfomation?.department.charAt(0).toUpperCase() +
                     userInfomation?.department.slice(1)}{" "}
                   - <span className="font-medium">Rolle: </span>
-                  {userInfomation.role.charAt(0).toUpperCase() +
-                    userInfomation.role.slice(1)}
+                  {userInfomation.role === "ASP" ? (
+                    <span>Genehmiger*in</span>
+                  ) : userInfomation.role === "teacher" ? (
+                    <span>Referent*in</span>
+                  ) : (
+                    <span>
+                      {userInfomation?.role.charAt(0).toUpperCase() +
+                        userInfomation?.role.slice(1)}
+                    </span>
+                  )}
                 </p>
                 <p className="mt-2 text-gray-600">
                   <span className="font-medium"> Kürzel:</span>{" "}
