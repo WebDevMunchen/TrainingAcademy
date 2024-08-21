@@ -7,6 +7,7 @@ const cloudinary = require("../utils/cloudinaryConfig.js");
 const Approver = require("../models/approver-model.js");
 const nodemailer = require("nodemailer");
 const { format } = require("date-fns");
+const { DateTime } = require('luxon');
 const cron = require("node-cron");
 
 const createClassActivity = asyncWrapper(async (req, res, next) => {
@@ -653,15 +654,23 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
 
 
 const checkAndUpdateClassRegistrations = async () => {
-  const now = new Date();
-  const in48Hours = new Date(now.getTime() + 48 * 60 * 60 * 1000);
+  const now = DateTime.now().setZone('Europe/Berlin');
+  const in24Hours = now.plus({ hours: 24 });
 
   try {
-    const classes = await ClassActivity.find({
-      date: { $lte: in48Hours, $gte: now },
+    const classes = await ClassActivity.find();
+
+    const classesToProcess = classes.filter(classActivity => {
+      const classDateTime = DateTime.fromISO(classActivity.date.toISOString())
+        .setZone('Europe/Berlin')
+        .set({ hour: parseInt(classActivity.time.split(':')[0]), minute: parseInt(classActivity.time.split(':')[1]) });
+
+
+      return classDateTime >= now && classDateTime <= in24Hours;
     });
 
-    for (const classActivity of classes) {
+
+    for (const classActivity of classesToProcess) {
       const registeredUserIds = classActivity.registeredUsers;
 
       await User.updateMany(
@@ -670,34 +679,36 @@ const checkAndUpdateClassRegistrations = async () => {
           classesRegistered: {
             $elemMatch: {
               registeredClassID: classActivity._id,
-              status: "ausstehend",
+              status: 'ausstehend',
             },
           },
         },
         {
           $set: {
-            "classesRegistered.$.status": "abgelehnt",
-            "classesRegistered.$.reason":
-              "Automatisch abgelehnt, da keine Antwort vom Genehmiger oder seinem Vertreter einging",
+            'classesRegistered.$.status': 'abgelehnt',
+            'classesRegistered.$.reason':
+              'Automatisch abgelehnt, da keine Antwort vom Genehmiger oder seinem Vertreter einging',
           },
         }
       );
     }
   } catch (error) {
-    console.error("Error checking and updating class registrations:", error);
+    console.error('Error checking and updating class registrations:', error);
   }
 };
 
+
 cron.schedule(
-  "30 17 * * *",
+  '30 17 * * *',
   () => {
     checkAndUpdateClassRegistrations();
   },
   {
     scheduled: true,
-    timezone: "Europe/Berlin",
+    timezone: 'Europe/Berlin', // Set timezone to Europe/Berlin
   }
 );
+
 
 module.exports = {
   createClassActivity,
@@ -710,4 +721,5 @@ module.exports = {
   cancelUserRegistration,
   updateCancelationReason,
   deleteClass,
+  checkAndUpdateClassRegistrations
 };

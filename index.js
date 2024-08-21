@@ -16,6 +16,7 @@ const approverRouter = require("./routers/approver-router.js");
 const uploadRoute = require("./routers/routerUpload.js");
 const messageRouter = require("./routers/message.router.js");
 const deletedClassActivityRouter = require("./routers/deletedClassActivity-router.js");
+const { checkAndUpdateClassRegistrations } = require("./controllers/classActivity-controller.js");
 
 app.use(
   cors({
@@ -44,4 +45,7 @@ app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Website listening on http://localhost:${PORT}`);
+
+  // checkAndUpdateClassRegistrations();
+
 });
