@@ -687,7 +687,7 @@ const checkAndUpdateClassRegistrations = async () => {
           $set: {
             'classesRegistered.$.status': 'abgelehnt',
             'classesRegistered.$.reason':
-              'Automatisch abgelehnt, da keine Antwort vom Genehmiger oder seinem Vertreter einging',
+              'Automatisch abgelehnt(keine Antwort vom Genehmiger oder seinem Vertreter)',
           },
         }
       );
