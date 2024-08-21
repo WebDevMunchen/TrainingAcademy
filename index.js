@@ -45,7 +45,4 @@ app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Website listening on http://localhost:${PORT}`);
-
-  // checkAndUpdateClassRegistrations();
-
 });

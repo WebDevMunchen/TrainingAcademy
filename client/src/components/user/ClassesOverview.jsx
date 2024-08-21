@@ -4,21 +4,34 @@ import ClassesOverviewCard from "./ClassOverviewCard";
 
 export default function ClassesOverview() {
   const { user } = useContext(AuthContext);
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+
+  const currentYear = new Date().getFullYear();
+
+  // Determine the available years and set the default year
+  const { years, defaultYear } = useMemo(() => {
+    if (!user?.classesRegistered) return { years: [], defaultYear: currentYear };
+
+    const uniqueYears = Array.from(
+      new Set(user.classesRegistered.map((activity) => activity?.registeredClassID?.year))
+    ).sort((a, b) => a - b);
+
+    const defaultYear = uniqueYears.includes(String(currentYear))
+      ? currentYear
+      : uniqueYears[0];
+
+    return {
+      years: uniqueYears,
+      defaultYear,
+    };
+  }, [user?.classesRegistered]);
+
+  const [selectedYear, setSelectedYear] = useState(defaultYear);
 
   const filterByYear = (classes, year) => {
     return classes.filter(
       (activity) => activity?.registeredClassID?.year === String(year)
     );
   };
-
-  const years = useMemo(() => {
-    if (!user?.classesRegistered) return [];
-    const uniqueYears = Array.from(
-      new Set(user.classesRegistered.map((activity) => activity?.registeredClassID?.year))
-    );
-    return uniqueYears.sort((a, b) => b - a);
-  }, [user?.classesRegistered]);
 
   const compareDates = (a, b) => {
     const dateA = a?.registeredClassID?.date ? new Date(a.registeredClassID.date) : 0;
