@@ -705,7 +705,7 @@ cron.schedule(
   },
   {
     scheduled: true,
-    timezone: 'Europe/Berlin', // Set timezone to Europe/Berlin
+    timezone: 'Europe/Berlin',
   }
 );
 

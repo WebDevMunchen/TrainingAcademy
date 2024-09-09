@@ -70,7 +70,7 @@ export default function ClassesOverviewCard({ activity }) {
       modalRef.current.close();
     }
   };
-
+  
   const handleCancelation = () => {
     if (selectedReason) {
       cancelClass(selectedReason);

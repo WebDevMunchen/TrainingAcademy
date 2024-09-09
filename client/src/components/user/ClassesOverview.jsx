@@ -7,7 +7,6 @@ export default function ClassesOverview() {
 
   const currentYear = new Date().getFullYear();
 
-  // Determine the available years and set the default year
   const { years, defaultYear } = useMemo(() => {
     if (!user?.classesRegistered) return { years: [], defaultYear: currentYear };
 

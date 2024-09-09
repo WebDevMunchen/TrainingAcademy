@@ -80,7 +80,7 @@ export default function ClassesSchedule() {
                 </svg>
               </button>
             </div>
-            <div className="grid grid-cols-1 gap-2 mt-12 sm:grid-cols-1 mt-2 w-[23rem] lg:mt-2 lg:w-10/12 mx-auto">
+            <div className="grid grid-cols-1 gap-2 mt-12 sm:grid-cols-1 mt-2 w-[23rem] lg:mt-2 lg:w-11/12 mx-auto">
               {allActivities.length === 0 ? (
                 <>
                   <img
