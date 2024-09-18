@@ -212,27 +212,22 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
             <tbody>
               <tr>
                 <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Datum</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${formattedDate}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; ${formattedDate !== formattedDateUpdated ? "text-decoration: line-through;" : ""}">${formattedDate}</td>
                 <td style="border: 1px solid #ddd; padding: 8px;">${formattedDateUpdated}</td>
               </tr>
               <tr>
                 <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Uhrzeit</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${formattedTime}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; ${formattedTime !== formattedTimeUpdated ? "text-decoration: line-through;" : ""}">${formattedTime}</td>
                 <td style="border: 1px solid #ddd; padding: 8px;">${formattedTimeUpdated}</td>
               </tr>
               <tr>
                 <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Ort</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.location}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; ${existingActivity.location !== updatedClass.location ? "text-decoration: line-through;" : ""}">${existingActivity.location}</td>
                 <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.location}</td>
               </tr>
               <tr>
-                <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Dauer</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.duration} Minuten</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.duration} Minuten</td>
-              </tr>
-              <tr>
                 <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Referent*in</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.teacher}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; ${existingActivity.teacher !== updatedClass.teacher ? "text-decoration: line-through;" : ""}">${existingActivity.teacher}</td>
                 <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.teacher}</td>
               </tr>
             </tbody>
@@ -276,15 +271,6 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
               <td style="border: 1px solid #ddd; padding: 8px;">${
                 updatedClass.location
               }</td>
-            </tr>
-            <tr>
-              <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Dauer</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${
-                existingActivity.duration
-              } Minuten</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${
-                updatedClass.duration
-              } Minuten</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Referent*in</td>
