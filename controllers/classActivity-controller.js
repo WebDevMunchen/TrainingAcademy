@@ -7,9 +7,8 @@ const cloudinary = require("../utils/cloudinaryConfig.js");
 const Approver = require("../models/approver-model.js");
 const nodemailer = require("nodemailer");
 const { format } = require("date-fns");
-const { DateTime } = require('luxon');
+const { DateTime } = require("luxon");
 const cron = require("node-cron");
-
 
 const createClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -199,7 +198,9 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
         mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
           <p>Hallo zusammen,</p>
-          <p>Es gab Änderungen bei der Schulung: <em>"${updatedClass.title}"</em></p>
+          <p>Es gab Änderungen bei der Schulung: <em>"${
+            updatedClass.title
+          }"</em></p>
           <p><strong>Hier sind die Details der Änderungen:</strong></p>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
             <thead>
@@ -212,23 +213,43 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
             <tbody>
               <tr>
                 <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Datum</td>
-                <td style="border: 1px solid #ddd; padding: 8px; ${formattedDate !== formattedDateUpdated ? "text-decoration: line-through;" : ""}">${formattedDate}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; ${
+                  formattedDate !== formattedDateUpdated
+                    ? "text-decoration: line-through;"
+                    : ""
+                }">${formattedDate}</td>
                 <td style="border: 1px solid #ddd; padding: 8px;">${formattedDateUpdated}</td>
               </tr>
               <tr>
                 <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Uhrzeit</td>
-                <td style="border: 1px solid #ddd; padding: 8px; ${formattedTime !== formattedTimeUpdated ? "text-decoration: line-through;" : ""}">${formattedTime}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; ${
+                  formattedTime !== formattedTimeUpdated
+                    ? "text-decoration: line-through;"
+                    : ""
+                }">${formattedTime}</td>
                 <td style="border: 1px solid #ddd; padding: 8px;">${formattedTimeUpdated}</td>
               </tr>
               <tr>
                 <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Ort</td>
-                <td style="border: 1px solid #ddd; padding: 8px; ${existingActivity.location !== updatedClass.location ? "text-decoration: line-through;" : ""}">${existingActivity.location}</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.location}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; ${
+                  existingActivity.location !== updatedClass.location
+                    ? "text-decoration: line-through;"
+                    : ""
+                }">${existingActivity.location}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${
+                  updatedClass.location
+                }</td>
               </tr>
               <tr>
                 <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Referent*in</td>
-                <td style="border: 1px solid #ddd; padding: 8px; ${existingActivity.teacher !== updatedClass.teacher ? "text-decoration: line-through;" : ""}">${existingActivity.teacher}</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.teacher}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; ${
+                  existingActivity.teacher !== updatedClass.teacher
+                    ? "text-decoration: line-through;"
+                    : ""
+                }">${existingActivity.teacher}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${
+                  updatedClass.teacher
+                }</td>
               </tr>
             </tbody>
           </table>
@@ -255,28 +276,40 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
           <tbody>
             <tr>
               <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Datum</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${formattedDate}</td>
+              <td style="border: 1px solid #ddd; padding: 8px; ${
+                formattedDate !== formattedDateUpdated
+                  ? "text-decoration: line-through;"
+                  : ""
+              }">${formattedDate}</td>
               <td style="border: 1px solid #ddd; padding: 8px;">${formattedDateUpdated}</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Uhrzeit</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${formattedTime}</td>
+              <td style="border: 1px solid #ddd; padding: 8px; ${
+                formattedTime !== formattedTimeUpdated
+                  ? "text-decoration: line-through;"
+                  : ""
+              }">${formattedTime}</td>
               <td style="border: 1px solid #ddd; padding: 8px;">${formattedTimeUpdated}</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Ort</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${
-                existingActivity.location
-              }</td>
+              <td style="border: 1px solid #ddd; padding: 8px; ${
+                existingActivity.location !== updatedClass.location
+                  ? "text-decoration: line-through;"
+                  : ""
+              }">${existingActivity.location}</td>
               <td style="border: 1px solid #ddd; padding: 8px;">${
                 updatedClass.location
               }</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Referent*in</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${
-                existingActivity.teacher
-              }</td>
+              <td style="border: 1px solid #ddd; padding: 8px; ${
+                existingActivity.teacher !== updatedClass.teacher
+                  ? "text-decoration: line-through;"
+                  : ""
+              }">${existingActivity.teacher}</td>
               <td style="border: 1px solid #ddd; padding: 8px;">${
                 updatedClass.teacher
               }</td>
@@ -481,7 +514,6 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
       .sort({ date: -1, time: -1 });
 
     res.json(allActivities);
-    
   } catch (error) {
     console.error("Error fetching activities:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -518,7 +550,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     safetyBriefing: notifyBeforeDelete.safetyBriefing,
     stornoReason: [],
     fileUrl: notifyBeforeDelete.fileUrl,
-    storno: true, 
+    storno: true,
   };
 
   const duplicatedClass = new DeletedClassActivity(deletedClassData);
@@ -533,7 +565,8 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     const hasMatchingClass = user.classesRegistered.some(
       (singleClass) =>
         singleClass.registeredClassID._id.toString() === id &&
-        (singleClass.status === "ausstehend" || singleClass.status === "genehmigt")
+        (singleClass.status === "ausstehend" ||
+          singleClass.status === "genehmigt")
     );
 
     if (hasMatchingClass) {
@@ -639,23 +672,23 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
   });
 });
 
-
 const checkAndUpdateClassRegistrations = async () => {
-  const now = DateTime.now().setZone('Europe/Berlin');
+  const now = DateTime.now().setZone("Europe/Berlin");
   const in24Hours = now.plus({ hours: 24 });
 
   try {
     const classes = await ClassActivity.find();
 
-    const classesToProcess = classes.filter(classActivity => {
+    const classesToProcess = classes.filter((classActivity) => {
       const classDateTime = DateTime.fromISO(classActivity.date.toISOString())
-        .setZone('Europe/Berlin')
-        .set({ hour: parseInt(classActivity.time.split(':')[0]), minute: parseInt(classActivity.time.split(':')[1]) });
-
+        .setZone("Europe/Berlin")
+        .set({
+          hour: parseInt(classActivity.time.split(":")[0]),
+          minute: parseInt(classActivity.time.split(":")[1]),
+        });
 
       return classDateTime >= now && classDateTime <= in24Hours;
     });
-
 
     for (const classActivity of classesToProcess) {
       const registeredUserIds = classActivity.registeredUsers;
@@ -666,36 +699,34 @@ const checkAndUpdateClassRegistrations = async () => {
           classesRegistered: {
             $elemMatch: {
               registeredClassID: classActivity._id,
-              status: 'ausstehend',
+              status: "ausstehend",
             },
           },
         },
         {
           $set: {
-            'classesRegistered.$.status': 'abgelehnt',
-            'classesRegistered.$.reason':
-              'Automatisch abgelehnt(keine Antwort vom Genehmiger oder seinem Vertreter)',
+            "classesRegistered.$.status": "abgelehnt",
+            "classesRegistered.$.reason":
+              "Automatisch abgelehnt(keine Antwort vom Genehmiger oder seinem Vertreter)",
           },
         }
       );
     }
   } catch (error) {
-    console.error('Error checking and updating class registrations:', error);
+    console.error("Error checking and updating class registrations:", error);
   }
 };
 
-
 cron.schedule(
-  '30 17 * * *',
+  "30 17 * * *",
   () => {
     checkAndUpdateClassRegistrations();
   },
   {
     scheduled: true,
-    timezone: 'Europe/Berlin',
+    timezone: "Europe/Berlin",
   }
 );
-
 
 module.exports = {
   createClassActivity,
@@ -708,5 +739,5 @@ module.exports = {
   cancelUserRegistration,
   updateCancelationReason,
   deleteClass,
-  checkAndUpdateClassRegistrations
+  checkAndUpdateClassRegistrations,
 };
