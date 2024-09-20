@@ -33,12 +33,12 @@ const deletedClassActivitySchema = new Schema({
       "2030",
       "2031",
       "2032",
-      "2033"
+      "2033",
     ],
     required: true,
-    default: function() {
+    default: function () {
       return new Date().getFullYear().toString();
-    }
+    },
   },
   date: { type: Date, required: true },
   duration: { type: Number, required: true },
@@ -52,9 +52,12 @@ const deletedClassActivitySchema = new Schema({
   safetyBriefing: { type: Boolean, default: false },
   stornoReason: [{ type: String }],
   fileUrl: { type: String },
-  storno: { type: Boolean, default: true }
+  storno: { type: Boolean, default: true },
 });
 
-const DeletedClassActivity = model("DeletedClassActivitie", deletedClassActivitySchema);
+const DeletedClassActivity = model(
+  "DeletedClassActivitie",
+  deletedClassActivitySchema
+);
 
 module.exports = DeletedClassActivity;

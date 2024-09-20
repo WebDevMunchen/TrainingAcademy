@@ -23,7 +23,7 @@ const userSchema = new Schema({
     default: defaultApproverId,
   },
   status: { type: String, enum: ["aktiv", "inaktiv"], default: "aktiv" },
-  inbox: { type: String, default: "webdevmunchen@gmail.com" },
+  inbox: { type: String, default: "muenchen.lms@gmail.com" },
   classesRegistered: [
     {
       registeredClassID: { type: Schema.Types.ObjectId, ref: "ClassActivitie" },
@@ -37,7 +37,7 @@ const userSchema = new Schema({
         enum: ["teilgenommen", "nicht teilgenommen", "in Prüfung"],
         default: "in Prüfung",
       },
-      reason: { type: String, default: "None"},
+      reason: { type: String, default: "None" },
     },
   ],
   message: [

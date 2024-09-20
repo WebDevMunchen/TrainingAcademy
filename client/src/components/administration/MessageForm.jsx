@@ -5,7 +5,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import "react-quill/dist/quill.snow.css";
 
 export default function MessageForm() {
   const { user } = useContext(AuthContext);
@@ -18,13 +18,12 @@ export default function MessageForm() {
     register,
     handleSubmit,
     formState: { errors },
-    setValue, // This is important to manually set the value in React Hook Form
+    setValue,
   } = useForm({});
 
   const [messageContent, setMessageContent] = useState("");
 
   const onSubmit = (data) => {
-    // Include the message content in the form data
     data.messageContent = messageContent;
 
     axiosClient
@@ -132,7 +131,7 @@ export default function MessageForm() {
                   value={messageContent}
                   onChange={(content) => {
                     setMessageContent(content);
-                    setValue("messageContent", content); // Manually set the value in React Hook Form
+                    setValue("messageContent", content);
                   }}
                   className="h-52"
                 />

@@ -70,7 +70,7 @@ export default function ClassesOverviewCard({ activity }) {
       modalRef.current.close();
     }
   };
-  
+
   const handleCancelation = () => {
     if (selectedReason) {
       cancelClass(selectedReason);
@@ -100,8 +100,66 @@ export default function ClassesOverviewCard({ activity }) {
     <>
       <div className="bg-white border m-2 p-2 relative group shadow-lg">
         <div className="absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
-        <div className="flex px-0 justify-between gap-4 lg:justify-between lg:px-6 lg:mt-4 lg:mr-4 lg:items-center ">
+        <div className="flex justify-between lg:hidden">
           <div className="flex flex-col items-center">
+            {activity.statusAttended === "in Prüfung" ? (
+              <span className="invisible">Placeholder</span>
+            ) : (
+              <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
+                Tailnahmestatus{" "}
+              </span>
+            )}
+            {activity.statusAttended === "in Prüfung" ? (
+              <img
+                className="invisible"
+                src={attended}
+                width={125}
+                alt="teilgenommen"
+              />
+            ) : activity.statusAttended === "teilgenommen" ? (
+              <img src={attended} width={125} alt="teilgenommen" />
+            ) : (
+              <img width={125} src={notAttended} alt="nichtTeilgenommen" />
+            )}
+          </div>
+          <div className="flex ml-2 flex-col items-center">
+            <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
+              Genehmigungsstatus:{" "}
+            </span>
+            <div className="flex items-center flex-row lg:flex-row lg:items-center">
+              {activity.status === "abgelehnt" && (
+                <span
+                  className="tooltip mr-0 hover:cursor-pointer lg:mr-2"
+                  style={{ width: "auto", height: "auto" }}
+                  data-tip={activity.reason}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="#ffb951"
+                    className="w-8 h-8"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+              )}
+
+              {activity.status === "abgelehnt" ? (
+                <img src={declined} width={125} alt="abgelehnt" />
+              ) : activity.status === "genehmigt" ? (
+                <img src={approved} width={125} alt="genehmigt" />
+              ) : (
+                <img src={pending} width={125} alt="ausstehend" />
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="flex px-0 justify-center gap-4 lg:justify-between lg:px-6 lg:mt-4 lg:mr-4 lg:items-center">
+          <div className="hidden lg:flex flex-col items-center">
             {activity.statusAttended === "in Prüfung" ? (
               <span className="invisible">Placeholder</span>
             ) : (
@@ -123,7 +181,7 @@ export default function ClassesOverviewCard({ activity }) {
             )}
           </div>
           <div className="flex flex-col lg:ml-6">
-            <h3 className="flex justify-center text-lg font-semibold text-black">
+            <h3 className="flex justify-center text-lg text-center font-semibold text-black lg:text-lg">
               {activity.registeredClassID?.title}
             </h3>
             <div className="flex justify-center mt-2 mb-1">
@@ -277,11 +335,11 @@ export default function ClassesOverviewCard({ activity }) {
               </div>
             </dialog>
           </div>
-          <div className="flex ml-2 flex-col items-center">
+          <div className="hidden lg:flex ml-2 flex-col items-center">
             <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
               Genehmigungsstatus:{" "}
             </span>
-            <div className="flex items-center flex-col lg:flex-row lg:items-center">
+            <div className="flex items-center flex-row lg:flex-row lg:items-center">
               {activity.status === "abgelehnt" && (
                 <span
                   className="tooltip mr-0 hover:cursor-pointer lg:mr-2"
@@ -314,14 +372,14 @@ export default function ClassesOverviewCard({ activity }) {
           </div>
         </div>
         <div className="flex justify-center">
-          <p className="text-center lg:flex justify-center text-base text-gray-600">
+          <p className="w-full text-center lg:flex justify-center lg:w-7/12 mx-auto mt-2 text-base text-gray-600">
             {activity.registeredClassID?.description}
           </p>
         </div>
         <div className="py-2 relative">
           <div className="grid grid-cols-3 grid-rows-1 text-center lg:text-left justify-items-center">
             <div className="flex flex-col px-2 mr-2">
-              <p className="mt-4 text-base text-gray-600 lg:hidden">
+              <p className="mt-4 px-2 text-base text-gray-600 lg:hidden">
                 <span className="font-bold">Kapazität:</span>{" "}
                 {activity.registeredClassID?.capacity + " Teilneh."}
               </p>

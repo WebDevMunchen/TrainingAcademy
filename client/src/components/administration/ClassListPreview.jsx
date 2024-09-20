@@ -141,13 +141,13 @@ export default function ClassListPreview({ activity }) {
           Details
         </NavLink>
         {isButtonVisible && (
-        <NavLink
-          to={`/admin/editClass/${activity._id}`}
-          className="mb-2 block antialiased text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
-        >
-          Bearbeiten
-        </NavLink>
-      )}
+          <NavLink
+            to={`/admin/editClass/${activity._id}`}
+            className="mb-2 block antialiased text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"
+          >
+            Bearbeiten
+          </NavLink>
+        )}
         <NavLink
           to={`/admin/report/${activity._id}`}
           className="block antialiased  text-sm font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-150"

@@ -33,12 +33,12 @@ const classActivitySchema = new Schema({
       "2030",
       "2031",
       "2032",
-      "2033"
+      "2033",
     ],
     required: true,
-    default: function() {
+    default: function () {
       return new Date().getFullYear().toString();
-    }
+    },
   },
   date: { type: Date, required: true },
   duration: { type: Number, required: true },

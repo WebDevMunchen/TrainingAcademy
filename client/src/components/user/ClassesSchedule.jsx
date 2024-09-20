@@ -13,8 +13,9 @@ export default function ClassesSchedule() {
   } = useContext(AuthContext);
 
   const startYear = 2020;
-  const years = Array.from({ length: 11 }, (_, i) => (startYear + i).toString());
-
+  const years = Array.from({ length: 11 }, (_, i) =>
+    (startYear + i).toString()
+  );
 
   return (
     <section className="bg-blue-500ray-50 lg:mx-auto">

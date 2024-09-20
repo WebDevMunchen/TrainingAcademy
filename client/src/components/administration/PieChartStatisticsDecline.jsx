@@ -61,8 +61,6 @@ export default function PieCharStatisticsDecline() {
       const allUsersResponse = await axiosClient.get("/user/getAllUsers");
       const users = allUsersResponse.data;
 
-      console.log(users)
-
       const reasonCounts = {};
 
       users.forEach((user) => {
@@ -76,10 +74,10 @@ export default function PieCharStatisticsDecline() {
               reasonCounts[trimmedReason] =
                 (reasonCounts[trimmedReason] || 0) + 1;
             } else {
-              return
+              return;
             }
           } else {
-            return
+            return;
           }
         });
       });
@@ -106,7 +104,7 @@ export default function PieCharStatisticsDecline() {
     setSelectedYear(Number(event.target.value));
   };
 
-  const location = useLocation(); // Used for NavLink active class
+  const location = useLocation();
 
   return (
     <div className="bg-gray-50/50 flex">

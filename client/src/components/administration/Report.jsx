@@ -21,13 +21,12 @@ export default function Report() {
   return (
     <>
       {!activity ? (
-                  <div class="flex mt-8 justify-center">
-                  <div class="relative">
-                      <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-                      <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
-                      </div>
-                  </div>
-              </div>
+        <div className="flex mt-8 justify-center">
+          <div className="relative">
+            <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+            <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+          </div>
+        </div>
       ) : (
         <>
           <div className="bg-gray-50/50 flex">

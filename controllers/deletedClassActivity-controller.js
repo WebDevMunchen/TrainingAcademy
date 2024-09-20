@@ -10,5 +10,5 @@ const getAllDeletedActivities = asyncWrapper(async (req, res, next) => {
 });
 
 module.exports = {
-    getAllDeletedActivities
-}
+  getAllDeletedActivities,
+};

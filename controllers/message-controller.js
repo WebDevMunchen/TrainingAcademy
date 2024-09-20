@@ -4,7 +4,14 @@ const asyncWrapper = require("../utils/asyncWrapper.js");
 const User = require("../models/user-model.js");
 
 const createMessage = asyncWrapper(async (req, res, next) => {
-  const { messageTitle, messageContent, timeStamp, messageType, sender, sendersEmail } = req.body;
+  const {
+    messageTitle,
+    messageContent,
+    timeStamp,
+    messageType,
+    sender,
+    sendersEmail,
+  } = req.body;
 
   const message = await Message.create({
     sender,
@@ -12,7 +19,7 @@ const createMessage = asyncWrapper(async (req, res, next) => {
     messageContent,
     timeStamp,
     messageType,
-    sendersEmail
+    sendersEmail,
   });
 
   const users = await User.find().populate("message.messageID");
@@ -29,18 +36,18 @@ const createMessage = asyncWrapper(async (req, res, next) => {
 });
 
 const findOneMessage = asyncWrapper(async (req, res, next) => {
-  const {id} = req.params
+  const { id } = req.params;
 
-  const singleMessage = await Message.findById(id)
+  const singleMessage = await Message.findById(id);
 
-  if(!singleMessage) {
-    throw new ErrorResponse("Message not found!")
+  if (!singleMessage) {
+    throw new ErrorResponse("Message not found!");
   } else {
-    res.stutus(201).json(singleMessage)
+    res.stutus(201).json(singleMessage);
   }
-})
+});
 
 module.exports = {
   createMessage,
-  findOneMessage
+  findOneMessage,
 };

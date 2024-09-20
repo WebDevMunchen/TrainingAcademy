@@ -8,10 +8,15 @@ export default function ClassesOverview() {
   const currentYear = new Date().getFullYear();
 
   const { years, defaultYear } = useMemo(() => {
-    if (!user?.classesRegistered) return { years: [], defaultYear: currentYear };
+    if (!user?.classesRegistered)
+      return { years: [], defaultYear: currentYear };
 
     const uniqueYears = Array.from(
-      new Set(user.classesRegistered.map((activity) => activity?.registeredClassID?.year))
+      new Set(
+        user.classesRegistered.map(
+          (activity) => activity?.registeredClassID?.year
+        )
+      )
     ).sort((a, b) => a - b);
 
     const defaultYear = uniqueYears.includes(String(currentYear))
@@ -33,8 +38,12 @@ export default function ClassesOverview() {
   };
 
   const compareDates = (a, b) => {
-    const dateA = a?.registeredClassID?.date ? new Date(a.registeredClassID.date) : 0;
-    const dateB = b?.registeredClassID?.date ? new Date(b.registeredClassID.date) : 0;
+    const dateA = a?.registeredClassID?.date
+      ? new Date(a.registeredClassID.date)
+      : 0;
+    const dateB = b?.registeredClassID?.date
+      ? new Date(b.registeredClassID.date)
+      : 0;
     return dateB - dateA;
   };
 
@@ -84,8 +93,7 @@ export default function ClassesOverview() {
                 <div className="flex mt-8 justify-center">
                   <div className="relative">
                     <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-                    <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
-                    </div>
+                    <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
                   </div>
                 </div>
               ) : (

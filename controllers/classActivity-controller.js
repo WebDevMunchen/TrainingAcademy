@@ -320,9 +320,42 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
         <ul>
           ${userNames.map((userName) => `<li>${userName}</li>`).join("")}
         </ul>
-        <p>Bitte die Mitarbeiter aus eurer Abteilung informieren, falls sie betroffen sind.</p>
+        <p>Bitte informiert die Mitarbeiter eurer Abteilung und passt ihre Anfrage an, falls sie betroffen sind.</p>
         <p>Bei Fragen gerne melden.</p>
         <p>Euer Training Abteilung</p>
+
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
+        <tr>
+          <td align="center">
+            <!-- VML-based button rendering for Outlook -->
+            <!--[if mso]>
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/classInformation/${id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+              <w:anchorlock/>
+              <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage bearbeiten</center>
+            </v:roundrect>
+            <![endif]-->
+  
+            <!-- Fallback for non-Outlook clients -->
+            <a href="http://localhost:5173/classInformation/${id}" style="
+                background-color: #007bff;
+                border-radius: 5px;
+                color: #ffffff;
+                display: inline-block;
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                line-height: 50px;
+                text-align: center;
+                text-decoration: none;
+                width: 200px;
+                height: 50px;
+                mso-hide: all;
+              "
+              target="_blank"
+              >Zum Genehmigungstool</a>
+          </td>
+        </tr>
+      </table>
+
       </div>`;
       }
 

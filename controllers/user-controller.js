@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const ClassActivity = require("../models/classActivity-model.js");
 const Approver = require("../models/approver-model.js");
-const { format } = require('date-fns');
+const { format } = require("date-fns");
 
 const createUser = asyncWrapper(async (req, res, next) => {
   const {
@@ -246,12 +246,44 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     subject: "Training Academy - Rent.Group München - Ausstehende Genehmigung",
     text: "Training Academy - Rent.Group München - Ausstehende Genehmigung",
     html: `
-    <p>Es gibt eine neue Anfrage zur Schulungsteilnahme</p>
-    <p><strong>${user.firstName} ${user.lastName}</strong> hat sich für die Schulung <em>"${registeredClass.title}"</em> angemeldet!</p>
-    <p>Link zum Genehmigungsprozess:</p>
-    <p><a href="http://localhost:5173/classInformation/${activity_id}">http://localhost:5173/classInformation/${activity_id}</a></p>
-    <br />
-  `,
+      <p>Es gibt eine neue Anfrage zur Schulungsteilnahme</p>
+      <p><strong>${user.firstName} ${user.lastName}</strong> hat sich für die Schulung <em>"${registeredClass.title}"</em> angemeldet!</p>
+      <p>Link zum Genehmigungsprozess:</p>
+  
+    
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
+        <tr>
+          <td align="center">
+            <!-- VML-based button rendering for Outlook -->
+            <!--[if mso]>
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/classInformation/${activity_id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+              <w:anchorlock/>
+              <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage bearbeiten</center>
+            </v:roundrect>
+            <![endif]-->
+  
+            <!-- Fallback for non-Outlook clients -->
+            <a href="http://localhost:5173/classInformation/${activity_id}" style="
+                background-color: #007bff;
+                border-radius: 5px;
+                color: #ffffff;
+                display: inline-block;
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                line-height: 50px;
+                text-align: center;
+                text-decoration: none;
+                width: 200px;
+                height: 50px;
+                mso-hide: all;
+              "
+              target="_blank"
+              >Anfrage bearbeiten</a>
+          </td>
+        </tr>
+      </table>
+      <br />
+    `,
   };
 
   const sendMail = async (transporter, mailOptions) => {
@@ -319,15 +351,14 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
         .json({ error: "Activity capacity is already full" });
     }
 
-    // Update status and handle reason
     user.classesRegistered[classIndex].status = newStatus;
     if (newStatus === "abgelehnt") {
       user.classesRegistered[classIndex].reason = reason;
     } else if (newStatus === "genehmigt") {
-      user.classesRegistered[classIndex].reason = "None"; // Revert to default if approved
+      user.classesRegistered[classIndex].reason = "None";
     }
 
-    const formattedDate = format(new Date(activity.date), 'dd.MM.yyyy');
+    const formattedDate = format(new Date(activity.date), "dd.MM.yyyy");
     const formattedTime = activity.time;
 
     await user.save();
@@ -350,23 +381,135 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       const displayReason = reason.trim() ? reason : "Kein Grund angegeben";
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von <strong>${approver.firstName + " " + approver.lastName}</strong>.</p><br />
-          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: red;">${newStatus}</span>!</p><br />
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von <strong>${
+            approver.firstName + " " + approver.lastName
+          }</strong>.</p><br />
+          <p>Die Anfrage von <strong>${user.firstName} ${
+        user.lastName
+      }</strong> für die Schulung <em>"${
+        activity.title
+      }"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: red;">${newStatus}</span>!</p><br />
           <p><strong>Begründung:</strong> ${displayReason}</p>
+
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
+        <tr>
+          <td align="center">
+            <!-- VML-based button rendering for Outlook -->
+            <!--[if mso]>
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/admin/dashboard" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+              <w:anchorlock/>
+              <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Zum Genehmigungstool</center>
+            </v:roundrect>
+            <![endif]-->
+  
+            <!-- Fallback for non-Outlook clients -->
+            <a href="http://localhost:5173/admin/dashboard" style="
+                background-color: #007bff;
+                border-radius: 5px;
+                color: #ffffff;
+                display: inline-block;
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                line-height: 50px;
+                text-align: center;
+                text-decoration: none;
+                width: 200px;
+                height: 50px;
+                mso-hide: all;
+              "
+              target="_blank"
+              >Zum Genehmigungstool</a>
+          </td>
+        </tr>
+      </table>
         </div>
       `;
     } else if (newStatus === "genehmigt") {
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${approver.firstName + " " + approver.lastName}.</p><br />
-          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: green;">${newStatus}</span>!</p>
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${
+            approver.firstName + " " + approver.lastName
+          }.</p><br />
+          <p>Die Anfrage von <strong>${user.firstName} ${
+        user.lastName
+      }</strong> für die Schulung <em>"${
+        activity.title
+      }"</em>, die am ${formattedDate} um ${formattedTime} stattfindet, wurde <span style="color: green;">${newStatus}</span>!</p>
+                  <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
+        <tr>
+          <td align="center">
+            <!-- VML-based button rendering for Outlook -->
+            <!--[if mso]>
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/admin/dashboard" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+              <w:anchorlock/>
+              <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Zum Genehmigungstool</center>
+            </v:roundrect>
+            <![endif]-->
+  
+            <!-- Fallback for non-Outlook clients -->
+            <a href="http://localhost:5173/admin/dashboard" style="
+                background-color: #007bff;
+                border-radius: 5px;
+                color: #ffffff;
+                display: inline-block;
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                line-height: 50px;
+                text-align: center;
+                text-decoration: none;
+                width: 200px;
+                height: 50px;
+                mso-hide: all;
+              "
+              target="_blank"
+              >Zum Genehmigungstool</a>
+          </td>
+        </tr>
+      </table>
         </div>
       `;
     } else {
       mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${approver.firstName + " " + approver.lastName}.</p><br />
-          <p>Die Anfrage von <strong>${user.firstName} ${user.lastName}</strong> für die Schulung <em>"${activity.title}"</em> wurde <span style="color: blue;">${newStatus}</span>!</p>
+          <p>Es gibt eine Antwort auf die Anfrage zur Schulungsteilnahme von ${
+            approver.firstName + " " + approver.lastName
+          }.</p><br />
+          <p>Die Anfrage von <strong>${user.firstName} ${
+        user.lastName
+      }</strong> für die Schulung <em>"${
+        activity.title
+      }"</em> wurde <span style="color: blue;">${newStatus}</span>!</p>
+                  <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
+        <tr>
+          <td align="center">
+            <!-- VML-based button rendering for Outlook -->
+            <!--[if mso]>
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/classInformation/${activity_id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+              <w:anchorlock/>
+              <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage bearbeiten</center>
+            </v:roundrect>
+            <![endif]-->
+  
+            <!-- Fallback for non-Outlook clients -->
+            <a href="http://localhost:5173/admin/dashboard" style="
+                background-color: #007bff;
+                border-radius: 5px;
+                color: #ffffff;
+                display: inline-block;
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                line-height: 50px;
+                text-align: center;
+                text-decoration: none;
+                width: 200px;
+                height: 50px;
+                mso-hide: all;
+              "
+              target="_blank"
+              >Zum Genehmigungstool</a>
+          </td>
+        </tr>
+      </table>
         </div>
       `;
     }
@@ -377,7 +520,8 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
         address: process.env.USER,
       },
       to: `${user.inbox}`,
-      subject: "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
+      subject:
+        "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
       text: "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
       html: mailHtml,
     };
@@ -397,7 +541,6 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
 
 const updateAttended = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
@@ -424,7 +567,7 @@ const updateAttended = asyncWrapper(async (req, res, next) => {
 
   await user.save();
 
-  res.json(user)
+  res.json(user);
 });
 
 const updateNotAttended = asyncWrapper(async (req, res, next) => {
@@ -452,7 +595,7 @@ const updateNotAttended = asyncWrapper(async (req, res, next) => {
 
   await user.save();
 
-  res.json(user)
+  res.json(user);
 });
 
 const login = asyncWrapper(async (req, res, next) => {
@@ -559,11 +702,9 @@ const deleteMessage = asyncWrapper(async (req, res, next) => {
     );
 
     if (!updatedUser) {
-      return res
-        .status(404)
-        .send({
-          message: "Message not found or not authorized to delete this message",
-        });
+      return res.status(404).send({
+        message: "Message not found or not authorized to delete this message",
+      });
     }
 
     res.status(200).send({ message: "Deleted", user: updatedUser });

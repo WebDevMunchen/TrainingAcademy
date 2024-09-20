@@ -96,9 +96,9 @@ export default function UserListCard({ user, selectedYear }) {
             Referent*in
           </td>
         ) : user.role === "ASP" ? (
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              Genehmiger*in
-            </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            Genehmiger*in
+          </td>
         ) : (
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
             {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
