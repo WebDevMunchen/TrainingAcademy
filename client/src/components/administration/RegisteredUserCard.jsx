@@ -348,9 +348,9 @@ export default function RegisteredUserCard({
   const differenceHours = differenceMs / (1000 * 60 * 60) + 2;
 
   const declineReasons = [
-    "Auslastung zu hoch",
-    "In der Zeit für dich nicht relevant",
-    "Es wird dir nichts beibringen",
+    "Inhaltlich nicht für den Aufgabenbereich relevant",
+    "Aufgrund der Änderung keine Teilnahme mehr möglich",
+    "Keine Vertretung verfügbar",
   ];
 
   return (
