@@ -18,8 +18,6 @@ export default function EditClass() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
 
-  console.log(activityInformation)
-
   const {
     register,
     handleSubmit,
@@ -41,8 +39,8 @@ export default function EditClass() {
 
         if (response.data.fileUrl) {
           const fileUrl = response.data.fileUrl;
-          const fileName = fileUrl.split("/").pop(); // Extract the file name from the URL
-          setSelectedFile(fileUrl); // Assuming the file URL is sufficient as a default value
+          const fileName = fileUrl.split("/").pop(); 
+          setSelectedFile(fileUrl); 
           setFileName(fileName);
         }
 
@@ -61,12 +59,9 @@ export default function EditClass() {
           if (differenceHours < 48) {
             navigate("/admin/dashboard");
           }
-    }
-
+        }
       })
       .catch((error) => {});
-
-
   }, [id, navigate]);
 
   const handleDepartmentChange = (e) => {
@@ -74,9 +69,7 @@ export default function EditClass() {
     if (e.target.checked) {
       setSelectedDepartments((prev) => [...prev, department]);
     } else {
-      setSelectedDepartments((prev) =>
-        prev.filter((d) => d !== department)
-      );
+      setSelectedDepartments((prev) => prev.filter((d) => d !== department));
     }
   };
 
@@ -116,7 +109,6 @@ export default function EditClass() {
 
       setUser(userResponse?.data);
     } catch (error) {
-
     } finally {
       navigate("/admin/dashboard");
     }
@@ -156,7 +148,8 @@ export default function EditClass() {
       })
       .then((response) => {
         setAllActivities(response.data);
-      }).then((response) => {
+      })
+      .then((response) => {
         return axiosClient.get("/user/profile");
       })
       .then((responseProfile) => {
@@ -166,7 +159,7 @@ export default function EditClass() {
         navigate("/admin/dashboard");
       })
       .catch((error) => {
-        setAllActivities(null)
+        setAllActivities(null);
         navigate("/admin/dashboard");
       });
   };
@@ -178,13 +171,12 @@ export default function EditClass() {
   return (
     <>
       {!activityInformation ? (
-                  <div class="flex mt-2 justify-center">
-          <div class="relative">
-              <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-              <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
-              </div>
+        <div className="flex mt-2 justify-center">
+          <div className="relative">
+            <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+            <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
           </div>
-      </div>
+        </div>
       ) : (
         <div className="bg-gray-50/50 flex">
           <SideMenu />
@@ -206,8 +198,8 @@ export default function EditClass() {
                   </svg>
                   <span className="sr-only">Info</span>
                   <div>
-                    <span className="font-medium">Achtung!</span> Du bist dabei, die
-                    Schulung zu löschen!
+                    <span className="font-medium">Achtung!</span> Du bist dabei,
+                    die Schulung zu löschen!
                   </div>
                 </div>
                 <div
@@ -229,7 +221,9 @@ export default function EditClass() {
                         um den Mitarbeiter zu informieren
                       </li>
                       <li>
-                        Diese Schulung kann <span className="font-medium">nicht mehr</span> wiedegestellt werden!
+                        Diese Schulung kann{" "}
+                        <span className="font-medium">nicht mehr</span>{" "}
+                        wiedegestellt werden!
                       </li>
                     </ul>
                   </div>
@@ -321,7 +315,9 @@ export default function EditClass() {
                       />
                     </div>
 
-                    <div className={`flex items-center gap-3 ${fileUploadHidden}`}>
+                    <div
+                      className={`flex items-center gap-3 ${fileUploadHidden}`}
+                    >
                       <label
                         htmlFor="uploadFile1"
                         className="flex bg-gray-800 hover:bg-gray-700 text-white ml-2 text-base px-4 py-1.5 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif]"
@@ -349,21 +345,21 @@ export default function EditClass() {
                         />
                       </label>
                       {fileName && (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="size-8 text-green-600"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
-                        />
-                      </svg>
-                    )}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="size-8 text-green-600"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+                          />
+                        </svg>
+                      )}
                     </div>
                   </div>
                   <div className="flex flex-col lg:flex-row lg:justify-between">

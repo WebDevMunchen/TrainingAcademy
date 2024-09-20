@@ -96,7 +96,9 @@ export default function PieChartSingle() {
           </div>
           <div className="flex justify-center mt-4">
             {noStatistics ? (
-              <p className="flex items-center text-md h-[calc(51vh-32px)] text-3xl font-medium text-gray-600">Noch keine Statistik vorhanden</p>
+              <p className="flex items-center text-md h-[calc(51vh-32px)] text-3xl font-medium text-gray-600">
+                Noch keine Statistik vorhanden
+              </p>
             ) : (
               <ReactApexChart
                 options={options}

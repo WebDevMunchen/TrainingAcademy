@@ -2,7 +2,7 @@ import ReactApexChart from "react-apexcharts";
 import axiosClient from "../../utils/axiosClient";
 import { useEffect, useState } from "react";
 import SideMenu from "./SideMenu";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 export default function PieCharStatisticsDecline() {
   const currentYear = new Date().getFullYear();
@@ -58,22 +58,28 @@ export default function PieCharStatisticsDecline() {
 
   const fetchData = async (year) => {
     try {
-      const response = await axiosClient.get(`/classActivity/allActivities`);
-      const data = response.data;
+      const allUsersResponse = await axiosClient.get("/user/getAllUsers");
+      const users = allUsersResponse.data;
 
       const reasonCounts = {};
 
-      data.forEach((activity) => {
-        if (activity.year === year.toString()) {
-          activity.registeredUsers.forEach((user) => {
-            user.classesRegistered.forEach((reg) => {
-              if (reg.reason) {
-                reasonCounts[reg.reason.trim()] =
-                  (reasonCounts[reg.reason.trim()] || 0) + 1;
-              }
-            });
-          });
-        }
+      users.forEach((user) => {
+        user.classesRegistered.forEach((reg) => {
+          if (
+            reg.registeredClassID?.year === year.toString() &&
+            reg.status === "abgelehnt"
+          ) {
+            if (reg.reason && reg.reason !== "None") {
+              const trimmedReason = reg.reason.trim();
+              reasonCounts[trimmedReason] =
+                (reasonCounts[trimmedReason] || 0) + 1;
+            } else {
+              return;
+            }
+          } else {
+            return;
+          }
+        });
       });
 
       const labels = Object.keys(reasonCounts);
@@ -97,6 +103,8 @@ export default function PieCharStatisticsDecline() {
   const handleYearChange = (event) => {
     setSelectedYear(Number(event.target.value));
   };
+
+  const location = useLocation();
 
   return (
     <div className="bg-gray-50/50 flex">
@@ -135,7 +143,7 @@ export default function PieCharStatisticsDecline() {
                   onChange={handleYearChange}
                   className="mt-2 px-2.5 ml-2 form-select bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
-                  {[currentYear, currentYear - 1, currentYear - 2].map(
+                  {Array.from({ length: 11 }, (_, i) => 2020 + i).map(
                     (year) => (
                       <option key={year} value={year}>
                         {year}

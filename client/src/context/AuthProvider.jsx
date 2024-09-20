@@ -20,7 +20,9 @@ export default function AuthProvider({ children }) {
       .toLocaleDateString("de-DE", { month: "long" })
       .toLocaleLowerCase()
   );
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear().toString());
+  const [currentYear, setCurrentYear] = useState(
+    new Date().getFullYear().toString()
+  );
 
   useEffect(() => {
     axiosClient
@@ -36,7 +38,9 @@ export default function AuthProvider({ children }) {
       });
 
     axiosClient
-      .get(`/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`)
+      .get(
+        `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
+      )
       .then((response) => {
         setAllActivities(response.data);
       })

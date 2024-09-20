@@ -30,7 +30,7 @@ export default function SingleClassDetails() {
   useEffect(() => {
     if (activity?.date && activity?.time) {
       const datePart = activity.date.split("T")[0];
-      const [hours, minutes] = activity.time.split(":").map(Number); 
+      const [hours, minutes] = activity.time.split(":").map(Number);
 
       const [year, month, day] = datePart.split("-").map(Number);
       const date = new Date(year, month - 1, day, hours, minutes);
@@ -58,7 +58,6 @@ export default function SingleClassDetails() {
       const now = new Date();
       const hoursDifference = (date.getTime() - now.getTime()) / 3600000;
       setIsWithin48Hours(hoursDifference <= 48);
-
     }
   }, [activity]);
 
@@ -76,23 +75,21 @@ export default function SingleClassDetails() {
   return (
     <>
       {!activity ? (
-                          <div class="flex mt-8 justify-center">
-                  <div class="relative">
-                      <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-                      <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
-                      </div>
-                  </div>
-              </div>
+        <div className="flex mt-8 justify-center">
+          <div className="relative">
+            <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+            <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+          </div>
+        </div>
       ) : (
         <>
           {!activity ? (
-                              <div class="flex mt-8 justify-center">
-                  <div class="relative">
-                      <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-                      <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
-                      </div>
-                  </div>
+            <div className="flex mt-8 justify-center">
+              <div className="relative">
+                <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+                <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
               </div>
+            </div>
           ) : (
             <>
               <div className="flex justify-center">
@@ -131,6 +128,12 @@ export default function SingleClassDetails() {
                         >
                           Überischt
                         </button>
+                        <NavLink
+                          to={`/admin/editClass/${activity._id}`}
+                          className="invisible flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                        >
+                          Bearbeiten
+                        </NavLink>
                       </div>
                     )}
                     <h3 className="flex ml-10 justify-center text-lg font-semibold text-black">

@@ -7,7 +7,8 @@ const cloudinary = require("../utils/cloudinaryConfig.js");
 const Approver = require("../models/approver-model.js");
 const nodemailer = require("nodemailer");
 const { format } = require("date-fns");
-const cron = require('node-cron');
+const { DateTime } = require("luxon");
+const cron = require("node-cron");
 
 const createClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -79,9 +80,9 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
   const existingActivity = await ClassActivity.findById(id).populate({
-    path: 'registeredUsers',
-    match: { 'classesRegistered.status': { $in: ['ausstehend', 'genehmigt'] } },
-    select: 'firstName lastName department classesRegistered',
+    path: "registeredUsers",
+    match: { "classesRegistered.status": { $in: ["ausstehend", "genehmigt"] } },
+    select: "firstName lastName department classesRegistered",
   });
 
   if (!existingActivity) {
@@ -125,12 +126,10 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
   };
 
   try {
-   
     const activity = await ClassActivity.findByIdAndUpdate(id, updatedClass, {
       new: true,
     });
 
-   
     const approversId = "668e958729a4cd5bb513f562";
     const findApprovers = await Approver.findById(approversId);
 
@@ -165,19 +164,21 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     const formattedTimeUpdated = updatedClass.time;
 
     const fieldsChanged =
-      JSON.stringify(existingActivity.date) !== JSON.stringify(updatedClass.date) ||
+      JSON.stringify(existingActivity.date) !==
+        JSON.stringify(updatedClass.date) ||
       existingActivity.time.trim() !== updatedClass.time.trim() ||
       existingActivity.location.trim() !== updatedClass.location.trim() ||
       existingActivity.teacher.trim() !== updatedClass.teacher.trim();
 
     const userNames = existingActivity.registeredUsers
-      .filter(user => 
+      .filter((user) =>
         user.classesRegistered.some(
-          registration => registration.registeredClassID.equals(id) &&
-                          ['ausstehend', 'genehmigt'].includes(registration.status)
+          (registration) =>
+            registration.registeredClassID.equals(id) &&
+            ["genehmigt"].includes(registration.status)
         )
       )
-      .map(user => `${user.firstName} ${user.lastName} (${user.department})`);
+      .map((user) => `${user.firstName} ${user.lastName} (${user.department})`);
 
     if (fieldsChanged) {
       const transporter = nodemailer.createTransport({
@@ -197,7 +198,9 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
         mailHtml = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
           <p>Hallo zusammen,</p>
-          <p>Es gab Änderungen bei der Schulung: <em>"${updatedClass.title}"</em></p>
+          <p>Es gab Änderungen bei der Schulung: <em>"${
+            updatedClass.title
+          }"</em></p>
           <p><strong>Hier sind die Details der Änderungen:</strong></p>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
             <thead>
@@ -210,28 +213,43 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
             <tbody>
               <tr>
                 <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Datum</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${formattedDate}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; ${
+                  formattedDate !== formattedDateUpdated
+                    ? "text-decoration: line-through;"
+                    : ""
+                }">${formattedDate}</td>
                 <td style="border: 1px solid #ddd; padding: 8px;">${formattedDateUpdated}</td>
               </tr>
               <tr>
                 <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Uhrzeit</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${formattedTime}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; ${
+                  formattedTime !== formattedTimeUpdated
+                    ? "text-decoration: line-through;"
+                    : ""
+                }">${formattedTime}</td>
                 <td style="border: 1px solid #ddd; padding: 8px;">${formattedTimeUpdated}</td>
               </tr>
               <tr>
                 <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Ort</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.location}</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.location}</td>
-              </tr>
-              <tr>
-                <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Dauer</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.duration} Minuten</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.duration} Minuten</td>
+                <td style="border: 1px solid #ddd; padding: 8px; ${
+                  existingActivity.location !== updatedClass.location
+                    ? "text-decoration: line-through;"
+                    : ""
+                }">${existingActivity.location}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${
+                  updatedClass.location
+                }</td>
               </tr>
               <tr>
                 <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Referent*in</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.teacher}</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.teacher}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; ${
+                  existingActivity.teacher !== updatedClass.teacher
+                    ? "text-decoration: line-through;"
+                    : ""
+                }">${existingActivity.teacher}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">${
+                  updatedClass.teacher
+                }</td>
               </tr>
             </tbody>
           </table>
@@ -243,7 +261,9 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
       } else {
         mailHtml = `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
         <p>Hallo zusammen,</p>
-        <p>Es gab Änderungen bei der Schulung: <em>"${updatedClass.title}"</em></p>
+        <p>Es gab Änderungen bei der Schulung: <em>"${
+          updatedClass.title
+        }"</em></p>
         <p><strong>Hier sind die Details der Änderungen:</strong></p>
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
           <thead>
@@ -256,38 +276,86 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
           <tbody>
             <tr>
               <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Datum</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${formattedDate}</td>
+              <td style="border: 1px solid #ddd; padding: 8px; ${
+                formattedDate !== formattedDateUpdated
+                  ? "text-decoration: line-through;"
+                  : ""
+              }">${formattedDate}</td>
               <td style="border: 1px solid #ddd; padding: 8px;">${formattedDateUpdated}</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Uhrzeit</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${formattedTime}</td>
+              <td style="border: 1px solid #ddd; padding: 8px; ${
+                formattedTime !== formattedTimeUpdated
+                  ? "text-decoration: line-through;"
+                  : ""
+              }">${formattedTime}</td>
               <td style="border: 1px solid #ddd; padding: 8px;">${formattedTimeUpdated}</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Ort</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.location}</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.location}</td>
-            </tr>
-            <tr>
-              <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Dauer</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.duration} Minuten</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.duration} Minuten</td>
+              <td style="border: 1px solid #ddd; padding: 8px; ${
+                existingActivity.location !== updatedClass.location
+                  ? "text-decoration: line-through;"
+                  : ""
+              }">${existingActivity.location}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${
+                updatedClass.location
+              }</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Referent*in</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${existingActivity.teacher}</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${updatedClass.teacher}</td>
+              <td style="border: 1px solid #ddd; padding: 8px; ${
+                existingActivity.teacher !== updatedClass.teacher
+                  ? "text-decoration: line-through;"
+                  : ""
+              }">${existingActivity.teacher}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${
+                updatedClass.teacher
+              }</td>
             </tr>
           </tbody>
         </table>
-        <p>Diese Benutzer haben sich bereits angemeldet:</p>
+        <p>Die Anfrage dieser Benutzer wurde bereits genehmigt:</p>
         <ul>
-          ${userNames.map(userName => `<li>${userName}</li>`).join('')}
+          ${userNames.map((userName) => `<li>${userName}</li>`).join("")}
         </ul>
-        <p>Bitte die Mitarbeiter aus eurer Abteilung informieren, falls sie betroffen sind.</p>
+        <p>Bitte informiert die Mitarbeiter eurer Abteilung und passt ihre Anfrage an, falls sie betroffen sind.</p>
         <p>Bei Fragen gerne melden.</p>
         <p>Euer Training Abteilung</p>
+
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
+        <tr>
+          <td align="center">
+            <!-- VML-based button rendering for Outlook -->
+            <!--[if mso]>
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/classInformation/${id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+              <w:anchorlock/>
+              <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage bearbeiten</center>
+            </v:roundrect>
+            <![endif]-->
+  
+            <!-- Fallback for non-Outlook clients -->
+            <a href="http://localhost:5173/classInformation/${id}" style="
+                background-color: #007bff;
+                border-radius: 5px;
+                color: #ffffff;
+                display: inline-block;
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                line-height: 50px;
+                text-align: center;
+                text-decoration: none;
+                width: 200px;
+                height: 50px;
+                mso-hide: all;
+              "
+              target="_blank"
+              >Zum Genehmigungstool</a>
+          </td>
+        </tr>
+      </table>
+
       </div>`;
       }
 
@@ -322,8 +390,6 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     next(error);
   }
 });
-
-
 
 const updateCancelationReason = asyncWrapper(async (req, res, next) => {
   const { stornoReason } = req.body;
@@ -491,29 +557,57 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
   const approversId = "668e958729a4cd5bb513f562";
 
-  const findApprovers = await Approver.findById(approversId);
-  const notifyBeforeDelete = await ClassActivity.findById(id);
+  const notifyBeforeDelete = await ClassActivity.findById(id).populate({
+    path: "registeredUsers",
+    select: "firstName lastName department classesRegistered",
+  });
 
   if (!notifyBeforeDelete) {
     return res.status(404).json({ message: "Class not found" });
   }
 
-  const isRelevantStatus = ["ausstehend", "genehmigt"].includes(
-    notifyBeforeDelete.status
-  );
+  const deletedClassData = {
+    title: notifyBeforeDelete.title,
+    description: notifyBeforeDelete.description,
+    month: notifyBeforeDelete.month,
+    year: notifyBeforeDelete.year,
+    date: notifyBeforeDelete.date,
+    duration: notifyBeforeDelete.duration,
+    time: notifyBeforeDelete.time,
+    location: notifyBeforeDelete.location,
+    department: notifyBeforeDelete.department,
+    capacity: notifyBeforeDelete.capacity,
+    usedCapacity: notifyBeforeDelete.usedCapacity,
+    registeredUsers: notifyBeforeDelete.registeredUsers,
+    teacher: notifyBeforeDelete.teacher,
+    safetyBriefing: notifyBeforeDelete.safetyBriefing,
+    stornoReason: [],
+    fileUrl: notifyBeforeDelete.fileUrl,
+    storno: true,
+  };
 
-  const deletedClassData = { ...notifyBeforeDelete.toObject(), storno: true };
-  await DeletedClassActivity.create(deletedClassData);
+  const duplicatedClass = new DeletedClassActivity(deletedClassData);
+  await duplicatedClass.save();
 
-  const usersRegistered = await User.find({
-    "classesRegistered.registeredClassID": id,
-  });
+  const allUsers = await User.find({})
+    .populate("classesRegistered.registeredClassID")
+    .populate("userContactInformation")
+    .populate("message.messageID");
 
-  const userNames = isRelevantStatus
-    ? usersRegistered.map(
-        (user) => `${user.firstName} ${user.lastName} (${user.department})`
-      )
-    : [];
+  const userNames = allUsers.reduce((acc, user) => {
+    const hasMatchingClass = user.classesRegistered.some(
+      (singleClass) =>
+        singleClass.registeredClassID._id.toString() === id &&
+        (singleClass.status === "ausstehend" ||
+          singleClass.status === "genehmigt")
+    );
+
+    if (hasMatchingClass) {
+      acc.push(`${user.firstName} ${user.lastName} (${user.department})`);
+    }
+
+    return acc;
+  }, []);
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -525,6 +619,8 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
       pass: process.env.APP_PASSWORD,
     },
   });
+
+  const findApprovers = await Approver.findById(approversId);
 
   const toAddresses = [
     findApprovers.logistik,
@@ -547,7 +643,9 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     findApprovers.designSubstitute,
     findApprovers.projektmanagementSubstitute,
     findApprovers.officemanagementSubstitute,
-  ].join(", ");
+  ]
+    .filter(Boolean)
+    .join(", ");
 
   let mailHtml;
 
@@ -558,14 +656,13 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
         <p>Die Schulung <em>"${
           notifyBeforeDelete.title
         }"</em> wurde abgesagt.</p>
-        <p>Folgende Mitarbeiter haben sich für diese Schulung angemeldet:</p>
+        <p>Die Anfrage dieser Mitarbeiter wurde bereits genehmigt oder steht noch aus:</p>
         <ul>
           ${userNames.map((name) => `<li>${name}</li>`).join("")}
         </ul>
-         <p>Bitte die Kollegen aus eurer Abteilung informieren, falls sie betroffen sind.</p>
+        <p>Bitte die Kollegen aus eurer Abteilung informieren, falls sie betroffen sind.</p>
         <p>Bei Fragen gerne melden.</p>
         <p>Euer Training Abteilung</p>
-
       </div>
     `;
   } else {
@@ -576,7 +673,6 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
         <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p>
         <p>Bei Fragen gerne melden.</p>
         <p>Euer Training Abteilung</p>
-
       </div>
     `;
   }
@@ -592,18 +688,13 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     html: mailHtml,
   };
 
-  const sendMail = async (transporter, mailOptions) => {
-    try {
-      await transporter.sendMail(mailOptions);
-    } catch (error) {
-      console.error("Error sending email:", error);
-    }
-  };
-
-  await sendMail(transporter, mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error("Error sending email:", error);
+  }
 
   await ClassActivity.findByIdAndDelete(id);
-
   await User.updateMany(
     { "classesRegistered.registeredClassID": id },
     { $pull: { classesRegistered: { registeredClassID: id } } }
@@ -614,50 +705,61 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
   });
 });
 
-
 const checkAndUpdateClassRegistrations = async () => {
-  const now = new Date();
-  const in48Hours = new Date(now.getTime() + 48 * 60 * 60 * 1000);
+  const now = DateTime.now().setZone("Europe/Berlin");
+  const in24Hours = now.plus({ hours: 24 });
 
   try {
-    const classes = await ClassActivity.find({
-      date: { $lte: in48Hours, $gte: now }
+    const classes = await ClassActivity.find();
+
+    const classesToProcess = classes.filter((classActivity) => {
+      const classDateTime = DateTime.fromISO(classActivity.date.toISOString())
+        .setZone("Europe/Berlin")
+        .set({
+          hour: parseInt(classActivity.time.split(":")[0]),
+          minute: parseInt(classActivity.time.split(":")[1]),
+        });
+
+      return classDateTime >= now && classDateTime <= in24Hours;
     });
 
-    for (const classActivity of classes) {
+    for (const classActivity of classesToProcess) {
       const registeredUserIds = classActivity.registeredUsers;
 
       await User.updateMany(
         {
           _id: { $in: registeredUserIds },
-          'classesRegistered': {
+          classesRegistered: {
             $elemMatch: {
               registeredClassID: classActivity._id,
-              status: 'ausstehend'
-            }
-          }
+              status: "ausstehend",
+            },
+          },
         },
         {
           $set: {
-            'classesRegistered.$.status': 'abgelehnt',
-            'classesRegistered.$.reason': 'Automatisch abgelehnt, da keine Antwort vom Genehmiger oder seinem Vertreter einging'
-          }
+            "classesRegistered.$.status": "abgelehnt",
+            "classesRegistered.$.reason":
+              "Automatisch abgelehnt(keine Antwort vom Genehmiger oder seinem Vertreter)",
+          },
         }
       );
     }
-
   } catch (error) {
-    console.error('Error checking and updating class registrations:', error);
+    console.error("Error checking and updating class registrations:", error);
   }
 };
 
-cron.schedule('30 17 * * *', () => {
-  checkAndUpdateClassRegistrations();
-}, {
-  scheduled: true,
-  timezone: "Europe/Berlin" 
-});
-
+cron.schedule(
+  "30 17 * * *",
+  () => {
+    checkAndUpdateClassRegistrations();
+  },
+  {
+    scheduled: true,
+    timezone: "Europe/Berlin",
+  }
+);
 
 module.exports = {
   createClassActivity,
@@ -670,4 +772,5 @@ module.exports = {
   cancelUserRegistration,
   updateCancelationReason,
   deleteClass,
+  checkAndUpdateClassRegistrations,
 };

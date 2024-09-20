@@ -11,7 +11,6 @@ export default function UserList() {
 
   const [selectedYear, setSelectedYear] = useState(currentYear);
 
-  // Function to handle year change
   const handleYearChange = (event) => {
     setSelectedYear(Number(event.target.value));
   };
@@ -19,13 +18,12 @@ export default function UserList() {
   return (
     <>
       {!allUsers ? (
-                  <div class="flex mt-2 justify-center">
-          <div class="relative">
-              <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-              <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
-              </div>
+        <div className="flex mt-2 justify-center">
+          <div className="relative">
+            <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+            <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
           </div>
-      </div>
+        </div>
       ) : (
         <>
           <div className="bg-gray-50/50 flex">
@@ -61,13 +59,17 @@ export default function UserList() {
                             Abteilung
                           </th>
                           <th className="w-2/12 px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
-                          <span>Jährliche Sicherheitsunterweisung in</span>
+                            <span>Jährliche Sicherheitsunterweisung in</span>
                             <select
                               value={selectedYear}
                               onChange={handleYearChange}
                               className="form-select font-extrabold text-blue-500 hover:cursor-pointer"
                             >
-                              {[currentYear, currentYear - 1, currentYear - 2].map((year) => (
+                              {[
+                                currentYear,
+                                currentYear - 1,
+                                currentYear - 2,
+                              ].map((year) => (
                                 <option key={year} value={year}>
                                   {year}
                                 </option>
@@ -82,7 +84,11 @@ export default function UserList() {
                       <tbody className="bg-white divide-y divide-gray-200">
                         {allUsers.map((user) => {
                           return (
-                            <UserListCard key={user._id} user={user} selectedYear={selectedYear} />
+                            <UserListCard
+                              key={user._id}
+                              user={user}
+                              selectedYear={selectedYear}
+                            />
                           );
                         })}
                       </tbody>

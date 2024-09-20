@@ -59,7 +59,6 @@ export default function ClassScheduleCard({ activity }) {
   const oneDayPrior =
     currentTime > oneDayBeforeActivity && currentTime < activityDate;
 
-
   return (
     <>
       <div className="bg-white border p-8 relative group shadow-lg">
@@ -89,7 +88,7 @@ export default function ClassScheduleCard({ activity }) {
             <p className="hidden lg:inline invisible w-72">
               Placeholder Longer
             </p>
-            <h3 className="hidden lg:flex justify-center text-lg font-semibold text-black">
+            <h3 className="hidden text-center lg:flex justify-center text-lg font-semibold text-black">
               {activity.title}
             </h3>
             <h3 className="flex justify-center mx-auto text-center mb-2 text-lg font-semibold text-black lg:hidden">
@@ -269,7 +268,7 @@ export default function ClassScheduleCard({ activity }) {
               </div>
             </div>
           </dialog>
-          <p className="text-center lg:flex justify-center mt-2 text-base text-gray-600">
+          <p className="w-full text-center lg:flex justify-center lg:w-7/12 mx-auto mt-2 text-base text-gray-600">
             {activity.description}
           </p>
           <div className="grid grid-cols-3 grid-rows-1 gap-2 text-center lg:gap-0 lg:text-left justify-items-center">

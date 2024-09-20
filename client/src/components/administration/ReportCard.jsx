@@ -43,11 +43,7 @@ export default function ReportCard({ registeredUser, activity }) {
             <span
               className="tooltip mr-2 hover:cursor-pointer"
               style={{ width: "auto", height: "auto" }}
-              data-tip={
-                /^[^a-zA-Z]*$/.test(registration.reason)
-                  ? "Kein Grund vorhanden"
-                  : registration.reason
-              }
+              data-tip={registration.reason}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -69,12 +65,13 @@ export default function ReportCard({ registeredUser, activity }) {
       <td className="px-6 py-4 whitespace-nowrap">
         {registration?.status === "abgelehnt" ||
         registration?.status === "ausstehend" ? (
-          <span className="bg-slate-200 text-white-800 px-2 inline-flex text-sm leading-5 font-semibold rounded-full">
+          <span className="px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full text-gray-500 bg-gray-200 text-gray-800">
             nicht angemeldet
           </span>
         ) : (
           <span
             className={`px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full 
+              
         ${
           registration
             ? registration?.statusAttended === "teilgenommen"
