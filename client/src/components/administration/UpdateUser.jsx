@@ -28,8 +28,19 @@ export default function Register() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
     watch,
   } = useForm();
+
+
+  useEffect(() => {
+    if (userInfomation) {
+      // Set default values for departments
+      setValue("department", userInfomation.department || []);
+    }
+  }, [userInfomation, setValue]);
+
+
 
   const onSubmit = (data) => {
     axiosClient
@@ -63,7 +74,7 @@ export default function Register() {
         <div className="bg-gray-50/50 flex">
           <SideMenu />
           <div className="flex flex-col items-center py-8 lg:py-12 mx-auto w-10/12">
-            <div className="bg-white rounded-md shadow w-full lg:w-4/12">
+            <div className="bg-white rounded-md shadow w-full lg:w-5/12">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Update Benutzerinformationen:
@@ -103,7 +114,7 @@ export default function Register() {
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col lg:flex-row justify-around gap-2">
+                  <div className="flex flex-col lg:flex-row justify-around ml-1 gap-2">
                     <div>
                       <label
                         htmlFor="logID"
@@ -119,8 +130,26 @@ export default function Register() {
                         placeholder="Die Abkürzung sollte drei Zeichen lang sein..."
                       />
                     </div>
+                    <div className="invisible">
+                      <label
+                        htmlFor="logID"
+                        className="invisible block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Kürzel:
+                      </label>
+                      <input
+                        {...register("logID", { required: true })}
+                        defaultValue={userInfomation.logID}
+                        type="input"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Die Abkürzung sollte drei Zeichen lang sein..."
+                      />
+                    </div>
 
-                    <div>
+      
+                  </div>
+
+                  <div className="flex flex-col ml-10">
                       <div className="flex justify-start">
                         <label
                           htmlFor="department"
@@ -159,32 +188,33 @@ export default function Register() {
                           )}
                         </div>
                       </div>
-                      <select
-                        {...register("department", {
-                          required: true,
-                        })}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        defaultValue={userInfomation.department}
-                      >
-                        <option value={"Logistik"}>Logistik</option>
-                        <option value={"Vertrieb"}>Vertrieb</option>
-                        <option value={"IT & Services"}>IT & Services</option>
-                        <option value={"Fuhrpark"}>Fuhrpark</option>
-                        <option value={"HR & Training"}>HR & Training</option>
-                        <option value={"Buchhaltung"}>Buchhaltung</option>
-                        <option value={"Einkauf"}>Einkauf & Anmietung</option>
-                        <option value={"Design & Planung"}>
-                          Design & Planung
-                        </option>
-                        <option value={"Projektmanagement"}>
-                          Projektmanagement
-                        </option>
-                        <option value={"Officemanagement"}>
-                          Office Management
-                        </option>
-                      </select>
+                      <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4 gap-1">
+        {[
+          "Logistik",
+          "Vertrieb",
+          "IT & Services",
+          "Fuhrpark",
+          "HR & Training",
+          "Buchhaltung",
+          "Einkauf & Anmietung",
+          "Design & Planung",
+          "Projektmanagement",
+          "Office Management",
+          "Gesundheitsmanagement",
+        ].map((dep) => (
+          <label className="flex items-center" key={dep}>
+            <input
+              type="checkbox"
+              {...register("department")}
+              value={dep}
+              defaultChecked={userInfomation?.department?.includes(dep)}
+              className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            {dep}
+          </label>
+        ))}
+      </div>
                     </div>
-                  </div>
 
                   <div className="flex flex-col lg:flex-row justify-around gap-2">
                     <div>

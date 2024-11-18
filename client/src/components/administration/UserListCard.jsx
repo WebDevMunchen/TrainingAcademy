@@ -109,7 +109,12 @@ export default function UserListCard({ user, selectedYear }) {
         </td>
 
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          {user.department.charAt(0).toUpperCase() + user.department.slice(1)}
+          {user.department.length === 1 ? (
+            user.department[0].charAt(0).toUpperCase() +
+            user.department[0].slice(1)
+          ) : (
+            <>{"Für " + user.department.length + " verantwortlich"}</>
+          )}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex justify-center items-center">
           {hasAttendedSafetyBriefingThisYear ? (

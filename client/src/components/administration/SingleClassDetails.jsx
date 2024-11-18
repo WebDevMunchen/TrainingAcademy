@@ -66,11 +66,14 @@ export default function SingleClassDetails() {
   };
 
   const filteredRegisteredUsers =
-    user.role === "admin" || user.role === "teacher"
-      ? activity?.registeredUsers
-      : activity?.registeredUsers?.filter(
-          (registeredUser) => registeredUser.department === user.department
-        );
+  user.role === "admin" || user.role === "teacher"
+    ? activity?.registeredUsers
+    : activity?.registeredUsers?.filter(
+        (registeredUser) =>
+          registeredUser.department.some((dept) =>
+            user.department.includes(dept)
+          )
+      );
 
   return (
     <>

@@ -80,7 +80,7 @@ export default function Register() {
       <div className="bg-gray-50/50 flex">
         <SideMenu />
         <div className="flex flex-col items-center px-0 py-8 lg:py-12 lg:px-6 mx-auto w-10/12">
-          <div className="bg-white rounded-md shadow w-full lg:w-4/12">
+          <div className="bg-white rounded-md shadow w-full lg:w-5/12">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Benutzerkonto erstellen
@@ -89,7 +89,7 @@ export default function Register() {
                 className="space-y-4 w-full md:space-y-6"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <div className="flex flex-col lg:flex-row justify-around gap-2">
+                <div className="flex flex-col lg:flex-row justify-between gap-2">
                   <div>
                     <label
                       htmlFor="firstName"
@@ -118,7 +118,7 @@ export default function Register() {
                     />
                   </div>
                 </div>
-                <div className="flex flex-col lg:flex-row justify-around gap-2">
+                <div className="flex flex-col lg:flex-row justify-start gap-2">
                   <div>
                     <label
                       htmlFor="logID"
@@ -133,68 +133,156 @@ export default function Register() {
                       placeholder="Drei Zeichen lang"
                     />
                   </div>
-                  <div>
-                    <div className="flex justify-start">
-                      <label
-                        htmlFor="department"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Abteilung:
-                      </label>
-                      <div className="relative">
-                        <div
-                          className="tooltip ml-2 hover:cursor-pointer"
-                          onClick={handleTooltipToggle}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6 hover:text-blue-500"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-                            />
-                          </svg>
-                        </div>
-                        {isTooltipVisible && (
-                          <div className="absolute bg-gray-700 text-white text-sm p-4 rounded shadow-lg w-72 z-50">
-                            Für jede Abteilung sind die E-Mail-Adressen des ASPs
-                            und seines Stellvertreters hinterlegt. Diese
-                            E-Mail-Adressen werden verwendet, um eine E-Mail an
-                            sie zu senden, damit sie entscheiden können, ob der
-                            Mitarbeiter an der Schulung teilnehmen darf.
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <select
-                      {...register("department", {
-                        required: true,
-                      })}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                </div>
+                <div>
+                  <div className="flex justify-start">
+                    <label
+                      htmlFor="department"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      <option value={"Logistik"}>Logistik</option>
-                      <option value={"Vertrieb"}>Vertrieb</option>
-                      <option value={"IT & Services"}>IT & Services</option>
-                      <option value={"Fuhrpark"}>Fuhrpark</option>
-                      <option value={"HR & Training"}>HR & Training</option>
-                      <option value={"Buchhaltung"}>Buchhaltung</option>
-                      <option value={"Einkauf"}>Einkauf & Anmietung</option>
-                      <option value={"Design & Planung"}>
-                        Design & Planung
-                      </option>
-                      <option value={"Projektmanagement"}>
-                        Projektmanagement
-                      </option>
-                      <option value={"Officemanagement"}>
-                        Office Management
-                      </option>
-                    </select>
+                      Abteilung:
+                    </label>
+                    <div className="relative">
+                      <div
+                        className="tooltip ml-2 hover:cursor-pointer"
+                        onClick={handleTooltipToggle}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-6 h-6 hover:text-blue-500"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                          />
+                        </svg>
+                      </div>
+                      {isTooltipVisible && (
+                        <div className="absolute bg-gray-700 text-white text-sm p-4 rounded shadow-lg w-72 z-50">
+                          Für jede Abteilung sind die E-Mail-Adressen des ASPs
+                          und seines Stellvertreters hinterlegt. Diese
+                          E-Mail-Adressen werden verwendet, um eine E-Mail an
+                          sie zu senden, damit sie entscheiden können, ob der
+                          Mitarbeiter an der Schulung teilnehmen darf.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        {...register("department")}
+                        value="Logistik"
+                        className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      Logistik
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        {...register("department")}
+                        value="Vertrieb"
+                        className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      Vertrieb
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        {...register("department")}
+                        value="IT & Services"
+                        className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      IT & Services
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        {...register("department")}
+                        value="Fuhrpark"
+                        className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      Fuhrpark
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        {...register("department")}
+                        value="HR & Training"
+                        className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      HR & Training
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        {...register("department")}
+                        value="Buchhaltung"
+                        className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      Buchhaltung
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        {...register("department")}
+                        value="Einkauf"
+                        className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      Einkauf & Anmietung
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        {...register("department")}
+                        value="Design & Planung"
+                        className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      Design & Planung
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        {...register("department")}
+                        value="Projektmanagement"
+                        className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      Projektmanagement
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        {...register("department")}
+                        value="Officemanagement"
+                        className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      Office Management
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        {...register("department")}
+                        value="Gesundheitsmanagement"
+                        className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      Gesundheitsmanagement
+                    </label>
                   </div>
                 </div>
                 <div className="flex flex-col lg:flex-row justify-between gap-2">

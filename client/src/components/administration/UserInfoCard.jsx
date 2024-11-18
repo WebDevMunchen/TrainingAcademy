@@ -230,7 +230,7 @@ export default function UserInfoCard() {
                   <span className="font-medium">Registriert seit:</span>{" "}
                   {formattedDate}
                 </p>
-                <p className="font-light text-gray-600 mt-3">
+                <p className="font-light text-gray-600 mt-2">
                   <span className="font-medium">Status: </span>
                   <span
                     className={`px-2 inline-flex text-sm leading-5 font-semibold rounded-full ml-2  
@@ -244,11 +244,32 @@ export default function UserInfoCard() {
                   </span>
                 </p>
 
-                <p className="mt-8 text-gray-600">
-                  <span className="font-medium">Abteilung:</span>{" "}
-                  {userInfomation?.department.charAt(0).toUpperCase() +
-                    userInfomation?.department.slice(1)}{" "}
-                  - <span className="font-medium">Rolle: </span>
+                <p className="mt-2 text-gray-600">
+                  <span className="font-medium">
+                    {userInfomation.department.length === 1
+                      ? "Abteilung: "
+                      : "Abteilungen: "}
+                  </span>{" "}
+                  {userInfomation.department.length === 1 ? (
+                    <>
+                      {userInfomation?.department[0].charAt(0).toUpperCase() +
+                        userInfomation?.department[0].slice(1)}
+                    </>
+                  ) : (
+                    <>
+                      {userInfomation.department
+                        .map((dep) => {
+                          return dep.charAt(0).toUpperCase() + dep.slice(1);
+                        })
+                        .join(", ")}
+                    </>
+                  )}
+
+     
+                </p>
+                <p className="mt-2 text-gray-600">
+                  
+                  <span className="font-medium">Rolle: </span>
                   {userInfomation.role === "ASP" ? (
                     <span>Genehmiger*in</span>
                   ) : userInfomation.role === "teacher" ? (
@@ -259,22 +280,19 @@ export default function UserInfoCard() {
                         userInfomation?.role.slice(1)}
                     </span>
                   )}
-                </p>
-                <p className="mt-2 text-gray-600">
+                  </p>
+                <p className="mt-2 mb-2 text-gray-600">
                   <span className="font-medium"> Kürzel:</span>{" "}
                   {userInfomation?.logID}
                 </p>
                 <div className="flex items-center justify-center">
-                  <div>
                     <button
                       onClick={updatePBC}
                       className="mt-1 font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125 lg:mt-0"
                     >
                       Kennwort zurücksetzen
                     </button>
-                  </div>
                 </div>
-                <div>
                   <div className="mt-1 flex items-center justify-center lg:hidden">
                     <NavLink
                       to={`/admin/userProfile/update/${userInfomation?._id}`}
@@ -283,7 +301,6 @@ export default function UserInfoCard() {
                       Benutzerinformationen bearbeiten
                     </NavLink>
                   </div>
-                </div>
                 <dialog id="updatePBC" className="modal">
                   <div className="modal-box">
                     <form
@@ -382,8 +399,8 @@ export default function UserInfoCard() {
                   </div>
                 </dialog>
               </div>
-              <div className="mt-6 flex flex-col min-h-96">
-                <div className="mb-4 flex justify-center text-xl font-medium">
+              <div className="mt-2 flex flex-col min-h-96">
+                <div className="mb-2 flex justify-center text-xl font-medium">
                   Schulungshistorie
                 </div>
                 <div className="h-[calc(38vh-32px)] overflow-x-scroll">
