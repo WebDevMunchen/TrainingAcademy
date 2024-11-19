@@ -65,7 +65,7 @@ export default function CreateClass() {
       );
       setAllActivities(activitiesResponse?.data);
     } catch (error) {
-      console.error("Error during form submission:", error);
+      console.error("Error during form submission!");
     } finally {
       navigate("/admin/dashboard");
     }

@@ -92,7 +92,7 @@ export default function PieCharStatisticsDecline() {
         setNoStatistics(false);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching data!");
     }
   };
 

@@ -36,7 +36,7 @@ export default function Messages() {
         setReadStatus("read");
       })
       .catch((error) => {
-        console.error("Error marking message as read:", error);
+        console.error("Error marking message as read!");
       });
   };
 
@@ -62,7 +62,7 @@ export default function Messages() {
         setReadStatus(newStatus);
       })
       .catch((error) => {
-        console.error(`Error marking message as ${newStatus}:`, error);
+        console.error(`Error marking message with new status!`);
       });
   };
 
@@ -107,7 +107,7 @@ export default function Messages() {
         setUser(updatedUser);
       })
       .catch((error) => {
-        console.error("Error deleting message:", error);
+        console.error("Error deleting message!");
       });
   };
 

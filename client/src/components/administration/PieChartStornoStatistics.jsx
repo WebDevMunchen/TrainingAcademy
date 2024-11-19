@@ -81,7 +81,7 @@ export default function PieChartStornoStatistics() {
         setNoStatistics(false);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching data!");
     }
   };
 

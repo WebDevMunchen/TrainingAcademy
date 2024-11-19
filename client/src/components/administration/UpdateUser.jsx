@@ -32,15 +32,12 @@ export default function Register() {
     watch,
   } = useForm();
 
-
   useEffect(() => {
     if (userInfomation) {
-      // Set default values for departments
       setValue("department", userInfomation.department || []);
+      setValue("logID", userInfomation.logID);
     }
   }, [userInfomation, setValue]);
-
-
 
   const onSubmit = (data) => {
     axiosClient
@@ -122,12 +119,19 @@ export default function Register() {
                       >
                         Kürzel:
                       </label>
-                      <input
+                      {/* <input
                         {...register("logID", { required: true })}
-                        defaultValue={userInfomation.logID}
-                        type="input"
+                        // defaultValue={userInfomation.logID}
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Die Abkürzung sollte drei Zeichen lang sein..."
+                      /> */}
+
+                      <input
+                        {...register("logID", { required: true })}
+                        value={watch("logID")}
+                        onChange={(e) => setValue("logID", e.target.value)}
+                        placeholder="Die Abkürzung sollte drei Zeichen lang sein..."
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5"
                       />
                     </div>
                     <div className="invisible">
@@ -139,82 +143,81 @@ export default function Register() {
                       </label>
                       <input
                         {...register("logID", { required: true })}
-                        defaultValue={userInfomation.logID}
-                        type="input"
+                        // defaultValue={userInfomation.logID}
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Die Abkürzung sollte drei Zeichen lang sein..."
                       />
                     </div>
-
-      
                   </div>
 
                   <div className="flex flex-col ml-10">
-                      <div className="flex justify-start">
-                        <label
-                          htmlFor="department"
-                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    <div className="flex justify-start">
+                      <label
+                        htmlFor="department"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Abteilung:
+                      </label>
+                      <div className="relative">
+                        <div
+                          className="tooltip ml-2 hover:cursor-pointer"
+                          onClick={handleTooltipToggle}
                         >
-                          Abteilung:
-                        </label>
-                        <div className="relative">
-                          <div
-                            className="tooltip ml-2 hover:cursor-pointer"
-                            onClick={handleTooltipToggle}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6 hover:text-blue-500"
                           >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-6 h-6 hover:text-blue-500"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-                              />
-                            </svg>
-                          </div>
-                          {isTooltipVisible && (
-                            <div className="absolute bg-gray-700 text-white text-sm p-4 rounded shadow-lg w-72 z-50">
-                              Für jede Abteilung sind die E-Mail-Adressen des
-                              ASPs und seines Stellvertreters hinterlegt. Diese
-                              E-Mail-Adressen werden verwendet, um eine E-Mail
-                              an sie zu senden, damit sie entscheiden können, ob
-                              der Mitarbeiter an der Schulung teilnehmen darf.
-                            </div>
-                          )}
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                            />
+                          </svg>
                         </div>
+                        {isTooltipVisible && (
+                          <div className="absolute bg-gray-700 text-white text-sm p-4 rounded shadow-lg w-72 z-50">
+                            Für jede Abteilung sind die E-Mail-Adressen des ASPs
+                            und seines Stellvertreters hinterlegt. Diese
+                            E-Mail-Adressen werden verwendet, um eine E-Mail an
+                            sie zu senden, damit sie entscheiden können, ob der
+                            Mitarbeiter an der Schulung teilnehmen darf.
+                          </div>
+                        )}
                       </div>
-                      <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4 gap-1">
-        {[
-          "Logistik",
-          "Vertrieb",
-          "IT & Services",
-          "Fuhrpark",
-          "HR & Training",
-          "Buchhaltung",
-          "Einkauf & Anmietung",
-          "Design & Planung",
-          "Projektmanagement",
-          "Office Management",
-          "Gesundheitsmanagement",
-        ].map((dep) => (
-          <label className="flex items-center" key={dep}>
-            <input
-              type="checkbox"
-              {...register("department")}
-              value={dep}
-              defaultChecked={userInfomation?.department?.includes(dep)}
-              className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-            />
-            {dep}
-          </label>
-        ))}
-      </div>
                     </div>
+                    <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4 gap-1">
+                      {[
+                        "Logistik",
+                        "Vertrieb",
+                        "IT & Services",
+                        "Fuhrpark",
+                        "HR & Training",
+                        "Buchhaltung",
+                        "Einkauf & Anmietung",
+                        "Design & Planung",
+                        "Projektmanagement",
+                        "Office Management",
+                        "Gesundheitsmanagement",
+                      ].map((dep) => (
+                        <label className="flex items-center" key={dep}>
+                          <input
+                            type="checkbox"
+                            {...register("department")}
+                            value={dep}
+                            defaultChecked={userInfomation?.department?.includes(
+                              dep
+                            )}
+                            className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                          />
+                          {dep}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
 
                   <div className="flex flex-col lg:flex-row justify-around gap-2">
                     <div>

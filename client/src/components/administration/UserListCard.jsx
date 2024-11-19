@@ -23,7 +23,7 @@ export default function UserListCard({ user, selectedYear }) {
 
   const handleDownload = async () => {
     if (!fileUrl) {
-      console.error("File URL is not defined.");
+      console.error("File URL is not defined!");
       return;
     }
 
@@ -49,7 +49,7 @@ export default function UserListCard({ user, selectedYear }) {
       URL.revokeObjectURL(url);
       document.body.removeChild(link);
     } catch (error) {
-      console.error("Error downloading the file:", error);
+      console.error("Error downloading the file!");
     }
   };
 

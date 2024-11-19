@@ -141,7 +141,7 @@ export default function PieChartAllClasses() {
         setNoStatistics(false);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching data!");
     }
   };
 

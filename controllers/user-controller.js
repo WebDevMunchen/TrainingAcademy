@@ -662,7 +662,7 @@ const markRead = asyncWrapper(async (req, res, next) => {
 
     res.status(200).send(updatedUser);
   } catch (error) {
-    console.error("Error marking message as read:", error);
+    console.error("Error marking message as read!");
     res.status(500).send({ error: "Error marking message as read" });
   }
 });
@@ -685,7 +685,7 @@ const markNotRead = asyncWrapper(async (req, res, next) => {
 
     res.status(200).send(updatedUser);
   } catch (error) {
-    console.error("Error marking message as not read:", error);
+    console.error("Error marking message as not read!");
     res.status(500).send({ error: "Error marking message as not read" });
   }
 });
@@ -709,7 +709,7 @@ const deleteMessage = asyncWrapper(async (req, res, next) => {
 
     res.status(200).send({ message: "Deleted", user: updatedUser });
   } catch (error) {
-    console.error("Error deleting the message:", error);
+    console.error("Error deleting the message!");
     res.status(500).send({ error: "Error deleting message" });
   }
 });

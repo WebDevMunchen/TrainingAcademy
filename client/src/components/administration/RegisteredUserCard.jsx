@@ -63,7 +63,8 @@ export default function RegisteredUserCard({
         setUser(responseProfile.data);
       })
       .then((response) => {
-        return axiosClient.get(`/classActivity/${id}`);i
+        return axiosClient.get(`/classActivity/${id}`);
+        i;
       })
       .then((responseSingleActivity) => {
         setActivity(responseSingleActivity.data);

@@ -372,9 +372,9 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
 
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.error("Error sending email:", error);
+          console.error("Error sending email!");
         } else {
-          console.log("Email sent:", info.response);
+          console.log("Email sent!");
         }
       });
     }
@@ -481,7 +481,7 @@ const cancelUserRegistration = asyncWrapper(async (req, res, next) => {
 
     res.json({ message: "Success", updatedCapacity: updatedClassActivity });
   } catch (error) {
-    console.error("Error in cancelUserRegistration:", error);
+    console.error("Error in cancelUserRegistration!");
     next(error);
   }
 });
@@ -548,7 +548,7 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
 
     res.json(allActivities);
   } catch (error) {
-    console.error("Error fetching activities:", error);
+    console.error("Error fetching activities!");
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -691,7 +691,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
   try {
     await transporter.sendMail(mailOptions);
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error sending email!");
   }
 
   await ClassActivity.findByIdAndDelete(id);
@@ -746,7 +746,7 @@ const checkAndUpdateClassRegistrations = async () => {
       );
     }
   } catch (error) {
-    console.error("Error checking and updating class registrations:", error);
+    console.error("Error checking and updating class registrations!");
   }
 };
 

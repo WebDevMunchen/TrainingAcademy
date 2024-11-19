@@ -39,8 +39,8 @@ export default function EditClass() {
 
         if (response.data.fileUrl) {
           const fileUrl = response.data.fileUrl;
-          const fileName = fileUrl.split("/").pop(); 
-          setSelectedFile(fileUrl); 
+          const fileName = fileUrl.split("/").pop();
+          setSelectedFile(fileUrl);
           setFileName(fileName);
         }
 

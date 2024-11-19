@@ -264,11 +264,8 @@ export default function UserInfoCard() {
                         .join(", ")}
                     </>
                   )}
-
-     
                 </p>
                 <p className="mt-2 text-gray-600">
-                  
                   <span className="font-medium">Rolle: </span>
                   {userInfomation.role === "ASP" ? (
                     <span>Genehmiger*in</span>
@@ -280,27 +277,27 @@ export default function UserInfoCard() {
                         userInfomation?.role.slice(1)}
                     </span>
                   )}
-                  </p>
+                </p>
                 <p className="mt-2 mb-2 text-gray-600">
                   <span className="font-medium"> Kürzel:</span>{" "}
                   {userInfomation?.logID}
                 </p>
                 <div className="flex items-center justify-center">
-                    <button
-                      onClick={updatePBC}
-                      className="mt-1 font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125 lg:mt-0"
-                    >
-                      Kennwort zurücksetzen
-                    </button>
+                  <button
+                    onClick={updatePBC}
+                    className="mt-1 font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125 lg:mt-0"
+                  >
+                    Kennwort zurücksetzen
+                  </button>
                 </div>
-                  <div className="mt-1 flex items-center justify-center lg:hidden">
-                    <NavLink
-                      to={`/admin/userProfile/update/${userInfomation?._id}`}
-                      className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125"
-                    >
-                      Benutzerinformationen bearbeiten
-                    </NavLink>
-                  </div>
+                <div className="mt-1 flex items-center justify-center lg:hidden">
+                  <NavLink
+                    to={`/admin/userProfile/update/${userInfomation?._id}`}
+                    className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125"
+                  >
+                    Benutzerinformationen bearbeiten
+                  </NavLink>
+                </div>
                 <dialog id="updatePBC" className="modal">
                   <div className="modal-box">
                     <form
