@@ -530,7 +530,7 @@ export default function RegisteredUserCard({
           </div>
           <div
             className={`flex justify-center gap-4 px-4 pt-2 pb-6 ${
-              differenceHours <= -24 ? "flex" : "hidden"
+              differenceHours <= -25 ? "flex" : "hidden"
             }`}
           >
             {registeredUser.classesRegistered.some(
