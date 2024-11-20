@@ -64,15 +64,17 @@ export default function SingleClassDetails() {
   const showLegend = () => {
     document.getElementById("legend").showModal();
   };
+  console.log(activity?.registeredUsers)
 
-  const filteredRegisteredUsers =
-    user.role === "admin" || user.role === "teacher"
-      ? activity?.registeredUsers
-      : activity?.registeredUsers?.filter((registeredUser) =>
-          registeredUser.department.some((dept) =>
-            user.department.includes(dept)
-          )
-        );
+  const filteredRegisteredUsers = 
+  user.role === "admin" || user.role === "teacher"
+    ? activity?.registeredUsers
+    : activity?.registeredUsers?.filter((registeredUser) => 
+        user.additionalDepartments.includes(registeredUser.department)
+      );
+
+
+console.log(formattedDatePriorGenehmigung)
 
   return (
     <>

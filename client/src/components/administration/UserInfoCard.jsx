@@ -222,7 +222,7 @@ export default function UserInfoCard() {
                   </button>
                 </div>
               </div>
-              <div className="mt-12 text-center border-b pb-6">
+              <div className="mt-12 text-center border-b pb-4">
                 <h1 className="text-4xl font-medium text-gray-700">
                   {userInfomation?.firstName + " " + userInfomation?.lastName}
                 </h1>
@@ -245,26 +245,10 @@ export default function UserInfoCard() {
                 </p>
 
                 <p className="mt-2 text-gray-600">
-                  <span className="font-medium">
-                    {userInfomation.department.length === 1
-                      ? "Abteilung: "
-                      : "Abteilungen: "}
-                  </span>{" "}
-                  {userInfomation.department.length === 1 ? (
-                    <>
-                      {userInfomation?.department[0].charAt(0).toUpperCase() +
-                        userInfomation?.department[0].slice(1)}
-                    </>
-                  ) : (
-                    <>
-                      {userInfomation.department
-                        .map((dep) => {
-                          return dep.charAt(0).toUpperCase() + dep.slice(1);
-                        })
-                        .join(", ")}
-                    </>
-                  )}
+                  <span className="font-medium mr-1">Abteilung:</span>
+                  {userInfomation.department}
                 </p>
+
                 <p className="mt-2 text-gray-600">
                   <span className="font-medium">Rolle: </span>
                   {userInfomation.role === "ASP" ? (
@@ -277,6 +261,17 @@ export default function UserInfoCard() {
                         userInfomation?.role.slice(1)}
                     </span>
                   )}
+                </p>
+                <p className="mt-2 text-gray-600">
+                  <span className="font-medium mr-1">Verantwortlich für:</span>
+                  {userInfomation.additionalDepartments &&
+                  userInfomation.additionalDepartments.length > 0
+                    ? userInfomation.additionalDepartments
+                        .map(
+                          (dep) => dep.charAt(0).toUpperCase() + dep.slice(1)
+                        )
+                        .join(", ")
+                    : "-"}
                 </p>
                 <p className="mt-2 mb-2 text-gray-600">
                   <span className="font-medium"> Kürzel:</span>{" "}
@@ -396,7 +391,7 @@ export default function UserInfoCard() {
                   </div>
                 </dialog>
               </div>
-              <div className="mt-2 flex flex-col min-h-96">
+              <div className=" flex flex-col min-h-80">
                 <div className="mb-2 flex justify-center text-xl font-medium">
                   Schulungshistorie
                 </div>

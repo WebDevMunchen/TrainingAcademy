@@ -191,7 +191,11 @@ export default function RegisteredUserCardAdmin({
             <span className="font-semibold text-gray-900 lg:text-lg">
               Abteilung:
             </span>{" "}
-            {registeredUser.department.length === 1 ? (
+            <span className="mt-0.5">
+
+{registeredUser.department}
+</span>
+            {/* {registeredUser.department.length === 1 ? (
               registeredUser.department[0].charAt(0).toUpperCase() +
               registeredUser.department[0].slice(1)
             ) : (
@@ -225,7 +229,7 @@ export default function RegisteredUserCardAdmin({
                   </div>
                 )}
               </div>
-            )}
+            )} */}
           </div>
         </div>
         <div className="mt-2 flex items-center justify-between mx-2">

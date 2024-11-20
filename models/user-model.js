@@ -10,7 +10,8 @@ const userSchema = new Schema({
   password: { type: String, required: true, select: false },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  department: [{ type: String, required: true }],
+  department: { type: String, required: true },
+  additionalDepartments: [{ type: String, required: true }],
   role: {
     type: String,
     enum: ["admin", "ASP", "teacher", "user"],

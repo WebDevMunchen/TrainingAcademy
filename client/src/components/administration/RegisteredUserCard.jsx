@@ -347,7 +347,7 @@ export default function RegisteredUserCard({
 
   const differenceMs = date1.getTime() - date2.getTime();
 
-  const differenceHours = differenceMs / (1000 * 60 * 60) + 2;
+  const differenceHours = differenceMs / (1000 * 60 * 60 + 2);
 
   const declineReasons = [
     "Inhaltlich nicht für den Aufgabenbereich relevant",
@@ -358,6 +358,8 @@ export default function RegisteredUserCard({
   const handleTooltipToggle = () => {
     setIsTooltipVisible(!isTooltipVisible);
   };
+
+  console.log(differenceHours)
 
   return (
     <>
@@ -371,7 +373,12 @@ export default function RegisteredUserCard({
             <span className="font-semibold text-gray-900 lg:text-lg">
               Abteilung:
             </span>{" "}
-            {registeredUser.department.length === 1 ? (
+            <span className="mt-0.5">
+
+            {registeredUser.department}
+            </span>
+
+            {/* {registeredUser.department.length === 1 ? (
               registeredUser.department[0].charAt(0).toUpperCase() +
               registeredUser.department[0].slice(1)
             ) : (
@@ -405,7 +412,7 @@ export default function RegisteredUserCard({
                   </div>
                 )}
               </div>
-            )}
+            )} */}
           </div>
         </div>
         <div className="mt-2 flex items-center justify-between">
@@ -505,7 +512,7 @@ export default function RegisteredUserCard({
         <>
           <div
             className={`flex justify-center gap-4 px-4 pt-2 pb-6 ${
-              differenceHours > -24 ? "flex" : "hidden"
+              differenceHours > -25 ? "flex" : "hidden"
             }`}
           >
             <label className="cursor-pointer">
@@ -523,7 +530,7 @@ export default function RegisteredUserCard({
           </div>
           <div
             className={`flex justify-center gap-4 px-4 pt-2 pb-6 ${
-              differenceHours < -24 ? "flex" : "hidden"
+              differenceHours <= -24 ? "flex" : "hidden"
             }`}
           >
             {registeredUser.classesRegistered.some(
