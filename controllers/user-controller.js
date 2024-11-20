@@ -49,7 +49,15 @@ const createUser = asyncWrapper(async (req, res, next) => {
 });
 
 const updateUser = asyncWrapper(async (req, res, next) => {
-  const { logID, firstName, lastName, role, department, status, additionalDepartments} = req.body;
+  const {
+    logID,
+    firstName,
+    lastName,
+    role,
+    department,
+    status,
+    additionalDepartments,
+  } = req.body;
 
   const { id } = req.params;
   const contactInformationID = "668e958729a4cd5bb513f562";
@@ -294,7 +302,6 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
       await transporter.sendMail(mailOptions);
     } catch (error) {}
   };
-
 
   sendMail(transporter, mailOptions);
 
