@@ -21,7 +21,6 @@ export default function RegisteredUserCardAdmin({
 
   const [hideAttendedBtn, setHideAttendedBtn] = useState(false);
   const [submitedAttended, setSubmitedAttended] = useState(true);
-  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
   const [activitySingleInformation, setActivitySingleInformation] =
     useState(null);
@@ -175,12 +174,6 @@ export default function RegisteredUserCardAdmin({
 
   const differenceHours = differenceMs / (1000 * 60 * 60) + 1;
 
-  console.log(differenceHours)
-
-  const handleTooltipToggle = () => {
-    setIsTooltipVisible(!isTooltipVisible);
-  };
-
   return (
     <>
       <div className="px-4 py-4">
@@ -193,45 +186,7 @@ export default function RegisteredUserCardAdmin({
             <span className="font-semibold text-gray-900 lg:text-lg">
               Abteilung:
             </span>{" "}
-            <span className="mt-0.5">
-
-{registeredUser.department}
-</span>
-            {/* {registeredUser.department.length === 1 ? (
-              registeredUser.department[0].charAt(0).toUpperCase() +
-              registeredUser.department[0].slice(1)
-            ) : (
-              <div className="">
-                <div
-                  className="mt-2 tooltip hover:cursor-pointer"
-                  onClick={handleTooltipToggle}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-7 h-7 hover:text-blue-500"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-                    />
-                  </svg>
-                </div>
-                {isTooltipVisible && (
-                  <div className="absolute right-8 bg-gray-700 text-white text-sm p-4 rounded shadow-lg lg:absolute lg:right-[29%]">
-                    {registeredUser.department.map((dep, index) => (
-                      <div className="mb-0.5" key={index}>
-                        {dep.charAt(0).toUpperCase() + dep.slice(1)}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )} */}
+            <span className="mt-0.5">{registeredUser.department}</span>
           </div>
         </div>
         <div className="mt-2 flex items-center justify-between mx-2">

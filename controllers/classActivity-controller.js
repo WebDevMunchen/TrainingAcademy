@@ -597,9 +597,9 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
   const userNames = allUsers.reduce((acc, user) => {
     const hasMatchingClass = user.classesRegistered.some(
       (singleClass) =>
+        singleClass.registeredClassID &&
         singleClass.registeredClassID._id.toString() === id &&
-        (singleClass.status === "ausstehend" ||
-          singleClass.status === "genehmigt")
+        (singleClass.status === "ausstehend" || singleClass.status === "genehmigt")
     );
 
     if (hasMatchingClass) {

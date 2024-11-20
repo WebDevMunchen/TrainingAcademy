@@ -50,14 +50,14 @@ export default function ClassesOverviewCard({ activity }) {
 
   const timeParts = timeString.split(":");
   if (timeParts.length === 2) {
-    date.setHours(parseInt(timeParts[0], 10));
+    date.setHours(parseInt(timeParts[0], 10) - 1);
     date.setMinutes(parseInt(timeParts[1], 10));
   }
 
   const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
   const currentDateTime = new Date();
   const adjustedCurrentDateTime = new Date(
-    currentDateTime.getTime() + 2 * 60 * 60 * 1000
+    currentDateTime.getTime() + 0 * 60 * 60 * 1000
   );
   const canCancel = localDate >= adjustedCurrentDateTime;
 

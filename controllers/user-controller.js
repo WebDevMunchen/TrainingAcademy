@@ -229,62 +229,6 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
       break;
   }
 
-//   let recipientEmail = [];
-// let recipientEmailSubstitution = [];
-
-// user.department.forEach((dept) => {
-//   switch (dept) {
-//     case "Logistik":
-//       recipientEmail.push(approver.logistik);
-//       recipientEmailSubstitution.push(approver.logistikSubstitute);
-//       break;
-//     case "Vertrieb":
-//       recipientEmail.push(approver.vertrieb);
-//       recipientEmailSubstitution.push(approver.vertriebSubstitute);
-//       break;
-//     case "HR & Training":
-//       recipientEmail.push(approver.hr);
-//       recipientEmailSubstitution.push(approver.hrSubstitute);
-//       break;
-//     case "IT & Services":
-//       recipientEmail.push(approver.it);
-//       recipientEmailSubstitution.push(approver.itSubstitute);
-//       break;
-//     case "Fuhrpark":
-//       recipientEmail.push(approver.fuhrpark);
-//       recipientEmailSubstitution.push(approver.fuhrparkSubstitute);
-//       break;
-//     case "Buchhaltung":
-//       recipientEmail.push(approver.buchhaltung);
-//       recipientEmailSubstitution.push(approver.buchhaltungSubstitute);
-//       break;
-//     case "Einkauf":
-//       recipientEmail.push(approver.einkauf);
-//       recipientEmailSubstitution.push(approver.einkaufSubstitute);
-//       break;
-//     case "Design & Planung":
-//       recipientEmail.push(approver.design);
-//       recipientEmailSubstitution.push(approver.designSubstitute);
-//       break;
-//     case "Projektmanagement":
-//       recipientEmail.push(approver.projektmanagement);
-//       recipientEmailSubstitution.push(approver.projektmanagementSubstitute);
-//       break;
-//     case "Officemanagement":
-//       recipientEmail.push(approver.officemanagement);
-//       recipientEmailSubstitution.push(approver.officemanagementSubstitute);
-//       break;
-//     default:
-//       recipientEmail.push(process.env.DEFAULT_APPROVER_EMAIL);
-//       recipientEmailSubstitution.push(process.env.DEFAULT_APPROVER_EMAIL);
-//       break;
-//   }
-// });
-
-// Remove duplicates and join the emails for the email `to` field
-// recipientEmail = [...new Set(recipientEmail)].join(", ");
-// recipientEmailSubstitution = [...new Set(recipientEmailSubstitution)].join(", ");
-
   const transporter = nodemailer.createTransport({
     service: "gmail",
     host: "smtp.gmail.com",

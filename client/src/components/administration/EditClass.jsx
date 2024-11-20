@@ -217,13 +217,13 @@ export default function EditClass() {
                       </li>
                       <li>Alle Genehmiger werden per E-Mail informiert</li>
                       <li>
-                        Schick eine Nachricht aus dem Benachrichtigungscenter,
-                        um den Mitarbeiter zu informieren
+                        Bitte eine Nachricht aus dem Benachrichtigungscenter
+                        senden, um den Mitarbeiter zu informieren
                       </li>
                       <li>
                         Diese Schulung kann{" "}
                         <span className="font-medium">nicht mehr</span>{" "}
-                        wiedegestellt werden!
+                        wiedergestellt werden!
                       </li>
                     </ul>
                   </div>
