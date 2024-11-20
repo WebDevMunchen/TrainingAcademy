@@ -173,7 +173,9 @@ export default function RegisteredUserCardAdmin({
 
   const differenceMs = date1.getTime() - date2.getTime();
 
-  const differenceHours = differenceMs / (1000 * 60 * 60) + 2;
+  const differenceHours = differenceMs / (1000 * 60 * 60) + 1;
+
+  console.log(differenceHours)
 
   const handleTooltipToggle = () => {
     setIsTooltipVisible(!isTooltipVisible);

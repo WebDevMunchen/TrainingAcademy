@@ -37,18 +37,28 @@ export default function SingleClassDetailsAdmin() {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   };
+  
   const dateString = activity?.date;
+  const timeString = activity?.time; // e.g., "13:28"
+  
   const date = new Date(dateString);
+  
+  // Check if the time string exists and is in the correct format
+  if (timeString) {
+    const [hours, minutes] = timeString.split(':').map(Number); // Extract hours and minutes
+    date.setHours(hours, minutes, 0, 0); // Set hours and minutes to the date
+  }
+  
   const datePrior = adjustDate(date, -2);
   const datePriorGenehmigung = adjustDate(date, -1);
-
+  
   const formattedDate = formatDateString(date);
   const formatedDatePrior = formatDateString(datePrior);
   const formatedDatePriorGenehmigung = formatDateString(datePriorGenehmigung);
-
+  
   const now = new Date();
   const hoursDifference = (date - now) / 3600000;
-
+  
   return (
     <>
       {!activity ? (
