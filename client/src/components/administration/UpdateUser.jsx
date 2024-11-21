@@ -16,7 +16,6 @@ export default function Register() {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState("user");
 
-
   useEffect(() => {
     axiosClient
       .get(`/user/profileInformation/${id}`)
@@ -36,9 +35,12 @@ export default function Register() {
 
   useEffect(() => {
     if (userInfomation) {
-      setValue("additionalDepartments", userInfomation.additionalDepartments || []);
+      setValue(
+        "additionalDepartments",
+        userInfomation.additionalDepartments || []
+      );
       setValue("logID", userInfomation.logID);
-      setSelectedDepartment(userInfomation.role)
+      setSelectedDepartment(userInfomation.role);
     }
   }, [userInfomation, setValue]);
 
@@ -131,40 +133,43 @@ export default function Register() {
                       />
                     </div>
                     <div>
-                    <label
-                      htmlFor="department"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Abteilung
-                    </label>
-                    <select
-                      {...register("department", { required: true })}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                      <option value="Vertrieb">Vertrieb</option>
-                      <option value="Logistik">Logistik</option>
-                      <option value="Fuhrpark">Fuhrpark</option>
-                      <option value="IT & Services">IT & Services</option>
-                      <option value="HR & Training">HR & Training</option>
-                      <option value="Buchhaltung">Buchhaltung</option>
-                      <option value="Einkauf & Anmietung">
-                        Einkauf & Anmietung
-                      </option>
-                      <option value="Design & Planung">Design & Planung</option>
-                      <option value="Projektmanagement">
-                        Projektmanagement
-                      </option>
-                      <option value="Officemanagement">Officemanagement</option>
-                      <option value="Gesundheitsmanagement">
-                        Gesundheitsmanagement
-                      </option>
-                    </select>
-                  </div>
-
+                      <label
+                        htmlFor="department"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Abteilung
+                      </label>
+                      <select
+                        {...register("department", { required: true })}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      >
+                        <option value="Vertrieb">Vertrieb</option>
+                        <option value="Logistik">Logistik</option>
+                        <option value="Fuhrpark">Fuhrpark</option>
+                        <option value="IT & Services">IT & Services</option>
+                        <option value="HR & Training">HR & Training</option>
+                        <option value="Buchhaltung">Buchhaltung</option>
+                        <option value="Einkauf & Anmietung">
+                          Einkauf & Anmietung
+                        </option>
+                        <option value="Design & Planung">
+                          Design & Planung
+                        </option>
+                        <option value="Projektmanagement">
+                          Projektmanagement
+                        </option>
+                        <option value="Officemanagement">
+                          Officemanagement
+                        </option>
+                        <option value="Gesundheitsmanagement">
+                          Gesundheitsmanagement
+                        </option>
+                      </select>
+                    </div>
                   </div>
 
                   <div className="flex flex-col lg:flex-row justify-between gap-2">
-                  <div>
+                    <div>
                       <label
                         htmlFor="role"
                         className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
@@ -177,8 +182,7 @@ export default function Register() {
                           required: true,
                         })}
                         defaultValue={userInfomation.role}
-                      onChange={(e) => setSelectedDepartment(e.target.value)}
-
+                        onChange={(e) => setSelectedDepartment(e.target.value)}
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       >
                         <option value="admin">Admin</option>
@@ -187,7 +191,7 @@ export default function Register() {
                         <option value="user">User</option>
                       </select>
                     </div>
-                  <div>
+                    <div>
                       <label
                         htmlFor="status"
                         className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
@@ -208,78 +212,77 @@ export default function Register() {
                     </div>
                   </div>
 
-                  {selectedDepartment === "ASP" &&
-                  <div className="flex flex-col">
-                    <div className="flex justify-start">
-                      <label
-                        htmlFor="department"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Zusätzliche Abteilungen:
-                      </label>
-                      <div className="relative">
-                        <div
-                          className="tooltip ml-2 hover:cursor-pointer"
-                          onClick={handleTooltipToggle}
+                  {selectedDepartment === "ASP" && (
+                    <div className="flex flex-col">
+                      <div className="flex justify-start">
+                        <label
+                          htmlFor="department"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6 hover:text-blue-500"
+                          Zusätzliche Abteilungen:
+                        </label>
+                        <div className="relative">
+                          <div
+                            className="tooltip ml-2 hover:cursor-pointer"
+                            onClick={handleTooltipToggle}
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-                            />
-                          </svg>
-                        </div>
-                        {isTooltipVisible && (
-                          <div className="absolute bg-gray-700 text-white text-sm p-4 rounded shadow-lg w-72 z-50">
-                            Für jede Abteilung sind die E-Mail-Adressen des ASPs
-                            und seines Stellvertreters hinterlegt. Diese
-                            E-Mail-Adressen werden verwendet, um eine E-Mail an
-                            sie zu senden, damit sie entscheiden können, ob der
-                            Mitarbeiter an der Schulung teilnehmen darf.
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="w-6 h-6 hover:text-blue-500"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                              />
+                            </svg>
                           </div>
-                        )}
+                          {isTooltipVisible && (
+                            <div className="absolute bg-gray-700 text-white text-sm p-4 rounded shadow-lg w-72 z-50">
+                              Für jede Abteilung sind die E-Mail-Adressen des
+                              ASPs und seines Stellvertreters hinterlegt. Diese
+                              E-Mail-Adressen werden verwendet, um eine E-Mail
+                              an sie zu senden, damit sie entscheiden können, ob
+                              der Mitarbeiter an der Schulung teilnehmen darf.
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4 gap-1">
+                        {[
+                          "Logistik",
+                          "Vertrieb",
+                          "IT & Services",
+                          "Fuhrpark",
+                          "HR & Training",
+                          "Buchhaltung",
+                          "Einkauf & Anmietung",
+                          "Design & Planung",
+                          "Projektmanagement",
+                          "Office Management",
+                          "Gesundheitsmanagement",
+                        ].map((dep) => (
+                          <label className="flex items-center" key={dep}>
+                            <input
+                              type="checkbox"
+                              {...register("additionalDepartments")}
+                              value={dep}
+                              defaultChecked={userInfomation?.additionalDepartments?.includes(
+                                dep
+                              )}
+                              className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                            />
+                            {dep}
+                          </label>
+                        ))}
                       </div>
                     </div>
-
-                    <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4 gap-1">
-                      {[
-                        "Logistik",
-                        "Vertrieb",
-                        "IT & Services",
-                        "Fuhrpark",
-                        "HR & Training",
-                        "Buchhaltung",
-                        "Einkauf & Anmietung",
-                        "Design & Planung",
-                        "Projektmanagement",
-                        "Office Management",
-                        "Gesundheitsmanagement",
-                      ].map((dep) => (
-                        <label className="flex items-center" key={dep}>
-                          <input
-                            type="checkbox"
-                            {...register("additionalDepartments")}
-                            value={dep}
-                            defaultChecked={userInfomation?.additionalDepartments?.includes(
-                              dep
-                            )}
-                            className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-                          />
-                          {dep}
-                        </label>
-                      ))}
-                    </div>
-
-                  </div>
-}
+                  )}
 
                   <div className="flex justify-center gap-4">
                     <button
