@@ -541,7 +541,6 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       try {
         await transporter.sendMail(mailOptions);
       } catch (error) {
-        // Handle email sending error
       }
     };
 
