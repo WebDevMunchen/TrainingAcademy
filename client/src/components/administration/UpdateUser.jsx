@@ -125,10 +125,11 @@ export default function Register() {
                         Kürzel:
                       </label>
                       <input
-                        {...register("logID", { required: true })}
+                        {...register("logID", { required: true, maxLength: 3 })}
                         value={watch("logID")}
                         onChange={(e) => setValue("logID", e.target.value)}
-                        placeholder="Die Abkürzung sollte drei Zeichen lang sein..."
+                        maxLength={3}
+                        placeholder="Drei Zeichen lang"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5"
                       />
                     </div>

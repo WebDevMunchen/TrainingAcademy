@@ -182,7 +182,7 @@ export default function EditClass() {
           <SideMenu />
           <div className="flex mt-4 flex-col items-center w-11/12 lg:py-7 mx-auto lg:mt-0 lg:w-5/12">
             <dialog id="deleteClass" className="modal">
-              <div className="modal-box  max-w-2xl">
+              <div className="modal-box max-w-3xl">
                 <div
                   className="flex items-center p-3 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-300 dark:border-red-800"
                   role="alert"

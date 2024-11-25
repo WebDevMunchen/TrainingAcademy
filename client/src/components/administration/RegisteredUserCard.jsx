@@ -716,7 +716,7 @@ export default function RegisteredUserCard({
                                     setDeclineReason(e.target.value)
                                   }
                                 >
-                                  <option value="">
+                                  <option value="" disabled>
                                     Wähle eine Begründung
                                   </option>
                                   {declineReasons.map((reason, index) => (
