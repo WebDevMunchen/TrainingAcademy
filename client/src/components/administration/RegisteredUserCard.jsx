@@ -356,8 +356,8 @@ export default function RegisteredUserCard({
 
   return (
     <>
-      <div className="px-4 py-4">
-        <div className="flex items-center justify-between ">
+      <div className="px-3 py-2 lg:px-4 lg:py-4">
+        <div className="flex text-lg items-center justify-between ">
           <h3 className="leading-6 font-medium text-gray-900 lg:text-lg">
             {registeredUser.firstName + " " + registeredUser.lastName}
           </h3>
@@ -383,7 +383,7 @@ export default function RegisteredUserCard({
                           Teilnahmestatus:{" "}
                         </span>
                         <img
-                          className={`w-[130px] lg:w-[150px]`}
+                          className={`w-[150px] lg:w-[150px]`}
                           src={attended}
                           alt="teilgenommen"
                         />
@@ -396,7 +396,7 @@ export default function RegisteredUserCard({
                           Teilnahmestatus:{" "}
                         </span>
                         <img
-                          className={`w-[130px] lg:w-[150px]`}
+                          className={`w-[150px] lg:w-[150px]`}
                           src={notAttended}
                           alt="nichtTeilgenommen"
                         />
@@ -419,7 +419,7 @@ export default function RegisteredUserCard({
                   <React.Fragment key={element.registeredClassID}>
                     {element.status === "genehmigt" ? (
                       <img
-                        className={`w-[130px] lg:w-[150px]`}
+                        className={`w-[150px] lg:w-[150px]`}
                         src={approved}
                         alt="genehmigt"
                       />
@@ -444,14 +444,14 @@ export default function RegisteredUserCard({
                           </svg>
                         </span>
                         <img
-                          className={`w-[130px] lg:w-[150px]`}
+                          className={`w-[150px] lg:w-[150px]`}
                           src={declined}
                           alt="abgelehnt"
                         />
                       </div>
                     ) : (
                       <img
-                        className={`w-[130px] lg:w-[150px]`}
+                        className={`w-[150px] lg:w-[150px]`}
                         src={pending}
                         alt="ausstehend"
                       />

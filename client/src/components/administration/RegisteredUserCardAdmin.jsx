@@ -176,8 +176,8 @@ export default function RegisteredUserCardAdmin({
 
   return (
     <>
-      <div className="px-4 py-4">
-        <div className="flex items-center justify-between mx-2">
+      <div className="px-2 py-2 lg:px-4 lg:py-4">
+        <div className="flex items-center justify-between mx-0 lg:mx-2">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
             {registeredUser.firstName + " " + registeredUser.lastName}
           </h3>
@@ -189,7 +189,7 @@ export default function RegisteredUserCardAdmin({
             <span className="mt-0.5">{registeredUser.department}</span>
           </div>
         </div>
-        <div className="mt-2 flex items-center justify-between mx-2">
+        <div className="mt-2 flex items-center justify-between mx-0 lg:mx-2">
           <div className="flex flex-col items-start text-sm font-medium text-gray-500">
             {registeredUser.classesRegistered.map((element, index) => {
               if (element.registeredClassID === activityId)

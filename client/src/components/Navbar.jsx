@@ -123,8 +123,21 @@ export default function Navbar() {
                         </NavLink>
                       </li>
                       <li>
-                        <NavLink to={"/messages"}>Nachrichten</NavLink>
-                      </li>
+  <NavLink to={"/messages"}>
+    Nachrichten
+    <span
+      className={`${
+        unreadMessagesCount === 0
+          ? "hidden"
+          : "flex items-center justify-center px-2 bg-red-500 rounded-full text-white text-sm w-5 h-5"
+      }`}
+    >
+      {unreadMessagesCount}
+      <span className="rounded-full animate-ping bg-teal-200 w-full h-full"></span>
+    </span>
+  </NavLink>
+</li>
+
                       {/* <li>
                         <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
                       </li> */}

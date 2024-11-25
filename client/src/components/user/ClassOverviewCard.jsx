@@ -158,7 +158,7 @@ export default function ClassesOverviewCard({ activity }) {
             </div>
           </div>
         </div>
-        <div className="flex px-0 justify-center gap-4 lg:justify-between lg:px-6 lg:mt-4 lg:mr-4 lg:items-center">
+        <div className="flex px-0 justify-center gap-4 lg:justify-between lg:px-2 lg:mt-4 lg:mr-0 lg:items-center">
           <div className="hidden lg:flex flex-col items-center">
             {activity.statusAttended === "in Prüfung" ? (
               <span className="invisible">Placeholder</span>
@@ -181,13 +181,13 @@ export default function ClassesOverviewCard({ activity }) {
             )}
           </div>
           <div className="flex flex-col lg:ml-6">
-            <h3 className="flex justify-center text-lg text-center font-semibold text-black lg:text-lg">
+            <h3 className="flex justify-center text-lg text-center font-semibold text-black lg:text-lg lg:px-28">
               {activity.registeredClassID?.title}
             </h3>
             <div className="flex justify-center mt-2 mb-1">
               <p>Zielgruppe</p>
             </div>
-            <div className="mt-4 flex justify-center">
+            <div className="mt-1 flex justify-center lg:mt-4">
               {activity.registeredClassID?.department.map((dept, index) => (
                 <img key={index} src={dept} className="w-12 h-12 " />
               ))}
@@ -376,26 +376,66 @@ export default function ClassesOverviewCard({ activity }) {
             {activity.registeredClassID?.description}
           </p>
         </div>
+        {/* Mobile */}
         <div className="py-2 relative">
-          <div className="grid grid-cols-3 grid-rows-1 text-center lg:text-left justify-items-center">
+          <div className="grid grid-cols-3 grid-rows-1 text-center lg:hidden text-left justify-items-center">
             <div className="flex flex-col px-2 mr-2">
-              <p className="mt-4 px-2 text-base text-gray-600 lg:hidden">
-                <span className="font-bold">Kapazität:</span>{" "}
-                {activity.registeredClassID?.capacity + " Teilneh."}
-              </p>
-              <p className="hidden lg:inline mt-4 text-base text-gray-600">
-                <span className="font-bold">Kapazität:</span>{" "}
-                {activity.registeredClassID?.capacity + " Teilnehmer"}
-              </p>
               <p className="mt-4 text-base text-gray-600 ">
                 <span className="font-bold">Datum:</span> {displayFormattedDate}
               </p>
+              <p className="mt-4 text-base text-gray-600 ">
+                <span className="font-bold">Uhrzeit:</span>
+                <br />
+                {activity.registeredClassID?.time}
+              </p>
             </div>
+            <div className="flex flex-col mr-2">
+              <p className="mt-4 text-base text-gray-600 lg:hidden">
+                <span className="font-bold">Dauer:</span> <br />
+                {activity.registeredClassID?.duration + " Min."}
+              </p>
+              <p className="hidden lg:inline mt-4 text-base text-gray-600">
+                <span className="font-bold">Dauer:</span>
+                <br />
+                {activity.registeredClassID?.duration + " Min."}
+              </p>
+
+              <p className="mt-4 text-base text-gray-600 ">
+                <span className="font-bold">Referent*in:</span>
+                <br />
+                {activity.registeredClassID?.teacher}
+              </p>
+            </div>
+            <div className="flex flex-col">
+              <p className="mt-4 text-base text-gray-600 ">
+                <span className="font-bold">Location:</span>
+                <br />
+                {activity.registeredClassID?.location}
+              </p>
+              <p className="mt-4 text-base text-gray-600 lg:hidden">
+                <span className="font-bold">Kapazität:</span>
+                <br />
+                {activity.registeredClassID?.capacity + " Teilneh."}
+              </p>
+              <p className="hidden lg:inline mt-4 text-base text-gray-600">
+                <span className="font-bold">Kapazität:</span>
+                <br />
+                {activity.registeredClassID?.capacity + " Teilnehmer"}
+              </p>
+            </div>
+          </div>
+          {/* Desktop */}
+          <div className="hidden lg:grid grid-cols-3 grid-rows-1 text-center lg:text-left justify-items-center">
             <div className="flex flex-col px-2 mr-2">
+              <p className="mt-4 text-base text-gray-600 ">
+                <span className="font-bold">Datum:</span> {displayFormattedDate}
+              </p>
               <p className="mt-4 text-base text-gray-600 ">
                 <span className="font-bold">Uhrzeit:</span>{" "}
                 {activity.registeredClassID?.time}
               </p>
+            </div>
+            <div className="flex flex-col mr-2">
               <p className="mt-4 text-base text-gray-600 lg:hidden">
                 <span className="font-bold">Dauer:</span> <br />
                 {activity.registeredClassID?.duration + " Min."}
@@ -404,21 +444,31 @@ export default function ClassesOverviewCard({ activity }) {
                 <span className="font-bold">Dauer:</span>{" "}
                 {activity.registeredClassID?.duration + " Min."}
               </p>
-            </div>
-            <div className="flex flex-col mr-2">
-              <p className="mt-4 text-base text-gray-600 ">
-                <span className="font-bold">Location:</span>{" "}
-                {activity.registeredClassID?.location}
-              </p>
+
               <p className="mt-4 text-base text-gray-600 ">
                 <span className="font-bold">Referent*in:</span>{" "}
                 {activity.registeredClassID?.teacher}
               </p>
             </div>
+            <div className="flex flex-col px-2 mr-2">
+              <p className="mt-4 text-base text-gray-600 ">
+                <span className="font-bold">Location:</span>{" "}
+                {activity.registeredClassID?.location}
+              </p>
+              <p className="mt-4 px-2 text-base text-gray-600 lg:hidden">
+                <span className="font-bold">Kapazität:</span>{" "}
+                {activity.registeredClassID?.capacity + " Teilneh."}
+              </p>
+              <p className="hidden lg:inline mt-4 text-base text-gray-600">
+                <span className="font-bold">Kapazität:</span>{" "}
+                {activity.registeredClassID?.capacity + " Teilnehmer"}
+              </p>
+            </div>
           </div>
+
           {activity.status !== "abgelehnt" && canCancel && (
             <>
-              <div className="flex justify-center">
+              <div className="flex justify-center my-1">
                 <button
                   className="bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                   onClick={() => modalRef.current.showModal()}

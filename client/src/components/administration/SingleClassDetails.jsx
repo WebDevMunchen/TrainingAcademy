@@ -99,7 +99,7 @@ export default function SingleClassDetails() {
                   alt="logo"
                 />
               </div>
-              <div className="mx-auto mt-6 w-10/12 m-2 bg-white border p-4 relative group shadow-lg lg:w-7/12">
+              <div className="mx-auto mt-6 w-11/12 m-2 bg-white border p-2 relative group shadow-lg lg:w-7/12 lg:p-4">
                 <div className=" absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2  "></div>
                 <div className="py-2 relative  ">
                   <div className="hidden lg:flex justify-between">
@@ -395,26 +395,19 @@ export default function SingleClassDetails() {
                   <p className="flex justify-center text-center mt-2 text-base text-gray-600">
                     {activity.description}
                   </p>
-                  <div className="grid grid-cols-3 grid-rows-1 gap-4 text-center lg:gap-0 lg:text-left justify-items-center">
+                  {/* Desktop */}
+                  <div className="hidden lg:grid grid-cols-3 grid-rows-1 gap-4 text-center lg:gap-0 lg:text-left justify-items-center">
                     <div className="flex flex-col">
-                      <p className="mt-4 text-base text-gray-600 lg:hidden">
-                        <span className="font-bold">Kapazität:</span>{" "}
-                        {activity.capacity + " Teilneh."}
-                      </p>
-                      <p className="hidden lg:inline mt-4 text-base text-gray-600">
-                        <span className="font-bold">Kapazität:</span>{" "}
-                        {activity.capacity + " Teilnehmer"}
-                      </p>
                       <p className="mt-4 text-base text-gray-600">
                         <span className="font-bold">Datum:</span>{" "}
                         {formattedDate}
                       </p>
-                    </div>
-                    <div className="flex flex-col">
                       <p className="mt-4 text-base text-gray-600 ">
                         <span className="font-bold">Uhrzeit:</span>{" "}
                         {activity.time}
                       </p>
+                    </div>
+                    <div className="flex flex-col">
                       <p className="mt-4 text-base text-gray-600 lg:hidden">
                         <span className="font-bold">Dauer:</span> <br />
                         {activity.duration + " Min."}
@@ -423,16 +416,74 @@ export default function SingleClassDetails() {
                         <span className="font-bold">Dauer:</span>{" "}
                         {activity.duration + " Min."}
                       </p>
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="mt-4 text-base text-gray-600 ">
-                        <span className="font-bold">Location:</span>{" "}
-                        {activity.location}
-                      </p>
                       <p className="mt-4 text-base text-gray-600 ">
                         <span className="font-bold">Referent*in:</span>{" "}
                         {activity.teacher}
                       </p>
+                    </div>
+                    <div className="flex flex-col">
+                    <p className="mt-4 text-base text-gray-600 ">
+                        <span className="font-bold">Location:</span>{" "}
+                        {activity.location}
+                      </p>
+                      <p className="mt-4 text-base text-gray-600 lg:hidden">
+                        <span className="font-bold">Kapazität:</span>{" "}
+                        {activity.capacity + " Teilneh."}
+                      </p>
+                      <p className="hidden lg:inline mt-4 text-base text-gray-600">
+                        <span className="font-bold">Kapazität:</span>{" "}
+                        {activity.capacity + " Teilnehmer"}
+                      </p>
+
+                    </div>
+                  </div>
+                  {/* Mobile */}
+                  <div className="grid grid-cols-3 grid-rows-1- text-center lg:gap-0 lg:hidden text-left justify-items-center">
+                    <div className="flex flex-col">
+                      <p className="mt-4 text-base text-gray-600">
+                        <span className="font-bold">Datum:</span>
+                        <br />
+                        {formattedDate}
+                      </p>
+                      <p className="mt-4 text-base text-gray-600 ">
+                        <span className="font-bold">Uhrzeit:</span>
+                        <br />
+                        {activity.time}
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col">
+                      <p className="mt-4 text-base text-gray-600 lg:hidden">
+                        <span className="font-bold">Dauer:</span> <br />
+                        {activity.duration + " Min."}
+                      </p>
+                      <p className="hidden lg:inline mt-4 text-base text-gray-600">
+                        <span className="font-bold">Dauer:</span>
+                        <br />
+                        {activity.duration + " Min."}
+                      </p>
+                      <p className="mt-4 text-base text-gray-600 ">
+                        <span className="font-bold">Referent*in:</span>
+                        <br />
+                        {activity.teacher}
+                      </p>
+                    </div>
+                    <div className="flex flex-col">
+                    <p className="mt-4 text-base text-gray-600 ">
+                        <span className="font-bold">Location:</span>
+                        <br />
+                        {activity.location}
+                      </p>
+                      <p className="mt-4 text-base text-gray-600 lg:hidden">
+                        <span className="font-bold">Kapazität:</span>
+                        <br />
+                        {activity.capacity + " Teilneh."}
+                      </p>
+                      <p className="hidden lg:inline mt-4 text-base text-gray-600">
+                        <span className="font-bold">Kapazität:</span>
+                        <br />
+                      </p>
+
                     </div>
                   </div>
                 </div>

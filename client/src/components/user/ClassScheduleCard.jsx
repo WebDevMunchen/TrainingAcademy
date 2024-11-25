@@ -61,11 +61,11 @@ export default function ClassScheduleCard({ activity }) {
 
   return (
     <>
-      <div className="bg-white border p-8 relative group shadow-lg">
+      <div className="bg-white border p-4 relative group shadow-lg lg:p-6">
         <div className="absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2"></div>
-        <div className="py-2 relative">
+        <div className="relative">
           <div className="flex justify-between lg:hidden">
-            <p className="font-semibold lg:hidden">
+            <p className="mb-2 font-semibold lg:hidden">
               Registrierungsende:{" "}
               <span className="font-normal">
                 {formattedDatePrior} um {activity.time}
@@ -88,10 +88,10 @@ export default function ClassScheduleCard({ activity }) {
             <p className="hidden lg:inline invisible w-72">
               Placeholder Longer
             </p>
-            <h3 className="hidden text-center lg:flex justify-center text-lg font-semibold text-black">
+            <h3 className="hidden text-center lg:flex justify-center text-xl font-semibold text-black">
               {activity.title}
             </h3>
-            <h3 className="flex justify-center mx-auto text-center mb-2 text-lg font-semibold text-black lg:hidden">
+            <h3 className="flex justify-center mx-auto text-center mb-2 text-xl font-semibold text-black lg:hidden">
               {activity.title}
             </h3>
             <div className="flex flex-col">
@@ -271,24 +271,17 @@ export default function ClassScheduleCard({ activity }) {
           <p className="w-full text-center lg:flex justify-center lg:w-7/12 mx-auto mt-2 text-base text-gray-600">
             {activity.description}
           </p>
-          <div className="grid grid-cols-3 grid-rows-1 gap-2 text-center lg:gap-0 lg:text-left justify-items-center">
+          {/* Desktop */}
+          <div className="hidden lg:grid grid-cols-3 grid-rows-1 gap-2 text-center lg:gap-0 lg:text-left justify-items-center">
             <div className="flex flex-col">
-              <p className="mt-4 text-base text-gray-600 lg:hidden">
-                <span className="font-bold">Kapazität:</span>{" "}
-                {activity.capacity + " Teilneh."}
-              </p>
-              <p className="hidden lg:inline mt-4 text-base text-gray-600">
-                <span className="font-bold">Kapazität:</span>{" "}
-                {activity.capacity + " Teilnehmer"}
-              </p>
               <p className="mt-4 text-base text-gray-600">
                 <span className="font-bold">Datum:</span> {formattedDate}
               </p>
-            </div>
-            <div className="flex flex-col">
               <p className="mt-4 text-base text-gray-600">
                 <span className="font-bold">Uhrzeit:</span> {activity.time}
               </p>
+            </div>
+            <div className="flex flex-col">
               <p className="mt-4 text-base text-gray-600 lg:hidden">
                 <span className="font-bold">Dauer:</span> <br />
                 {activity.duration + " Min."}
@@ -297,18 +290,75 @@ export default function ClassScheduleCard({ activity }) {
                 <span className="font-bold">Dauer:</span>{" "}
                 {activity.duration + " Min."}
               </p>
-            </div>
-            <div className="flex flex-col">
-              <p className="mt-4 text-base text-gray-600">
-                <span className="font-bold">Location:</span> {activity.location}
-              </p>
               <p className="mt-4 text-base text-gray-600">
                 <span className="font-bold">Referent*in:</span>{" "}
                 {activity.teacher}
               </p>
             </div>
+            <div className="flex flex-col">
+
+              <p className="mt-4 text-base text-gray-600">
+                <span className="font-bold">Location:</span> {activity.location}
+              </p>
+              <p className="mt-4 text-base text-gray-600 lg:hidden">
+                <span className="font-bold">Kapazität:</span>{" "}
+                {activity.capacity + " Teilneh."}
+              </p>
+              <p className="hidden lg:inline mt-4 text-base text-gray-600">
+                <span className="font-bold">Kapazität:</span>{" "}
+                {activity.capacity + " Teilnehmer"}
+              </p>
+            </div>
           </div>
-          <div className="flex justify-center">
+          {/* Mobile  */}
+          <div className="grid grid-cols-3 grid-rows-1 text-center lg:gap-0 lg:text-left justify-items-center lg:hidden">
+            <div className="flex flex-col">
+              <p className="mt-4 text-base text-gray-600">
+                <span className="font-bold">Datum:</span>
+                <br /> {formattedDate}
+              </p>
+              <p className="mt-4 text-base text-gray-600">
+                <span className="font-bold">Uhrzeit:</span>
+                <br /> {activity.time}
+              </p>
+            </div>
+            <div className="flex flex-col">
+              <p className="mt-4 text-base text-gray-600 lg:hidden">
+                <span className="font-bold">Dauer:</span> <br />
+                {activity.duration + " Min."}
+              </p>
+              <p className="hidden lg:inline mt-4 text-base text-gray-600">
+                <span className="font-bold">Dauer:</span>
+                <br />
+                {activity.duration + " Min."}
+              </p>
+
+              <p className="mt-4 text-base text-gray-600">
+                <span className="font-bold">Referent*in:</span>
+                <br />
+                {activity.teacher}
+              </p>
+            </div>
+            <div className="flex flex-col">
+
+              <p className="mt-4 text-base text-gray-600">
+                <span className="font-bold">Location:</span>
+                <br /> {activity.location}
+              </p>
+              <p className="mt-4 text-base text-gray-600 lg:hidden">
+                <span className="font-bold">Kapazität:</span>
+                <br />
+                {activity.capacity + " Teilneh."}
+              </p>
+              <p className="hidden lg:inline mt-4 text-base text-gray-600">
+                <span className="font-bold">Kapazität:</span>
+                <br />
+                {activity.capacity + " Teilnehmer"}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex justify-center mt-1">
             {user.role === "user" && !activityDatePassed && !oneDayPrior && (
               <>
                 {activity.capacity - activity.usedCapacity > 0 ? (
@@ -362,7 +412,7 @@ export default function ClassScheduleCard({ activity }) {
               user.role === "teacher") && (
               <NavLink
                 to={`/classInformation/${activity?._id}`}
-                className="text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                className="flex items-center justify-center text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
               >
                 Details Anzeigen
               </NavLink>
