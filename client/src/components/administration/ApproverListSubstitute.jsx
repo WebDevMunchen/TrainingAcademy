@@ -124,7 +124,7 @@ export default function ApproverListSubstitute() {
                         HR & Training:
                       </label>
                       <input
-                        {...register("hrSubstituteSubstitute", {
+                        {...register("hrSubstitute", {
                           required: true,
                         })}
                         defaultValue={approver[0].hrSubstitute}
