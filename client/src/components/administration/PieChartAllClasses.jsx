@@ -190,7 +190,7 @@ export default function PieChartAllClasses() {
                   onChange={handleYearChange}
                   className="mt-2 px-2.5 ml-2 form-select bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
-                  {Array.from({ length: 7 }, (_, i) => 2024 + i).map(
+                  {Array.from({ length: 7 }, (_, i) => 2023 + i).map(
                     (year) => (
                       <option key={year} value={year}>
                         {year}

@@ -183,7 +183,8 @@ export default function RegisteredUserCardAdmin({
           </h3>
 
           <div className="flex items-center gap-1 text-lg font-medium text-gray-500">
-            <span className="font-semibold text-gray-900 lg:text-lg">
+          <span className="hidden lg:flex font-semibold text-gray-900 lg:text-lg">
+
               Abteilung:
             </span>{" "}
             <span className="mt-0.5">{registeredUser.department}</span>

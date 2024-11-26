@@ -12,7 +12,7 @@ export default function ClassesSchedule() {
     currentYear,
   } = useContext(AuthContext);
 
-  const startYear = 2024;
+  const startYear = 2023;
   const years = Array.from({ length: 7 }, (_, i) =>
     (startYear + i).toString()
   );
