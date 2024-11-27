@@ -293,7 +293,7 @@ export default function RegisteredUserCard({
       progress: undefined,
       theme: "light",
       transition: Bounce,
-      className: "mt-14 mr-6",
+      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
     });
 
   const notifyError = () =>
@@ -307,7 +307,7 @@ export default function RegisteredUserCard({
       progress: undefined,
       theme: "light",
       transition: Bounce,
-      className: "mt-14 mr-6",
+      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
     });
 
   const currentDate = new Date();
