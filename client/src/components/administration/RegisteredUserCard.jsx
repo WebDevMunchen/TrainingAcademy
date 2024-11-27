@@ -383,7 +383,7 @@ export default function RegisteredUserCard({
                           Teilnahmestatus:{" "}
                         </span>
                         <img
-                          className={`w-[150px] lg:w-[150px]`}
+                          className={`w-[130px] lg:w-[150px]`}
                           src={attended}
                           alt="teilgenommen"
                         />
@@ -396,7 +396,7 @@ export default function RegisteredUserCard({
                           Teilnahmestatus:{" "}
                         </span>
                         <img
-                          className={`w-[150px] lg:w-[150px]`}
+                          className={`w-[130px] lg:w-[150px]`}
                           src={notAttended}
                           alt="nichtTeilgenommen"
                         />
@@ -419,7 +419,7 @@ export default function RegisteredUserCard({
                   <React.Fragment key={element.registeredClassID}>
                     {element.status === "genehmigt" ? (
                       <img
-                        className={`w-[150px] lg:w-[150px]`}
+                        className={`w-[130px] lg:w-[150px]`}
                         src={approved}
                         alt="genehmigt"
                       />
@@ -444,14 +444,14 @@ export default function RegisteredUserCard({
                           </svg>
                         </span>
                         <img
-                          className={`w-[150px] lg:w-[150px]`}
+                          className={`w-[130px] lg:w-[150px]`}
                           src={declined}
                           alt="abgelehnt"
                         />
                       </div>
                     ) : (
                       <img
-                        className={`w-[150px] lg:w-[150px]`}
+                        className={`w-[130px] lg:w-[150px]`}
                         src={pending}
                         alt="ausstehend"
                       />

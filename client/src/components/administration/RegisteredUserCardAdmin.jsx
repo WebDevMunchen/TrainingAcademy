@@ -235,7 +235,7 @@ export default function RegisteredUserCardAdmin({
                 return (
                   <React.Fragment key={element.registeredClassID}>
                     {element.status === "genehmigt" ? (
-                      <img src={approved} width={150} alt="genehmigt" />
+                      <img src={approved} className="w-[130px] lg:w-[150px]" alt="genehmigt" />
                     ) : element.status === "abgelehnt" ? (
                       <div className="flex items-center">
                         <span
@@ -256,10 +256,10 @@ export default function RegisteredUserCardAdmin({
                             />
                           </svg>
                         </span>
-                        <img src={declined} width={150} alt="abgelehnt" />
+                        <img src={declined} className="w-[130px] lg:w-[150px]"  alt="abgelehnt" />
                       </div>
                     ) : (
-                      <img src={pending} width={150} alt="ausstehend" />
+                      <img src={pending} className="w-[130px] lg:w-[150px]"  alt="ausstehend" />
                     )}
                   </React.Fragment>
                 );
