@@ -72,12 +72,12 @@ export default function ClassListPreview({ activity }) {
         </p>
       </td>
 
-      <td className="py-3 px-2 border-b border-blue-gray-50">
+      <td className="py-3 px-5 border-b border-blue-gray-50">
         <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
           {activity.time}
         </p>
-        <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
-          {`(Dauer: ${activity.duration} min)`}
+        <p className="block antialiased text-xs font-medium text-blue-gray-600 text-center">
+          {`(${activity.duration} min)`}
         </p>
       </td>
 

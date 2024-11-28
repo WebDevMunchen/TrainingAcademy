@@ -255,7 +255,7 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="flex flex-col">
-              <div className="flex justify-between mb-2 mt-2 mx-16">
+              <div className="flex items-center justify-between mb-2 mt-2 mx-16">
                 <button onClick={handlePreviousMonth}>
                   {" "}
                   <svg
@@ -271,7 +271,7 @@ export default function Dashboard() {
                     />
                   </svg>
                 </button>
-                <p className="font-anek text-4xl font-semibold tracking-widest text-g uppercase">
+                <p className="text-3xl font-semibold tracking-widest uppercase">
                   {currentMonth}
                 </p>
                 <button onClick={handleNextMonth}>
@@ -318,11 +318,11 @@ export default function Dashboard() {
             </div>
 
             <div className="mx-auto w-11/12 mb-4 grid grid-cols-1 gap-6">
-              <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
+              <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-xl overflow-hidden xl:col-span-2">
                 <div className="p-6 h-[calc(57.5vh-32px)] overflow-x-scroll px-0 pt-0 pb-2">
                   <table className="w-full min-w-[640px] table-auto">
                     <thead>
-                      <tr>
+                      <tr className="bg-gray-50 sticky top-0 z-10">
                         <th className="w-1/4 border-b border-blue-gray-50 py-3 px-6 text-left">
                           <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Thema
@@ -347,6 +347,9 @@ export default function Dashboard() {
                           <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
                             Uhrzeit
                           </p>
+                          <p className="block antialiased text-xs font-medium text-blue-gray-600 text-center">
+          {`(Dauer)`}
+        </p>
                         </th>
                         <th className="w-1/12 border-b border-blue-gray-50 py-3 px-6 text-center">
                           <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">
