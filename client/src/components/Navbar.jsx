@@ -129,15 +129,20 @@ export default function Navbar() {
                         className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-gray-800 rounded-box w-52"
                       >
                         <li>
-                          <NavLink to={"/classes"}>Schulungsübersicht</NavLink>
+                          <NavLink to={"/classes"} onClick={handleLinkClick}>
+                            Schulungsübersicht
+                          </NavLink>
                         </li>
                         <li>
-                          <NavLink to={"/classesOverview"}>
+                          <NavLink
+                            to={"/classesOverview"}
+                            onClick={handleLinkClick}
+                          >
                             Meine Schulungen
                           </NavLink>
                         </li>
                         <li>
-                          <NavLink to={"/messages"}>
+                          <NavLink to={"/messages"} onClick={handleLinkClick}>
                             Nachrichten
                             <span
                               className={`${
@@ -153,10 +158,16 @@ export default function Navbar() {
                         </li>
 
                         {/* <li>
-                        <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
-                      </li> */}
+          <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
+        </li> */}
                         <li>
-                          <NavLink to={"/"} onClick={logout}>
+                          <NavLink
+                            to={"/"}
+                            onClick={() => {
+                              handleLinkClick();
+                              logout();
+                            }}
+                          >
                             Abmelden
                           </NavLink>
                         </li>
@@ -208,13 +219,21 @@ export default function Navbar() {
                         className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-gray-800 rounded-box w-52"
                       >
                         <li>
-                          <NavLink to={"/classes"}>Schulungsübersicht</NavLink>
+                          <NavLink to={"/classes"} onClick={handleLinkClick}>
+                            Schulungsübersicht
+                          </NavLink>
                         </li>
                         {/* <li>
-                        <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
-                      </li> */}
+          <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
+        </li> */}
                         <li>
-                          <NavLink to={"/"} onClick={logout}>
+                          <NavLink
+                            to={"/"}
+                            onClick={() => {
+                              handleLinkClick();
+                              logout();
+                            }}
+                          >
                             Abmelden
                           </NavLink>
                         </li>
