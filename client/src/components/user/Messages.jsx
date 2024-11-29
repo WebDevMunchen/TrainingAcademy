@@ -143,7 +143,7 @@ export default function Messages() {
   return (
     <>
       <div className="flex justify-center px-4 mx-auto rounded-full lg:mt-8">
-        <p className="hidden lg:flex font-anek text-4xl font-semibold tracking-widest text-g uppercase">
+        <p className="hidden lg:flex font-poppins text-4xl font-semibold tracking-widest text-g uppercase">
           Inbox
         </p>
       </div>

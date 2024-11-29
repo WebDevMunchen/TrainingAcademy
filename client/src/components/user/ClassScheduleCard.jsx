@@ -136,7 +136,7 @@ export default function ClassScheduleCard({ activity }) {
           </div>
           <dialog id="legend" className="modal">
             <div className="modal-box w-full max-w-5xl">
-              <h2 className="text-center font-anek font-semibold text-4xl">
+              <h2 className="text-center font-poppins font-semibold text-4xl">
                 Legende
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-3">
@@ -146,7 +146,7 @@ export default function ClassScheduleCard({ activity }) {
                     src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/hczkglpvaybhguywjgku.png"
                     alt="alle"
                   />
-                  <p className="font-anek font-medium text-center text-lg">
+                  <p className="font-poppins font-medium text-center text-lg">
                     Alle
                   </p>
                 </div>
@@ -156,7 +156,7 @@ export default function ClassScheduleCard({ activity }) {
                     alt="Vertrieb"
                     className="w-20 mx-auto"
                   />
-                  <p className="font-anek font-medium text-center text-lg">
+                  <p className="font-poppins font-medium text-center text-lg">
                     Vertrieb
                   </p>
                 </div>
@@ -166,7 +166,7 @@ export default function ClassScheduleCard({ activity }) {
                     alt="Logistik"
                     className="w-20 mx-auto"
                   />
-                  <p className="font-anek font-medium text-center text-lg">
+                  <p className="font-poppins font-medium text-center text-lg">
                     Logistik
                   </p>
                 </div>
@@ -176,7 +176,7 @@ export default function ClassScheduleCard({ activity }) {
                     alt="Fuhrpark"
                     className="w-20 mx-auto"
                   />
-                  <p className="font-anek font-medium text-center text-lg">
+                  <p className="font-poppins font-medium text-center text-lg">
                     Fuhrpark
                   </p>
                 </div>
@@ -186,7 +186,7 @@ export default function ClassScheduleCard({ activity }) {
                     alt="IT & Services"
                     className="w-20 mx-auto"
                   />
-                  <p className="font-anek font-medium text-center text-lg">
+                  <p className="font-poppins font-medium text-center text-lg">
                     IT & Services
                   </p>
                 </div>
@@ -196,7 +196,7 @@ export default function ClassScheduleCard({ activity }) {
                     alt="HR & Training"
                     className="w-20 mx-auto"
                   />
-                  <p className="font-anek font-medium text-center text-lg">
+                  <p className="font-poppins font-medium text-center text-lg">
                     HR & Training
                   </p>
                 </div>
@@ -206,7 +206,7 @@ export default function ClassScheduleCard({ activity }) {
                     alt="Buchhaltung"
                     className="w-20 mx-auto"
                   />
-                  <p className="font-anek font-medium text-center text-lg">
+                  <p className="font-poppins font-medium text-center text-lg">
                     Buchhaltung
                   </p>
                 </div>
@@ -216,7 +216,7 @@ export default function ClassScheduleCard({ activity }) {
                     alt="item8"
                     className="w-20 mx-auto"
                   />
-                  <p className="font-anek font-medium text-center text-lg">
+                  <p className="font-poppins font-medium text-center text-lg">
                     Einkauf & Anmietung
                   </p>
                 </div>
@@ -226,7 +226,7 @@ export default function ClassScheduleCard({ activity }) {
                     alt="Design & Planung"
                     className="w-20 mx-auto"
                   />
-                  <p className="font-anek font-medium text-center text-lg">
+                  <p className="font-poppins font-medium text-center text-lg">
                     Design & Planung
                   </p>
                 </div>
@@ -236,7 +236,7 @@ export default function ClassScheduleCard({ activity }) {
                     alt="Projektmanagement"
                     className="w-20 mx-auto"
                   />
-                  <p className="font-anek font-medium text-center text-lg">
+                  <p className="font-poppins font-medium text-center text-lg">
                     Projektmanagement
                   </p>
                 </div>
@@ -246,7 +246,7 @@ export default function ClassScheduleCard({ activity }) {
                     alt="Officemanagement"
                     className="w-20 mx-auto"
                   />
-                  <p className="font-anek font-medium text-center text-lg">
+                  <p className="font-poppins font-medium text-center text-lg">
                     Officemanagement
                   </p>
                 </div>
@@ -256,7 +256,7 @@ export default function ClassScheduleCard({ activity }) {
                     alt="Gesundheitsmanagement"
                     className="w-20 mx-auto"
                   />
-                  <p className="font-anek font-medium text-center text-lg">
+                  <p className="font-poppins font-medium text-center text-lg">
                     Gesundheitsmanagement
                   </p>
                 </div>

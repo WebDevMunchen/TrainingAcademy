@@ -1,7 +1,7 @@
 export default function Datenschutz() {
   return (
     <div className="mt-4 bg-white rounded-lg shadow-xl py-4 mx-auto w-11/12 lg:w-8/12 ">
-      <h4 className="mt-4 font-anek text-2xl font-bold text-gray-800 tracking-widest uppercase text-center lg:text-4xl">
+      <h4 className="mt-4 font-poppins text-2xl font-bold text-gray-800 tracking-widest uppercase text-center lg:text-4xl">
         Datenschutz
       </h4>
       <div className="space-y-8 px-2 xl:px-16 mt-6">

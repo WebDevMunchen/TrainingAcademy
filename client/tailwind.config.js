@@ -6,6 +6,7 @@ export default {
     extend: {   
       fontFamily: {
         anek: ["Anek Devanagari", "sans-serif"],
+        poppins: ["Poppins", "sans"],
       },
       keyframes: { // Add keyframes for animation
         wiggle: {

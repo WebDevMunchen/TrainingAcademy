@@ -92,7 +92,7 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div className="p-4 text-right">
-                  <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                  <h6 className="block antialiased tracking-normal text-[15px] font-semibold leading-relaxed text-blue-gray-900 mb-1">
                     Anzahl der registrierten Mitarbeiter
                   </h6>
                   <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
@@ -142,7 +142,7 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div className="p-4 text-right">
-                  <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                  <h6 className="block antialiased tracking-normal  text-[15px] font-semibold leading-relaxed text-blue-gray-900 mb-1">
                     Schulungen in diesem Monat
                   </h6>
                   <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
@@ -186,7 +186,7 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div className="p-4 text-right">
-                  <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                  <h6 className="block antialiased tracking-normal  text-[15px] font-semibold leading-relaxed text-blue-gray-900 mb-1">
                     Teilnehmer in diesem Monat
                   </h6>
                   <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">
@@ -226,7 +226,7 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div className="p-4 text-right">
-                  <h6 className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-blue-gray-900 mb-1">
+                  <h6 className="block antialiased tracking-normal  text-[15px] font-semibold leading-relaxed text-blue-gray-900 mb-1">
                     Ausstehende Genehmigungen
                   </h6>
                   <h4 className="block antialiased tracking-normal  text-2xl font-semibold leading-snug text-blue-gray-900">

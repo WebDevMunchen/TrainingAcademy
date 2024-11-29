@@ -23,7 +23,7 @@ export default function ClassesSchedule() {
         <div className="relative mx-auto h-full pb-20 md:pb-10 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8">
           <div className="mx-auto sm:px-6 lg:px-8 relative">
             <div className="flex justify-center max-w-xl mx-auto text-center">
-              <p className="text-center font-anek text-2xl font-semibold tracking-widest text-g uppercase mt-3 mb-1 lg:text-4xl lg:w-fit">
+              <p className="text-center font-poppins text-2xl font-semibold tracking-widest text-g uppercase mt-3 mb-1 lg:text-4xl lg:w-fit">
                 ÜBERSICHT {currentMonth}
               </p>
             </div>

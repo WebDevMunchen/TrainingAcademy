@@ -54,7 +54,7 @@ export default function ClassesOverview() {
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 relative">
             <div className="max-w-xl mx-auto text-center">
               <div className="inline-flex px-4 py-1.5 mx-auto rounded-full">
-                <p className="font-anek text-4xl font-semibold tracking-widest text-g uppercase">
+                <p className="font-marcellus text-4xl font-semibold tracking-widest text-g uppercase">
                   Meine Schulungen
                 </p>
               </div>
