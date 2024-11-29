@@ -299,14 +299,14 @@ export default function Navbar() {
                         tabIndex={0}
                         className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-gray-800 rounded-box w-52"
                       >
-                        <li>
+                        {/* <li>
                           <NavLink
                             to={"/admin/dashboard"}
                             onClick={handleLinkClick}
                           >
                             Dashboard
                           </NavLink>
-                        </li>
+                        </li> */}
                         <li>
                           <NavLink to={"/classes"} onClick={handleLinkClick}>
                             Schulungsübersicht
@@ -328,14 +328,14 @@ export default function Navbar() {
                             Meine Schulungen
                           </NavLink>
                         </li>
-                        <li>
+                        {/* <li>
                           <NavLink
                             to={"/admin/users"}
                             onClick={handleLinkClick}
                           >
                             Benutzer Liste
                           </NavLink>
-                        </li>
+                        </li> */}
                         <li>
                           <NavLink
                             to={"/admin/register"}

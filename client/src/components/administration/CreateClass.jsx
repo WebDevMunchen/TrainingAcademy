@@ -79,8 +79,8 @@ export default function CreateClass() {
     <>
       <div className="bg-gray-50/50 flex">
         <SideMenu />
-        <div className="flex mt-4 flex-col items-center w-11/12 lg:py-7 mx-auto lg:mt-0 lg:w-6/12">
-          <div className="bg-white rounded-md shadow w-11/12 lg:6/12">
+        <div className="flex mt-4 flex-col items-center w-11/12 lg:py-7 mx-auto lg:mt-0 lg:w-[45%]">
+          <div className="bg-white rounded-md shadow lg:6/12">
             <div className="p-6 space-y-4 md:space-y-2 sm:p-5">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Neue Schulung erstellen
@@ -117,7 +117,8 @@ export default function CreateClass() {
                   />
                 </div>
 
-                <div className="flex gap-2 items-center">
+                <div className="flex flex-col lg:flex-row gap-2 items-center">
+                  <div className="flex items-center gap-2">
                   <label
                     htmlFor="safetyBriefing"
                     className="py-1.5 block text-sm font-medium text-gray-900 dark:text-white mt-1"
@@ -128,10 +129,11 @@ export default function CreateClass() {
                     type="checkbox"
                     {...register("safetyBriefing", { required: false })}
                     id="safetyBriefing"
-                    className="checkbox"
+                    className="checkbox mt-2"
                     onClick={handleHideFileUpload}
                   />
 
+</div>
                   <div className={`${hideFileUpload} flex items-center gap-3`}>
                     <label
                       htmlFor="file"
@@ -228,7 +230,7 @@ export default function CreateClass() {
                     <input
                       type="time"
                       {...register("time", { required: true })}
-                      className="ml-2 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
                 </div>
@@ -265,7 +267,7 @@ export default function CreateClass() {
                   <div className="mt-2 lg:mt-0">
                     <label
                       htmlFor="capacity"
-                      className="ml-2 block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Kapazität:
                     </label>
@@ -274,7 +276,7 @@ export default function CreateClass() {
                       type="number"
                       placeholder="0"
                       {...register("capacity", { required: true })}
-                      className="ml-2 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
                 </div>
@@ -405,11 +407,39 @@ export default function CreateClass() {
                       onChange={handleDepartmentChange}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
+
                     <label
                       htmlFor="departmentB"
-                      className="ml-2 text-sm text-gray-900 dark:text-white"
+                      className="hidden lg:block ml-2 text-sm text-gray-900 dark:text-white"
                     >
                       Einkauf & Anmietung
+                    </label>
+                    <label
+                      htmlFor="departmentB"
+                      className="ml-2 text-sm text-gray-900 dark:text-white lg:invisible"
+                    >
+                      Einkauf & Anm.
+                    </label>
+                  </div>
+
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ikluglsekc6msbuvgn0z.png"
+                      onChange={handleDepartmentChange}
+                      className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    />
+                    <label
+                      htmlFor="departmentB"
+                      className="hidden lg:block ml-2 text-sm text-gray-900 dark:text-white"
+                    >
+                      Projektmanagement
+                    </label>
+                    <label
+                      htmlFor="departmentB"
+                      className="ml-2 text-sm text-gray-900 dark:text-white lg:invisible"
+                    >
+                      Projektmanag.
                     </label>
                   </div>
                   <div className="flex items-center">
@@ -426,20 +456,6 @@ export default function CreateClass() {
                       Design & Planung
                     </label>
                   </div>
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ikluglsekc6msbuvgn0z.png"
-                      onChange={handleDepartmentChange}
-                      className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-                    />
-                    <label
-                      htmlFor="departmentB"
-                      className="ml-2 text-sm text-gray-900 dark:text-white"
-                    >
-                      Projektmanagement
-                    </label>
-                  </div>
                   <div className="flex items-center ">
                     <input
                       type="checkbox"
@@ -449,9 +465,15 @@ export default function CreateClass() {
                     />
                     <label
                       htmlFor="departmentB"
-                      className="ml-2 text-sm text-gray-900 dark:text-white"
+                      className="hidden lg:block ml-2 text-sm text-gray-900 dark:text-white"
                     >
                       Officemanagement
+                    </label>
+                    <label
+                      htmlFor="departmentB"
+                      className="ml-2 text-sm text-gray-900 dark:text-white lg:invisible"
+                    >
+                      Officemanag.
                     </label>
                   </div>
                   <div className="flex items-center">
@@ -463,9 +485,15 @@ export default function CreateClass() {
                     />
                     <label
                       htmlFor="departmentB"
-                      className="ml-2 text-sm text-gray-900 dark:text-white"
+                      className="hidden lg:block ml-2 text-sm text-gray-900 dark:text-white"
                     >
                       Gesundheitsmanagement
+                    </label>
+                    <label
+                      htmlFor="departmentB"
+                      className="ml-2 text-sm text-gray-900 dark:text-white lg:invisible"
+                    >
+                      Gesundheitsman.
                     </label>
                   </div>
                 </div>
