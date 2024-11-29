@@ -451,9 +451,15 @@ export default function CreateClass() {
                     />
                     <label
                       htmlFor="departmentB"
-                      className="ml-2 text-sm text-gray-900 dark:text-white"
+                      className="hidden lg:block ml-2 text-sm text-gray-900 dark:text-white"
                     >
-                      Design & Planung
+                      Design und Planung
+                    </label>
+                    <label
+                      htmlFor="departmentB"
+                      className="ml-2 text-sm text-gray-900 dark:text-white lg:invisible"
+                    >
+                       Design und Plan.
                     </label>
                   </div>
                   <div className="flex items-center ">

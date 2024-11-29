@@ -684,15 +684,17 @@ export default function RegisteredUserCard({
                           </svg>
                         </span>
                       </div>
+                      <div>
+                        <p className="py-2">
+                          Möchtest du für{" "}
+                          {registeredUser.firstName +
+                            " " +
+                            registeredUser.lastName}{" "}
+                          die Anfrage zur Teilnahme an dieser Schulung wirklich
+                          ändern?
+                        </p>
+                      </div>
 
-                      <p className="py-2">
-                        Möchtest du für{" "}
-                        {registeredUser.firstName +
-                          " " +
-                          registeredUser.lastName}{" "}
-                        die Anfrage zur Teilnahme an dieser Schulung wirklich
-                        ändern?
-                      </p>
                       <div className="modal-action">
                         <form method="dialog" className="flex gap-2">
                           {registeredUser.classesRegistered.some(
@@ -701,31 +703,29 @@ export default function RegisteredUserCard({
                               element.status === "genehmigt"
                           ) ? (
                             <div>
-                              <div className="w-72 mr-0 lg:w-96 lg:mr-12">
-                                <label
-                                  htmlFor="description"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  Begründung:
-                                </label>
-                                <select
-                                  id="reason"
-                                  className="mb-4 mr-12 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                  value={declineReason}
-                                  onChange={(e) =>
-                                    setDeclineReason(e.target.value)
-                                  }
-                                >
-                                  <option value="" disabled>
-                                    Wähle eine Begründung
+                              <label
+                                htmlFor="description"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              >
+                                Begründung:
+                              </label>
+                              <select
+                                id="reason"
+                                className="mb-4 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                value={declineReason}
+                                onChange={(e) =>
+                                  setDeclineReason(e.target.value)
+                                }
+                              >
+                                <option value="" disabled>
+                                  Wähle eine Begründung
+                                </option>
+                                {declineReasons.map((reason, index) => (
+                                  <option key={index} value={reason}>
+                                    {reason}
                                   </option>
-                                  {declineReasons.map((reason, index) => (
-                                    <option key={index} value={reason}>
-                                      {reason}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
+                                ))}
+                              </select>
                               <div className="flex justify-end gap-2">
                                 <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
                                   <input
@@ -738,7 +738,7 @@ export default function RegisteredUserCard({
                                   In "abgelehnt" ändern
                                 </label>
 
-                                <button className="btn w-28">Abbrechen</button>
+                                <button className="btn w-fit">Abbrechen</button>
                               </div>
                             </div>
                           ) : (
