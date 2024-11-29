@@ -109,6 +109,7 @@ export default function Navbar() {
                       tabIndex={0}
                       role="button"
                       className="btn btn-ghost btn-circle avatar"
+                      onClick={toggleDropdown}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -199,6 +200,7 @@ export default function Navbar() {
                       tabIndex={0}
                       role="button"
                       className="btn btn-ghost btn-circle avatar"
+                      onClick={toggleDropdown}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
