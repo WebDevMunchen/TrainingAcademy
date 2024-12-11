@@ -127,7 +127,7 @@ export default function ClassListPreview({ activity }) {
           }}
           role="progressbar"
         >
-          <span className="text-neutral-800 font-bold">
+          <span className="text-neutral-800 font-bold tracking-widest">
             {activity.usedCapacity + "/" + activity.capacity}
           </span>
         </div>

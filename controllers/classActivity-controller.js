@@ -81,7 +81,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
 
   const existingActivity = await ClassActivity.findById(id).populate({
     path: "registeredUsers",
-    match: { "classesRegistered.status": { $in: ["ausstehend", "genehmigt"] } },
+    match: { "classesRegistered.status": { $in: ["ausstehend", "genehmigt", "abgelehnt"] } },
     select: "firstName lastName department classesRegistered",
   });
 
@@ -174,11 +174,17 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
       .filter((user) =>
         user.classesRegistered.some(
           (registration) =>
-            registration.registeredClassID.equals(id) &&
-            ["genehmigt"].includes(registration.status)
+            registration.registeredClassID.equals(id) 
         )
       )
-      .map((user) => `${user.firstName} ${user.lastName} (${user.department})`);
+      .map((user) => {
+        const registration = user.classesRegistered.find(
+          (registration) => registration.registeredClassID.equals(id)
+        );
+        const status = registration ? registration.status : "N/A";
+        return `${user.firstName} ${user.lastName} (${user.department}) | Genehmigungsstatus: ${status}`;
+      });
+      
 
     if (fieldsChanged) {
       const transporter = nodemailer.createTransport({
@@ -316,11 +322,11 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
             </tr>
           </tbody>
         </table>
-        <p>Die Anfrage dieser Benutzer wurde bereits genehmigt:</p>
+        <p>Folgende Mitarbeiter haben sich für diese Schulung angemeldet:</p>
         <ul>
           ${userNames.map((userName) => `<li>${userName}</li>`).join("")}
         </ul>
-        <p>Bitte informiert die Mitarbeiter eurer Abteilung und passt ihre Anfrage an, falls sie betroffen sind.</p>
+        <p>Bitte informiert die Mitarbeiter eurer Abteilung und passt deren Anfrage ggf. an.</p>
         <p>Bei Fragen gerne melden.</p>
         <p>Euer Training Abteilung</p>
 
