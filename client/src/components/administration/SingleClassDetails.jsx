@@ -1,13 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import RegisterdUserCard from "./RegisteredUserCard";
 import { AuthContext } from "../../context/AuthProvider";
 
 export default function SingleClassDetails() {
-  const { user } = useContext(AuthContext);
+  const { user, allUsers, setAllUsers } = useContext(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();
+  const modalRef = useRef(null);
 
   const [activity, setActivity] = useState(null);
   const [isWithin48Hours, setIsWithin48Hours] = useState(false);
@@ -22,9 +23,7 @@ export default function SingleClassDetails() {
       .then((response) => {
         setActivity(response.data);
       })
-      .catch((error) => {
-        console.error("Error fetching activity!");
-      });
+      .catch((error) => {});
   }, [id]);
 
   useEffect(() => {
@@ -71,6 +70,58 @@ export default function SingleClassDetails() {
       : activity?.registeredUsers?.filter((registeredUser) =>
           user.additionalDepartments.includes(registeredUser.department)
         );
+
+  const enlist = () => {
+    const selectedUserId = document.querySelector("select").value;
+
+    axiosClient
+      .put(`/classActivity/enlist/${id}`, { userId: selectedUserId })
+      .then((response) => {
+        return axiosClient.get("/user/getAllUsers");
+      })
+      .then((response) => {
+        setAllUsers(response.data);
+      })
+      .catch((error) => {});
+  };
+
+  const currentDate = new Date();
+  const isoDateString =
+    currentDate.getFullYear() +
+    "-" +
+    ("0" + (currentDate.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + currentDate.getDate()).slice(-2) +
+    "T" +
+    ("0" + currentDate.getHours()).slice(-2) +
+    ":" +
+    ("0" + currentDate.getMinutes()).slice(-2) +
+    ":" +
+    ("0" + currentDate.getSeconds()).slice(-2);
+
+  let formattedDateEnroll = null;
+
+  const timeFromJson = activity?.time;
+  const dateString = activity?.date;
+
+  if (timeFromJson && dateString) {
+    const [hoursStr, minutesStr] = timeFromJson.split(":");
+    const hoursToAdd = parseInt(hoursStr, 10);
+    const minutesToAdd = parseInt(minutesStr, 10);
+
+    const dateFromJson = new Date(dateString);
+    dateFromJson.setHours(dateFromJson.getHours() + hoursToAdd);
+    dateFromJson.setMinutes(dateFromJson.getMinutes() + minutesToAdd);
+
+    formattedDateEnroll = dateFromJson.toISOString();
+  }
+
+  const date1 = new Date(isoDateString);
+  const date2 = new Date(formattedDateEnroll);
+
+  const differenceMs = date1.getTime() - date2.getTime();
+
+  const differenceHours = differenceMs / (1000 * 60 * 60 + 2);
 
   return (
     <>
@@ -121,24 +172,67 @@ export default function SingleClassDetails() {
                         </NavLink>
                       </div>
                     ) : (
-                      <div className="flex text-right mt-1">
+                      <div className="flex gap-2 text-right mt-1">
                         <button
                           onClick={() => navigate("/classes")}
                           className="ml-2 flex items-center text-white  h-[40px]  px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                         >
-                          Überischt
+                          Übersicht
                         </button>
-                        <NavLink
-                          to={`/admin/editClass/${activity._id}`}
-                          className="invisible flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                        <button
+                          onClick={() => modalRef.current.showModal()}
+                          className={
+                            differenceHours < 23 && differenceHours > -1
+                              ? "flex items-center text-white h-[40px] px-4 uppercase rounded bg-violet-400 hover:bg-violet-400 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                              : "invisible"
+                          }
                         >
-                          Bearbeiten
-                        </NavLink>
+                          Nachtragen
+                        </button>
+
+                        <dialog
+                          ref={modalRef}
+                          id="my_modal_1"
+                          className="modal"
+                        >
+                          <div className="modal-box">
+                            <div className="modal-action">
+                              <form method="dialog" className="w-full">
+                                <div className="flex flex-col gap-2">
+                                  <select className="select select-bordered w-full">
+                                    <option disabled selected>
+                                      Wähle den Namen aus:
+                                    </option>
+                                    {allUsers
+                                      ?.filter(
+                                        (user) => user.role !== "teacher"
+                                      )
+                                      .map((user) => (
+                                        <option key={user._id} value={user._id}>
+                                          {user.firstName} {user.lastName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                  <div className="flex gap-2 mt-2 justify-end">
+                                    <button
+                                      className="btn w-fit bg-green-600 text-white hover:bg-green-700"
+                                      onClick={enlist}
+                                    >
+                                      Bestätigen
+                                    </button>
+
+                                    <button className="btn w-fit bg-red-500 text-white hover:bg-red-600">
+                                      Abbrechen
+                                    </button>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </dialog>
                       </div>
                     )}
-                    <h3 className="flex ml-10 justify-center text-lg font-semibold text-black">
-                      {activity.title}
-                    </h3>
+
                     <div className="flex flex-col">
                       <div>
                         <p className="font-semibold">
@@ -232,7 +326,10 @@ export default function SingleClassDetails() {
                       )}
                     </p>
                   </div>
-                  <h3 className="flex justify-center mt-2 text-lg font-semibold text-black lg:hidden">
+                  <h3 className="flex justify-center mt-3 text-lg font-semibold text-black lg:hidden">
+                    {activity.title}
+                  </h3>
+                  <h3 className="hidden lg:flex mt-6 mb-4 justify-center text-lg font-semibold text-black">
                     {activity.title}
                   </h3>
                   <div className="flex justify-center mt-2 mb-1">
@@ -422,7 +519,7 @@ export default function SingleClassDetails() {
                       </p>
                     </div>
                     <div className="flex flex-col">
-                    <p className="mt-4 text-base text-gray-600 ">
+                      <p className="mt-4 text-base text-gray-600 ">
                         <span className="font-bold">Location:</span>{" "}
                         {activity.location}
                       </p>
@@ -434,7 +531,6 @@ export default function SingleClassDetails() {
                         <span className="font-bold">Kapazität:</span>{" "}
                         {activity.capacity + " Teilnehmer"}
                       </p>
-
                     </div>
                   </div>
                   {/* Mobile */}
@@ -469,7 +565,7 @@ export default function SingleClassDetails() {
                       </p>
                     </div>
                     <div className="flex flex-col">
-                    <p className="mt-4 text-base text-gray-600 ">
+                      <p className="mt-4 text-base text-gray-600 ">
                         <span className="font-bold">Location:</span>
                         <br />
                         {activity.location}
@@ -483,7 +579,6 @@ export default function SingleClassDetails() {
                         <span className="font-bold">Kapazität:</span>
                         <br />
                       </p>
-
                     </div>
                   </div>
                 </div>

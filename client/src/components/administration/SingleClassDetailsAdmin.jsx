@@ -1,14 +1,18 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import RegisteredUserCardAdmin from "./RegisteredUserCardAdmin";
+import "react-toastify/dist/ReactToastify.css";
+import { Bounce, toast } from "react-toastify";
 
 export default function SingleClassDetailsAdmin() {
-  const { user } = useContext(AuthContext);
+  const { user, allUsers, setAllUsers } = useContext(AuthContext);
 
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const modalRef = useRef(null);
 
   const [activity, setActivity] = useState(null);
 
@@ -58,6 +62,51 @@ export default function SingleClassDetailsAdmin() {
   const now = new Date();
   const hoursDifference = (date - now) / 3600000;
 
+  const enlist = () => {
+    const selectedUserId = document.querySelector("select").value;
+
+    axiosClient
+      .put(`/classActivity/enlist/${id}`, { userId: selectedUserId })
+      .then((response) => {
+        return axiosClient.get("/user/getAllUsers");
+      })
+      .then((response) => {
+        setAllUsers(response.data);
+        notifySuccess()
+      })
+      .catch((error) => {
+        notifyError()
+      });
+  };
+  
+  const notifySuccess = () =>
+    toast.success(`Mitarbeiter hinzugefügt!`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
+    });
+
+  const notifyError = () =>
+    toast.error(`Der Mitarbeiter wurde schon registriert!`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
+    });
+
   return (
     <>
       {!activity ? (
@@ -105,12 +154,22 @@ export default function SingleClassDetailsAdmin() {
                         </NavLink>
                       </div>
                     ) : (
-                      <div className="flex text-right mt-1">
+                      <div className="flex gap-1 text-right mt-1">
                         <button
                           onClick={() => navigate("/classes")}
-                          className="ml-2 flex items-center text-white  h-[40px]  px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                          className="ml-2 flex items-center text-white h-[40px]  px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                         >
-                          Überischt
+                          Übersicht
+                        </button>
+                        <button
+                          onClick={() => modalRef.current.showModal()}
+                          className={
+                            hoursDifference < 0 && hoursDifference > -24
+                              ? "flex items-center text-white h-[40px] px-4 uppercase rounded bg-violet-400 hover:bg-violet-400 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                              : "hidden"
+                          }
+                        >
+                          Nachtragen
                         </button>
                         <NavLink
                           to={`/admin/editClass/${activity._id}`}
@@ -118,11 +177,50 @@ export default function SingleClassDetailsAdmin() {
                         >
                           Bearbeiten
                         </NavLink>
+
+                        <dialog
+                          ref={modalRef}
+                          id="my_modal_1"
+                          className="modal"
+                        >
+                          <div className="modal-box">
+                            <div className="modal-action">
+                              <form method="dialog" className="w-full">
+                                <div className="flex flex-col gap-2">
+                                  <select className="select select-bordered w-full">
+                                    <option disabled selected>
+                                      Wähle den Namen aus:
+                                    </option>
+                                    {allUsers
+                                      ?.filter(
+                                        (user) => user.role !== "teacher"
+                                      )
+                                      .map((user) => (
+                                        <option key={user._id} value={user._id}>
+                                          {user.firstName} {user.lastName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                  <div className="flex gap-2 mt-2 justify-end">
+                                    <button
+                                      className="btn w-fit bg-green-600 text-white hover:bg-green-700"
+                                      onClick={enlist}
+                                    >
+                                      Bestätigen
+                                    </button>
+
+                                    <button className="btn w-fit bg-red-500 text-white hover:bg-red-600">
+                                      Abbrechen
+                                    </button>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </dialog>
                       </div>
                     )}
-                    <h3 className="flex ml-10 justify-center text-lg font-semibold text-black">
-                      {activity.title}
-                    </h3>
+
                     <div className="flex flex-col">
                       <div>
                         <p className="font-semibold">
@@ -210,7 +308,10 @@ export default function SingleClassDetailsAdmin() {
                       )}
                     </p>
                   </div>
-                  <h3 className="flex justify-center mt-2 text-lg font-semibold text-black lg:hidden">
+                  <h3 className="hidden lg:flex mt-6 mb-4 justify-center text-lg font-semibold text-black">
+                    {activity.title}
+                  </h3>
+                  <h3 className="flex justify-center mt-3 text-lg font-semibold text-black lg:hidden">
                     {activity.title}
                   </h3>
                   <div className="flex justify-center mt-2 mb-1">
@@ -411,7 +512,6 @@ export default function SingleClassDetailsAdmin() {
                       <p className="hidden lg:inline mt-4 text-base text-gray-600">
                         <span className="font-bold mr-1">Kapazität:</span>
                         {activity.capacity + " Teilnehmer"}
-
                       </p>
                     </div>
                   </div>

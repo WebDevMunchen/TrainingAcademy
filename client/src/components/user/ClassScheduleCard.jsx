@@ -88,9 +88,7 @@ export default function ClassScheduleCard({ activity }) {
             <p className="hidden lg:inline invisible w-72">
               Placeholder Longer
             </p>
-            <h3 className="hidden text-center lg:flex justify-center text-xl font-semibold text-black">
-              {activity.title}
-            </h3>
+
             <h3 className="flex justify-center mx-auto text-center mb-2 text-xl font-semibold text-black lg:hidden">
               {activity.title}
             </h3>
@@ -115,7 +113,11 @@ export default function ClassScheduleCard({ activity }) {
               </p>
             </div>
           </div>
-
+          <div className="flex justify-center mt-6 mb-4">
+            <h3 className="hidden text-center lg:flex justify-center text-xl font-semibold text-black">
+              {activity.title}
+            </h3>
+          </div>
           <div className="flex justify-center mt-2 mb-1">
             <p>Zielgruppe</p>
           </div>
@@ -296,7 +298,6 @@ export default function ClassScheduleCard({ activity }) {
               </p>
             </div>
             <div className="flex flex-col">
-
               <p className="mt-4 text-base text-gray-600">
                 <span className="font-bold">Location:</span> {activity.location}
               </p>
@@ -340,7 +341,6 @@ export default function ClassScheduleCard({ activity }) {
               </p>
             </div>
             <div className="flex flex-col">
-
               <p className="mt-4 text-base text-gray-600">
                 <span className="font-bold">Location:</span>
                 <br /> {activity.location}
