@@ -145,7 +145,6 @@ export default function Register() {
                         {...register("department", { required: true })}
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         value={watch("deparment")}
-                      
                       >
                         <option value="Vertrieb">Vertrieb</option>
                         <option value="Logistik">Logistik</option>
@@ -288,22 +287,23 @@ export default function Register() {
                     </div>
                   )}
 
-                  <div className="flex justify-center gap-4">
+                  <div className="flex justify-center">
                     <button
                       type="submit"
                       className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/3 rounded cursor-pointer shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                     >
                       Bestätigen
                     </button>
-
-                    <button
-                      onClick={() => navigate(-1)}
-                      className="bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/3 rounded cursor-pointer "
-                    >
-                      Abbrechen
-                    </button>
                   </div>
                 </form>
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => navigate(-1)}
+                    className="mt-[-15px] bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/3 rounded cursor-pointer "
+                  >
+                    Abbrechen
+                  </button>
+                </div>
               </div>
             </div>
           </div>

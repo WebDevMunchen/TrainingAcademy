@@ -386,7 +386,7 @@ export default function SingleClassDetailsAdmin() {
                   </div>
                   <dialog id="legend" className="modal">
                     <div className="modal-box w-full max-w-5xl">
-                      <h2 className="text-center font-poppins font-semibold text-4xl">
+                      <h2 className="text-center font-poppins font-semibold text-3xl">
                         Legende
                       </h2>
                       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-3">
@@ -396,7 +396,7 @@ export default function SingleClassDetailsAdmin() {
                             src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/hczkglpvaybhguywjgku.png"
                             alt="alle"
                           />
-                          <p className="font-poppins font-medium text-center text-lg">
+                          <p className="font-poppins font-medium text-center text-md">
                             Alle
                           </p>
                         </div>
@@ -406,7 +406,7 @@ export default function SingleClassDetailsAdmin() {
                             alt="Vertrieb"
                             className="w-20 mx-auto"
                           />
-                          <p className="font-poppins font-medium text-center text-lg">
+                          <p className="font-poppins font-medium text-center text-md">
                             Vertrieb
                           </p>
                         </div>
@@ -416,7 +416,7 @@ export default function SingleClassDetailsAdmin() {
                             alt="Logistik"
                             className="w-20 mx-auto"
                           />
-                          <p className="font-poppins font-medium text-center text-lg">
+                          <p className="font-poppins font-medium text-center text-md">
                             Logistik
                           </p>
                         </div>
@@ -426,7 +426,7 @@ export default function SingleClassDetailsAdmin() {
                             alt="Fuhrpark"
                             className="w-20 mx-auto"
                           />
-                          <p className="font-poppins font-medium text-center text-lg">
+                          <p className="font-poppins font-medium text-center text-md">
                             Fuhrpark
                           </p>
                         </div>
@@ -436,7 +436,7 @@ export default function SingleClassDetailsAdmin() {
                             alt="IT & Services"
                             className="w-20 mx-auto"
                           />
-                          <p className="font-poppins font-medium text-center text-lg">
+                          <p className="font-poppins font-medium text-center text-md">
                             IT & Services
                           </p>
                         </div>
@@ -446,7 +446,7 @@ export default function SingleClassDetailsAdmin() {
                             alt="HR & Training"
                             className="w-20 mx-auto"
                           />
-                          <p className="font-poppins font-medium text-center text-lg">
+                          <p className="font-poppins font-medium text-center text-md">
                             HR & Training
                           </p>
                         </div>
@@ -456,7 +456,7 @@ export default function SingleClassDetailsAdmin() {
                             alt="Buchhaltung"
                             className="w-20 mx-auto"
                           />
-                          <p className="font-poppins font-medium text-center text-lg">
+                          <p className="font-poppins font-medium text-center text-md">
                             Buchhaltung
                           </p>
                         </div>
@@ -466,7 +466,7 @@ export default function SingleClassDetailsAdmin() {
                             alt="item8"
                             className="w-20 mx-auto"
                           />
-                          <p className="font-poppins font-medium text-center text-lg">
+                          <p className="font-poppins font-medium text-center text-md">
                             Einkauf & Anmietung
                           </p>
                         </div>
@@ -476,7 +476,7 @@ export default function SingleClassDetailsAdmin() {
                             alt="Design & Planung"
                             className="w-20 mx-auto"
                           />
-                          <p className="font-poppins font-medium text-center text-lg">
+                          <p className="font-poppins font-medium text-center text-md">
                             Design & Planung
                           </p>
                         </div>
@@ -486,7 +486,7 @@ export default function SingleClassDetailsAdmin() {
                             alt="Projektmanagement"
                             className="w-20 mx-auto"
                           />
-                          <p className="font-poppins font-medium text-center text-lg">
+                          <p className="font-poppins font-medium text-center text-md">
                             Projektmanagement
                           </p>
                         </div>
@@ -496,7 +496,7 @@ export default function SingleClassDetailsAdmin() {
                             alt="Officemanagement"
                             className="w-20 mx-auto"
                           />
-                          <p className="font-poppins font-medium text-center text-lg">
+                          <p className="font-poppins font-medium text-center text-md">
                             Officemanagement
                           </p>
                         </div>
@@ -506,7 +506,7 @@ export default function SingleClassDetailsAdmin() {
                             alt="Gesundheitsmanagement"
                             className="w-20 mx-auto"
                           />
-                          <p className="font-poppins font-medium text-center text-lg">
+                          <p className="font-poppins font-medium text-center text-md">
                             Gesundheitsmanagement
                           </p>
                         </div>
