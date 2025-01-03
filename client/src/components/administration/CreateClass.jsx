@@ -79,7 +79,7 @@ export default function CreateClass() {
     <>
       <div className="bg-gray-50/50 flex">
         <SideMenu />
-        <div className="flex mt-4 flex-col items-center w-11/12 lg:py-7 mx-auto lg:mt-0 lg:w-[45%]">
+        <div className="flex mt-4 flex-col items-center w-11/12 lg:py-4 mx-auto lg:mt-0 lg:w-[55%]">
           <div className="bg-white rounded-md shadow lg:6/12">
             <div className="p-6 space-y-4 md:space-y-2 sm:p-5">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -300,7 +300,7 @@ export default function CreateClass() {
                 >
                   Zielgruppe:
                 </label>
-                <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-4 lg:grid-rows-3">
+                <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
                   <div className="flex items-center mb-1">
                     <input
                       type="checkbox"

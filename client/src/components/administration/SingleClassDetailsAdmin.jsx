@@ -7,7 +7,15 @@ import "react-toastify/dist/ReactToastify.css";
 import { Bounce, toast } from "react-toastify";
 
 export default function SingleClassDetailsAdmin() {
-  const { user, allUsers, setAllUsers } = useContext(AuthContext);
+  const {
+    user,
+    allUsers,
+    setAllUsers,
+    allActivities,
+    setAllActivities,
+    currentMonth,
+    currentYear,
+  } = useContext(AuthContext);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -72,13 +80,24 @@ export default function SingleClassDetailsAdmin() {
       })
       .then((response) => {
         setAllUsers(response.data);
-        notifySuccess()
+        return axiosClient.get(`/classActivity/${id}`);
+      })
+      .then((response) => {
+        setActivity(response.data);
+        return axiosClient
+          .get(
+            `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
+          )
+          .then((response) => {
+            setAllActivities(response.data);
+            notifySuccess();
+          });
       })
       .catch((error) => {
-        notifyError()
+        notifyError();
       });
   };
-  
+
   const notifySuccess = () =>
     toast.success(`Mitarbeiter hinzugefügt!`, {
       position: "top-right",
@@ -193,7 +212,9 @@ export default function SingleClassDetailsAdmin() {
                                     </option>
                                     {allUsers
                                       ?.filter(
-                                        (user) => user.role !== "teacher"
+                                        (user) =>
+                                          user.role !== "teacher" &&
+                                          user.status !== "inaktiv"
                                       )
                                       .map((user) => (
                                         <option key={user._id} value={user._id}>
@@ -275,24 +296,50 @@ export default function SingleClassDetailsAdmin() {
                     </div>
                   </div>
                   <div className="flex justify-between lg:hidden">
-                    <button
-                      className="ml-3 transition-transform duration-300 transform hover:scale-150"
-                      onClick={() => window.location.reload()}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-6 h-6"
+                    <div className="flex">
+                      <button
+                        onClick={() => modalRef.current.showModal()}
+                        className={
+                          hoursDifference < 0 && hoursDifference > -24
+                            ? "flex"
+                            : "hidden"
+                        }
                       >
-                        <path
-                          fill="#3d94ff"
-                          fillRule="evenodd"
-                          d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.8}
+                          stroke="#15803d"
+                          className="w-7 h-7"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
+                          />
+                        </svg>
+                      </button>
+                      <button
+                        className="ml-3 transition-transform duration-300 transform hover:scale-150"
+                        onClick={() => window.location.reload()}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="w-7 h-7"
+                        >
+                          <path
+                            fill="#3d94ff"
+                            fillRule="evenodd"
+                            d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
                     <p className="font-semibold flex items-center">
                       {activity.capacity - activity.usedCapacity === 0 ? (
                         <span className="shrink-0 rounded-full bg-red-500 px-3 font-mono text-md font-medium tracking-tight text-white">

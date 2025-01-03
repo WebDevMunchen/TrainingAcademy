@@ -183,8 +183,7 @@ export default function RegisteredUserCardAdmin({
           </h3>
 
           <div className="flex items-center gap-1 text-lg font-medium text-gray-500">
-          <span className="hidden lg:flex font-semibold text-gray-900 lg:text-lg">
-
+            <span className="hidden lg:flex font-semibold text-gray-900 lg:text-lg">
               Abteilung:
             </span>{" "}
             <span className="mt-0.5">{registeredUser.department}</span>
@@ -203,7 +202,7 @@ export default function RegisteredUserCardAdmin({
                         >
                           Teilnahmestatus:{" "}
                         </span>
-                        <img src={attended} width={150} alt="teilgenommen" />
+                        <img src={attended} className={`w-[130px] lg:w-[150px]`} alt="teilgenommen" />
                       </>
                     ) : element.statusAttended === "nicht teilgenommen" ? (
                       <>
@@ -214,7 +213,7 @@ export default function RegisteredUserCardAdmin({
                         </span>
                         <img
                           src={notAttended}
-                          width={150}
+                          className={`w-[130px] lg:w-[150px]`}
                           alt="nichtTeilgenommen"
                         />
                       </>
@@ -235,7 +234,11 @@ export default function RegisteredUserCardAdmin({
                 return (
                   <React.Fragment key={element.registeredClassID}>
                     {element.status === "genehmigt" ? (
-                      <img src={approved} className="w-[130px] lg:w-[150px]" alt="genehmigt" />
+                      <img
+                        src={approved}
+                        className="w-[130px] lg:w-[150px]"
+                        alt="genehmigt"
+                      />
                     ) : element.status === "abgelehnt" ? (
                       <div className="flex items-center">
                         <span
@@ -256,10 +259,18 @@ export default function RegisteredUserCardAdmin({
                             />
                           </svg>
                         </span>
-                        <img src={declined} className="w-[130px] lg:w-[150px]"  alt="abgelehnt" />
+                        <img
+                          src={declined}
+                          className="w-[130px] lg:w-[150px]"
+                          alt="abgelehnt"
+                        />
                       </div>
                     ) : (
-                      <img src={pending} className="w-[130px] lg:w-[150px]"  alt="ausstehend" />
+                      <img
+                        src={pending}
+                        className="w-[130px] lg:w-[150px]"
+                        alt="ausstehend"
+                      />
                     )}
                   </React.Fragment>
                 );

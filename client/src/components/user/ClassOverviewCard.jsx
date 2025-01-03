@@ -96,6 +96,49 @@ export default function ClassesOverviewCard({ activity }) {
   const year = getDate.getFullYear();
   const displayFormattedDate = `${day}/${month}/${year}`;
 
+  const exportCalendar = () => {
+    axiosClient
+      .get(`/classActivity/export-calendar/${activity.registeredClassID._id}`, {
+        responseType: "blob", // Important for file downloads
+      })
+      .then((response) => {
+        // Create a blob from the response
+        const blob = new Blob([response.data], { type: "text/calendar" });
+
+        // Create a download link
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `${activity.registeredClassID.title}.ics`; // File name
+        link.click();
+
+        console.log("Calendar exported successfully.");
+      })
+      .catch((error) => {
+        console.error("Error exporting calendar:", error);
+      });
+  };
+
+  const sendReminder = () => {
+    axiosClient
+      .put(`/classActivity/sendReminder/${activity.registeredClassID._id}`)
+      .then(() => {
+        return axiosClient.get("/user/profile");
+      })
+      .then((responseProfile) => {
+        setUser(responseProfile.data);
+
+        return axiosClient.get(
+          `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
+        );
+      })
+      .then((responseActivities) => {
+        setAllActivities(responseActivities.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <div className="bg-white border m-2 p-2 relative group shadow-lg">
@@ -470,10 +513,29 @@ export default function ClassesOverviewCard({ activity }) {
             <>
               <div className="flex justify-center my-1">
                 <button
-                  className="bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                  className="w-44 bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                  onClick={exportCalendar}
+                >
+                  Kalender Export
+                </button>
+                <button
+                  className="w-44 bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                   onClick={() => modalRef.current.showModal()}
                 >
                   <p>Stornieren</p>
+                </button>
+
+                <button
+                  className={`w-44 ${
+                    activity.reminded
+                      ? "bg-gray-500 cursor-not-allowed"
+                      : "bg-gradient-to-b from-lime-500 to-lime-700"
+                  } 
+              font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded transition transform hover:-translate-y-0.5`}
+                  onClick={sendReminder}
+                  disabled={activity.reminded} // Disable the button if reminded is true
+                >
+                  <p>Nachfragen</p>
                 </button>
               </div>
 

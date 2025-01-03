@@ -3,9 +3,12 @@ import axiosClient from "../../utils/axiosClient";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import RegisterdUserCard from "./RegisteredUserCard";
 import { AuthContext } from "../../context/AuthProvider";
+import "react-toastify/dist/ReactToastify.css";
+import { Bounce, toast } from "react-toastify";
 
 export default function SingleClassDetails() {
-  const { user, allUsers, setAllUsers } = useContext(AuthContext);
+  const { user, allUsers, setAllUsers, allActivities, setAllActivities } =
+    useContext(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const modalRef = useRef(null);
@@ -81,9 +84,51 @@ export default function SingleClassDetails() {
       })
       .then((response) => {
         setAllUsers(response.data);
+        return axiosClient.get(`/classActivity/${id}`);
       })
-      .catch((error) => {});
+      .then((response) => {
+        setActivity(response.data);
+        return axiosClient
+          .get(
+            `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
+          )
+          .then((response) => {
+            setAllActivities(response.data);
+            notifySuccess();
+          });
+      })
+      .catch((error) => {
+        notifyError();
+      });
   };
+  
+  const notifySuccess = () =>
+    toast.success(`Mitarbeiter hinzugefügt!`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
+    });
+
+  const notifyError = () =>
+    toast.error(`Der Mitarbeiter wurde schon registriert!`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
+    });
 
   const currentDate = new Date();
   const isoDateString =
@@ -205,7 +250,9 @@ export default function SingleClassDetails() {
                                     </option>
                                     {allUsers
                                       ?.filter(
-                                        (user) => user.role !== "teacher"
+                                        (user) =>
+                                          user.role !== "teacher" &&
+                                          user.status !== "inaktiv"
                                       )
                                       .map((user) => (
                                         <option key={user._id} value={user._id}>
