@@ -180,7 +180,7 @@ export default function EditClass() {
       ) : (
         <div className="bg-gray-50/50 flex">
           <SideMenu />
-          <div className="flex mt-4 flex-col items-center w-11/12 lg:py-7 mx-auto lg:mt-0 lg:w-5/12">
+          <div className="flex mt-4 flex-col items-center w-11/12 lg:py-4 mx-auto lg:mt-0 lg:w-6/12">
             <dialog id="deleteClass" className="modal">
               <div className="modal-box max-w-3xl">
                 <div
@@ -242,7 +242,7 @@ export default function EditClass() {
               </div>
             </dialog>
             <div className="bg-white rounded-md shadow w-11/12 lg:6/12">
-              <div className="p-6 space-y-4 md:space-y-2 sm:p-6">
+              <div className="p-6 space-y-4 md:space-y-2 sm:p-5">
                 <div className="flex items-center justify-between">
                   <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                     "{activityInformation.title}" bearbeiten:

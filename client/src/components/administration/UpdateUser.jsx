@@ -40,6 +40,7 @@ export default function Register() {
         userInfomation.additionalDepartments || []
       );
       setValue("logID", userInfomation.logID);
+      setValue("department", userInfomation.department);
       setSelectedDepartment(userInfomation.role);
     }
   }, [userInfomation, setValue]);
@@ -143,6 +144,8 @@ export default function Register() {
                       <select
                         {...register("department", { required: true })}
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        value={watch("deparment")}
+                      
                       >
                         <option value="Vertrieb">Vertrieb</option>
                         <option value="Logistik">Logistik</option>

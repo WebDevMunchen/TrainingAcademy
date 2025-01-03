@@ -198,7 +198,7 @@ export default function UserInfoCard() {
                     <p className="font-bold text-gray-700 text-xl">
                       {countNotAttended()}
                     </p>
-                    <p className="text-gray-400">Nicht teilgenommen</p>
+                    <p className="text-gray-400">Nicht teilgenomm.</p>
                   </div>
                 </div>
 
@@ -222,8 +222,8 @@ export default function UserInfoCard() {
                   </button>
                 </div>
               </div>
-              <div className="mt-12 text-center border-b pb-4">
-                <h1 className="text-4xl font-medium text-gray-700">
+              <div className="mt-12 text-center pb-2">
+                <h1 className="text-3xl font-medium text-gray-700">
                   {userInfomation?.firstName + " " + userInfomation?.lastName}
                 </h1>
                 <p className="font-light text-gray-600 mt-3">
@@ -486,7 +486,7 @@ export default function UserInfoCard() {
                             <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
                               <div className="flex items-center justify-center">
                                 <span
-                                  className={`px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full 
+                                  className={`px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
       ${
         activity
           ? activity?.status === "genehmigt"
@@ -542,12 +542,12 @@ export default function UserInfoCard() {
                               {activity &&
                               (activity?.status === "abgelehnt" ||
                                 activity?.status === "ausstehend") ? (
-                                <span className="px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full text-gray-500 bg-gray-200 text-gray-800">
+                                <span className="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-500 bg-gray-200 text-gray-800">
                                   nicht angemeldet
                                 </span>
                               ) : (
                                 <span
-                                  className={`px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full 
+                                  className={`px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
         ${
           activity
             ? activity?.statusAttended === "teilgenommen"
