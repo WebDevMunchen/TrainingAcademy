@@ -149,7 +149,7 @@ export default function ClassesOverviewCard({ activity }) {
               <span className="invisible">Placeholder</span>
             ) : (
               <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
-                Tailnahmestatus{" "}
+                Teilnahmestatus{" "}
               </span>
             )}
             {activity.statusAttended === "in Prüfung" ? (
@@ -207,7 +207,7 @@ export default function ClassesOverviewCard({ activity }) {
               <span className="invisible">Placeholder</span>
             ) : (
               <span className="mr-2 mb-1 text-md font-semibold text-gray-900 hidden lg:inline">
-                Tailnahmestatus{" "}
+                Teilnahmestatus{" "}
               </span>
             )}
             {activity.statusAttended === "in Prüfung" ? (
@@ -512,12 +512,14 @@ export default function ClassesOverviewCard({ activity }) {
           {activity.status !== "abgelehnt" && canCancel && (
             <>
               <div className="flex justify-center my-1">
-                <button
-                  className="w-44 bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-                  onClick={exportCalendar}
-                >
-                  Kalender Export
-                </button>
+                {activity.status === "genehmigt" && (
+                  <button
+                    className="w-44 bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                    onClick={exportCalendar}
+                  >
+                    Kalender Export
+                  </button>
+                )}
                 <button
                   className="w-44 bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                   onClick={() => modalRef.current.showModal()}
