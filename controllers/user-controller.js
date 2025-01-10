@@ -7,6 +7,7 @@ const nodemailer = require("nodemailer");
 const ClassActivity = require("../models/classActivity-model.js");
 const Approver = require("../models/approver-model.js");
 const { format } = require("date-fns");
+const Message = require("../models/message-model.js");
 
 const createUser = asyncWrapper(async (req, res, next) => {
   const {
@@ -376,6 +377,24 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
 
     const approver = await User.findById(approverId);
 
+    const newMessage = new Message({
+      sender: approver.firstName + " " + approver.lastName,
+      sendersEmail: approver.firstName + "." + approver.lastName + "@rent.group",
+      messageTitle: `${activity.title}`,
+      messageContent: `Deine Anfrage zur Schulung "${activity.title}", die am ${formattedDate} um ${formattedTime} Uhr stattfindet, wurde ${newStatus}.`,
+      messageType: "Antwort zur Schulungsteilnahme",
+    });
+
+    await newMessage.save();
+
+    user.message.push({
+      messageID: newMessage._id,
+      status: "unread",
+    });
+
+    await user.save();
+
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       host: "smtp.gmail.com",
@@ -548,6 +567,7 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
 
     res.status(200).json({ message: "Class status updated successfully" });
   } catch (error) {
+    console.error("Error during class status update:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

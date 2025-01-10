@@ -18,7 +18,7 @@ import EditClass from "./components/administration/EditClass";
 import Report from "./components/administration/Report";
 import AuthorizeNonUser from "./components/AuthorizeNonUser";
 import { Bounce, ToastContainer } from "react-toastify";
-// import Datenschutz from "./components/user/Datenschutz";
+import FAQ from "./components/user/FAQ";
 import SingleClassDetailsAdmin from "./components/administration/SingleClassDetailsAdmin";
 import ApproverList from "./components/administration/ApproverList";
 import ApproverListSubstitute from "./components/administration/ApproverListSubstitute";
@@ -58,7 +58,7 @@ function App() {
           <Route path="/classes" element={<ClassesSchedule />} />
           <Route path="/classesOverview" element={<ClassesOverview />} />
 
-          {/* <Route path="/datenschutz" element={<Datenschutz />} /> */}
+          <Route path="/FAQ" element={<FAQ />} />
 
           <Route
             path="/"

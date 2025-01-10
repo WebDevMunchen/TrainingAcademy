@@ -336,7 +336,7 @@ export default function Messages() {
 
                 <div className="mt-6">
                   <p className="mb-3">
-                    Bei Fragen komm gerne auf uns zu oder schreib uns per E-Mail
+                    Bei Fragen melde dich gerne 
                   </p>
                   <p className="mb-1">Liebe Grüße</p>
                   <p className="italic">{selectedMessage?.messageID?.sender}</p>

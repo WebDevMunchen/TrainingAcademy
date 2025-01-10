@@ -12,7 +12,7 @@ export default function MessageForm() {
   const navigate = useNavigate();
 
   const sender = user.firstName + " " + user.lastName;
-  const sendersEmail = user.firstName + "." + user.lastName + "@partyrent.com";
+  const sendersEmail = user.firstName + "." + user.lastName + "@rent.group";
 
   const {
     register,

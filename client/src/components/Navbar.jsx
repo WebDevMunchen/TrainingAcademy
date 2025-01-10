@@ -61,9 +61,9 @@ export default function Navbar() {
                           Meine Schulungen
                         </NavLink>
                       </li>
-                      {/* <li>
-                        <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
-                      </li> */}
+                      <li>
+                        <NavLink to={"/faq"}>FAQ</NavLink>
+                      </li>
                       <li className="relative">
                         <NavLink to={"/messages"}>
                           <svg
@@ -158,9 +158,9 @@ export default function Navbar() {
                           </NavLink>
                         </li>
 
-                        {/* <li>
-          <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
-        </li> */}
+                        <li>
+          <NavLink to={"/faq"}>FAQ</NavLink>
+        </li>
                         <li>
                           <NavLink
                             to={"/"}
@@ -225,9 +225,9 @@ export default function Navbar() {
                             Schulungsübersicht
                           </NavLink>
                         </li>
-                        {/* <li>
-          <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
-        </li> */}
+                        <li>
+          <NavLink to={"/faq"}>FAQ</NavLink>
+        </li>
                         <li>
                           <NavLink
                             to={"/"}
@@ -259,7 +259,7 @@ export default function Navbar() {
                         <NavLink to={"/admin/dashboard"}>Dashboard</NavLink>
                       </li>
                       {/* <li>
-                        <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
+                        <NavLink to={"/faq"}>FAQ</NavLink>
                       </li> */}
                     </ul>
                   </div>
@@ -294,19 +294,11 @@ export default function Navbar() {
                         />
                       </svg>
                     </div>
-                    {isOpen && ( // Only show the dropdown menu when isOpen is true
+                    {isOpen && ( 
                       <ul
                         tabIndex={0}
                         className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-gray-800 rounded-box w-52"
                       >
-                        {/* <li>
-                          <NavLink
-                            to={"/admin/dashboard"}
-                            onClick={handleLinkClick}
-                          >
-                            Dashboard
-                          </NavLink>
-                        </li> */}
                         <li>
                           <NavLink to={"/classes"} onClick={handleLinkClick}>
                             Schulungsübersicht
@@ -328,14 +320,6 @@ export default function Navbar() {
                             Meine Schulungen
                           </NavLink>
                         </li>
-                        {/* <li>
-                          <NavLink
-                            to={"/admin/users"}
-                            onClick={handleLinkClick}
-                          >
-                            Benutzer Liste
-                          </NavLink>
-                        </li> */}
                         <li>
                           <NavLink
                             to={"/admin/register"}
@@ -345,7 +329,7 @@ export default function Navbar() {
                           </NavLink>
                         </li>
                         {/* <li>
-            <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
+            <NavLink to={"/faq"}>FAQ</NavLink>
           </li> */}
                         <li>
                           <NavLink
