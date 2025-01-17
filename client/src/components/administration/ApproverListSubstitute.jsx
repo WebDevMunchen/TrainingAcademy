@@ -61,7 +61,7 @@ export default function ApproverListSubstitute() {
           </div>
         ) : (
           <div className="flex flex-col items-center px-0 py-8 lg:py-12 lg:px-6 mx-auto w-10/12">
-            <div className="bg-white rounded-md shadow w-full lg:w-6/12">
+            <div className="bg-white rounded-md shadow w-full lg:w-7/12">
               <div className="p-6 space-y-4 md:space-y-2.5 sm:p-8">
                 <div className="flex justify-around gap-16 mb-8">
                   <NavLink
@@ -114,11 +114,9 @@ export default function ApproverListSubstitute() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
-                  </div>
-                  <div className="flex flex-col lg:flex-row justify-around gap-2">
-                    <div>
+                    <div className="mt-2">
                       <label
-                        htmlFor="hr"
+                        htmlFor="hrSubstitute"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
                         HR & Training:
@@ -132,6 +130,9 @@ export default function ApproverListSubstitute() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
+                  </div>
+                  <div className="flex flex-col lg:flex-row justify-around gap-2">
+
 
                     <div>
                       <label
@@ -147,8 +148,6 @@ export default function ApproverListSubstitute() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
-                  </div>
-                  <div className="flex flex-col lg:flex-row justify-around gap-2">
                     <div>
                       <label
                         htmlFor="fuhrparkSubstitute"
@@ -181,17 +180,18 @@ export default function ApproverListSubstitute() {
                       />
                     </div>
                   </div>
+
                   <div className="flex flex-col lg:flex-row justify-around gap-2">
                     <div>
                       <label
-                        htmlFor="einkauf"
+                        htmlFor="showroom"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Einkauf:
+                        Showroom:
                       </label>
                       <input
-                        {...register("einkaufSubstitute", { required: true })}
-                        defaultValue={approver[0].einkaufSubstitute}
+                        {...register("showroomSubstitute", { required: true })}
+                        defaultValue={approver[0].showroomSubstitute}
                         placeholder="tbd"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
@@ -202,7 +202,7 @@ export default function ApproverListSubstitute() {
                         htmlFor="designSubstitute"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Design & Planung:
+                        Design & Marketing:
                       </label>
                       <input
                         {...register("designSubstitute", { required: true })}
@@ -211,37 +211,54 @@ export default function ApproverListSubstitute() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
-                  </div>
-                  <div className="flex flex-col lg:flex-row justify-around gap-2">
                     <div>
                       <label
-                        htmlFor="projektmanagementSubstitute"
+                        htmlFor="bestandsmanagementSubstitute"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Projektmanagement:
+                        Bestandsmanagement:
                       </label>
                       <input
-                        {...register("projektmanagementSubstitute", {
+                        {...register("bestandsmanagementSubstitute", {
                           required: true,
                         })}
-                        defaultValue={approver[0].projektmanagementSubstitute}
+                        defaultValue={approver[0].bestandsmanagementSubstitute}
                         placeholder="tbd"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
+                  </div>
+                  <div className="flex flex-col lg:flex-row justify-center gap-16">
+
 
                     <div>
                       <label
-                        htmlFor="officemanagementSubstitute"
+                        htmlFor="haustechnikSubstitute"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Officemanagement:
+                        Haustechnik:
                       </label>
                       <input
-                        {...register("officemanagementSubstitute", {
+                        {...register("haustechnikSubstitute", {
                           required: true,
                         })}
-                        defaultValue={approver[0].officemanagementSubstitute}
+                        defaultValue={approver[0].haustechnikSubstitute}
+                        placeholder="tbd"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="unternehmensentwicklungSubstitute"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Unternehmensentwicklung:
+                      </label>
+                      <input
+                        {...register("unternehmensentwicklungSubstitute", {
+                          required: true,
+                        })}
+                        defaultValue={approver[0].unternehmensentwicklungSubstitute}
                         placeholder="tbd"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />

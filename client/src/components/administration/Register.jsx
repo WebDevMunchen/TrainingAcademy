@@ -262,16 +262,16 @@ export default function Register() {
                       <option value="IT & Services">IT & Services</option>
                       <option value="HR & Training">HR & Training</option>
                       <option value="Buchhaltung">Buchhaltung</option>
-                      <option value="Einkauf & Anmietung">
-                        Einkauf & Anmietung
+                      <option value="Showroom">
+                      Showroom
                       </option>
-                      <option value="Design & Planung">Design & Planung</option>
-                      <option value="Projektmanagement">
-                        Projektmanagement
+                      <option value="Design & Marketing">Design & Marketing</option>
+                      <option value="Bestandsmanagement">
+                      Bestandsmanagement
                       </option>
-                      <option value="Officemanagement">Officemanagement</option>
-                      <option value="Gesundheitsmanagement">
-                        Gesundheitsmanagement
+                      <option value="Haustechnik">Haustechnik</option>
+                      <option value="Unternehmensentwicklung">
+                      Unternehmensentwicklung
                       </option>
                     </select>
                   </div>
@@ -372,50 +372,50 @@ export default function Register() {
                         <input
                           type="checkbox"
                           {...register("additionalDepartments", { required: true })}
-                          value="Einkauf"
+                          value="Showroom"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
-                        Einkauf & Anmietung
+                        Showroom
                       </label>
 
                       <label className="flex items-center">
                         <input
                           type="checkbox"
                           {...register("additionalDepartments", { required: true })}
-                          value="Design & Planung"
+                          value="Design & Marketing"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
-                        Design & Planung
+                        Design & Marketing
                       </label>
 
                       <label className="flex items-center">
                         <input
                           type="checkbox"
                           {...register("additionalDepartments", { required: true })}
-                          value="Projektmanagement"
+                          value="Bestandsmanagement"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
-                        Projektmanagement
+                        Bestandsmanagement
                       </label>
 
                       <label className="flex items-center">
                         <input
                           type="checkbox"
                           {...register("additionalDepartments", { required: true })}
-                          value="Officemanagement"
+                          value="Haustechnik"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
-                        Office Management
+                        Haustechnik
                       </label>
 
                       <label className="flex items-center">
                         <input
                           type="checkbox"
                           {...register("additionalDepartments", { required: true })}
-                          value="Gesundheitsmanagement"
+                          value="Unternehmensentwicklung"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
-                        Gesundheitsmanagement
+                        Unternehmensentwicklung
                       </label>
                     </div>
                   </div>

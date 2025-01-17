@@ -489,67 +489,67 @@ export default function EditClass() {
                   >
                     Zielgruppe:
                   </label>
-                  <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-4 lg:grid-rows-3">
+                  <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
                     {[
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/hczkglpvaybhguywjgku.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png",
                         label: "Alle",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ng4emaukxn9adrxpnvlu.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png",
                         label: "Vertrieb",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/o4qwfioe3dkqrkhmumd4.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png",
                         label: "Logistik",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/uaozccdgnwtcelxvqjug.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png",
                         label: "Fuhrpark",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ke8amlflgcdrvdfghzoz.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png",
                         label: "IT & Services",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/gmnv44k0nydrmfnbr67y.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png",
                         label: "HR & Training",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/ip7khvjx1dgxosk6lxnb.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png",
                         label: "Buchhaltung",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ydkcdshvmwdffe4tyf9f.png",
-                        label: "Einkauf & Anmietung",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png",
+                        label: "Showroom",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/wodezi58z28wwhcvhsev.png",
-                        label: "Design & Planung",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png",
+                        label: "Design & Marketing",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ikluglsekc6msbuvgn0z.png",
-                        label: "Projektmanagement",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png",
+                        label: "Bestandsmanagement",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/p0m4tdmsd5qdmysdzolk.png",
-                        label: "Officemanagement",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png",
+                        label: "Haustechnik",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/l85s2hjejj6kzkzung8o.png",
-                        label: "Gesundheitsmanagement",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png",
+                        label: "Unternehmensentwicklung",
                       },
                     ].map(({ value, label }) => (
                       <div key={value} className="flex items-center mb-1">

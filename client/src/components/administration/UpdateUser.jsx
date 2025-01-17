@@ -152,20 +152,20 @@ export default function Register() {
                         <option value="IT & Services">IT & Services</option>
                         <option value="HR & Training">HR & Training</option>
                         <option value="Buchhaltung">Buchhaltung</option>
-                        <option value="Einkauf & Anmietung">
-                          Einkauf & Anmietung
+                        <option value="Showroom">
+                        Showroom
                         </option>
-                        <option value="Design & Planung">
-                          Design & Planung
+                        <option value="Design & Marketing">
+                          Design & Marketing
                         </option>
-                        <option value="Projektmanagement">
-                          Projektmanagement
+                        <option value="Bestandsmanagement">
+                        Bestandsmanagement
                         </option>
-                        <option value="Officemanagement">
-                          Officemanagement
+                        <option value="Haustechnik">
+                        Haustechnik
                         </option>
-                        <option value="Gesundheitsmanagement">
-                          Gesundheitsmanagement
+                        <option value="Unternehmensentwicklung">
+                        Unternehmensentwicklung
                         </option>
                       </select>
                     </div>
@@ -264,11 +264,11 @@ export default function Register() {
                           "Fuhrpark",
                           "HR & Training",
                           "Buchhaltung",
-                          "Einkauf & Anmietung",
-                          "Design & Planung",
-                          "Projektmanagement",
-                          "Office Management",
-                          "Gesundheitsmanagement",
+                          "Showroom",
+                          "Design & Marketing",
+                          "Bestandsmanagement",
+                          "Haustechnik",
+                          "Unternehmensentwicklung",
                         ].map((dep) => (
                           <label className="flex items-center" key={dep}>
                             <input

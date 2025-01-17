@@ -51,7 +51,7 @@ export default function ClassListPreview({ activity }) {
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
-        <div className="flex justify-center">
+        <div className="flex gap-1 justify-center">
           {activity.department.map((image, index) => {
             return (
               <img key={index} src={image} alt="logo" className="w-12 h-12" />

@@ -62,7 +62,7 @@ export default function ApproverList() {
           </div>
         ) : (
           <div className="flex flex-col items-center px-0 py-8 lg:py-12 lg:px-6 mx-auto w-10/12">
-            <div className="bg-white rounded-md shadow w-full lg:w-6/12">
+            <div className="bg-white rounded-md shadow w-full lg:w-7/12">
               <div className="p-6 space-y-4 md:space-y-2.5 sm:p-8">
                 <div className="flex justify-around gap-16 mb-8">
                   <NavLink
@@ -115,9 +115,7 @@ export default function ApproverList() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
-                  </div>
-                  <div className="flex flex-col lg:flex-row justify-around gap-2">
-                    <div>
+                    <div className="mt-2">
                       <label
                         htmlFor="hr"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -131,6 +129,9 @@ export default function ApproverList() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
+                  </div>
+                  <div className="flex flex-col lg:flex-row justify-around gap-2">
+
 
                     <div>
                       <label
@@ -146,8 +147,6 @@ export default function ApproverList() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
-                  </div>
-                  <div className="flex flex-col lg:flex-row justify-around gap-2">
                     <div>
                       <label
                         htmlFor="fuhrpark"
@@ -162,7 +161,7 @@ export default function ApproverList() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
-
+                    
                     <div>
                       <label
                         htmlFor="buchhaltung"
@@ -178,17 +177,18 @@ export default function ApproverList() {
                       />
                     </div>
                   </div>
+ 
                   <div className="flex flex-col lg:flex-row justify-around gap-2">
                     <div>
                       <label
-                        htmlFor="einkauf"
+                        htmlFor="showroom"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Einkauf:
+                        Showroom:
                       </label>
                       <input
-                        {...register("einkauf", { required: true })}
-                        defaultValue={approver[0].einkauf}
+                        {...register("showroom", { required: true })}
+                        defaultValue={approver[0].showroom}
                         placeholder="tbd"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
@@ -199,7 +199,7 @@ export default function ApproverList() {
                         htmlFor="design"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Design & Planung:
+                        Design & Marketing:
                       </label>
                       <input
                         {...register("design", { required: true })}
@@ -208,38 +208,55 @@ export default function ApproverList() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
-                  </div>
-                  <div className="flex flex-col lg:flex-row justify-around gap-2">
                     <div>
                       <label
-                        htmlFor="projektmanagement"
+                        htmlFor="bestandsmanagement"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Projektmanagement:
+                        Bestandsmanagement:
                       </label>
                       <input
-                        {...register("projektmanagement", { required: true })}
-                        defaultValue={approver[0].projektmanagement}
+                        {...register("bestandsmanagement", { required: true })}
+                        defaultValue={approver[0].bestandsmanagement}
+                        placeholder="tbd"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col lg:flex-row justify-center gap-16">
+  
+
+                    <div>
+                      <label
+                        htmlFor="haustechnik"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Haustechnik:
+                      </label>
+                      <input
+                        {...register("haustechnik", { required: true })}
+                        defaultValue={approver[0].haustechnik}
+                        placeholder="tbd"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="unternehmensentwicklung"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Unternehmensentwicklung:
+                      </label>
+                      <input
+                        {...register("unternehmensentwicklung", { required: true })}
+                        defaultValue={approver[0].unternehmensentwicklung}
                         placeholder="tbd"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
 
-                    <div>
-                      <label
-                        htmlFor="officemanagement"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Officemanagement:
-                      </label>
-                      <input
-                        {...register("officemanagement", { required: true })}
-                        defaultValue={approver[0].officemanagement}
-                        placeholder="tbd"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      />
-                    </div>
                   </div>
+
 
                   <div className="flex justify-center gap-2">
                     <button

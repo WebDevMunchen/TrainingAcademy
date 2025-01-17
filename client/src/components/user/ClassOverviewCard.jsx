@@ -230,12 +230,14 @@ export default function ClassesOverviewCard({ activity }) {
             <div className="flex justify-center mt-2 mb-1">
               <p>Zielgruppe</p>
             </div>
-            <div className="mt-1 flex justify-center lg:mt-4">
+            <div className="flex justify-center gap-1 py-1">
+
               {activity.registeredClassID?.department.map((dept, index) => (
                 <img key={index} src={dept} className="w-12 h-12 " />
               ))}
             </div>
-            <div className="flex items-center justify-center">
+            <div className="flex justify-center gap-1">
+
               <button
                 onClick={showLegend}
                 className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125 mx-auto mt-1"
@@ -244,7 +246,7 @@ export default function ClassesOverviewCard({ activity }) {
               </button>
             </div>
             <dialog id="legend" className="modal">
-              <div className="modal-box w-full max-w-5xl">
+              <div className="modal-box w-full max-w-6xl">
                 <h2 className="text-center font-poppins font-semibold text-3xl">
                   Legende
                 </h2>
@@ -252,7 +254,7 @@ export default function ClassesOverviewCard({ activity }) {
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                     <img
                       className="w-20 mx-auto"
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/hczkglpvaybhguywjgku.png"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png"
                       alt="alle"
                     />
                     <p className="font-poppins font-medium text-center text-md">
@@ -261,7 +263,7 @@ export default function ClassesOverviewCard({ activity }) {
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                     <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ng4emaukxn9adrxpnvlu.png"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png"
                       alt="Vertrieb"
                       className="w-20 mx-auto"
                     />
@@ -271,7 +273,7 @@ export default function ClassesOverviewCard({ activity }) {
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                     <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/o4qwfioe3dkqrkhmumd4.png"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png"
                       alt="Logistik"
                       className="w-20 mx-auto"
                     />
@@ -281,7 +283,7 @@ export default function ClassesOverviewCard({ activity }) {
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                     <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/uaozccdgnwtcelxvqjug.png"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png"
                       alt="Fuhrpark"
                       className="w-20 mx-auto"
                     />
@@ -291,7 +293,7 @@ export default function ClassesOverviewCard({ activity }) {
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                     <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ke8amlflgcdrvdfghzoz.png"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png"
                       alt="IT & Services"
                       className="w-20 mx-auto"
                     />
@@ -301,7 +303,7 @@ export default function ClassesOverviewCard({ activity }) {
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                     <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/gmnv44k0nydrmfnbr67y.png"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png"
                       alt="HR & Training"
                       className="w-20 mx-auto"
                     />
@@ -311,7 +313,7 @@ export default function ClassesOverviewCard({ activity }) {
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                     <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/ip7khvjx1dgxosk6lxnb.png"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png"
                       alt="Buchhaltung"
                       className="w-20 mx-auto"
                     />
@@ -321,52 +323,52 @@ export default function ClassesOverviewCard({ activity }) {
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                     <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ydkcdshvmwdffe4tyf9f.png"
-                      alt="item8"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png"
+                      alt="showroom"
                       className="w-20 mx-auto"
                     />
                     <p className="font-poppins font-medium text-center text-md">
-                      Einkauf & Anmietung
+                      Showroom
                     </p>
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                     <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/wodezi58z28wwhcvhsev.png"
-                      alt="Design & Planung"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png"
+                      alt="Design & Marketing"
                       className="w-20 mx-auto"
                     />
                     <p className="font-poppins font-medium text-center text-md">
-                      Design & Planung
+                      Design & Marketing
                     </p>
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                     <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ikluglsekc6msbuvgn0z.png"
-                      alt="Projektmanagement"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png"
+                      alt="Bestandsmanagement"
                       className="w-20 mx-auto"
                     />
                     <p className="font-poppins font-medium text-center text-md">
-                      Projektmanagement
+                    Bestandsmanagement
                     </p>
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                     <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/p0m4tdmsd5qdmysdzolk.png"
-                      alt="Officemanagement"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png"
+                      alt="Haustechnik"
                       className="w-20 mx-auto"
                     />
                     <p className="font-poppins font-medium text-center text-md">
-                      Officemanagement
+                      Haustechnik
                     </p>
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                     <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/l85s2hjejj6kzkzung8o.png"
-                      alt="Gesundheitsmanagement"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png"
+                      alt="Unternehmensentwicklung"
                       className="w-20 mx-auto"
                     />
                     <p className="font-poppins font-medium text-center text-md">
-                      Gesundheitsmanagement
+                    Unternehmensentwicklung
                     </p>
                   </div>
                 </div>
