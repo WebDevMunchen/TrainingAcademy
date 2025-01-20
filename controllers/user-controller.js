@@ -184,17 +184,20 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     case "Buchhaltung":
       recipientEmail = approver.buchhaltung;
       break;
-    case "Einkauf":
-      recipientEmail = approver.einkauf;
+    case "Showroom":
+      recipientEmail = approver.showroom;
       break;
-    case "Design & Planung":
+    case "Design & Marketing":
       recipientEmail = approver.design;
       break;
-    case "Projektmanagement":
-      recipientEmail = approver.projektmanagement;
+    case "Bestandsmanagement":
+      recipientEmail = approver.bestandsmanagement;
       break;
-    case "Officemanagement":
-      recipientEmail = approver.officemanagement;
+    case "Haustechnik":
+      recipientEmail = approver.haustechnik;
+      break;
+    case "Unternehmensentwicklung":
+      recipientEmail = approver.unternehmensentwicklung;
       break;
     default:
       recipientEmail = process.env.DEFAULT_APPROVER_EMAIL;
@@ -221,17 +224,20 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     case "Buchhaltung":
       recipientEmailSubstitution = approver.buchhaltungSubstitute;
       break;
-    case "Einkauf":
-      recipientEmailSubstitution = approver.einkaufSubstitute;
+    case "Showroom":
+      recipientEmailSubstitution = approver.showroomSubstitute;
       break;
-    case "Design & Planung":
+    case "Design & Marketing":
       recipientEmailSubstitution = approver.designSubstitute;
       break;
-    case "Projektmanagement":
-      recipientEmailSubstitution = approver.projektmanagementSubstitute;
+    case "Bestandsmanagement":
+      recipientEmailSubstitution = approver.bestandsmanagementSubstitute;
       break;
-    case "Officemanagement":
-      recipientEmailSubstitution = approver.officemanagementSubstitute;
+    case "Haustechnik":
+      recipientEmailSubstitution = approver.haustechnikSubstitute;
+      break;
+    case "Unternehmensentwicklung":
+      recipientEmailSubstitution = approver.unternehmensentwicklungSubstitute;
       break;
     default:
       recipientEmailSubstitution = process.env.DEFAULT_APPROVER_EMAIL;
@@ -379,7 +385,8 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
 
     const newMessage = new Message({
       sender: approver.firstName + " " + approver.lastName,
-      sendersEmail: approver.firstName + "." + approver.lastName + "@rent.group",
+      sendersEmail:
+        approver.firstName + "." + approver.lastName + "@rent.group",
       messageTitle: `${activity.title}`,
       messageContent: `Deine Anfrage zur Schulung "${activity.title}", die am ${formattedDate} um ${formattedTime} Uhr stattfindet, wurde ${newStatus}.`,
       messageType: "Antwort zur Schulungsteilnahme",
@@ -393,7 +400,6 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
     });
 
     await user.save();
-
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -559,8 +565,7 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
     const sendMail = async (transporter, mailOptions) => {
       try {
         await transporter.sendMail(mailOptions);
-      } catch (error) {
-      }
+      } catch (error) {}
     };
 
     sendMail(transporter, mailOptions);
