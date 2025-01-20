@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Bounce, toast } from "react-toastify";
 
 export default function SingleClassDetails() {
-  const { user, allUsers, setAllUsers, allActivities, setAllActivities } =
+  const { user, allUsers, setAllUsers, setAllActivities, currentYear, currentMonth } =
     useContext(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();

@@ -219,7 +219,6 @@ export default function RegisteredUserCard({
       })
       .then((responseUsers) => {
         setAllUsers(responseUsers.data);
-        notifySuccess();
       })
       .catch((error) => {});
   };
@@ -253,7 +252,6 @@ export default function RegisteredUserCard({
       })
       .then((responseUsers) => {
         setAllUsers(responseUsers.data);
-        notifySuccess();
       })
       .catch((error) => {});
   };
@@ -264,6 +262,7 @@ export default function RegisteredUserCard({
       participated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
+      notifySuccessAttended()
     }
   };
 
@@ -273,6 +272,7 @@ export default function RegisteredUserCard({
       notParticipated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
+      notifySuccessAttended()
     }
   };
 
@@ -309,6 +309,20 @@ export default function RegisteredUserCard({
       transition: Bounce,
       className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
     });
+
+    const notifySuccessAttended = () =>
+      toast.success("Teilnahmestatus geändert!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
+      });
 
   const currentDate = new Date();
   const isoDateString =
