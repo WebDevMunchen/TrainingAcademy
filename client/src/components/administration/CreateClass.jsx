@@ -79,9 +79,9 @@ export default function CreateClass() {
     <>
       <div className="bg-gray-50/50 flex">
         <SideMenu />
-        <div className="flex mt-4 flex-col items-center w-11/12 lg:py-4 lg:mx-auto lg:mt-0 lg:w-[55%]">
+        <div className="flex mx-auto mt-4 flex-col items-center w-11/12 lg:py-4 lg:mx-auto lg:mt-0 lg:w-[55%]">
           <div className="bg-white rounded-md shadow lg:w-9/12">
-            <div className="p-6 space-y-4 md:space-y-2 sm:p-5">
+            <div className="p-2 space-y-4 md:space-y-2 sm:p-5">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Neue Schulung erstellen
               </h1>
@@ -119,21 +119,20 @@ export default function CreateClass() {
 
                 <div className="flex flex-col lg:flex-row gap-2 items-center">
                   <div className="flex items-center gap-2">
-                  <label
-                    htmlFor="safetyBriefing"
-                    className="py-1.5 block text-sm font-medium text-gray-900 dark:text-white mt-1"
-                  >
-                    Jährliche Sicherheitsunterweisung:
-                  </label>
-                  <input
-                    type="checkbox"
-                    {...register("safetyBriefing", { required: false })}
-                    id="safetyBriefing"
-                    className="checkbox mt-2"
-                    onClick={handleHideFileUpload}
-                  />
-
-</div>
+                    <label
+                      htmlFor="safetyBriefing"
+                      className="py-1.5 block text-sm font-medium text-gray-900 dark:text-white mt-1"
+                    >
+                      Jährliche Sicherheitsunterweisung:
+                    </label>
+                    <input
+                      type="checkbox"
+                      {...register("safetyBriefing", { required: false })}
+                      id="safetyBriefing"
+                      className="checkbox mt-2"
+                      onClick={handleHideFileUpload}
+                    />
+                  </div>
                   <div className={`${hideFileUpload} flex items-center gap-3`}>
                     <label
                       htmlFor="file"
@@ -409,7 +408,7 @@ export default function CreateClass() {
                     />
                     <label
                       htmlFor="departmentB"
-                      className="hidden lg:block ml-2 text-sm text-gray-900 dark:text-white"
+                      className=":block ml-2 text-sm text-gray-900 dark:text-white"
                     >
                       Showroom
                     </label>
@@ -431,7 +430,7 @@ export default function CreateClass() {
                       htmlFor="departmentB"
                       className="ml-2 text-sm text-gray-900 dark:text-white lg:hidden"
                     >
-                       Design und Mark.
+                      Design und Mark.
                     </label>
                   </div>
                   <div className="flex items-center ">

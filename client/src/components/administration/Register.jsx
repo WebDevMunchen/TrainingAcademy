@@ -214,13 +214,13 @@ export default function Register() {
                 <div className="flex flex-col lg:flex-row justify-between gap-2">
                   <div>
                     <div className="flex">
-                    <label
-                      htmlFor="department"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Abteilung
-                    </label>
-                    <div className="relative">
+                      <label
+                        htmlFor="department"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Abteilung
+                      </label>
+                      <div className="relative">
                         <div
                           className="tooltip ml-2 hover:cursor-pointer"
                           onClick={handleTooltipToggle}
@@ -262,16 +262,16 @@ export default function Register() {
                       <option value="IT & Services">IT & Services</option>
                       <option value="HR & Training">HR & Training</option>
                       <option value="Buchhaltung">Buchhaltung</option>
-                      <option value="Showroom">
-                      Showroom
+                      <option value="Showroom">Showroom</option>
+                      <option value="Design & Marketing">
+                        Design & Marketing
                       </option>
-                      <option value="Design & Marketing">Design & Marketing</option>
                       <option value="Bestandsmanagement">
-                      Bestandsmanagement
+                        Bestandsmanagement
                       </option>
                       <option value="Haustechnik">Haustechnik</option>
                       <option value="Unternehmensentwicklung">
-                      Unternehmensentwicklung
+                        Unternehmensentwicklung
                       </option>
                     </select>
                   </div>
@@ -305,113 +305,156 @@ export default function Register() {
                       >
                         Zuständige Abteilungen:
                       </label>
-
                     </div>
                     <div className="grid gap-x-4 grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
-                      <label className="flex items-center">
+                      <label className="text-sm flex items-center lg:text-md">
                         <input
                           type="checkbox"
-                          {...register("additionalDepartments", { required: true })}
+                          {...register("additionalDepartments", {
+                            required: true,
+                          })}
                           value="Logistik"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         Logistik
                       </label>
 
-                      <label className="flex items-center">
+                      <label className="text-sm flex items-center lg:text-md">
                         <input
                           type="checkbox"
-                          {...register("additionalDepartments", { required: true })}
+                          {...register("additionalDepartments", {
+                            required: true,
+                          })}
                           value="Vertrieb"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         Vertrieb
                       </label>
 
-                      <label className="flex items-center">
+                      <label className="text-sm flex items-center lg:text-md">
                         <input
                           type="checkbox"
-                          {...register("additionalDepartments", { required: true })}
+                          {...register("additionalDepartments", {
+                            required: true,
+                          })}
                           value="IT & Services"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         IT & Services
                       </label>
 
-                      <label className="flex items-center">
+                      <label className="text-sm flex items-center lg:text-md">
                         <input
                           type="checkbox"
-                          {...register("additionalDepartments", { required: true })}
+                          {...register("additionalDepartments", {
+                            required: true,
+                          })}
                           value="Fuhrpark"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         Fuhrpark
                       </label>
 
-                      <label className="flex items-center">
+                      <label className="text-sm flex items-center lg:text-md">
                         <input
                           type="checkbox"
-                          {...register("additionalDepartments", { required: true })}
+                          {...register("additionalDepartments", {
+                            required: true,
+                          })}
                           value="HR & Training"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         HR & Training
                       </label>
 
-                      <label className="flex items-center">
+                      <label className="text-sm flex items-center lg:text-md">
                         <input
                           type="checkbox"
-                          {...register("additionalDepartments", { required: true })}
+                          {...register("additionalDepartments", {
+                            required: true,
+                          })}
                           value="Buchhaltung"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         Buchhaltung
                       </label>
 
-                      <label className="flex items-center">
+                      <label className="text-sm flex items-center lg:text-md">
                         <input
                           type="checkbox"
-                          {...register("additionalDepartments", { required: true })}
+                          {...register("additionalDepartments", {
+                            required: true,
+                          })}
                           value="Showroom"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         Showroom
                       </label>
 
-                      <label className="flex items-center">
+                      <label className="hidden lg:inline text-sm flex items-center lg:text-md">
                         <input
                           type="checkbox"
-                          {...register("additionalDepartments", { required: true })}
+                          {...register("additionalDepartments", {
+                            required: true,
+                          })}
                           value="Design & Marketing"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         Design & Marketing
                       </label>
-
-                      <label className="flex items-center">
+                      <label className="text-sm flex items-center lg:hidden">
                         <input
                           type="checkbox"
-                          {...register("additionalDepartments", { required: true })}
+                          {...register("additionalDepartments", {
+                            required: true,
+                          })}
+                          value="Design & Marketing"
+                          className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                        />
+                        Design & Mark.
+                      </label>
+
+                      <label className="hidden lg:inline text-sm flex items-center lg:text-md">
+                        <input
+                          type="checkbox"
+                          {...register("additionalDepartments", {
+                            required: true,
+                          })}
                           value="Bestandsmanagement"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         Bestandsmanagement
                       </label>
-
-                      <label className="flex items-center">
+                      <label className="text-sm flex items-center lg:hidden">
                         <input
                           type="checkbox"
-                          {...register("additionalDepartments", { required: true })}
+                          {...register("additionalDepartments", {
+                            required: true,
+                          })}
+                          value="Bestandsmanagement"
+                          className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                        />
+                        Bestandsmanag.
+                      </label>
+
+                      <label className="text-sm flex items-center lg:text-md">
+                        <input
+                          type="checkbox"
+                          {...register("additionalDepartments", {
+                            required: true,
+                          })}
                           value="Haustechnik"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         Haustechnik
                       </label>
 
-                      <label className="flex items-center">
+                      <label className="text-sm flex items-center lg:text-md">
                         <input
                           type="checkbox"
-                          {...register("additionalDepartments", { required: true })}
+                          {...register("additionalDepartments", {
+                            required: true,
+                          })}
                           value="Unternehmensentwicklung"
                           className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />

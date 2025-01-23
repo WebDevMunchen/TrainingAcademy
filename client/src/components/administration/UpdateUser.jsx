@@ -152,20 +152,16 @@ export default function Register() {
                         <option value="IT & Services">IT & Services</option>
                         <option value="HR & Training">HR & Training</option>
                         <option value="Buchhaltung">Buchhaltung</option>
-                        <option value="Showroom">
-                        Showroom
-                        </option>
+                        <option value="Showroom">Showroom</option>
                         <option value="Design & Marketing">
                           Design & Marketing
                         </option>
                         <option value="Bestandsmanagement">
-                        Bestandsmanagement
+                          Bestandsmanagement
                         </option>
-                        <option value="Haustechnik">
-                        Haustechnik
-                        </option>
+                        <option value="Haustechnik">Haustechnik</option>
                         <option value="Unternehmensentwicklung">
-                        Unternehmensentwicklung
+                          Unternehmensentwicklung
                         </option>
                       </select>
                     </div>

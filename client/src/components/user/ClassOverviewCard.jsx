@@ -99,22 +99,17 @@ export default function ClassesOverviewCard({ activity }) {
   const exportCalendar = () => {
     axiosClient
       .get(`/classActivity/export-calendar/${activity.registeredClassID._id}`, {
-        responseType: "blob", // Important for file downloads
+        responseType: "blob",
       })
       .then((response) => {
-        // Create a blob from the response
         const blob = new Blob([response.data], { type: "text/calendar" });
 
-        // Create a download link
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = `${activity.registeredClassID.title}.ics`; // File name
+        link.download = `${activity.registeredClassID.title}.ics`;
         link.click();
-
-        console.log("Calendar exported successfully.");
       })
       .catch((error) => {
-        console.error("Error exporting calendar:", error);
       });
   };
 
@@ -135,7 +130,6 @@ export default function ClassesOverviewCard({ activity }) {
         setAllActivities(responseActivities.data);
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -231,13 +225,11 @@ export default function ClassesOverviewCard({ activity }) {
               <p>Zielgruppe</p>
             </div>
             <div className="flex justify-center gap-1 py-1">
-
               {activity.registeredClassID?.department.map((dept, index) => (
                 <img key={index} src={dept} className="w-12 h-12 " />
               ))}
             </div>
             <div className="flex justify-center gap-1">
-
               <button
                 onClick={showLegend}
                 className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125 mx-auto mt-1"
@@ -348,7 +340,7 @@ export default function ClassesOverviewCard({ activity }) {
                       className="w-20 mx-auto"
                     />
                     <p className="font-poppins font-medium text-center text-md">
-                    Bestandsmanagement
+                      Bestandsmanagement
                     </p>
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
@@ -368,7 +360,7 @@ export default function ClassesOverviewCard({ activity }) {
                       className="w-20 mx-auto"
                     />
                     <p className="font-poppins font-medium text-center text-md">
-                    Unternehmensentwicklung
+                      Unternehmensentwicklung
                     </p>
                   </div>
                 </div>
@@ -513,35 +505,46 @@ export default function ClassesOverviewCard({ activity }) {
 
           {activity.status !== "abgelehnt" && canCancel && (
             <>
-              <div className="flex justify-center my-1">
+              <div className="flex justify-center my-1 gap-2">
                 {activity.status === "genehmigt" && (
                   <button
-                    className="w-44 bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                    className="hidden lg:inline w-48 bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                     onClick={exportCalendar}
                   >
                     Kalender Export
                   </button>
                 )}
                 <button
-                  className="w-44 bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                  className="w-48 bg-gradient-to-b from-yellow-500 to-yellow-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                   onClick={() => modalRef.current.showModal()}
                 >
                   <p>Stornieren</p>
                 </button>
 
                 <button
-                  className={`w-44 ${
+                  className={`w-48 ${
                     activity.reminded
                       ? "bg-gray-500 cursor-not-allowed"
                       : "bg-gradient-to-b from-lime-500 to-lime-700"
                   } 
-              font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded transition transform hover:-translate-y-0.5`}
+              font-medium p-2 mt-2 md:p-2 text-white uppercase rounded transition transform hover:-translate-y-0.5`}
                   onClick={sendReminder}
-                  disabled={activity.reminded} // Disable the button if reminded is true
+                  disabled={activity.reminded} 
                 >
                   <p>Nachfragen</p>
                 </button>
               </div>
+
+              {activity.status === "genehmigt" && (
+                <div className="flex justify-center">
+                  <button
+                    className="w-48 bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 lg:hidden"
+                    onClick={exportCalendar}
+                  >
+                    Kalender Export
+                  </button>
+                </div>
+              )}
 
               <dialog ref={modalRef} id="my_modal_1" className="modal">
                 <div className="modal-box max-w-xl">

@@ -828,18 +828,15 @@ const enlist = asyncWrapper(async (req, res, next) => {
 const exportCalendar = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
-  // Fetch the class activity from the database
   const classActivity = await ClassActivity.findById(id);
 
   if (!classActivity) {
     return res.status(404).json({ message: "Class activity not found." });
   }
 
-  // Convert date and time into proper format
   const eventDate = new Date(classActivity.date);
   const [hours, minutes] = classActivity.time.split(":").map(Number);
 
-  // Create the calendar event
   const event = {
     start: [
       eventDate.getFullYear(),
@@ -863,7 +860,6 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
         .json({ message: "Error generating calendar event." });
     }
 
-    // Send the .ics file to the user
     res.setHeader("Content-Type", "text/calendar");
     res.setHeader(
       "Content-Disposition",
@@ -876,7 +872,6 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
 const sendReminder = asyncWrapper(async (req, res, next) => {
   const { id: classId } = req.params;
 
-  // Validate class ID
   if (!classId) {
     return res.status(400).json({ message: "Class ID is required." });
   }
@@ -892,14 +887,13 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
     },
   });
 
-  // Find users who have not been reminded for this specific class
   const users = await User.find({
-    "classesRegistered.registeredClassID": classId, // Make sure to find the registered class
+    "classesRegistered.registeredClassID": classId,
     "classesRegistered.reminded": false,
   })
     .populate("userContactInformation")
     .populate({
-      path: "classesRegistered.registeredClassID", // Populating class details
+      path: "classesRegistered.registeredClassID",
       select: "title date time",
     });
 
@@ -911,7 +905,6 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
 
   for (const user of users) {
     for (const registration of user.classesRegistered) {
-      // Check if registeredClassID exists and is populated correctly
       if (
         registration.registeredClassID &&
         registration.registeredClassID._id.toString() === classId &&
@@ -924,7 +917,6 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
           continue;
         }
 
-        // Determine the approver and substitute based on user's department
         const department = user.department.toLowerCase();
         const approverEmail = approver[department];
         const substituteEmail = approver[`${department}Substitute`];
@@ -936,17 +928,15 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
           continue;
         }
 
-        // Fetch class details
         const classDetails = registration.registeredClassID;
         const { title, date, time } = classDetails || {};
 
-        // Send the email to the approver and substitute
         const mailOptions = {
           from: {
             name: "Mitarbeiter wartet auf Genehmigung - Training Academy - No reply",
             address: process.env.USER,
           },
-          to: `${approverEmail}, ${substituteEmail}`, // Send to both
+          to: `${approverEmail}, ${substituteEmail}`, 
           subject: `Reminder for User: ${user.firstName} ${user.lastName}`,
           html: `Hallo zusammen,<br><br>
           ${user.firstName} ${
@@ -1002,7 +992,6 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
             `Reminder sent to ${approverEmail} and ${substituteEmail}.`
           );
 
-          // Update the reminded field to true for this class
           registration.reminded = true;
           await user.save();
         } catch (error) {
@@ -1021,27 +1010,23 @@ cron.schedule(
     console.log("Running Cron Job: Resetting 'reminded' status for all users");
 
     try {
-      // Find all users and reset the 'reminded' field for each of their classesRegistered
       const users = await User.find();
 
       for (const user of users) {
-        // Loop through each of the user's classesRegistered array and set reminded to false
         for (const registration of user.classesRegistered) {
-          registration.reminded = false; // Reset 'reminded' status
+          registration.reminded = false; 
         }
 
-        // Save the user with the updated 'reminded' field
         await user.save();
         console.log(`Updated reminded status for user: ${user._id}`);
       }
 
       console.log("Successfully reset 'reminded' status for all users.");
     } catch (error) {
-      console.error("Error resetting reminded status:", error);
     }
   },
   {
-    timezone: "Europe/Berlin", // Specify the timezone here
+    timezone: "Europe/Berlin", 
   }
 );
 

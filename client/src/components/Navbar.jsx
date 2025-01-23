@@ -14,12 +14,10 @@ export default function Navbar() {
   const unreadMessagesCount = user ? countUnreadMessages(user.message) : 0;
 
   const handleLinkClick = () => {
-    // Close the dropdown when any link is clicked
     setIsOpen(false);
   };
 
   const toggleDropdown = () => {
-    // Toggle the dropdown state (open/close)
     setIsOpen(!isOpen);
   };
 
@@ -159,8 +157,8 @@ export default function Navbar() {
                         </li>
 
                         <li>
-          <NavLink to={"/faq"}>FAQ</NavLink>
-        </li>
+                          <NavLink to={"/faq"}>FAQ</NavLink>
+                        </li>
                         <li>
                           <NavLink
                             to={"/"}
@@ -226,9 +224,6 @@ export default function Navbar() {
                           </NavLink>
                         </li>
                         <li>
-          <NavLink to={"/faq"}>FAQ</NavLink>
-        </li>
-                        <li>
                           <NavLink
                             to={"/"}
                             onClick={() => {
@@ -258,9 +253,6 @@ export default function Navbar() {
                       <li>
                         <NavLink to={"/admin/dashboard"}>Dashboard</NavLink>
                       </li>
-                      {/* <li>
-                        <NavLink to={"/faq"}>FAQ</NavLink>
-                      </li> */}
                     </ul>
                   </div>
                   <div className="px-2 xl:px-12 py-3 flex items-center">
@@ -279,7 +271,7 @@ export default function Navbar() {
                       tabIndex={0}
                       role="button"
                       className="btn btn-ghost btn-circle avatar"
-                      onClick={toggleDropdown} // Toggle dropdown on button click
+                      onClick={toggleDropdown}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -294,7 +286,7 @@ export default function Navbar() {
                         />
                       </svg>
                     </div>
-                    {isOpen && ( 
+                    {isOpen && (
                       <ul
                         tabIndex={0}
                         className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-gray-800 rounded-box w-52"

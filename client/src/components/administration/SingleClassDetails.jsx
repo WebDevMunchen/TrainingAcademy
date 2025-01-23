@@ -7,11 +7,18 @@ import "react-toastify/dist/ReactToastify.css";
 import { Bounce, toast } from "react-toastify";
 
 export default function SingleClassDetails() {
-  const { user, allUsers, setAllUsers, setAllActivities, currentYear, currentMonth } =
-    useContext(AuthContext);
+  const {
+    user,
+    allUsers,
+    setAllUsers,
+    setAllActivities,
+    currentYear,
+    currentMonth,
+  } = useContext(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const modalRef = useRef(null);
+  const modalRefMobile = useRef(null);
 
   const [activity, setActivity] = useState(null);
   const [isWithin48Hours, setIsWithin48Hours] = useState(false);
@@ -101,7 +108,35 @@ export default function SingleClassDetails() {
         notifyError();
       });
   };
-  
+
+  const enlistMobile = () => {
+    const selectedUserId = document.getElementById("mobileEnlist").value;
+
+    axiosClient
+      .put(`/classActivity/enlist/${id}`, { userId: selectedUserId })
+      .then((response) => {
+        return axiosClient.get("/user/getAllUsers");
+      })
+      .then((response) => {
+        setAllUsers(response.data);
+        return axiosClient.get(`/classActivity/${id}`);
+      })
+      .then((response) => {
+        setActivity(response.data);
+        return axiosClient
+          .get(
+            `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
+          )
+          .then((response) => {
+            setAllActivities(response.data);
+            notifySuccess();
+          });
+      })
+      .catch((error) => {
+        notifyError();
+      });
+  };
+
   const notifySuccess = () =>
     toast.success(`Mitarbeiter hinzugefügt!`, {
       position: "top-right",
@@ -220,63 +255,70 @@ export default function SingleClassDetails() {
                       <div className="flex gap-2 text-right mt-1">
                         <button
                           onClick={() => navigate("/classes")}
-                          className="ml-2 flex items-center text-white  h-[40px]  px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                          className="ml-2 flex items-center text-white h-[40px] px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                         >
                           Übersicht
                         </button>
-                        <button
-                          onClick={() => modalRef.current.showModal()}
-                          className={
-                            differenceHours < 23 && differenceHours > -1
-                              ? "flex items-center text-white h-[40px] px-4 uppercase rounded bg-violet-400 hover:bg-violet-400 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-                              : "invisible"
-                          }
-                        >
-                          Nachtragen
-                        </button>
+                        {user.role === "teacher" && (
+                          <>
+                            <button
+                              onClick={() => modalRef.current.showModal()}
+                              className={
+                                differenceHours < 23 && differenceHours > -1
+                                  ? "flex items-center text-white h-[40px] px-4 uppercase rounded bg-violet-400 hover:bg-violet-400 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                                  : "invisible"
+                              }
+                            >
+                              Nachtragen
+                            </button>
 
-                        <dialog
-                          ref={modalRef}
-                          id="my_modal_1"
-                          className="modal"
-                        >
-                          <div className="modal-box">
-                            <div className="modal-action">
-                              <form method="dialog" className="w-full">
-                                <div className="flex flex-col gap-2">
-                                  <select className="select select-bordered w-full">
-                                    <option disabled selected>
-                                      Wähle den Namen aus:
-                                    </option>
-                                    {allUsers
-                                      ?.filter(
-                                        (user) =>
-                                          user.role !== "teacher" &&
-                                          user.status !== "inaktiv"
-                                      )
-                                      .map((user) => (
-                                        <option key={user._id} value={user._id}>
-                                          {user.firstName} {user.lastName}
+                            <dialog
+                              ref={modalRef}
+                              id="my_modal_1"
+                              className="modal"
+                            >
+                              <div className="modal-box">
+                                <div className="modal-action">
+                                  <form method="dialog" className="w-full">
+                                    <div className="flex flex-col gap-2">
+                                      <select className="select select-bordered w-full">
+                                        <option disabled selected>
+                                          Wähle den Namen aus:
                                         </option>
-                                      ))}
-                                  </select>
-                                  <div className="flex gap-2 mt-2 justify-end">
-                                    <button
-                                      className="btn w-fit bg-green-600 text-white hover:bg-green-700"
-                                      onClick={enlist}
-                                    >
-                                      Bestätigen
-                                    </button>
+                                        {allUsers
+                                          ?.filter(
+                                            (user) =>
+                                              user.role !== "teacher" &&
+                                              user.status !== "inaktiv"
+                                          )
+                                          .map((user) => (
+                                            <option
+                                              key={user._id}
+                                              value={user._id}
+                                            >
+                                              {user.firstName} {user.lastName}
+                                            </option>
+                                          ))}
+                                      </select>
+                                      <div className="flex gap-2 mt-2 justify-end">
+                                        <button
+                                          className="btn w-fit bg-green-600 text-white hover:bg-green-700"
+                                          onClick={enlist}
+                                        >
+                                          Bestätigen
+                                        </button>
 
-                                    <button className="btn w-fit bg-red-500 text-white hover:bg-red-600">
-                                      Abbrechen
-                                    </button>
-                                  </div>
+                                        <button className="btn w-fit bg-red-500 text-white hover:bg-red-600">
+                                          Abbrechen
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </form>
                                 </div>
-                              </form>
-                            </div>
-                          </div>
-                        </dialog>
+                              </div>
+                            </dialog>
+                          </>
+                        )}
                       </div>
                     )}
 
@@ -340,24 +382,97 @@ export default function SingleClassDetails() {
                     </div>
                   </div>
                   <div className="flex justify-between lg:hidden">
-                    <button
-                      className="ml-3 transition-transform duration-300 transform hover:scale-150"
-                      onClick={() => window.location.reload()}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-6 h-6"
+                    <div className="flex">
+                      <button
+                        onClick={() => modalRefMobile.current.showModal()}
+                        className={
+                          differenceHours > -1 && differenceHours < 23
+                            ? "flex transition-transform duration-300 transform hover:scale-150"
+                            : "hidden"
+                        }
                       >
-                        <path
-                          fill="#3d94ff"
-                          fillRule="evenodd"
-                          d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.8}
+                          stroke="#15803d"
+                          className="w-7 h-7"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
+                          />
+                        </svg>
+                      </button>
+
+                      <dialog
+                        ref={modalRefMobile}
+                        id="my_modal_1"
+                        className="modal"
+                      >
+                        <div className="modal-box">
+                          <div className="modal-action">
+                            <form method="dialog" className="w-full">
+                              <div className="flex flex-col gap-2">
+                                <select
+                                  id="mobileEnlist"
+                                  className="select select-bordered w-full"
+                                >
+                                  <option disabled selected>
+                                    Wähle den Namen aus:
+                                  </option>
+                                  {allUsers
+                                    ?.filter(
+                                      (user) =>
+                                        user.role !== "teacher" &&
+                                        user.status !== "inaktiv"
+                                    )
+                                    .map((user) => (
+                                      <option key={user._id} value={user._id}>
+                                        {user.firstName} {user.lastName}
+                                      </option>
+                                    ))}
+                                </select>
+                                <div className="flex gap-2 mt-2 justify-end">
+                                  <button
+                                    className="btn w-fit bg-green-600 text-white hover:bg-green-700"
+                                    onClick={enlistMobile}
+                                  >
+                                    Bestätigen
+                                  </button>
+
+                                  <button className="btn w-fit bg-red-500 text-white hover:bg-red-600">
+                                    Abbrechen
+                                  </button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </dialog>
+
+                      <button
+                        className="ml-3 transition-transform duration-300 transform hover:scale-150"
+                        onClick={() => window.location.reload()}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="w-7 h-7"
+                        >
+                          <path
+                            fill="#3d94ff"
+                            fillRule="evenodd"
+                            d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
                     <p className="font-semibold flex items-center">
                       {activity.capacity - activity.usedCapacity === 0 ? (
                         <span className="shrink-0 rounded-full bg-red-500 px-3 font-mono text-md font-medium tracking-tight text-white">
@@ -395,7 +510,6 @@ export default function SingleClassDetails() {
                     })}
                   </div>
                   <div className="flex justify-center gap-1 py-1">
-
                     <button
                       onClick={showLegend}
                       className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125 mx-auto mt-1"
@@ -409,127 +523,127 @@ export default function SingleClassDetails() {
                         Legende
                       </h2>
                       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-3">
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      className="w-20 mx-auto"
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png"
-                      alt="alle"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Alle
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png"
-                      alt="Vertrieb"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Vertrieb
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png"
-                      alt="Logistik"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Logistik
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png"
-                      alt="Fuhrpark"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Fuhrpark
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png"
-                      alt="IT & Services"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      IT & Services
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png"
-                      alt="HR & Training"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      HR & Training
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png"
-                      alt="Buchhaltung"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Buchhaltung
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png"
-                      alt="showroom"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Showroom
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png"
-                      alt="Design & Marketing"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Design & Marketing
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png"
-                      alt="Bestandsmanagement"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                    Bestandsmanagement
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png"
-                      alt="Haustechnik"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Haustechnik
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png"
-                      alt="Unternehmensentwicklung"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                    Unternehmensentwicklung
-                    </p>
-                  </div>
-                </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            className="w-20 mx-auto"
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png"
+                            alt="alle"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Alle
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png"
+                            alt="Vertrieb"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Vertrieb
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png"
+                            alt="Logistik"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Logistik
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png"
+                            alt="Fuhrpark"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Fuhrpark
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png"
+                            alt="IT & Services"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            IT & Services
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png"
+                            alt="HR & Training"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            HR & Training
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png"
+                            alt="Buchhaltung"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Buchhaltung
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png"
+                            alt="showroom"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Showroom
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png"
+                            alt="Design & Marketing"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Design & Marketing
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png"
+                            alt="Bestandsmanagement"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Bestandsmanagement
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png"
+                            alt="Haustechnik"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Haustechnik
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png"
+                            alt="Unternehmensentwicklung"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Unternehmensentwicklung
+                          </p>
+                        </div>
+                      </div>
                       <div className="modal-action flex justify-center">
                         <form method="dialog" className="flex gap-2">
                           <button className="btn w-28">Schließen</button>

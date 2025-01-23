@@ -262,7 +262,7 @@ export default function RegisteredUserCard({
       participated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
-      notifySuccessAttended()
+      notifySuccessAttended();
     }
   };
 
@@ -272,7 +272,7 @@ export default function RegisteredUserCard({
       notParticipated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
-      notifySuccessAttended()
+      notifySuccessAttended();
     }
   };
 
@@ -310,19 +310,19 @@ export default function RegisteredUserCard({
       className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
     });
 
-    const notifySuccessAttended = () =>
-      toast.success("Teilnahmestatus geändert!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
-      });
+  const notifySuccessAttended = () =>
+    toast.success("Teilnahmestatus geändert!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
+    });
 
   const currentDate = new Date();
   const isoDateString =
@@ -372,7 +372,7 @@ export default function RegisteredUserCard({
     <>
       <div className="px-3 py-2 lg:px-4 lg:py-4">
         <div className="flex text-lg items-center justify-between ">
-          <h3 className="leading-6 font-medium text-gray-900 lg:text-lg">
+          <h3 className="leading-6 text-sm font-medium text-gray-900 lg:text-lg">
             {registeredUser.firstName + " " + registeredUser.lastName}
           </h3>
 
@@ -380,7 +380,11 @@ export default function RegisteredUserCard({
             <span className="hidden lg:flex font-semibold text-gray-900 lg:text-lg">
               Abteilung:
             </span>{" "}
-            <span className="mt-0.5">{registeredUser.department}</span>
+            <span className="mt-0.5 text-sm">
+              {registeredUser.department.length === 23
+                ? registeredUser.department.slice(0, 15) + "."
+                : registeredUser.department}
+            </span>
           </div>
         </div>
         <div className="mt-2 flex items-center justify-between">

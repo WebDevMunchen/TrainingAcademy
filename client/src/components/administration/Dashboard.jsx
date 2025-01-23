@@ -68,9 +68,7 @@ export default function Dashboard() {
   const remainingSpots = totalCapacity - totalAttendees;
 
   const startYear = 2023;
-  const years = Array.from({ length: 7 }, (_, i) =>
-    (startYear + i).toString()
-  );
+  const years = Array.from({ length: 7 }, (_, i) => (startYear + i).toString());
 
   return (
     <>
@@ -348,8 +346,8 @@ export default function Dashboard() {
                             Uhrzeit
                           </p>
                           <p className="block antialiased text-xs font-medium text-blue-gray-600 text-center">
-          {`(Dauer)`}
-        </p>
+                            {`(Dauer)`}
+                          </p>
                         </th>
                         <th className="w-1/12 border-b border-blue-gray-50 py-3 px-6 text-center">
                           <p className="block antialiased  text-[11px] font-medium uppercase text-blue-gray-400">

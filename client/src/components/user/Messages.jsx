@@ -238,7 +238,7 @@ export default function Messages() {
             {!selectedMessage ? (
               <div className="flex flex-col justify-center items-center text-center">
                 <p className="text-gray-500 text-xl">
-                  Klick auf die Nachricht links, um den Inhalt zu sehen
+                  Klick auf die Nachricht, um den Inhalt zu sehen
                 </p>
               </div>
             ) : (

@@ -2,13 +2,13 @@ export default function Datenschutz() {
   return (
     <div className="my-4 bg-white rounded-lg shadow-xl py-4 mx-auto w-11/12 lg:w-8/12 ">
       <h4 className="mt-4 font-poppins text-2xl font-bold text-gray-800 tracking-widest uppercase text-center lg:text-4xl">
-        Datenschutz
+        FAQ
       </h4>
-      <div className="space-y-8 px-2 xl:px-16 mt-6">
-        <div className="mt-4 flex">
+      <div className="flex flex-col gap-6 px-2 xl:px-16 mt-6">
+        <div className="mt-2 flex">
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16 border-l-4 border-amber-400">
-              <span className="text-4xl text-amber-400 px-4">
+              <span className="text-4xl text-amber-400 px-2 lg:px-4 ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -32,7 +32,7 @@ export default function Datenschutz() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-8 ml-4"
+                className="size-8 ml-1"
               >
                 <path
                   strokeLinecap="round"
@@ -44,7 +44,7 @@ export default function Datenschutz() {
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16">
-              <span className="text-lg text-black-900 font-bold">
+              <span className="text-md text-black-900 font-bold">
                 Wie kann ich mich für die Schulung anmelden?
               </span>
             </div>
@@ -70,7 +70,7 @@ export default function Datenschutz() {
         <div className="mt-4 flex">
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16 border-l-4 border-amber-400">
-              <span className="text-4xl text-amber-400 px-4">
+              <span className="text-4xl text-amber-400 px-2 lg:px-4 ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -94,7 +94,7 @@ export default function Datenschutz() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-8 ml-4"
+                className="size-8 ml-2"
               >
                 <path
                   strokeLinecap="round"
@@ -106,7 +106,7 @@ export default function Datenschutz() {
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16">
-              <span className="text-lg text-black-900 font-bold">
+              <span className="text-md text-black-900 font-bold">
                 Ich habe mich für die Schulung angemeldet, wie geht es jetzt
                 weiter?
               </span>
@@ -124,7 +124,7 @@ export default function Datenschutz() {
         <div className="mt-4 flex">
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16 border-l-4 border-amber-400">
-              <span className="text-4xl text-amber-400 px-4">
+              <span className="text-4xl text-amber-400 px-2 lg:px-4 ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -148,7 +148,7 @@ export default function Datenschutz() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-8 ml-4"
+                className="size-8 ml-2"
               >
                 <path
                   strokeLinecap="round"
@@ -160,7 +160,7 @@ export default function Datenschutz() {
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16">
-              <span className="text-lg text-black-900 font-bold">
+              <span className="text-md text-black-900 font-bold">
                 Wie kann ich sehen, ob meine Anfrage zur Schulungsteilnahme
                 genehmigt bzw. abgelehnt wurde?
               </span>
@@ -181,7 +181,7 @@ export default function Datenschutz() {
         <div className="mt-4 flex">
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16 border-l-4 border-amber-400">
-              <span className="text-4xl text-amber-400 px-4">
+              <span className="text-4xl text-amber-400 px-2 lg:px-2 lg:px-4 ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -205,7 +205,7 @@ export default function Datenschutz() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-8 ml-4"
+                className="size-8 ml-2"
               >
                 <path
                   strokeLinecap="round"
@@ -217,7 +217,7 @@ export default function Datenschutz() {
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16">
-              <span className="text-lg text-black-900 font-bold">
+              <span className="text-md text-black-900 font-bold">
                 Werde ich benachrichtigt, wenn mein Abteilungsverantwortlicher
                 auf meine Anfrage antwortet?
               </span>
@@ -234,7 +234,7 @@ export default function Datenschutz() {
         <div className="mt-4 flex">
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16 border-l-4 border-amber-400">
-              <span className="text-4xl text-amber-400 px-4">
+              <span className="text-4xl text-amber-400 px-2 lg:px-4 ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -258,7 +258,7 @@ export default function Datenschutz() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-8 ml-4"
+                className="size-8 ml-2"
               >
                 <path
                   strokeLinecap="round"
@@ -270,7 +270,7 @@ export default function Datenschutz() {
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16">
-              <span className="text-lg text-black-900 font-bold">
+              <span className="text-md text-black-900 font-bold">
                 Wo finde ich mein Inbox?
               </span>
             </div>
@@ -286,7 +286,7 @@ export default function Datenschutz() {
         <div className="mt-4 flex">
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16 border-l-4 border-amber-400">
-              <span className="text-4xl text-amber-400 px-4">
+              <span className="text-4xl text-amber-400 px-2 lg:px-4 ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -310,7 +310,7 @@ export default function Datenschutz() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-8 ml-4"
+                className="size-8 ml-2"
               >
                 <path
                   strokeLinecap="round"
@@ -322,7 +322,7 @@ export default function Datenschutz() {
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16">
-              <span className="text-lg text-black-900 font-bold">
+              <span className="text-md text-black-900 font-bold">
                 Bis wann kann ich mich für die Schulung registrieren?
               </span>
             </div>
@@ -338,7 +338,7 @@ export default function Datenschutz() {
         <div className="mt-4 flex">
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16 border-l-4 border-amber-400">
-              <span className="text-4xl text-amber-400 px-4">
+              <span className="text-4xl text-amber-400 px-2 lg:px-4 ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -362,7 +362,7 @@ export default function Datenschutz() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-8 ml-4"
+                className="size-8 ml-2"
               >
                 <path
                   strokeLinecap="round"
@@ -374,7 +374,7 @@ export default function Datenschutz() {
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16">
-              <span className="text-lg text-black-900 font-bold">
+              <span className="text-md text-black-900 font-bold">
                 Eine Schulung ist ausgebucht, ich möchte aber trotzdem
                 teilnehmen?
               </span>
@@ -391,7 +391,7 @@ export default function Datenschutz() {
         <div className="mt-4 flex">
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16 border-l-4 border-amber-400">
-              <span className="text-4xl text-amber-400 px-4">
+              <span className="text-4xl text-amber-400 px-2 lg:px-4 ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -415,7 +415,7 @@ export default function Datenschutz() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-8 ml-4"
+                className="size-8 ml-2"
               >
                 <path
                   strokeLinecap="round"
@@ -427,7 +427,7 @@ export default function Datenschutz() {
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16">
-              <span className="text-lg text-black-900 font-bold">
+              <span className="text-md text-black-900 font-bold">
                 Wie kann ich meine Registrirung zur Schulungsteilnahme
                 stornieren?
               </span>
@@ -447,7 +447,7 @@ export default function Datenschutz() {
         <div className="mt-4 flex">
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16 border-l-4 border-amber-400">
-              <span className="text-4xl text-amber-400 px-4">
+              <span className="text-4xl text-amber-400 px-2 lg:px-4 ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -471,7 +471,7 @@ export default function Datenschutz() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-8 ml-4"
+                className="size-8 ml-2"
               >
                 <path
                   strokeLinecap="round"
@@ -483,7 +483,7 @@ export default function Datenschutz() {
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16">
-              <span className="text-lg text-black-900 font-bold">
+              <span className="text-md text-black-900 font-bold">
                 Ist es möglich, die Schulung direkt in meinen Kalender zu
                 exportieren?
               </span>
@@ -504,7 +504,7 @@ export default function Datenschutz() {
         <div className="mt-4 flex">
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16 border-l-4 border-amber-400">
-              <span className="text-4xl text-amber-400 px-4">
+              <span className="text-4xl text-amber-400 px-2 lg:px-4 ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -521,14 +521,14 @@ export default function Datenschutz() {
                 </svg>
               </span>
             </div>
-            <div className="flex items-center h-16 border-l-4 border-gray-400">
+            <div className="mb-12 flex items-center h-16 border-l-4 border-gray-400">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-8 ml-4"
+                className="size-8 ml-2"
               >
                 <path
                   strokeLinecap="round"
@@ -540,7 +540,7 @@ export default function Datenschutz() {
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16">
-              <span className="text-lg text-black-900 font-bold">
+              <span className="text-md text-black-900 font-bold">
                 Ich habe eine Anfrage für die gewünschte Schulung abgeschickt
                 aber keine Antwort erhalten, was kann ich tun?
               </span>

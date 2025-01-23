@@ -11,7 +11,6 @@ export default function SingleClassDetailsAdmin() {
     user,
     allUsers,
     setAllUsers,
-    allActivities,
     setAllActivities,
     currentMonth,
     currentYear,
@@ -21,6 +20,7 @@ export default function SingleClassDetailsAdmin() {
   const navigate = useNavigate();
 
   const modalRef = useRef(null);
+  const modalRefMobile = useRef(null);
 
   const [activity, setActivity] = useState(null);
 
@@ -97,6 +97,36 @@ export default function SingleClassDetailsAdmin() {
         notifyError();
       });
   };
+
+  const enlistMobile = () => {
+    const selectedUserId = document.getElementById("mobileEnlist").value;
+
+    axiosClient
+      .put(`/classActivity/enlist/${id}`, { userId: selectedUserId })
+      .then((response) => {
+        return axiosClient.get("/user/getAllUsers");
+      })
+      .then((response) => {
+        setAllUsers(response.data);
+        return axiosClient.get(`/classActivity/${id}`);
+      })
+      .then((response) => {
+        setActivity(response.data);
+        return axiosClient
+          .get(
+            `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
+          )
+          .then((response) => {
+            setAllActivities(response.data);
+            notifySuccess();
+          });
+      })
+      .catch((error) => {
+        notifyError();
+      });
+  };
+
+  
 
   const notifySuccess = () =>
     toast.success(`Mitarbeiter hinzugefügt!`, {
@@ -298,10 +328,10 @@ export default function SingleClassDetailsAdmin() {
                   <div className="flex justify-between lg:hidden">
                     <div className="flex">
                       <button
-                        onClick={() => modalRef.current.showModal()}
+                        onClick={() => modalRefMobile.current.showModal()}
                         className={
                           hoursDifference < 0 && hoursDifference > -24
-                            ? "flex"
+                            ? "flex transition-transform duration-300 transform hover:scale-150"
                             : "hidden"
                         }
                       >
@@ -320,6 +350,50 @@ export default function SingleClassDetailsAdmin() {
                           />
                         </svg>
                       </button>
+
+                      <dialog
+                          ref={modalRefMobile}
+                          id="my_modal_1"
+                          className="modal"
+                        >
+                          <div className="modal-box">
+                            <div className="modal-action">
+                              <form method="dialog" className="w-full">
+                                <div className="flex flex-col gap-2">
+                                  <select id="mobileEnlist" className="select select-bordered w-full">
+                                    <option disabled selected>
+                                      Wähle den Namen aus:
+                                    </option>
+                                    {allUsers
+                                      ?.filter(
+                                        (user) =>
+                                          user.role !== "teacher" &&
+                                          user.status !== "inaktiv"
+                                      )
+                                      .map((user) => (
+                                        <option key={user._id} value={user._id}>
+                                          {user.firstName} {user.lastName}
+                                        </option>
+                                      ))}
+                                  </select>
+                                  <div className="flex gap-2 mt-2 justify-end">
+                                    <button
+                                      className="btn w-fit bg-green-600 text-white hover:bg-green-700"
+                                      onClick={enlistMobile}
+                                    >
+                                      Bestätigen
+                                    </button>
+
+                                    <button className="btn w-fit bg-red-500 text-white hover:bg-red-600">
+                                      Abbrechen
+                                    </button>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </dialog>
+
                       <button
                         className="ml-3 transition-transform duration-300 transform hover:scale-150"
                         onClick={() => window.location.reload()}
