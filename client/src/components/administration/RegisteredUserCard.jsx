@@ -573,7 +573,7 @@ export default function RegisteredUserCard({
                   </div>
                 </button>
                 <dialog ref={modalRef} id="my_modal_1" className="modal">
-                  <div className="modal-box">
+                  <div className="modal-box px-3 py-4">
                     <div className="flex items-center gap-2">
                       <h3 className="font-bold text-lg">
                         Genehmigung ablehnen
@@ -603,7 +603,7 @@ export default function RegisteredUserCard({
                       ablehnen?
                     </p>
                     <div className="modal-action mr-2.5">
-                      <form method="dialog" className="flex gap-2">
+                    <form method="dialog" className="w-full">
                         <div>
                           <div className="w-72 mx-auto lg:w-96 mr-8">
                             <label
@@ -680,7 +680,7 @@ export default function RegisteredUserCard({
                     </span>
                   </button>
                   <dialog ref={modalRef} id="my_modal_1" className="modal">
-                    <div className="modal-box">
+                    <div className="modal-box px-3 py-4">
                       <div className="flex items-center gap-2">
                         <h3 className="font-bold text-lg">
                           Genehmigung ändern
@@ -714,7 +714,7 @@ export default function RegisteredUserCard({
                       </div>
 
                       <div className="modal-action">
-                        <form method="dialog" className="flex gap-2">
+                        <form method="dialog" className="w-full flex justify-end gap-2">
                           {registeredUser.classesRegistered.some(
                             (element) =>
                               element.registeredClassID === activityId &&
