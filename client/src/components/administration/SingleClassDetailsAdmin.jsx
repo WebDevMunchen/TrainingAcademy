@@ -360,7 +360,7 @@ export default function SingleClassDetailsAdmin() {
                               <div className="flex flex-col gap-2">
                                 <select
                                   id="mobileEnlist"
-                                  className="select select-bordered w-screen max-w-screen"
+                                  className="select select-bordered w-[100%] max-w-screen"
                                 >
                                   <option disabled selected>
                                     Wähle den Namen aus:
