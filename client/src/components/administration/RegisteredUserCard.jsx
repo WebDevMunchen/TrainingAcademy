@@ -572,7 +572,7 @@ export default function RegisteredUserCard({
                     </div>
                   </div>
                 </button>
-                <dialog ref={modalRef} id="my_modal_1" className="modal w-screen">
+                <dialog ref={modalRef} id="my_modal_1" className="modal">
                   <div className="modal-box">
                     <div className="flex items-center gap-2">
                       <h3 className="font-bold text-lg">
@@ -603,7 +603,7 @@ export default function RegisteredUserCard({
                       ablehnen?
                     </p>
                     <div className="modal-action mr-2.5">
-                      <form method="dialog" className="flex gap-2 w-screen">
+                      <form method="dialog" className="flex gap-2">
                         <div>
                           <div className="w-72 mx-auto lg:w-96 mr-8">
                             <label
@@ -614,7 +614,7 @@ export default function RegisteredUserCard({
                             </label>
                             <select
                               id="reason"
-                              className="w-[100%] max-w-screen mb-4 mr-12 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              className="mb-4 mr-12 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                               value={declineReason}
                               onChange={(e) => setDeclineReason(e.target.value)}
                             >
@@ -679,7 +679,7 @@ export default function RegisteredUserCard({
                       </svg>
                     </span>
                   </button>
-                  <dialog ref={modalRef} id="my_modal_1" className="modal w-screen">
+                  <dialog ref={modalRef} id="my_modal_1" className="modal">
                     <div className="modal-box">
                       <div className="flex items-center gap-2">
                         <h3 className="font-bold text-lg">
@@ -714,7 +714,7 @@ export default function RegisteredUserCard({
                       </div>
 
                       <div className="modal-action">
-                        <form method="dialog" className="flex gap-2 w-screen">
+                        <form method="dialog" className="flex gap-2">
                           {registeredUser.classesRegistered.some(
                             (element) =>
                               element.registeredClassID === activityId &&
@@ -729,7 +729,7 @@ export default function RegisteredUserCard({
                               </label>
                               <select
                                 id="reason"
-                                className="w-[100%] max-w-screen mb-4 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="mb-4 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 value={declineReason}
                                 onChange={(e) =>
                                   setDeclineReason(e.target.value)
