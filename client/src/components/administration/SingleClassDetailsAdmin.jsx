@@ -228,7 +228,7 @@ export default function SingleClassDetailsAdmin() {
                         <dialog
                           ref={modalRef}
                           id="my_modal_1"
-                          className="modal"
+                          className="modal w-screen mx-auto"
                         >
                           <div className="modal-box">
                             <div className="modal-action">
@@ -352,15 +352,15 @@ export default function SingleClassDetailsAdmin() {
                       <dialog
                         ref={modalRefMobile}
                         id="my_modal_1"
-                        className="modal"
+                        className="modal w-screen mx-auto"
                       >
-                        <div className="modal-box w-11/12 max-w-md max-h-screen overflow-y-auto">
+                        <div className="modal-box">
                           <div className="modal-action">
                             <form method="dialog" className="w-full">
                               <div className="flex flex-col gap-2">
                                 <select
                                   id="mobileEnlist"
-                                  className="select select-bordered lg:w-full lg:max-w-full"
+                                  className="select select-bordered w-full max-w-full"
                                 >
                                   <option disabled selected>
                                     Wähle den Namen aus:
