@@ -67,8 +67,8 @@ export default function Dashboard() {
 
   const remainingSpots = totalCapacity - totalAttendees;
 
-  const startYear = 2023;
-  const years = Array.from({ length: 7 }, (_, i) => (startYear + i).toString());
+  const startYear = 2025;
+  const years = Array.from({ length: 5 }, (_, i) => (startYear + i).toString());
 
   return (
     <>
