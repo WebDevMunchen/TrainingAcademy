@@ -605,7 +605,7 @@ export default function RegisteredUserCard({
                     <div className="modal-action mr-2.5">
                     <form method="dialog" className="w-full">
                         <div>
-                          <div className="w-72 mx-auto lg:w-96 mr-8">
+                          <div>
                             <label
                               htmlFor="description"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -714,7 +714,7 @@ export default function RegisteredUserCard({
                       </div>
 
                       <div className="modal-action">
-                        <form method="dialog" className="w-full flex justify-end gap-2">
+                        <form method="dialog" className="w-full">
                           {registeredUser.classesRegistered.some(
                             (element) =>
                               element.registeredClassID === activityId &&
@@ -760,7 +760,7 @@ export default function RegisteredUserCard({
                               </div>
                             </div>
                           ) : (
-                            <>
+                            <div className="flex justify-end gap-2">
                               <label className="btn w-fit bg-green-600 text-white hover:bg-green-700">
                                 <input
                                   onChange={handleApproved}
@@ -772,7 +772,7 @@ export default function RegisteredUserCard({
                                 In "Genehmigt" ändern
                               </label>
                               <button className="btn w-28">Abbrechen</button>
-                            </>
+                            </div>
                           )}
                         </form>
                       </div>
