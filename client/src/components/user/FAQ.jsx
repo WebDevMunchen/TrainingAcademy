@@ -55,7 +55,7 @@ export default function Datenschutz() {
 
                   <li>
                     Suche die gewünschte Schulung, indem du über die Pfeile nach
-                    Monat und über das Drop-down-Menü nach Jahr filtert
+                    Monat und über das Drop-down-Menü nach Jahr filterst
                   </li>
 
                   <li>
@@ -277,7 +277,7 @@ export default function Datenschutz() {
             <div className="flex items-center py-2">
               <span className="text-gray-500">
                 Du kannst dein Inbox öffnen, indem du in der Navigationsleiste
-                auf die gelbe Glocke klicken.
+                auf die gelbe Glocke klickst.
               </span>
             </div>
           </div>
@@ -428,7 +428,7 @@ export default function Datenschutz() {
           <div className="flex flex-col gap-3">
             <div className="flex items-center h-16">
               <span className="text-md text-black-900 font-bold">
-                Wie kann ich meine Registrirung zur Schulungsteilnahme
+                Wie kann ich meine Registrierung zur Schulungsteilnahme
                 stornieren?
               </span>
             </div>
@@ -437,7 +437,7 @@ export default function Datenschutz() {
                 Nachdem Du erfolgreich eine Anfrage für die Schulungsteilnahme
                 abgesendet hast, kannst du auf „Meine Schulungen“ klicken und
                 dort auf den gelben „Stornieren“-Button klicken. Bitte beachte,
-                dass eine Stornierung nicht mehr möglich ist, wenn deine Anfrage
+                dass eine Stornierung nicht möglich ist, wenn deine Anfrage
                 abgelehnt wurde
               </span>
             </div>
@@ -547,7 +547,7 @@ export default function Datenschutz() {
             </div>
             <div className="flex items-center py-2">
               <span className="text-gray-500">
-                In diesem Fall kannst du deinem Genegmiger über den Button
+                In diesem Fall kannst du deinem Genehmiger über den Button
                 „Nachfragen“ in „Meine Schulungen“ der angemeldeten Schulung
                 eine Erinnerung senden. Diese Aktion kann einmal täglich
                 wiederholt werden.
