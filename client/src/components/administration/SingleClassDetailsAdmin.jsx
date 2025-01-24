@@ -126,8 +126,6 @@ export default function SingleClassDetailsAdmin() {
       });
   };
 
-  
-
   const notifySuccess = () =>
     toast.success(`Mitarbeiter hinzugefügt!`, {
       position: "top-right",
@@ -352,47 +350,50 @@ export default function SingleClassDetailsAdmin() {
                       </button>
 
                       <dialog
-                          ref={modalRefMobile}
-                          id="my_modal_1"
-                          className="modal"
-                        >
-                          <div className="modal-box">
-                            <div className="modal-action">
-                              <form method="dialog" className="w-full">
-                                <div className="flex flex-col gap-2">
-                                  <select id="mobileEnlist" className="select select-bordered w-full">
-                                    <option disabled selected>
-                                      Wähle den Namen aus:
-                                    </option>
-                                    {allUsers
-                                      ?.filter(
-                                        (user) =>
-                                          user.role !== "teacher" &&
-                                          user.status !== "inaktiv"
-                                      )
-                                      .map((user) => (
-                                        <option key={user._id} value={user._id}>
-                                          {user.firstName} {user.lastName}
-                                        </option>
-                                      ))}
-                                  </select>
-                                  <div className="flex gap-2 mt-2 justify-end">
-                                    <button
-                                      className="btn w-fit bg-green-600 text-white hover:bg-green-700"
-                                      onClick={enlistMobile}
-                                    >
-                                      Bestätigen
-                                    </button>
+                        ref={modalRefMobile}
+                        id="my_modal_1"
+                        className="modal"
+                      >
+                        <div className="modal-box w-11/12 max-w-md max-h-screen overflow-y-auto">
+                          <div className="modal-action">
+                            <form method="dialog" className="w-full">
+                              <div className="flex flex-col gap-2">
+                                <select
+                                  id="mobileEnlist"
+                                  className="select select-bordered w-full max-w-full"
+                                >
+                                  <option disabled selected>
+                                    Wähle den Namen aus:
+                                  </option>
+                                  {allUsers
+                                    ?.filter(
+                                      (user) =>
+                                        user.role !== "teacher" &&
+                                        user.status !== "inaktiv"
+                                    )
+                                    .map((user) => (
+                                      <option key={user._id} value={user._id}>
+                                        {user.firstName} {user.lastName}
+                                      </option>
+                                    ))}
+                                </select>
+                                <div className="flex gap-2 mt-2 justify-end">
+                                  <button
+                                    className="btn w-fit bg-green-600 text-white hover:bg-green-700 text-xs sm:text-sm"
+                                    onClick={enlistMobile}
+                                  >
+                                    Bestätigen
+                                  </button>
 
-                                    <button className="btn w-fit bg-red-500 text-white hover:bg-red-600">
-                                      Abbrechen
-                                    </button>
-                                  </div>
+                                  <button className="btn w-fit bg-red-500 text-white hover:bg-red-600 text-xs sm:text-sm">
+                                    Abbrechen
+                                  </button>
                                 </div>
-                              </form>
-                            </div>
+                              </div>
+                            </form>
                           </div>
-                        </dialog>
+                        </div>
+                      </dialog>
 
                       <button
                         className="ml-3 transition-transform duration-300 transform hover:scale-150"
@@ -464,127 +465,127 @@ export default function SingleClassDetailsAdmin() {
                         Legende
                       </h2>
                       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-3">
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      className="w-20 mx-auto"
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png"
-                      alt="alle"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Alle
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png"
-                      alt="Vertrieb"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Vertrieb
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png"
-                      alt="Logistik"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Logistik
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png"
-                      alt="Fuhrpark"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Fuhrpark
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png"
-                      alt="IT & Services"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      IT & Services
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png"
-                      alt="HR & Training"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      HR & Training
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png"
-                      alt="Buchhaltung"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Buchhaltung
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png"
-                      alt="showroom"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Showroom
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png"
-                      alt="Design & Marketing"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Design & Marketing
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png"
-                      alt="Bestandsmanagement"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                    Bestandsmanagement
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png"
-                      alt="Haustechnik"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                      Haustechnik
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img
-                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png"
-                      alt="Unternehmensentwicklung"
-                      className="w-20 mx-auto"
-                    />
-                    <p className="font-poppins font-medium text-center text-md">
-                    Unternehmensentwicklung
-                    </p>
-                  </div>
-                </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            className="w-20 mx-auto"
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png"
+                            alt="alle"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Alle
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png"
+                            alt="Vertrieb"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Vertrieb
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png"
+                            alt="Logistik"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Logistik
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png"
+                            alt="Fuhrpark"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Fuhrpark
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png"
+                            alt="IT & Services"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            IT & Services
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png"
+                            alt="HR & Training"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            HR & Training
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png"
+                            alt="Buchhaltung"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Buchhaltung
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png"
+                            alt="showroom"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Showroom
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png"
+                            alt="Design & Marketing"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Design & Marketing
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png"
+                            alt="Bestandsmanagement"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Bestandsmanagement
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png"
+                            alt="Haustechnik"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Haustechnik
+                          </p>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                          <img
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png"
+                            alt="Unternehmensentwicklung"
+                            className="w-20 mx-auto"
+                          />
+                          <p className="font-poppins font-medium text-center text-md">
+                            Unternehmensentwicklung
+                          </p>
+                        </div>
+                      </div>
                       <div className="modal-action flex justify-center">
                         <form method="dialog" className="flex gap-2">
                           <button className="btn w-28">Schließen</button>

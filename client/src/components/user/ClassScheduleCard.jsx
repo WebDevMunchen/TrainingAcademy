@@ -409,8 +409,7 @@ export default function ClassScheduleCard({ activity }) {
 
           <div className="flex justify-center gap-4">
             {(user.role === "ASP" ||
-              user.role === "admin" ||
-              user.role === "teacher") && (
+              user.role === "admin") && (
               <NavLink
                 to={`/classInformation/${activity?._id}`}
                 className="flex items-center justify-center text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
@@ -418,7 +417,7 @@ export default function ClassScheduleCard({ activity }) {
                 Details Anzeigen
               </NavLink>
             )}
-            {user.role === "admin" && (
+            {(user.role === "admin" || user.role === "teacher") && (
               <NavLink
                 to={`/classInformation/participation/${activity?._id}`}
                 className="text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
