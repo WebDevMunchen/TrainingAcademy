@@ -65,7 +65,7 @@ export default function CreateClass() {
       );
       setAllActivities(activitiesResponse?.data);
     } catch (error) {
-      console.error("Error during form submission:", error);
+      console.error("Error during form submission!");
     } finally {
       navigate("/admin/dashboard");
     }
@@ -79,14 +79,14 @@ export default function CreateClass() {
     <>
       <div className="bg-gray-50/50 flex">
         <SideMenu />
-        <div className="flex mt-4 flex-col items-center w-11/12 lg:py-7 mx-auto lg:mt-0 lg:w-5/12">
-          <div className="bg-white rounded-md shadow w-11/12 lg:6/12">
-            <div className="p-6 space-y-4 md:space-y-2 sm:p-6">
+        <div className="flex mx-auto mt-4 flex-col items-center w-11/12 lg:py-4 lg:mx-auto lg:mt-0 lg:w-[55%]">
+          <div className="bg-white rounded-md shadow lg:w-9/12">
+            <div className="p-2 space-y-4 md:space-y-2 sm:p-5">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Neue Schulung erstellen
               </h1>
               <form
-                className="space-y-4 w-full md:space-y-6"
+                className="space-y-4 w-full md:space-y-5"
                 onSubmit={handleSubmit(onSubmit)}
               >
                 <div>
@@ -117,21 +117,22 @@ export default function CreateClass() {
                   />
                 </div>
 
-                <div className="flex gap-2 items-center">
-                  <label
-                    htmlFor="safetyBriefing"
-                    className="py-1.5 block text-sm font-medium text-gray-900 dark:text-white mt-1"
-                  >
-                    Jährliche Sicherheitsunterweisung:
-                  </label>
-                  <input
-                    type="checkbox"
-                    {...register("safetyBriefing", { required: false })}
-                    id="safetyBriefing"
-                    className="checkbox"
-                    onClick={handleHideFileUpload}
-                  />
-
+                <div className="flex flex-col lg:flex-row gap-2 items-center">
+                  <div className="flex items-center gap-2">
+                    <label
+                      htmlFor="safetyBriefing"
+                      className="py-1.5 block text-sm font-medium text-gray-900 dark:text-white mt-1"
+                    >
+                      Jährliche Sicherheitsunterweisung:
+                    </label>
+                    <input
+                      type="checkbox"
+                      {...register("safetyBriefing", { required: false })}
+                      id="safetyBriefing"
+                      className="checkbox mt-2"
+                      onClick={handleHideFileUpload}
+                    />
+                  </div>
                   <div className={`${hideFileUpload} flex items-center gap-3`}>
                     <label
                       htmlFor="file"
@@ -228,7 +229,7 @@ export default function CreateClass() {
                     <input
                       type="time"
                       {...register("time", { required: true })}
-                      className="ml-2 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
                 </div>
@@ -265,7 +266,7 @@ export default function CreateClass() {
                   <div className="mt-2 lg:mt-0">
                     <label
                       htmlFor="capacity"
-                      className="ml-2 block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Kapazität:
                     </label>
@@ -274,7 +275,7 @@ export default function CreateClass() {
                       type="number"
                       placeholder="0"
                       {...register("capacity", { required: true })}
-                      className="ml-2 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
                 </div>
@@ -298,11 +299,11 @@ export default function CreateClass() {
                 >
                   Zielgruppe:
                 </label>
-                <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-4 lg:grid-rows-3">
+                <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
                   <div className="flex items-center mb-1">
                     <input
                       type="checkbox"
-                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/hczkglpvaybhguywjgku.png"
+                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png"
                       onChange={handleDepartmentChange}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
@@ -316,7 +317,7 @@ export default function CreateClass() {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ng4emaukxn9adrxpnvlu.png"
+                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png"
                       onChange={handleDepartmentChange}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
@@ -330,7 +331,7 @@ export default function CreateClass() {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/o4qwfioe3dkqrkhmumd4.png"
+                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png"
                       onChange={handleDepartmentChange}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
@@ -345,7 +346,7 @@ export default function CreateClass() {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/uaozccdgnwtcelxvqjug.png"
+                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png"
                       onChange={handleDepartmentChange}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
@@ -359,7 +360,7 @@ export default function CreateClass() {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ke8amlflgcdrvdfghzoz.png"
+                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png"
                       onChange={handleDepartmentChange}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
@@ -373,7 +374,7 @@ export default function CreateClass() {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/gmnv44k0nydrmfnbr67y.png"
+                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png"
                       onChange={handleDepartmentChange}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
@@ -387,7 +388,7 @@ export default function CreateClass() {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/ip7khvjx1dgxosk6lxnb.png"
+                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png"
                       onChange={handleDepartmentChange}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
@@ -401,71 +402,90 @@ export default function CreateClass() {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ydkcdshvmwdffe4tyf9f.png"
+                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png"
                       onChange={handleDepartmentChange}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
                     <label
                       htmlFor="departmentB"
-                      className="ml-2 text-sm text-gray-900 dark:text-white"
+                      className=":block ml-2 text-sm text-gray-900 dark:text-white"
                     >
-                      Einkauf & Anmietung
+                      Showroom
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/wodezi58z28wwhcvhsev.png"
+                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png"
                       onChange={handleDepartmentChange}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
                     <label
                       htmlFor="departmentB"
-                      className="ml-2 text-sm text-gray-900 dark:text-white"
+                      className="hidden lg:block ml-2 text-sm text-gray-900 dark:text-white"
                     >
-                      Design & Planung
+                      Design und Marketing
                     </label>
-                  </div>
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ikluglsekc6msbuvgn0z.png"
-                      onChange={handleDepartmentChange}
-                      className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-                    />
                     <label
                       htmlFor="departmentB"
-                      className="ml-2 text-sm text-gray-900 dark:text-white"
+                      className="ml-2 text-sm text-gray-900 dark:text-white lg:hidden"
                     >
-                      Projektmanagement
+                      Design und Mark.
                     </label>
                   </div>
                   <div className="flex items-center ">
                     <input
                       type="checkbox"
-                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/p0m4tdmsd5qdmysdzolk.png"
+                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png"
                       onChange={handleDepartmentChange}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
                     <label
                       htmlFor="departmentB"
-                      className="ml-2 text-sm text-gray-900 dark:text-white"
+                      className="hidden lg:block ml-2 text-sm text-gray-900 dark:text-white"
                     >
-                      Officemanagement
+                      Bestandsmanagement
+                    </label>
+                    <label
+                      htmlFor="departmentB"
+                      className="ml-2 text-sm text-gray-900 dark:text-white lg:hidden"
+                    >
+                      Bestandsman.
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/l85s2hjejj6kzkzung8o.png"
+                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png"
                       onChange={handleDepartmentChange}
                       className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
                     <label
                       htmlFor="departmentB"
-                      className="ml-2 text-sm text-gray-900 dark:text-white"
+                      className="block ml-2 text-sm text-gray-900 dark:text-white"
                     >
-                      Gesundheitsmanagement
+                      Haustechnik
+                    </label>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      value="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png"
+                      onChange={handleDepartmentChange}
+                      className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    />
+
+                    <label
+                      htmlFor="departmentB"
+                      className="hidden lg:block ml-2 text-sm text-gray-900 dark:text-white"
+                    >
+                      Unternehmensentwicklung
+                    </label>
+                    <label
+                      htmlFor="departmentB"
+                      className="ml-2 text-sm text-gray-900 dark:text-white lg:hidden"
+                    >
+                      Unternehmensenent.
                     </label>
                   </div>
                 </div>

@@ -14,6 +14,7 @@ export default function AuthProvider({ children }) {
   const [approver, setApprover] = useState(null);
   const [allUsers, setAllUsers] = useState(null);
   const [allActivities, setAllActivities] = useState([]);
+  const [isLoadingActivities, setIsLoadingActivities] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [currentMonth, setCurrentMonth] = useState(
     new Date()
@@ -36,16 +37,19 @@ export default function AuthProvider({ children }) {
       .finally(() => {
         setIsLoading(false);
       });
+      setIsLoadingActivities(true);
 
     axiosClient
       .get(
         `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
       )
       .then((response) => {
-        setAllActivities(response.data);
+        setAllActivities(response.data || []);
       })
       .catch((error) => {
-        setAllActivities(null);
+        setAllActivities([]);
+      }).finally(() => {
+        setIsLoadingActivities(false);
       });
 
     axiosClient
@@ -221,6 +225,7 @@ export default function AuthProvider({ children }) {
           isLoading,
           currentMonth,
           currentYear,
+          isLoadingActivities
         }}
       >
         {children}

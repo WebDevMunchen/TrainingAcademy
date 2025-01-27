@@ -133,7 +133,7 @@ export default function RegisteredUserCardAdmin({
       progress: undefined,
       theme: "light",
       transition: Bounce,
-      className: "mt-14 mr-6",
+      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
     });
 
   const currentDate = new Date();
@@ -172,25 +172,28 @@ export default function RegisteredUserCardAdmin({
 
   const differenceMs = date1.getTime() - date2.getTime();
 
-  const differenceHours = differenceMs / (1000 * 60 * 60) + 2;
+  const differenceHours = differenceMs / (1000 * 60 * 60) + 1;
 
   return (
     <>
-      <div className="px-4 py-4">
-        <div className="flex items-center justify-between mx-2">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
+      <div className="px-2 py-2 lg:px-4 lg:py-4">
+        <div className="flex items-center justify-between mx-0 lg:mx-2">
+          <h3 className="text-sm leading-6 font-medium text-gray-900">
             {registeredUser.firstName + " " + registeredUser.lastName}
           </h3>
 
-          <p className="font-medium text-gray-500">
-            <span className="text-lg font-semibold text-gray-900">
+          <div className="flex items-center gap-1 text-lg font-medium text-gray-500">
+            <span className="hidden lg:flex font-semibold text-gray-900 lg:text-lg">
               Abteilung:
             </span>{" "}
-            {registeredUser.department.charAt(0).toUpperCase() +
-              registeredUser.department.slice(1)}
-          </p>
+            <span className="mt-0.5 text-sm">
+              {registeredUser.department.length === 23
+                ? registeredUser.department.slice(0, 15) + "."
+                : registeredUser.department}
+            </span>
+          </div>
         </div>
-        <div className="mt-2 flex items-center justify-between mx-2">
+        <div className="mt-2 flex items-center justify-between mx-0 lg:mx-2">
           <div className="flex flex-col items-start text-sm font-medium text-gray-500">
             {registeredUser.classesRegistered.map((element, index) => {
               if (element.registeredClassID === activityId)
@@ -203,7 +206,11 @@ export default function RegisteredUserCardAdmin({
                         >
                           Teilnahmestatus:{" "}
                         </span>
-                        <img src={attended} width={150} alt="teilgenommen" />
+                        <img
+                          src={attended}
+                          className={`w-[130px] lg:w-[150px]`}
+                          alt="teilgenommen"
+                        />
                       </>
                     ) : element.statusAttended === "nicht teilgenommen" ? (
                       <>
@@ -214,7 +221,7 @@ export default function RegisteredUserCardAdmin({
                         </span>
                         <img
                           src={notAttended}
-                          width={150}
+                          className={`w-[130px] lg:w-[150px]`}
                           alt="nichtTeilgenommen"
                         />
                       </>
@@ -235,7 +242,11 @@ export default function RegisteredUserCardAdmin({
                 return (
                   <React.Fragment key={element.registeredClassID}>
                     {element.status === "genehmigt" ? (
-                      <img src={approved} width={150} alt="genehmigt" />
+                      <img
+                        src={approved}
+                        className="w-[130px] lg:w-[150px]"
+                        alt="genehmigt"
+                      />
                     ) : element.status === "abgelehnt" ? (
                       <div className="flex items-center">
                         <span
@@ -256,10 +267,18 @@ export default function RegisteredUserCardAdmin({
                             />
                           </svg>
                         </span>
-                        <img src={declined} width={150} alt="abgelehnt" />
+                        <img
+                          src={declined}
+                          className="w-[130px] lg:w-[150px]"
+                          alt="abgelehnt"
+                        />
                       </div>
                     ) : (
-                      <img src={pending} width={150} alt="ausstehend" />
+                      <img
+                        src={pending}
+                        className="w-[130px] lg:w-[150px]"
+                        alt="ausstehend"
+                      />
                     )}
                   </React.Fragment>
                 );

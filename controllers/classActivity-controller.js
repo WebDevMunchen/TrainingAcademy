@@ -9,6 +9,7 @@ const nodemailer = require("nodemailer");
 const { format } = require("date-fns");
 const { DateTime } = require("luxon");
 const cron = require("node-cron");
+const { createEvent } = require("ics");
 
 const createClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -81,7 +82,11 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
 
   const existingActivity = await ClassActivity.findById(id).populate({
     path: "registeredUsers",
-    match: { "classesRegistered.status": { $in: ["ausstehend", "genehmigt"] } },
+    match: {
+      "classesRegistered.status": {
+        $in: ["ausstehend", "genehmigt", "abgelehnt"],
+      },
+    },
     select: "firstName lastName department classesRegistered",
   });
 
@@ -140,20 +145,22 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
       findApprovers.it,
       findApprovers.fuhrpark,
       findApprovers.buchhaltung,
-      findApprovers.einkauf,
+      findApprovers.showroom,
       findApprovers.design,
-      findApprovers.projektmanagement,
-      findApprovers.officemanagement,
+      findApprovers.bestandsmanagement,
+      findApprovers.haustechnik,
+      findApprovers.unternehmensentwicklung,
       findApprovers.logistikSubstitute,
       findApprovers.vertriebSubstitute,
       findApprovers.hrSubstitute,
       findApprovers.itSubstitute,
       findApprovers.fuhrparkSubstitute,
       findApprovers.buchhaltungSubstitute,
-      findApprovers.einkaufSubstitute,
+      findApprovers.showroomSubstitute,
       findApprovers.designSubstitute,
-      findApprovers.projektmanagementSubstitute,
-      findApprovers.officemanagementSubstitute,
+      findApprovers.bestandsmanagementSubstitute,
+      findApprovers.haustechnikSubstitute,
+      findApprovers.unternehmensentwicklungSubstitute,
     ]
       .filter(Boolean)
       .join(", ");
@@ -172,13 +179,17 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
 
     const userNames = existingActivity.registeredUsers
       .filter((user) =>
-        user.classesRegistered.some(
-          (registration) =>
-            registration.registeredClassID.equals(id) &&
-            ["genehmigt"].includes(registration.status)
+        user.classesRegistered.some((registration) =>
+          registration.registeredClassID.equals(id)
         )
       )
-      .map((user) => `${user.firstName} ${user.lastName} (${user.department})`);
+      .map((user) => {
+        const registration = user.classesRegistered.find((registration) =>
+          registration.registeredClassID.equals(id)
+        );
+        const status = registration ? registration.status : "N/A";
+        return `${user.firstName} ${user.lastName} (${user.department}) | Genehmigungsstatus: ${status}`;
+      });
 
     if (fieldsChanged) {
       const transporter = nodemailer.createTransport({
@@ -255,7 +266,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
           </table>
           <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p><br />
           <p>Bei Fragen gerne melden.</p>
-          <p>Euer Training Abteilung</p>
+          <p>Euer Training-Abteilung</p>
         </div>
       `;
       } else {
@@ -316,27 +327,27 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
             </tr>
           </tbody>
         </table>
-        <p>Die Anfrage dieser Benutzer wurde bereits genehmigt:</p>
+        <p>Folgende Mitarbeiter haben sich für diese Schulung angemeldet:</p>
         <ul>
           ${userNames.map((userName) => `<li>${userName}</li>`).join("")}
         </ul>
-        <p>Bitte informiert die Mitarbeiter eurer Abteilung und passt ihre Anfrage an, falls sie betroffen sind.</p>
+        <p>Bitte informiert die Mitarbeiter eurer Abteilung und passt deren Anfrage ggf. an.</p>
         <p>Bei Fragen gerne melden.</p>
-        <p>Euer Training Abteilung</p>
+        <p>Euer Training-Abteilung</p>
 
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
         <tr>
           <td align="center">
             <!-- VML-based button rendering for Outlook -->
             <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/classInformation/${id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/classInformation/${id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
               <w:anchorlock/>
               <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage bearbeiten</center>
             </v:roundrect>
             <![endif]-->
   
             <!-- Fallback for non-Outlook clients -->
-            <a href="http://localhost:5173/classInformation/${id}" style="
+            <a href="www.click-n-train.de/classInformation/${id}" style="
                 background-color: #007bff;
                 border-radius: 5px;
                 color: #ffffff;
@@ -361,20 +372,20 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
 
       const mailOptions = {
         from: {
-          name: "Schulung geändert - Training Academy - No reply",
+          name: "Schulung geändert - Click & Train - No reply",
           address: process.env.USER,
         },
         to: toAddresses,
-        subject: "Training Academy - Rent.Group München - Schulung geändert",
-        text: "Training Academy - Rent.Group München - Schulung geändert",
+        subject: "Click & Train - Rent.Group München - Schulung geändert",
+        text: "Click & Train - Rent.Group München - Schulung geändert",
         html: mailHtml,
       };
 
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.error("Error sending email:", error);
+          console.error("Error sending email!");
         } else {
-          console.log("Email sent:", info.response);
+          console.log("Email sent!");
         }
       });
     }
@@ -481,7 +492,7 @@ const cancelUserRegistration = asyncWrapper(async (req, res, next) => {
 
     res.json({ message: "Success", updatedCapacity: updatedClassActivity });
   } catch (error) {
-    console.error("Error in cancelUserRegistration:", error);
+    console.error("Error in cancelUserRegistration!");
     next(error);
   }
 });
@@ -548,7 +559,7 @@ const getAllActivities = asyncWrapper(async (req, res, next) => {
 
     res.json(allActivities);
   } catch (error) {
-    console.error("Error fetching activities:", error);
+    console.error("Error fetching activities!");
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -597,6 +608,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
   const userNames = allUsers.reduce((acc, user) => {
     const hasMatchingClass = user.classesRegistered.some(
       (singleClass) =>
+        singleClass.registeredClassID &&
         singleClass.registeredClassID._id.toString() === id &&
         (singleClass.status === "ausstehend" ||
           singleClass.status === "genehmigt")
@@ -629,20 +641,22 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
     findApprovers.it,
     findApprovers.fuhrpark,
     findApprovers.buchhaltung,
-    findApprovers.einkauf,
+    findApprovers.showroom,
     findApprovers.design,
-    findApprovers.projektmanagement,
-    findApprovers.officemanagement,
+    findApprovers.bestandsmanagement,
+    findApprovers.haustechnik,
+    findApprovers.unternehmensentwicklung,
     findApprovers.logistikSubstitute,
     findApprovers.vertriebSubstitute,
     findApprovers.hrSubstitute,
     findApprovers.itSubstitute,
     findApprovers.fuhrparkSubstitute,
     findApprovers.buchhaltungSubstitute,
-    findApprovers.einkaufSubstitute,
+    findApprovers.showroomSubstitute,
     findApprovers.designSubstitute,
-    findApprovers.projektmanagementSubstitute,
-    findApprovers.officemanagementSubstitute,
+    findApprovers.bestandsmanagementSubstitute,
+    findApprovers.haustechnikSubstitute,
+    findApprovers.unternehmensentwicklungSubstitute,
   ]
     .filter(Boolean)
     .join(", ");
@@ -662,7 +676,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
         </ul>
         <p>Bitte die Kollegen aus eurer Abteilung informieren, falls sie betroffen sind.</p>
         <p>Bei Fragen gerne melden.</p>
-        <p>Euer Training Abteilung</p>
+        <p>Euer Training-Abteilung</p>
       </div>
     `;
   } else {
@@ -679,19 +693,19 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
 
   const mailOptions = {
     from: {
-      name: "Schulung Abgesagt - Training Academy - No reply",
+      name: "Schulung Abgesagt - Click & Train - No reply",
       address: process.env.USER,
     },
     to: toAddresses,
-    subject: "Training Academy - Rent.Group München - Schulung Abgesagt",
-    text: "Training Academy - Rent.Group München - Schulung Abgesagt",
+    subject: "Click & Train - Rent.Group München - Schulung Abgesagt",
+    text: "Click & Train - Rent.Group München - Schulung Abgesagt",
     html: mailHtml,
   };
 
   try {
     await transporter.sendMail(mailOptions);
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error sending email!");
   }
 
   await ClassActivity.findByIdAndDelete(id);
@@ -746,7 +760,7 @@ const checkAndUpdateClassRegistrations = async () => {
       );
     }
   } catch (error) {
-    console.error("Error checking and updating class registrations:", error);
+    console.error("Error checking and updating class registrations!");
   }
 };
 
@@ -758,6 +772,261 @@ cron.schedule(
   {
     scheduled: true,
     timezone: "Europe/Berlin",
+  }
+);
+
+const enlist = asyncWrapper(async (req, res, next) => {
+  const { userId } = req.body;
+  const { id: classId } = req.params;
+
+  if (!userId || !classId) {
+    return res
+      .status(400)
+      .json({ message: "User ID and Class ID are required." });
+  }
+
+  const classActivity = await ClassActivity.findById(classId);
+  const user = await User.findById(userId);
+
+  if (!classActivity) {
+    return res.status(404).json({ message: "Class activity not found." });
+  }
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found." });
+  }
+
+  if (!classActivity.registeredUsers.includes(userId)) {
+    classActivity.registeredUsers.push(userId);
+
+    if (classActivity.capacity - classActivity.usedCapacity === 0) {
+      classActivity.capacity += 1;
+    }
+    classActivity.usedCapacity += 1;
+  } else {
+    return res.status(409).json({ message: "User already registered!" });
+  }
+
+  const classEntry = user.classesRegistered.find(
+    (entry) => entry.registeredClassID.toString() === classId
+  );
+
+  if (!classEntry) {
+    user.classesRegistered.push({
+      registeredClassID: classId,
+      status: "genehmigt",
+      statusAttended: "teilgenommen",
+    });
+  }
+
+  await classActivity.save();
+  await user.save();
+
+  res.status(201).json(classActivity);
+});
+
+const exportCalendar = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  const classActivity = await ClassActivity.findById(id);
+
+  if (!classActivity) {
+    return res.status(404).json({ message: "Class activity not found." });
+  }
+
+  const eventDate = new Date(classActivity.date);
+  const [hours, minutes] = classActivity.time.split(":").map(Number);
+
+  const event = {
+    start: [
+      eventDate.getFullYear(),
+      eventDate.getMonth() + 1,
+      eventDate.getDate(),
+      hours,
+      minutes,
+    ],
+    duration: { minutes: classActivity.duration },
+    title: classActivity.title,
+    description: classActivity.description || "",
+    location: classActivity.location || "",
+    organizer: { name: "Referent*in: " + classActivity.teacher || "Organizer" },
+  };
+
+  createEvent(event, (error, value) => {
+    if (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({ message: "Error generating calendar event." });
+    }
+
+    res.setHeader("Content-Type", "text/calendar");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${classActivity.title}.ics"`
+    );
+    res.send(value);
+  });
+});
+
+const sendReminder = asyncWrapper(async (req, res, next) => {
+  const { id: classId } = req.params;
+
+  if (!classId) {
+    return res.status(400).json({ message: "Class ID is required." });
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.USER,
+      pass: process.env.APP_PASSWORD,
+    },
+  });
+
+  const users = await User.find({
+    "classesRegistered.registeredClassID": classId,
+    "classesRegistered.reminded": false,
+  })
+    .populate("userContactInformation")
+    .populate({
+      path: "classesRegistered.registeredClassID",
+      select: "title date time",
+    });
+
+  if (!users.length) {
+    return res
+      .status(404)
+      .json({ message: "No users to remind for this class." });
+  }
+
+  for (const user of users) {
+    for (const registration of user.classesRegistered) {
+      if (
+        registration.registeredClassID &&
+        registration.registeredClassID._id.toString() === classId &&
+        !registration.reminded
+      ) {
+        const approver = await Approver.findById(user.userContactInformation);
+
+        if (!approver) {
+          console.error(`Approver not found for user: ${user._id}`);
+          continue;
+        }
+
+        const department = user.department.toLowerCase();
+        const approverEmail = approver[department];
+        const substituteEmail = approver[`${department}Substitute`];
+
+        if (!approverEmail || !substituteEmail) {
+          console.error(
+            `Approver or substitute email not found for department: ${department}`
+          );
+          continue;
+        }
+
+        const classDetails = registration.registeredClassID;
+        const { title, date, time } = classDetails || {};
+
+        const mailOptions = {
+          from: {
+            name: "Mitarbeiter wartet auf Genehmigung - Click & Train - No reply",
+            address: process.env.USER,
+          },
+          to: `${approverEmail}, ${substituteEmail}`, 
+          subject: `Reminder for User: ${user.firstName} ${user.lastName}`,
+          html: `Hallo zusammen,<br><br>
+          ${user.firstName} ${
+            user.lastName
+          } wartet immer noch auf eure Genehmigung für die folgende Schulung:<br><br>
+          
+          <strong>${title || "N/A"}</strong><br><br>
+          - Datum: ${date ? new Date(date).toLocaleDateString() : "N/A"}<br>
+          - Uhrzeit: ${time || "N/A"}<br><br>
+          
+          Bitte beantwortet die Anfrage schnellstmöglich.<br><br>
+          
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
+            <tr>
+              <td align="center">
+                <!-- VML-based button rendering for Outlook -->
+                <!--[if mso]>
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/classInformation/${classId}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+                  <w:anchorlock/>
+                  <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage beantworten</center>
+                </v:roundrect>
+                <![endif]-->
+        
+                <!-- Fallback for non-Outlook clients -->
+                <a href="www.click-n-train.de/classInformation/${classId}" style="
+                    background-color: #007bff;
+                    border-radius: 5px;
+                    color: #ffffff;
+                    display: inline-block;
+                    font-family: Arial, sans-serif;
+                    font-size: 16px;
+                    line-height: 50px;
+                    text-align: center;
+                    text-decoration: none;
+                    width: 200px;
+                    height: 50px;
+                    mso-hide: all;
+                    " target="_blank">
+                    Zum Genehmigungstool
+                </a>
+              </td>
+            </tr>
+          </table>
+          
+          <br>
+          Bei Fragen könnt ihr euch gerne melden.
+          Eure Training-Abteilung`,
+        };
+
+        try {
+          await transporter.sendMail(mailOptions);
+          console.log(
+            `Reminder sent to ${approverEmail} and ${substituteEmail}.`
+          );
+
+          registration.reminded = true;
+          await user.save();
+        } catch (error) {
+          console.error(`Failed to send reminder for user: ${user._id}`, error);
+        }
+      }
+    }
+  }
+
+  res.status(200).json({ message: "Reminders sent successfully." });
+});
+
+cron.schedule(
+  "00 03 * * *",
+  async () => {
+    console.log("Running Cron Job: Resetting 'reminded' status for all users");
+
+    try {
+      const users = await User.find();
+
+      for (const user of users) {
+        for (const registration of user.classesRegistered) {
+          registration.reminded = false; 
+        }
+
+        await user.save();
+        console.log(`Updated reminded status for user: ${user._id}`);
+      }
+
+      console.log("Successfully reset 'reminded' status for all users.");
+    } catch (error) {
+    }
+  },
+  {
+    timezone: "Europe/Berlin", 
   }
 );
 
@@ -773,4 +1042,7 @@ module.exports = {
   updateCancelationReason,
   deleteClass,
   checkAndUpdateClassRegistrations,
+  enlist,
+  exportCalendar,
+  sendReminder,
 };

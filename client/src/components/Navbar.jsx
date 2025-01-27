@@ -1,15 +1,25 @@
 import { NavLink } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthProvider";
 
 export default function Navbar() {
   const { isLoading, user, logout } = useContext(AuthContext);
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const countUnreadMessages = (messages) => {
     return messages.filter((message) => message.status === "unread").length;
   };
 
   const unreadMessagesCount = user ? countUnreadMessages(user.message) : 0;
+
+  const handleLinkClick = () => {
+    setIsOpen(false);
+  };
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <>
@@ -49,9 +59,9 @@ export default function Navbar() {
                           Meine Schulungen
                         </NavLink>
                       </li>
-                      {/* <li>
-                        <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
-                      </li> */}
+                      <li>
+                        <NavLink to={"/faq"}>FAQ</NavLink>
+                      </li>
                       <li className="relative">
                         <NavLink to={"/messages"}>
                           <svg
@@ -91,11 +101,13 @@ export default function Navbar() {
                       Abmelden
                     </NavLink>
                   </div>
+
                   <div className="lg:hidden dropdown dropdown-end mr-6 mt-1.5 items-center">
                     <div
                       tabIndex={0}
                       role="button"
                       className="btn btn-ghost btn-circle avatar"
+                      onClick={toggleDropdown}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -110,30 +122,56 @@ export default function Navbar() {
                         />
                       </svg>
                     </div>
-                    <ul
-                      tabIndex={0}
-                      className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-gray-800 rounded-box w-52"
-                    >
-                      <li>
-                        <NavLink to={"/classes"}>Schulungsübersicht</NavLink>
-                      </li>
-                      <li>
-                        <NavLink to={"/classesOverview"}>
-                          Meine Schulungen
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink to={"/messages"}>Nachrichten</NavLink>
-                      </li>
-                      {/* <li>
-                        <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
-                      </li> */}
-                      <li>
-                        <NavLink to={"/"} onClick={logout}>
-                          Abmelden
-                        </NavLink>
-                      </li>
-                    </ul>
+                    {isOpen && (
+                      <ul
+                        tabIndex={0}
+                        className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-gray-800 rounded-box w-52"
+                      >
+                        <li>
+                          <NavLink to={"/classes"} onClick={handleLinkClick}>
+                            Schulungsübersicht
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            to={"/classesOverview"}
+                            onClick={handleLinkClick}
+                          >
+                            Meine Schulungen
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink to={"/messages"} onClick={handleLinkClick}>
+                            Nachrichten
+                            <span
+                              className={`${
+                                unreadMessagesCount === 0
+                                  ? "hidden"
+                                  : "flex items-center justify-center px-2 bg-red-500 rounded-full text-white text-sm w-5 h-5"
+                              }`}
+                            >
+                              {unreadMessagesCount}
+                              <span className="rounded-full animate-ping bg-teal-200 w-full h-full"></span>
+                            </span>
+                          </NavLink>
+                        </li>
+
+                        <li>
+                          <NavLink to={"/faq"}>FAQ</NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            to={"/"}
+                            onClick={() => {
+                              handleLinkClick();
+                              logout();
+                            }}
+                          >
+                            Abmelden
+                          </NavLink>
+                        </li>
+                      </ul>
+                    )}
                   </div>
                 </>
               ) : user.role === "teacher" ? (
@@ -160,6 +198,7 @@ export default function Navbar() {
                       tabIndex={0}
                       role="button"
                       className="btn btn-ghost btn-circle avatar"
+                      onClick={toggleDropdown}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -174,22 +213,29 @@ export default function Navbar() {
                         />
                       </svg>
                     </div>
-                    <ul
-                      tabIndex={0}
-                      className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-gray-800 rounded-box w-52"
-                    >
-                      <li>
-                        <NavLink to={"/classes"}>Schulungsübersicht</NavLink>
-                      </li>
-                      {/* <li>
-                        <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
-                      </li> */}
-                      <li>
-                        <NavLink to={"/"} onClick={logout}>
-                          Abmelden
-                        </NavLink>
-                      </li>
-                    </ul>
+                    {isOpen && (
+                      <ul
+                        tabIndex={0}
+                        className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-gray-800 rounded-box w-52"
+                      >
+                        <li>
+                          <NavLink to={"/classes"} onClick={handleLinkClick}>
+                            Schulungsübersicht
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            to={"/"}
+                            onClick={() => {
+                              handleLinkClick();
+                              logout();
+                            }}
+                          >
+                            Abmelden
+                          </NavLink>
+                        </li>
+                      </ul>
+                    )}
                   </div>
                 </>
               ) : (
@@ -207,9 +253,6 @@ export default function Navbar() {
                       <li>
                         <NavLink to={"/admin/dashboard"}>Dashboard</NavLink>
                       </li>
-                      {/* <li>
-                        <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
-                      </li> */}
                     </ul>
                   </div>
                   <div className="px-2 xl:px-12 py-3 flex items-center">
@@ -228,6 +271,7 @@ export default function Navbar() {
                       tabIndex={0}
                       role="button"
                       className="btn btn-ghost btn-circle avatar"
+                      onClick={toggleDropdown}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -242,44 +286,56 @@ export default function Navbar() {
                         />
                       </svg>
                     </div>
-                    <ul
-                      tabIndex={0}
-                      className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-gray-800 rounded-box w-52"
-                    >
-                      <li>
-                        <NavLink to={"/admin/dashboard"}>Dashboard</NavLink>
-                      </li>
-                      <li>
-                        <NavLink to={"/classes"}>Schulungsübersicht</NavLink>
-                      </li>
-                      <li>
-                        <NavLink to={"/admin/createClass"}>
-                          Neue Schulung Erstellen
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink to={"/classesOverview"}>
-                          Meine Schulungen
-                        </NavLink>
-                      </li>
-
-                      <li>
-                        <NavLink to={"/admin/users"}>Benutzer Liste</NavLink>
-                      </li>
-                      <li>
-                        <NavLink to={"/admin/register"}>
-                          Benutzer Registrieren
-                        </NavLink>
-                      </li>
-                      {/* <li>
-                        <NavLink to={"/datenschutz"}>Datenschutz</NavLink>
-                      </li> */}
-                      <li>
-                        <NavLink to={"/"} onClick={logout}>
-                          Abmelden
-                        </NavLink>
-                      </li>
-                    </ul>
+                    {isOpen && (
+                      <ul
+                        tabIndex={0}
+                        className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-gray-800 rounded-box w-52"
+                      >
+                        <li>
+                          <NavLink to={"/classes"} onClick={handleLinkClick}>
+                            Schulungsübersicht
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            to={"/admin/createClass"}
+                            onClick={handleLinkClick}
+                          >
+                            Neue Schulung Erstellen
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            to={"/classesOverview"}
+                            onClick={handleLinkClick}
+                          >
+                            Meine Schulungen
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            to={"/admin/register"}
+                            onClick={handleLinkClick}
+                          >
+                            Benutzer Registrieren
+                          </NavLink>
+                        </li>
+                        {/* <li>
+            <NavLink to={"/faq"}>FAQ</NavLink>
+          </li> */}
+                        <li>
+                          <NavLink
+                            to={"/"}
+                            onClick={() => {
+                              handleLinkClick();
+                              logout();
+                            }}
+                          >
+                            Abmelden
+                          </NavLink>
+                        </li>
+                      </ul>
+                    )}
                   </div>
                 </>
               )}

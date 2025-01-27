@@ -14,6 +14,7 @@ export default function Register() {
 
   const [userInfomation, setUserInformation] = useState(null);
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+  const [selectedDepartment, setSelectedDepartment] = useState("user");
 
   useEffect(() => {
     axiosClient
@@ -28,8 +29,21 @@ export default function Register() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
     watch,
   } = useForm();
+
+  useEffect(() => {
+    if (userInfomation) {
+      setValue(
+        "additionalDepartments",
+        userInfomation.additionalDepartments || []
+      );
+      setValue("logID", userInfomation.logID);
+      setValue("department", userInfomation.department);
+      setSelectedDepartment(userInfomation.role);
+    }
+  }, [userInfomation, setValue]);
 
   const onSubmit = (data) => {
     axiosClient
@@ -63,7 +77,7 @@ export default function Register() {
         <div className="bg-gray-50/50 flex">
           <SideMenu />
           <div className="flex flex-col items-center py-8 lg:py-12 mx-auto w-10/12">
-            <div className="bg-white rounded-md shadow w-full lg:w-4/12">
+            <div className="bg-white rounded-md shadow w-full lg:w-6/12">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Update Benutzerinformationen:
@@ -72,7 +86,7 @@ export default function Register() {
                   className="space-y-4 w-full md:space-y-6"
                   onSubmit={handleSubmit(onSubmit)}
                 >
-                  <div className="flex flex-col lg:flex-row justify-around gap-2">
+                  <div className="flex flex-col lg:flex-row justify-between gap-2">
                     <div>
                       <label
                         htmlFor="firstName"
@@ -84,7 +98,7 @@ export default function Register() {
                         {...register("firstName", { required: true })}
                         defaultValue={userInfomation.firstName}
                         placeholder="Max"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
 
@@ -99,11 +113,11 @@ export default function Register() {
                         {...register("lastName", { required: true })}
                         defaultValue={userInfomation.lastName}
                         placeholder="Musterman"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col lg:flex-row justify-around gap-2">
+                  <div className="flex flex-col lg:flex-row justify-between ml-1 gap-2">
                     <div>
                       <label
                         htmlFor="logID"
@@ -112,21 +126,99 @@ export default function Register() {
                         Kürzel:
                       </label>
                       <input
-                        {...register("logID", { required: true })}
-                        defaultValue={userInfomation.logID}
-                        type="input"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Die Abkürzung sollte drei Zeichen lang sein..."
+                        {...register("logID", { required: true, maxLength: 3 })}
+                        value={watch("logID")}
+                        onChange={(e) => setValue("logID", e.target.value)}
+                        maxLength={3}
+                        placeholder="Drei Zeichen lang"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5"
                       />
                     </div>
-
                     <div>
+                      <label
+                        htmlFor="department"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Abteilung
+                      </label>
+                      <select
+                        {...register("department", { required: true })}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        value={watch("deparment")}
+                      >
+                        <option value="Vertrieb">Vertrieb</option>
+                        <option value="Logistik">Logistik</option>
+                        <option value="Fuhrpark">Fuhrpark</option>
+                        <option value="IT & Services">IT & Services</option>
+                        <option value="HR & Training">HR & Training</option>
+                        <option value="Buchhaltung">Buchhaltung</option>
+                        <option value="Showroom">Showroom</option>
+                        <option value="Design & Marketing">
+                          Design & Marketing
+                        </option>
+                        <option value="Bestandsmanagement">
+                          Bestandsmanagement
+                        </option>
+                        <option value="Haustechnik">Haustechnik</option>
+                        <option value="Unternehmensentwicklung">
+                          Unternehmensentwicklung
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col lg:flex-row justify-between gap-2">
+                    <div>
+                      <label
+                        htmlFor="role"
+                        className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Rolle:
+                      </label>
+
+                      <select
+                        {...register("role", {
+                          required: true,
+                        })}
+                        defaultValue={userInfomation.role}
+                        onChange={(e) => setSelectedDepartment(e.target.value)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      >
+                        <option value="admin">Admin</option>
+                        <option value="ASP">Genehmiger*in</option>
+                        <option value="teacher">Referent*in</option>
+                        <option value="user">User</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="status"
+                        className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Status:
+                      </label>
+
+                      <select
+                        {...register("status", {
+                          required: true,
+                        })}
+                        defaultValue={userInfomation.status}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      >
+                        <option value="aktiv">Aktiv</option>
+                        <option value="inaktiv">Inaktiv</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {selectedDepartment === "ASP" && (
+                    <div className="flex flex-col">
                       <div className="flex justify-start">
                         <label
                           htmlFor="department"
                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >
-                          Abteilung:
+                          Zusätzliche Abteilungen:
                         </label>
                         <div className="relative">
                           <div
@@ -159,91 +251,55 @@ export default function Register() {
                           )}
                         </div>
                       </div>
-                      <select
-                        {...register("department", {
-                          required: true,
-                        })}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        defaultValue={userInfomation.department}
-                      >
-                        <option value={"Logistik"}>Logistik</option>
-                        <option value={"Vertrieb"}>Vertrieb</option>
-                        <option value={"IT & Services"}>IT & Services</option>
-                        <option value={"Fuhrpark"}>Fuhrpark</option>
-                        <option value={"HR & Training"}>HR & Training</option>
-                        <option value={"Buchhaltung"}>Buchhaltung</option>
-                        <option value={"Einkauf"}>Einkauf & Anmietung</option>
-                        <option value={"Design & Planung"}>
-                          Design & Planung
-                        </option>
-                        <option value={"Projektmanagement"}>
-                          Projektmanagement
-                        </option>
-                        <option value={"Officemanagement"}>
-                          Office Management
-                        </option>
-                      </select>
-                    </div>
-                  </div>
 
-                  <div className="flex flex-col lg:flex-row justify-around gap-2">
-                    <div>
-                      <label
-                        htmlFor="role"
-                        className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Rolle:
-                      </label>
-
-                      <select
-                        {...register("role", {
-                          required: true,
-                        })}
-                        defaultValue={userInfomation.role}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      >
-                        <option value="admin">Admin</option>
-                        <option value="ASP">Genehmiger*in</option>
-                        <option value="teacher">Referent*in</option>
-                        <option value="user">User</option>
-                      </select>
+                      <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4 gap-1">
+                        {[
+                          "Logistik",
+                          "Vertrieb",
+                          "IT & Services",
+                          "Fuhrpark",
+                          "HR & Training",
+                          "Buchhaltung",
+                          "Showroom",
+                          "Design & Marketing",
+                          "Bestandsmanagement",
+                          "Haustechnik",
+                          "Unternehmensentwicklung",
+                        ].map((dep) => (
+                          <label className="flex items-center" key={dep}>
+                            <input
+                              type="checkbox"
+                              {...register("additionalDepartments")}
+                              value={dep}
+                              defaultChecked={userInfomation?.additionalDepartments?.includes(
+                                dep
+                              )}
+                              className="h-4 w-4 mr-1 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                            />
+                            {dep}
+                          </label>
+                        ))}
+                      </div>
                     </div>
-                    <div>
-                      <label
-                        htmlFor="status"
-                        className="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Status:
-                      </label>
+                  )}
 
-                      <select
-                        {...register("status", {
-                          required: true,
-                        })}
-                        defaultValue={userInfomation.status}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      >
-                        <option value="aktiv">Aktiv</option>
-                        <option value="inaktiv">Inaktiv</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="flex justify-center gap-4">
+                  <div className="flex justify-center">
                     <button
                       type="submit"
                       className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/3 rounded cursor-pointer shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                     >
                       Bestätigen
                     </button>
-
-                    <button
-                      onClick={() => navigate(-1)}
-                      className="bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/3 rounded cursor-pointer "
-                    >
-                      Abbrechen
-                    </button>
                   </div>
                 </form>
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => navigate(-1)}
+                    className="mt-[-15px] bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/3 rounded cursor-pointer "
+                  >
+                    Abbrechen
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -29,10 +29,10 @@ export default function Login() {
       </div>
 
       <section>
-        <div className="flex flex-col items-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div className="flex flex-col items-center px-3 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 className="font-anek text-md font-bold leading-tight tracking-tight text-gray-900 md:text-xl dark:text-white">
+            <div className="p-4 space-y-4 md:space-y-6 sm:p-8">
+              <h1 className="font-poppins text-md font-bold leading-tight tracking-tight text-gray-900 md:text-xl dark:text-white">
                 Melde dich hier mit deinem Konto an:
               </h1>
               <form
@@ -88,22 +88,22 @@ export default function Login() {
               <dialog id="forgotPassword" className="modal">
                 <div className="modal-box">
                   <div
-                    className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                    className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-2 py-4 shadow-md lg:px-4 lg:py-8"
                     role="alert"
                   >
                     <div className="flex">
                       <div className="py-1">
-                        <svg
-                          className="fill-current h-6 w-6 text-teal-500 mr-4"
+
+                      </div>
+                      <div>
+                        <p className="flex justify-between font-bold mb-6">Kennwort vergessen?                        <svg
+                          className="fill-current h-6 w-6 text-teal-500"
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
                         >
                           <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="font-bold mb-6">Kennwort vergessen?</p>
-                        <p className="text-sm mb-6">
+                        </svg></p>
+                        <p className="text-sm">
                           Um dein Kennwort zurückzusetzen, wende dich bitte an
                           deine Trainings- oder Personalabteilung.
                         </p>
@@ -120,7 +120,7 @@ export default function Login() {
 
               <dialog id="badCredentials" className="modal">
                 <div className="modal-box">
-                  <div className="bg-red-200 px-6 py-4 mx-2 my-4 rounded-md text-lg flex items-center justify-center mx-auto">
+                  <div className="bg-red-200 px-4 py-3 mx-2 mb-4 rounded-md text-lg flex items-center justify-center mx-auto">
                     <svg
                       viewBox="0 0 24 24"
                       className="text-red-600 w-5 h-5 sm:w-5 sm:h-5 mr-3"
@@ -130,7 +130,7 @@ export default function Login() {
                         d="M11.983,0a12.206,12.206,0,0,0-8.51,3.653A11.8,11.8,0,0,0,0,12.207,11.779,11.779,0,0,0,11.8,24h.214A12.111,12.111,0,0,0,24,11.791h0A11.766,11.766,0,0,0,11.983,0ZM10.5,16.542a1.476,1.476,0,0,1,1.449-1.53h.027a1.527,1.527,0,0,1,1.523,1.47,1.475,1.475,0,0,1-1.449,1.53h-.027A1.529,1.529,0,0,1,10.5,16.542ZM11,12.5v-6a1,1,0,0,1,2,0v6a1,1,0,1,1-2,0Z"
                       ></path>
                     </svg>
-                    <span className="flex justify-center w-full text-red-800 font-bold">
+                    <span className="flex text-[15px] justify-center w-full text-red-800 font-semibold">
                       {" "}
                       Anmeldung fehlgeschlagen{" "}
                     </span>
@@ -140,13 +140,12 @@ export default function Login() {
                     className="bg-red-100 border text-center  border-red-400 text-red-700 px-4 py-3 rounded relative"
                     role="alert"
                   >
-                    <span className="block sm:inline">
-                      Falsches Kürzel und/oder Kennwort.
-                    </span>
-                    <br />
-                    <span className="block sm:inline">
+                    <p className="mb-2">
+                      Falsches Kürzel und/oder Kennwort
+                    </p>
+                    <p>
                       Bitte erneut versuchen.
-                    </span>
+                    </p>
                   </div>
                   <div className="modal-action flex justify-center">
                     <form method="dialog" className="flex gap-2">

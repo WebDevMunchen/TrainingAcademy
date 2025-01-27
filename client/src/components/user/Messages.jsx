@@ -36,7 +36,7 @@ export default function Messages() {
         setReadStatus("read");
       })
       .catch((error) => {
-        console.error("Error marking message as read:", error);
+        console.error("Error marking message as read!");
       });
   };
 
@@ -62,7 +62,7 @@ export default function Messages() {
         setReadStatus(newStatus);
       })
       .catch((error) => {
-        console.error(`Error marking message as ${newStatus}:`, error);
+        console.error(`Error marking message with new status!`);
       });
   };
 
@@ -107,7 +107,7 @@ export default function Messages() {
         setUser(updatedUser);
       })
       .catch((error) => {
-        console.error("Error deleting message:", error);
+        console.error("Error deleting message!");
       });
   };
 
@@ -143,7 +143,7 @@ export default function Messages() {
   return (
     <>
       <div className="flex justify-center px-4 mx-auto rounded-full lg:mt-8">
-        <p className="hidden lg:flex font-anek text-4xl font-semibold tracking-widest text-g uppercase">
+        <p className="hidden lg:flex font-poppins text-4xl font-semibold tracking-widest text-g uppercase">
           Inbox
         </p>
       </div>
@@ -238,7 +238,7 @@ export default function Messages() {
             {!selectedMessage ? (
               <div className="flex flex-col justify-center items-center text-center">
                 <p className="text-gray-500 text-xl">
-                  Klick auf die Nachricht links, um den Inhalt zu sehen
+                  Klick auf die Nachricht, um den Inhalt zu sehen
                 </p>
               </div>
             ) : (
@@ -336,7 +336,7 @@ export default function Messages() {
 
                 <div className="mt-6">
                   <p className="mb-3">
-                    Bei Fragen komm gerne auf uns zu oder schreib uns per E-Mail
+                    Bei Fragen melde dich gerne 
                   </p>
                   <p className="mb-1">Liebe Grüße</p>
                   <p className="italic">{selectedMessage?.messageID?.sender}</p>

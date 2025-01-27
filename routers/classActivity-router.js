@@ -10,6 +10,9 @@ const {
   cancelUserRegistration,
   updateCancelationReason,
   deleteClass,
+  enlist,
+  exportCalendar,
+  sendReminder,
 } = require("../controllers/classActivity-controller.js");
 const { authenticate } = require("../middlewares/authentication.js");
 const { updateUserRegistration } = require("../controllers/user-controller.js");
@@ -41,5 +44,8 @@ classActivityRouter
   .route("/decreaseClassCapacity/:id")
   .put(authenticate, decreaseClassCapacity);
 classActivityRouter.route("/deleteClass/:id").delete(authenticate, deleteClass);
+classActivityRouter.route("/enlist/:id").put(authenticate, enlist);
+classActivityRouter.route("/sendReminder/:id").put(authenticate, sendReminder);
+classActivityRouter.route("/export-calendar/:id").get(authenticate, exportCalendar);
 
 module.exports = classActivityRouter;

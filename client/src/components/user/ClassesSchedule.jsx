@@ -10,12 +10,13 @@ export default function ClassesSchedule() {
     handleYearChange,
     currentMonth,
     currentYear,
+    isLoadingActivities,
   } = useContext(AuthContext);
 
-  const startYear = 2020;
-  const years = Array.from({ length: 11 }, (_, i) =>
-    (startYear + i).toString()
-  );
+  const startYear = 2025;
+  const years = Array.from({ length: 5 }, (_, i) => (startYear + i).toString());
+
+  console.log(allActivities);
 
   return (
     <section className="bg-blue-500ray-50 lg:mx-auto">
@@ -23,7 +24,7 @@ export default function ClassesSchedule() {
         <div className="relative mx-auto h-full pb-20 md:pb-10 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8">
           <div className="mx-auto sm:px-6 lg:px-8 relative">
             <div className="flex justify-center max-w-xl mx-auto text-center">
-              <p className="text-center font-anek text-2xl font-semibold tracking-widest text-g uppercase mt-3 mb-1 lg:text-4xl lg:w-fit">
+              <p className="text-center font-poppins text-2xl font-semibold tracking-widest text-g uppercase mt-3 mb-1 lg:text-4xl lg:w-fit">
                 ÜBERSICHT {currentMonth}
               </p>
             </div>
@@ -81,8 +82,15 @@ export default function ClassesSchedule() {
                 </svg>
               </button>
             </div>
-            <div className="grid grid-cols-1 gap-2 mt-12 sm:grid-cols-1 mt-2 w-[23rem] lg:mt-2 lg:w-11/12 mx-auto">
-              {allActivities.length === 0 ? (
+            <div className="grid grid-cols-1 gap-2 mt-12 sm:grid-cols-1 mt-2 w-11/12 lg:mt-2 lg:w-11/12 mx-auto">
+              {isLoadingActivities ? (
+                <div className="flex mt-2 justify-center">
+                  <div className="relative">
+                    <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+                    <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+                  </div>
+                </div>
+              ) : allActivities && allActivities.length === 0 ? (
                 <>
                   <img
                     className="mx-auto h-[calc(70vh-32px)] w-[calc(80vh-52px)] lg:hidden"
@@ -90,7 +98,7 @@ export default function ClassesSchedule() {
                     alt="logo"
                   />
                   <img
-                    className="hidden lg:inline mx-auto h-[calc(70vh-32px)] w-[calc(70vh-32px)]"
+                    className="hidden lg:inline mx-auto h-[calc(550px)] w-[calc(500px)]"
                     src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715669996/symbols/freepik-export-20240514065734UGY2_wpm9md.png"
                     alt="logo"
                   />

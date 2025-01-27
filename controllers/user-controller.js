@@ -7,6 +7,7 @@ const nodemailer = require("nodemailer");
 const ClassActivity = require("../models/classActivity-model.js");
 const Approver = require("../models/approver-model.js");
 const { format } = require("date-fns");
+const Message = require("../models/message-model.js");
 
 const createUser = asyncWrapper(async (req, res, next) => {
   const {
@@ -16,6 +17,7 @@ const createUser = asyncWrapper(async (req, res, next) => {
     lastName,
     role,
     department,
+    additionalDepartments,
     dateOfRegistration,
     status,
     classesRegistered,
@@ -36,6 +38,7 @@ const createUser = asyncWrapper(async (req, res, next) => {
     lastName,
     role,
     department,
+    additionalDepartments,
     dateOfRegistration,
     status,
     classesRegistered,
@@ -47,7 +50,15 @@ const createUser = asyncWrapper(async (req, res, next) => {
 });
 
 const updateUser = asyncWrapper(async (req, res, next) => {
-  const { logID, firstName, lastName, role, department, status } = req.body;
+  const {
+    logID,
+    firstName,
+    lastName,
+    role,
+    department,
+    status,
+    additionalDepartments,
+  } = req.body;
 
   const { id } = req.params;
   const contactInformationID = "668e958729a4cd5bb513f562";
@@ -58,6 +69,7 @@ const updateUser = asyncWrapper(async (req, res, next) => {
     lastName,
     role,
     department,
+    additionalDepartments,
     status,
     userContactInformation: contactInformationID,
   };
@@ -172,17 +184,20 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     case "Buchhaltung":
       recipientEmail = approver.buchhaltung;
       break;
-    case "Einkauf":
-      recipientEmail = approver.einkauf;
+    case "Showroom":
+      recipientEmail = approver.showroom;
       break;
-    case "Design & Planung":
+    case "Design & Marketing":
       recipientEmail = approver.design;
       break;
-    case "Projektmanagement":
-      recipientEmail = approver.projektmanagement;
+    case "Bestandsmanagement":
+      recipientEmail = approver.bestandsmanagement;
       break;
-    case "Officemanagement":
-      recipientEmail = approver.officemanagement;
+    case "Haustechnik":
+      recipientEmail = approver.haustechnik;
+      break;
+    case "Unternehmensentwicklung":
+      recipientEmail = approver.unternehmensentwicklung;
       break;
     default:
       recipientEmail = process.env.DEFAULT_APPROVER_EMAIL;
@@ -209,17 +224,20 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
     case "Buchhaltung":
       recipientEmailSubstitution = approver.buchhaltungSubstitute;
       break;
-    case "Einkauf":
-      recipientEmailSubstitution = approver.einkaufSubstitute;
+    case "Showroom":
+      recipientEmailSubstitution = approver.showroomSubstitute;
       break;
-    case "Design & Planung":
+    case "Design & Marketing":
       recipientEmailSubstitution = approver.designSubstitute;
       break;
-    case "Projektmanagement":
-      recipientEmailSubstitution = approver.projektmanagementSubstitute;
+    case "Bestandsmanagement":
+      recipientEmailSubstitution = approver.bestandsmanagementSubstitute;
       break;
-    case "Officemanagement":
-      recipientEmailSubstitution = approver.officemanagementSubstitute;
+    case "Haustechnik":
+      recipientEmailSubstitution = approver.haustechnikSubstitute;
+      break;
+    case "Unternehmensentwicklung":
+      recipientEmailSubstitution = approver.unternehmensentwicklungSubstitute;
       break;
     default:
       recipientEmailSubstitution = process.env.DEFAULT_APPROVER_EMAIL;
@@ -239,12 +257,12 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 
   const mailOptions = {
     from: {
-      name: "Ausstehende Genehmigung - Training Academy - No reply",
+      name: "Ausstehende Genehmigung - Click & Train - No reply",
       address: process.env.USER,
     },
     to: `${recipientEmail}, ${recipientEmailSubstitution}`,
-    subject: "Training Academy - Rent.Group München - Ausstehende Genehmigung",
-    text: "Training Academy - Rent.Group München - Ausstehende Genehmigung",
+    subject: "Click & Train - Rent.Group München - Ausstehende Genehmigung",
+    text: "Click & Train - Rent.Group München - Ausstehende Genehmigung",
     html: `
       <p>Es gibt eine neue Anfrage zur Schulungsteilnahme</p>
       <p><strong>${user.firstName} ${user.lastName}</strong> hat sich für die Schulung <em>"${registeredClass.title}"</em> angemeldet!</p>
@@ -256,14 +274,14 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
           <td align="center">
             <!-- VML-based button rendering for Outlook -->
             <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/classInformation/${activity_id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/classInformation/${activity_id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
               <w:anchorlock/>
               <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage bearbeiten</center>
             </v:roundrect>
             <![endif]-->
   
             <!-- Fallback for non-Outlook clients -->
-            <a href="http://localhost:5173/classInformation/${activity_id}" style="
+            <a href="www.click-n-train.de/classInformation/${activity_id}" style="
                 background-color: #007bff;
                 border-radius: 5px;
                 color: #ffffff;
@@ -365,6 +383,24 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
 
     const approver = await User.findById(approverId);
 
+    const newMessage = new Message({
+      sender: approver.firstName + " " + approver.lastName,
+      sendersEmail:
+        approver.firstName + "." + approver.lastName + "@rent.group",
+      messageTitle: `${activity.title}`,
+      messageContent: `Deine Anfrage zur Schulung "${activity.title}", die am ${formattedDate} um ${formattedTime} Uhr stattfindet, wurde ${newStatus}.`,
+      messageType: "Antwort zur Schulungsteilnahme",
+    });
+
+    await newMessage.save();
+
+    user.message.push({
+      messageID: newMessage._id,
+      status: "unread",
+    });
+
+    await user.save();
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       host: "smtp.gmail.com",
@@ -396,14 +432,14 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
           <td align="center">
             <!-- VML-based button rendering for Outlook -->
             <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/admin/dashboard" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/admin/dashboard" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
               <w:anchorlock/>
               <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Zum Genehmigungstool</center>
             </v:roundrect>
             <![endif]-->
   
             <!-- Fallback for non-Outlook clients -->
-            <a href="http://localhost:5173/admin/dashboard" style="
+            <a href="www.click-n-train.de/admin/dashboard" style="
                 background-color: #007bff;
                 border-radius: 5px;
                 color: #ffffff;
@@ -440,14 +476,14 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
           <td align="center">
             <!-- VML-based button rendering for Outlook -->
             <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/admin/dashboard" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/admin/dashboard" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
               <w:anchorlock/>
               <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Zum Genehmigungstool</center>
             </v:roundrect>
             <![endif]-->
   
             <!-- Fallback for non-Outlook clients -->
-            <a href="http://localhost:5173/admin/dashboard" style="
+            <a href="www.click-n-train.de/admin/dashboard" style="
                 background-color: #007bff;
                 border-radius: 5px;
                 color: #ffffff;
@@ -484,14 +520,14 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
           <td align="center">
             <!-- VML-based button rendering for Outlook -->
             <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/classInformation/${activity_id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/classInformation/${activity_id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
               <w:anchorlock/>
               <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage bearbeiten</center>
             </v:roundrect>
             <![endif]-->
   
             <!-- Fallback for non-Outlook clients -->
-            <a href="http://localhost:5173/admin/dashboard" style="
+            <a href="www.click-n-train.de/admin/dashboard" style="
                 background-color: #007bff;
                 border-radius: 5px;
                 color: #ffffff;
@@ -521,23 +557,22 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       },
       to: `${user.inbox}`,
       subject:
-        "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
-      text: "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
+        "Click & Train - Rent.Group München - Antwort auf Ausstehende Anfrage",
+      text: "Click & Train - Rent.Group München - Antwort auf Ausstehende Anfrage",
       html: mailHtml,
     };
 
     const sendMail = async (transporter, mailOptions) => {
       try {
         await transporter.sendMail(mailOptions);
-      } catch (error) {
-        // Handle email sending error
-      }
+      } catch (error) {}
     };
 
     sendMail(transporter, mailOptions);
 
     res.status(200).json({ message: "Class status updated successfully" });
   } catch (error) {
+    console.error("Error during class status update:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -662,7 +697,7 @@ const markRead = asyncWrapper(async (req, res, next) => {
 
     res.status(200).send(updatedUser);
   } catch (error) {
-    console.error("Error marking message as read:", error);
+    console.error("Error marking message as read!");
     res.status(500).send({ error: "Error marking message as read" });
   }
 });
@@ -685,7 +720,7 @@ const markNotRead = asyncWrapper(async (req, res, next) => {
 
     res.status(200).send(updatedUser);
   } catch (error) {
-    console.error("Error marking message as not read:", error);
+    console.error("Error marking message as not read!");
     res.status(500).send({ error: "Error marking message as not read" });
   }
 });
@@ -709,7 +744,7 @@ const deleteMessage = asyncWrapper(async (req, res, next) => {
 
     res.status(200).send({ message: "Deleted", user: updatedUser });
   } catch (error) {
-    console.error("Error deleting the message:", error);
+    console.error("Error deleting the message!");
     res.status(500).send({ error: "Error deleting message" });
   }
 });

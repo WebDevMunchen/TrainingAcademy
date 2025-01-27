@@ -198,7 +198,7 @@ export default function UserInfoCard() {
                     <p className="font-bold text-gray-700 text-xl">
                       {countNotAttended()}
                     </p>
-                    <p className="text-gray-400">Nicht teilgenommen</p>
+                    <p className="text-gray-400">Nicht teilgenomm.</p>
                   </div>
                 </div>
 
@@ -222,15 +222,15 @@ export default function UserInfoCard() {
                   </button>
                 </div>
               </div>
-              <div className="mt-12 text-center border-b pb-6">
-                <h1 className="text-4xl font-medium text-gray-700">
+              <div className="mt-12 text-center pb-2">
+                <h1 className="text-3xl font-medium text-gray-700">
                   {userInfomation?.firstName + " " + userInfomation?.lastName}
                 </h1>
                 <p className="font-light text-gray-600 mt-3">
                   <span className="font-medium">Registriert seit:</span>{" "}
                   {formattedDate}
                 </p>
-                <p className="font-light text-gray-600 mt-3">
+                <p className="font-light text-gray-600 mt-2">
                   <span className="font-medium">Status: </span>
                   <span
                     className={`px-2 inline-flex text-sm leading-5 font-semibold rounded-full ml-2  
@@ -244,11 +244,13 @@ export default function UserInfoCard() {
                   </span>
                 </p>
 
-                <p className="mt-8 text-gray-600">
-                  <span className="font-medium">Abteilung:</span>{" "}
-                  {userInfomation?.department.charAt(0).toUpperCase() +
-                    userInfomation?.department.slice(1)}{" "}
-                  - <span className="font-medium">Rolle: </span>
+                <p className="mt-2 text-gray-600">
+                  <span className="font-medium mr-1">Abteilung:</span>
+                  {userInfomation.department}
+                </p>
+
+                <p className="mt-2 text-gray-600">
+                  <span className="font-medium">Rolle: </span>
                   {userInfomation.role === "ASP" ? (
                     <span>Genehmiger*in</span>
                   ) : userInfomation.role === "teacher" ? (
@@ -261,28 +263,35 @@ export default function UserInfoCard() {
                   )}
                 </p>
                 <p className="mt-2 text-gray-600">
+                  <span className="font-medium mr-1">Verantwortlich für:</span>
+                  {userInfomation.additionalDepartments &&
+                  userInfomation.additionalDepartments.length > 0
+                    ? userInfomation.additionalDepartments
+                        .map(
+                          (dep) => dep.charAt(0).toUpperCase() + dep.slice(1)
+                        )
+                        .join(", ")
+                    : "-"}
+                </p>
+                <p className="mt-2 mb-2 text-gray-600">
                   <span className="font-medium"> Kürzel:</span>{" "}
                   {userInfomation?.logID}
                 </p>
                 <div className="flex items-center justify-center">
-                  <div>
-                    <button
-                      onClick={updatePBC}
-                      className="mt-1 font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125 lg:mt-0"
-                    >
-                      Kennwort zurücksetzen
-                    </button>
-                  </div>
+                  <button
+                    onClick={updatePBC}
+                    className="mt-1 font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125 lg:mt-0"
+                  >
+                    Kennwort zurücksetzen
+                  </button>
                 </div>
-                <div>
-                  <div className="mt-1 flex items-center justify-center lg:hidden">
-                    <NavLink
-                      to={`/admin/userProfile/update/${userInfomation?._id}`}
-                      className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125"
-                    >
-                      Benutzerinformationen bearbeiten
-                    </NavLink>
-                  </div>
+                <div className="mt-1 flex items-center justify-center lg:hidden">
+                  <NavLink
+                    to={`/admin/userProfile/update/${userInfomation?._id}`}
+                    className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125"
+                  >
+                    Benutzerinformationen bearbeiten
+                  </NavLink>
                 </div>
                 <dialog id="updatePBC" className="modal">
                   <div className="modal-box">
@@ -382,8 +391,8 @@ export default function UserInfoCard() {
                   </div>
                 </dialog>
               </div>
-              <div className="mt-6 flex flex-col min-h-96">
-                <div className="mb-4 flex justify-center text-xl font-medium">
+              <div className=" flex flex-col min-h-80">
+                <div className="mb-2 flex justify-center text-xl font-medium">
                   Schulungshistorie
                 </div>
                 <div className="h-[calc(38vh-32px)] overflow-x-scroll">
@@ -477,7 +486,7 @@ export default function UserInfoCard() {
                             <td className="py-3 px-5 border-b border-blue-gray-50 text-center">
                               <div className="flex items-center justify-center">
                                 <span
-                                  className={`px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full 
+                                  className={`px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
       ${
         activity
           ? activity?.status === "genehmigt"
@@ -533,12 +542,12 @@ export default function UserInfoCard() {
                               {activity &&
                               (activity?.status === "abgelehnt" ||
                                 activity?.status === "ausstehend") ? (
-                                <span className="px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full text-gray-500 bg-gray-200 text-gray-800">
+                                <span className="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-500 bg-gray-200 text-gray-800">
                                   nicht angemeldet
                                 </span>
                               ) : (
                                 <span
-                                  className={`px-2.5 py-1 inline-flex text-sm leading-5 font-semibold rounded-full 
+                                  className={`px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
         ${
           activity
             ? activity?.statusAttended === "teilgenommen"

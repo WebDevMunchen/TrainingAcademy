@@ -51,7 +51,7 @@ export default function ClassListPreview({ activity }) {
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">
-        <div className="flex justify-center">
+        <div className="flex gap-1 justify-center">
           {activity.department.map((image, index) => {
             return (
               <img key={index} src={image} alt="logo" className="w-12 h-12" />
@@ -72,12 +72,12 @@ export default function ClassListPreview({ activity }) {
         </p>
       </td>
 
-      <td className="py-3 px-2 border-b border-blue-gray-50">
+      <td className="py-3 px-5 border-b border-blue-gray-50">
         <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
           {activity.time}
         </p>
-        <p className="block antialiased  text-sm font-medium text-blue-gray-600 text-center">
-          {`(Dauer: ${activity.duration} min)`}
+        <p className="block antialiased text-xs font-medium text-blue-gray-600 text-center">
+          {`(${activity.duration} min)`}
         </p>
       </td>
 
@@ -127,7 +127,7 @@ export default function ClassListPreview({ activity }) {
           }}
           role="progressbar"
         >
-          <span className="text-neutral-800 font-bold">
+          <span className="text-neutral-800 font-bold tracking-widest">
             {activity.usedCapacity + "/" + activity.capacity}
           </span>
         </div>

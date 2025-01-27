@@ -11,6 +11,7 @@ const userSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   department: { type: String, required: true },
+  additionalDepartments: [{ type: String, required: true }],
   role: {
     type: String,
     enum: ["admin", "ASP", "teacher", "user"],
@@ -38,6 +39,7 @@ const userSchema = new Schema({
         default: "in Prüfung",
       },
       reason: { type: String, default: "None" },
+      reminded: {type: Boolean, default: true},
     },
   ],
   message: [

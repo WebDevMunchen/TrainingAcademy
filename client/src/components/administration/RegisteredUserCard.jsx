@@ -63,6 +63,7 @@ export default function RegisteredUserCard({
       })
       .then((response) => {
         return axiosClient.get(`/classActivity/${id}`);
+        i;
       })
       .then((responseSingleActivity) => {
         setActivity(responseSingleActivity.data);
@@ -218,7 +219,6 @@ export default function RegisteredUserCard({
       })
       .then((responseUsers) => {
         setAllUsers(responseUsers.data);
-        notifySuccess();
       })
       .catch((error) => {});
   };
@@ -252,7 +252,6 @@ export default function RegisteredUserCard({
       })
       .then((responseUsers) => {
         setAllUsers(responseUsers.data);
-        notifySuccess();
       })
       .catch((error) => {});
   };
@@ -263,6 +262,7 @@ export default function RegisteredUserCard({
       participated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
+      notifySuccessAttended();
     }
   };
 
@@ -272,6 +272,7 @@ export default function RegisteredUserCard({
       notParticipated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
+      notifySuccessAttended();
     }
   };
 
@@ -292,7 +293,7 @@ export default function RegisteredUserCard({
       progress: undefined,
       theme: "light",
       transition: Bounce,
-      className: "mt-14 mr-6",
+      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
     });
 
   const notifyError = () =>
@@ -306,7 +307,21 @@ export default function RegisteredUserCard({
       progress: undefined,
       theme: "light",
       transition: Bounce,
-      className: "mt-14 mr-6",
+      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
+    });
+
+  const notifySuccessAttended = () =>
+    toast.success("Teilnahmestatus geändert!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
     });
 
   const currentDate = new Date();
@@ -345,29 +360,32 @@ export default function RegisteredUserCard({
 
   const differenceMs = date1.getTime() - date2.getTime();
 
-  const differenceHours = differenceMs / (1000 * 60 * 60) + 2;
+  const differenceHours = differenceMs / (1000 * 60 * 60 + 2);
 
   const declineReasons = [
-    "Auslastung zu hoch",
-    "In der Zeit für dich nicht relevant",
-    "Es wird dir nichts beibringen",
+    "Inhaltlich nicht für den Aufgabenbereich relevant",
+    "Aufgrund der Änderung keine Teilnahme mehr möglich",
+    "Keine Vertretung verfügbar",
   ];
 
   return (
     <>
-      <div className="px-4 py-4">
-        <div className="flex items-center justify-between">
-          <h3 className="leading-6 font-medium text-gray-900 lg:text-lg">
+      <div className="px-3 py-2 lg:px-4 lg:py-4">
+        <div className="flex text-lg items-center justify-between ">
+          <h3 className="leading-6 text-sm font-medium text-gray-900 lg:text-lg">
             {registeredUser.firstName + " " + registeredUser.lastName}
           </h3>
 
-          <p className="font-medium text-gray-500">
-            <span className="font-semibold text-gray-900 lg:text-lg">
+          <div className="flex items-center gap-1 text-lg font-medium text-gray-500">
+            <span className="hidden lg:flex font-semibold text-gray-900 lg:text-lg">
               Abteilung:
             </span>{" "}
-            {registeredUser.department.charAt(0).toUpperCase() +
-              registeredUser.department.slice(1)}
-          </p>
+            <span className="mt-0.5 text-sm">
+              {registeredUser.department.length === 23
+                ? registeredUser.department.slice(0, 15) + "."
+                : registeredUser.department}
+            </span>
+          </div>
         </div>
         <div className="mt-2 flex items-center justify-between">
           <div className="flex flex-col items-start text-sm font-medium text-gray-500">
@@ -466,12 +484,12 @@ export default function RegisteredUserCard({
         <>
           <div
             className={`flex justify-center gap-4 px-4 pt-2 pb-6 ${
-              differenceHours > -24 ? "flex" : "hidden"
+              differenceHours > -25 ? "flex" : "hidden"
             }`}
           >
             <label className="cursor-pointer">
               <input type="radio" className="peer sr-only" />
-              <div className="shadow-md border w-40 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-blue-400 peer-checked:ring-offset-2 lg:w-72">
+              <div className="shadow-md border w-72 max-w-xl rounded-md bg-white p-4 text-gray-600 ring-2 ring-transparent transition-all hover:bg-slate-200 peer-checked:text-sky-600 hover:ring-blue-400 peer-checked:ring-offset-2 lg:w-72">
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-center">
                     <p className="text-sm font-semibold uppercase text-gray-500">
@@ -484,7 +502,7 @@ export default function RegisteredUserCard({
           </div>
           <div
             className={`flex justify-center gap-4 px-4 pt-2 pb-6 ${
-              differenceHours < -24 ? "flex" : "hidden"
+              differenceHours <= -25 ? "flex" : "hidden"
             }`}
           >
             {registeredUser.classesRegistered.some(
@@ -555,7 +573,7 @@ export default function RegisteredUserCard({
                   </div>
                 </button>
                 <dialog ref={modalRef} id="my_modal_1" className="modal">
-                  <div className="modal-box">
+                  <div className="modal-box px-3 py-4">
                     <div className="flex items-center gap-2">
                       <h3 className="font-bold text-lg">
                         Genehmigung ablehnen
@@ -585,9 +603,9 @@ export default function RegisteredUserCard({
                       ablehnen?
                     </p>
                     <div className="modal-action mr-2.5">
-                      <form method="dialog" className="flex gap-2">
+                    <form method="dialog" className="w-full">
                         <div>
-                          <div className="w-72 mx-auto lg:w-96 mr-8">
+                          <div>
                             <label
                               htmlFor="description"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -662,7 +680,7 @@ export default function RegisteredUserCard({
                     </span>
                   </button>
                   <dialog ref={modalRef} id="my_modal_1" className="modal">
-                    <div className="modal-box">
+                    <div className="modal-box px-3 py-4">
                       <div className="flex items-center gap-2">
                         <h3 className="font-bold text-lg">
                           Genehmigung ändern
@@ -684,48 +702,48 @@ export default function RegisteredUserCard({
                           </svg>
                         </span>
                       </div>
+                      <div>
+                        <p className="py-2">
+                          Möchtest du für{" "}
+                          {registeredUser.firstName +
+                            " " +
+                            registeredUser.lastName}{" "}
+                          die Anfrage zur Teilnahme an dieser Schulung wirklich
+                          ändern?
+                        </p>
+                      </div>
 
-                      <p className="py-2">
-                        Möchtest du für{" "}
-                        {registeredUser.firstName +
-                          " " +
-                          registeredUser.lastName}{" "}
-                        die Anfrage zur Teilnahme an dieser Schulung wirklich
-                        ändern?
-                      </p>
                       <div className="modal-action">
-                        <form method="dialog" className="flex gap-2">
+                        <form method="dialog" className="w-full">
                           {registeredUser.classesRegistered.some(
                             (element) =>
                               element.registeredClassID === activityId &&
                               element.status === "genehmigt"
                           ) ? (
                             <div>
-                              <div className="w-72 mr-0 lg:w-96 lg:mr-12">
-                                <label
-                                  htmlFor="description"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  Begründung:
-                                </label>
-                                <select
-                                  id="reason"
-                                  className="mb-4 mr-12 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                  value={declineReason}
-                                  onChange={(e) =>
-                                    setDeclineReason(e.target.value)
-                                  }
-                                >
-                                  <option value="">
-                                    Wähle eine Begründung
+                              <label
+                                htmlFor="description"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              >
+                                Begründung:
+                              </label>
+                              <select
+                                id="reason"
+                                className="mb-4 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                value={declineReason}
+                                onChange={(e) =>
+                                  setDeclineReason(e.target.value)
+                                }
+                              >
+                                <option value="" disabled>
+                                  Wähle eine Begründung
+                                </option>
+                                {declineReasons.map((reason, index) => (
+                                  <option key={index} value={reason}>
+                                    {reason}
                                   </option>
-                                  {declineReasons.map((reason, index) => (
-                                    <option key={index} value={reason}>
-                                      {reason}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
+                                ))}
+                              </select>
                               <div className="flex justify-end gap-2">
                                 <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
                                   <input
@@ -738,11 +756,11 @@ export default function RegisteredUserCard({
                                   In "abgelehnt" ändern
                                 </label>
 
-                                <button className="btn w-28">Abbrechen</button>
+                                <button className="btn w-fit">Abbrechen</button>
                               </div>
                             </div>
                           ) : (
-                            <>
+                            <div className="flex justify-end gap-2">
                               <label className="btn w-fit bg-green-600 text-white hover:bg-green-700">
                                 <input
                                   onChange={handleApproved}
@@ -754,7 +772,7 @@ export default function RegisteredUserCard({
                                 In "Genehmigt" ändern
                               </label>
                               <button className="btn w-28">Abbrechen</button>
-                            </>
+                            </div>
                           )}
                         </form>
                       </div>
@@ -767,7 +785,7 @@ export default function RegisteredUserCard({
         </>
       ) : (
         <>
-          {differenceHours < 24 && differenceHours > 0 ? (
+          {differenceHours < 23 && differenceHours > -1 ? (
             registeredUser.classesRegistered.some(
               (element) =>
                 element.registeredClassID === activityId &&
@@ -878,7 +896,7 @@ export default function RegisteredUserCard({
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold uppercase text-gray-500">
-                      {differenceHours > 24
+                      {differenceHours > 23
                         ? "Änderungen nicht mehr möglich"
                         : "Noch nicht begonnen"}
                     </p>

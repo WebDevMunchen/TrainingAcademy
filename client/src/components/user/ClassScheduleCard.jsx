@@ -61,11 +61,11 @@ export default function ClassScheduleCard({ activity }) {
 
   return (
     <>
-      <div className="bg-white border p-8 relative group shadow-lg">
+      <div className="bg-white border p-4 relative group shadow-lg lg:p-6">
         <div className="absolute bg-blue-500/50 top-0 left-0 w-24 h-1 transition-all duration-200 group-hover:bg-orange-300 group-hover:w-1/2"></div>
-        <div className="py-2 relative">
+        <div className="relative">
           <div className="flex justify-between lg:hidden">
-            <p className="font-semibold lg:hidden">
+            <p className="mb-2 font-semibold lg:hidden">
               Registrierungsende:{" "}
               <span className="font-normal">
                 {formattedDatePrior} um {activity.time}
@@ -88,10 +88,8 @@ export default function ClassScheduleCard({ activity }) {
             <p className="hidden lg:inline invisible w-72">
               Placeholder Longer
             </p>
-            <h3 className="hidden text-center lg:flex justify-center text-lg font-semibold text-black">
-              {activity.title}
-            </h3>
-            <h3 className="flex justify-center mx-auto text-center mb-2 text-lg font-semibold text-black lg:hidden">
+
+            <h3 className="flex justify-center mx-auto text-center mb-2 text-xl font-semibold text-black lg:hidden">
               {activity.title}
             </h3>
             <div className="flex flex-col">
@@ -115,11 +113,16 @@ export default function ClassScheduleCard({ activity }) {
               </p>
             </div>
           </div>
-
+          <div className="flex justify-center mt-6 mb-4">
+            <h3 className="hidden text-center lg:flex justify-center text-xl font-semibold text-black">
+              {activity.title}
+            </h3>
+          </div>
           <div className="flex justify-center mt-2 mb-1">
             <p>Zielgruppe</p>
           </div>
-          <div className="flex justify-center gap-2">
+          <div className="flex justify-center gap-1 py-1">
+
             {activity.department.map((image, index) => {
               return (
                 <img key={index} src={image} alt="logo" className="w-12 h-12" />
@@ -135,132 +138,132 @@ export default function ClassScheduleCard({ activity }) {
             </button>
           </div>
           <dialog id="legend" className="modal">
-            <div className="modal-box w-full max-w-5xl">
-              <h2 className="text-center font-anek font-semibold text-4xl">
+            <div className="modal-box w-full max-w-6xl">
+              <h2 className="text-center font-poppins font-semibold text-3xl">
                 Legende
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-3">
-                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                  <img
-                    className="w-20 mx-auto"
-                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/hczkglpvaybhguywjgku.png"
-                    alt="alle"
-                  />
-                  <p className="font-anek font-medium text-center text-lg">
-                    Alle
-                  </p>
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                    <img
+                      className="w-20 mx-auto"
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png"
+                      alt="alle"
+                    />
+                    <p className="font-poppins font-medium text-center text-md">
+                      Alle
+                    </p>
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                    <img
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png"
+                      alt="Vertrieb"
+                      className="w-20 mx-auto"
+                    />
+                    <p className="font-poppins font-medium text-center text-md">
+                      Vertrieb
+                    </p>
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                    <img
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png"
+                      alt="Logistik"
+                      className="w-20 mx-auto"
+                    />
+                    <p className="font-poppins font-medium text-center text-md">
+                      Logistik
+                    </p>
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                    <img
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png"
+                      alt="Fuhrpark"
+                      className="w-20 mx-auto"
+                    />
+                    <p className="font-poppins font-medium text-center text-md">
+                      Fuhrpark
+                    </p>
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                    <img
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png"
+                      alt="IT & Services"
+                      className="w-20 mx-auto"
+                    />
+                    <p className="font-poppins font-medium text-center text-md">
+                      IT & Services
+                    </p>
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                    <img
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png"
+                      alt="HR & Training"
+                      className="w-20 mx-auto"
+                    />
+                    <p className="font-poppins font-medium text-center text-md">
+                      HR & Training
+                    </p>
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                    <img
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png"
+                      alt="Buchhaltung"
+                      className="w-20 mx-auto"
+                    />
+                    <p className="font-poppins font-medium text-center text-md">
+                      Buchhaltung
+                    </p>
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                    <img
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png"
+                      alt="showroom"
+                      className="w-20 mx-auto"
+                    />
+                    <p className="font-poppins font-medium text-center text-md">
+                      Showroom
+                    </p>
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                    <img
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png"
+                      alt="Design & Marketing"
+                      className="w-20 mx-auto"
+                    />
+                    <p className="font-poppins font-medium text-center text-md">
+                      Design & Marketing
+                    </p>
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                    <img
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png"
+                      alt="Bestandsmanagement"
+                      className="w-20 mx-auto"
+                    />
+                    <p className="font-poppins font-medium text-center text-md">
+                    Bestandsmanagement
+                    </p>
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                    <img
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png"
+                      alt="Haustechnik"
+                      className="w-20 mx-auto"
+                    />
+                    <p className="font-poppins font-medium text-center text-md">
+                      Haustechnik
+                    </p>
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                    <img
+                      src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png"
+                      alt="Unternehmensentwicklung"
+                      className="w-20 mx-auto"
+                    />
+                    <p className="font-poppins font-medium text-center text-md">
+                    Unternehmensentwicklung
+                    </p>
+                  </div>
                 </div>
-                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                  <img
-                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ng4emaukxn9adrxpnvlu.png"
-                    alt="Vertrieb"
-                    className="w-20 mx-auto"
-                  />
-                  <p className="font-anek font-medium text-center text-lg">
-                    Vertrieb
-                  </p>
-                </div>
-                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                  <img
-                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/o4qwfioe3dkqrkhmumd4.png"
-                    alt="Logistik"
-                    className="w-20 mx-auto"
-                  />
-                  <p className="font-anek font-medium text-center text-lg">
-                    Logistik
-                  </p>
-                </div>
-                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                  <img
-                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/uaozccdgnwtcelxvqjug.png"
-                    alt="Fuhrpark"
-                    className="w-20 mx-auto"
-                  />
-                  <p className="font-anek font-medium text-center text-lg">
-                    Fuhrpark
-                  </p>
-                </div>
-                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                  <img
-                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ke8amlflgcdrvdfghzoz.png"
-                    alt="IT & Services"
-                    className="w-20 mx-auto"
-                  />
-                  <p className="font-anek font-medium text-center text-lg">
-                    IT & Services
-                  </p>
-                </div>
-                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                  <img
-                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/gmnv44k0nydrmfnbr67y.png"
-                    alt="HR & Training"
-                    className="w-20 mx-auto"
-                  />
-                  <p className="font-anek font-medium text-center text-lg">
-                    HR & Training
-                  </p>
-                </div>
-                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                  <img
-                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/ip7khvjx1dgxosk6lxnb.png"
-                    alt="Buchhaltung"
-                    className="w-20 mx-auto"
-                  />
-                  <p className="font-anek font-medium text-center text-lg">
-                    Buchhaltung
-                  </p>
-                </div>
-                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                  <img
-                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ydkcdshvmwdffe4tyf9f.png"
-                    alt="item8"
-                    className="w-20 mx-auto"
-                  />
-                  <p className="font-anek font-medium text-center text-lg">
-                    Einkauf & Anmietung
-                  </p>
-                </div>
-                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                  <img
-                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/wodezi58z28wwhcvhsev.png"
-                    alt="Design & Planung"
-                    className="w-20 mx-auto"
-                  />
-                  <p className="font-anek font-medium text-center text-lg">
-                    Design & Planung
-                  </p>
-                </div>
-                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                  <img
-                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ikluglsekc6msbuvgn0z.png"
-                    alt="Projektmanagement"
-                    className="w-20 mx-auto"
-                  />
-                  <p className="font-anek font-medium text-center text-lg">
-                    Projektmanagement
-                  </p>
-                </div>
-                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                  <img
-                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/p0m4tdmsd5qdmysdzolk.png"
-                    alt="Officemanagement"
-                    className="w-20 mx-auto"
-                  />
-                  <p className="font-anek font-medium text-center text-lg">
-                    Officemanagement
-                  </p>
-                </div>
-                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                  <img
-                    src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/l85s2hjejj6kzkzung8o.png"
-                    alt="Gesundheitsmanagement"
-                    className="w-20 mx-auto"
-                  />
-                  <p className="font-anek font-medium text-center text-lg">
-                    Gesundheitsmanagement
-                  </p>
-                </div>
-              </div>
               <div className="modal-action flex justify-center">
                 <form method="dialog" className="flex gap-2">
                   <button className="btn w-28">Schließen</button>
@@ -271,24 +274,17 @@ export default function ClassScheduleCard({ activity }) {
           <p className="w-full text-center lg:flex justify-center lg:w-7/12 mx-auto mt-2 text-base text-gray-600">
             {activity.description}
           </p>
-          <div className="grid grid-cols-3 grid-rows-1 gap-2 text-center lg:gap-0 lg:text-left justify-items-center">
+          {/* Desktop */}
+          <div className="hidden lg:grid grid-cols-3 grid-rows-1 gap-2 text-center lg:gap-0 lg:text-left justify-items-center">
             <div className="flex flex-col">
-              <p className="mt-4 text-base text-gray-600 lg:hidden">
-                <span className="font-bold">Kapazität:</span>{" "}
-                {activity.capacity + " Teilneh."}
-              </p>
-              <p className="hidden lg:inline mt-4 text-base text-gray-600">
-                <span className="font-bold">Kapazität:</span>{" "}
-                {activity.capacity + " Teilnehmer"}
-              </p>
               <p className="mt-4 text-base text-gray-600">
                 <span className="font-bold">Datum:</span> {formattedDate}
               </p>
-            </div>
-            <div className="flex flex-col">
               <p className="mt-4 text-base text-gray-600">
                 <span className="font-bold">Uhrzeit:</span> {activity.time}
               </p>
+            </div>
+            <div className="flex flex-col">
               <p className="mt-4 text-base text-gray-600 lg:hidden">
                 <span className="font-bold">Dauer:</span> <br />
                 {activity.duration + " Min."}
@@ -297,18 +293,73 @@ export default function ClassScheduleCard({ activity }) {
                 <span className="font-bold">Dauer:</span>{" "}
                 {activity.duration + " Min."}
               </p>
-            </div>
-            <div className="flex flex-col">
-              <p className="mt-4 text-base text-gray-600">
-                <span className="font-bold">Location:</span> {activity.location}
-              </p>
               <p className="mt-4 text-base text-gray-600">
                 <span className="font-bold">Referent*in:</span>{" "}
                 {activity.teacher}
               </p>
             </div>
+            <div className="flex flex-col">
+              <p className="mt-4 text-base text-gray-600">
+                <span className="font-bold">Location:</span> {activity.location}
+              </p>
+              <p className="mt-4 text-base text-gray-600 lg:hidden">
+                <span className="font-bold">Kapazität:</span>{" "}
+                {activity.capacity + " Teilneh."}
+              </p>
+              <p className="hidden lg:inline mt-4 text-base text-gray-600">
+                <span className="font-bold">Kapazität:</span>{" "}
+                {activity.capacity + " Teilnehmer"}
+              </p>
+            </div>
           </div>
-          <div className="flex justify-center">
+          {/* Mobile  */}
+          <div className="grid grid-cols-3 grid-rows-1 text-center lg:gap-0 lg:text-left justify-items-center lg:hidden">
+            <div className="flex flex-col">
+              <p className="mt-4 text-base text-gray-600">
+                <span className="font-bold">Datum:</span>
+                <br /> {formattedDate}
+              </p>
+              <p className="mt-4 text-base text-gray-600">
+                <span className="font-bold">Uhrzeit:</span>
+                <br /> {activity.time}
+              </p>
+            </div>
+            <div className="flex flex-col">
+              <p className="mt-4 text-base text-gray-600 lg:hidden">
+                <span className="font-bold">Dauer:</span> <br />
+                {activity.duration + " Min."}
+              </p>
+              <p className="hidden lg:inline mt-4 text-base text-gray-600">
+                <span className="font-bold">Dauer:</span>
+                <br />
+                {activity.duration + " Min."}
+              </p>
+
+              <p className="mt-4 text-base text-gray-600">
+                <span className="font-bold">Referent*in:</span>
+                <br />
+                {activity.teacher}
+              </p>
+            </div>
+            <div className="flex flex-col">
+              <p className="mt-4 text-base text-gray-600">
+                <span className="font-bold">Location:</span>
+                <br /> {activity.location}
+              </p>
+              <p className="mt-4 text-base text-gray-600 lg:hidden">
+                <span className="font-bold">Kapazität:</span>
+                <br />
+                {activity.capacity + " Teilneh."}
+              </p>
+              <p className="hidden lg:inline mt-4 text-base text-gray-600">
+                <span className="font-bold">Kapazität:</span>
+                <br />
+                {activity.capacity + " Teilnehmer"}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex justify-center mt-1">
             {user.role === "user" && !activityDatePassed && !oneDayPrior && (
               <>
                 {activity.capacity - activity.usedCapacity > 0 ? (
@@ -358,16 +409,15 @@ export default function ClassScheduleCard({ activity }) {
 
           <div className="flex justify-center gap-4">
             {(user.role === "ASP" ||
-              user.role === "admin" ||
-              user.role === "teacher") && (
+              user.role === "admin") && (
               <NavLink
                 to={`/classInformation/${activity?._id}`}
-                className="text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                className="flex items-center justify-center text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
               >
                 Details Anzeigen
               </NavLink>
             )}
-            {user.role === "admin" && (
+            {(user.role === "admin" || user.role === "teacher") && (
               <NavLink
                 to={`/classInformation/participation/${activity?._id}`}
                 className="text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"

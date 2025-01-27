@@ -39,8 +39,8 @@ export default function EditClass() {
 
         if (response.data.fileUrl) {
           const fileUrl = response.data.fileUrl;
-          const fileName = fileUrl.split("/").pop(); 
-          setSelectedFile(fileUrl); 
+          const fileName = fileUrl.split("/").pop();
+          setSelectedFile(fileUrl);
           setFileName(fileName);
         }
 
@@ -180,9 +180,9 @@ export default function EditClass() {
       ) : (
         <div className="bg-gray-50/50 flex">
           <SideMenu />
-          <div className="flex mt-4 flex-col items-center w-11/12 lg:py-7 mx-auto lg:mt-0 lg:w-5/12">
+          <div className="flex mt-4 flex-col items-center w-11/12 lg:py-4 mx-auto lg:mt-0 lg:w-6/12">
             <dialog id="deleteClass" className="modal">
-              <div className="modal-box  max-w-2xl">
+              <div className="modal-box max-w-3xl">
                 <div
                   className="flex items-center p-3 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-300 dark:border-red-800"
                   role="alert"
@@ -217,13 +217,13 @@ export default function EditClass() {
                       </li>
                       <li>Alle Genehmiger werden per E-Mail informiert</li>
                       <li>
-                        Schick eine Nachricht aus dem Benachrichtigungscenter,
-                        um den Mitarbeiter zu informieren
+                        Bitte eine Nachricht aus dem Benachrichtigungscenter
+                        senden, um den Mitarbeiter zu informieren
                       </li>
                       <li>
                         Diese Schulung kann{" "}
                         <span className="font-medium">nicht mehr</span>{" "}
-                        wiedegestellt werden!
+                        wiedergestellt werden!
                       </li>
                     </ul>
                   </div>
@@ -242,7 +242,7 @@ export default function EditClass() {
               </div>
             </dialog>
             <div className="bg-white rounded-md shadow w-11/12 lg:6/12">
-              <div className="p-6 space-y-4 md:space-y-2 sm:p-6">
+              <div className="p-6 space-y-4 md:space-y-2 sm:p-5">
                 <div className="flex items-center justify-between">
                   <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                     "{activityInformation.title}" bearbeiten:
@@ -489,67 +489,67 @@ export default function EditClass() {
                   >
                     Zielgruppe:
                   </label>
-                  <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-4 lg:grid-rows-3">
+                  <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
                     {[
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/hczkglpvaybhguywjgku.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png",
                         label: "Alle",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ng4emaukxn9adrxpnvlu.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png",
                         label: "Vertrieb",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/o4qwfioe3dkqrkhmumd4.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png",
                         label: "Logistik",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/uaozccdgnwtcelxvqjug.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png",
                         label: "Fuhrpark",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ke8amlflgcdrvdfghzoz.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png",
                         label: "IT & Services",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/gmnv44k0nydrmfnbr67y.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png",
                         label: "HR & Training",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/ip7khvjx1dgxosk6lxnb.png",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png",
                         label: "Buchhaltung",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ydkcdshvmwdffe4tyf9f.png",
-                        label: "Einkauf & Anmietung",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png",
+                        label: "Showroom",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/wodezi58z28wwhcvhsev.png",
-                        label: "Design & Planung",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png",
+                        label: "Design & Marketing",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/ikluglsekc6msbuvgn0z.png",
-                        label: "Projektmanagement",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png",
+                        label: "Bestandsmanagement",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088434/symbols/p0m4tdmsd5qdmysdzolk.png",
-                        label: "Officemanagement",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png",
+                        label: "Haustechnik",
                       },
                       {
                         value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1715088433/symbols/l85s2hjejj6kzkzung8o.png",
-                        label: "Gesundheitsmanagement",
+                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png",
+                        label: "Unternehmensentwicklung",
                       },
                     ].map(({ value, label }) => (
                       <div key={value} className="flex items-center mb-1">

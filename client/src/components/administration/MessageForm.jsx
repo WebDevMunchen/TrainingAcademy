@@ -12,7 +12,7 @@ export default function MessageForm() {
   const navigate = useNavigate();
 
   const sender = user.firstName + " " + user.lastName;
-  const sendersEmail = user.firstName + "." + user.lastName + "@partyrent.com";
+  const sendersEmail = user.firstName + "." + user.lastName + "@rent.group";
 
   const {
     register,
@@ -38,7 +38,7 @@ export default function MessageForm() {
     <div className="bg-gray-50/50 flex">
       <SideMenu />
       <div className="flex flex-col items-center px-0 py-8 lg:py-12 lg:px-6 mx-auto w-10/12">
-        <div className="bg-white rounded-md shadow w-full lg:w-4/12">
+        <div className="bg-white rounded-md shadow w-full lg:w-5/12">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Benachrichtigen
