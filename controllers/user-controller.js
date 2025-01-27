@@ -257,12 +257,12 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
 
   const mailOptions = {
     from: {
-      name: "Ausstehende Genehmigung - Training Academy - No reply",
+      name: "Ausstehende Genehmigung - Click & Train - No reply",
       address: process.env.USER,
     },
     to: `${recipientEmail}, ${recipientEmailSubstitution}`,
-    subject: "Training Academy - Rent.Group München - Ausstehende Genehmigung",
-    text: "Training Academy - Rent.Group München - Ausstehende Genehmigung",
+    subject: "Click & Train - Rent.Group München - Ausstehende Genehmigung",
+    text: "Click & Train - Rent.Group München - Ausstehende Genehmigung",
     html: `
       <p>Es gibt eine neue Anfrage zur Schulungsteilnahme</p>
       <p><strong>${user.firstName} ${user.lastName}</strong> hat sich für die Schulung <em>"${registeredClass.title}"</em> angemeldet!</p>
@@ -274,14 +274,14 @@ const updateUserRegistration = asyncWrapper(async (req, res, next) => {
           <td align="center">
             <!-- VML-based button rendering for Outlook -->
             <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/classInformation/${activity_id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/classInformation/${activity_id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
               <w:anchorlock/>
               <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage bearbeiten</center>
             </v:roundrect>
             <![endif]-->
   
             <!-- Fallback for non-Outlook clients -->
-            <a href="http://localhost:5173/classInformation/${activity_id}" style="
+            <a href="www.click-n-train.de/classInformation/${activity_id}" style="
                 background-color: #007bff;
                 border-radius: 5px;
                 color: #ffffff;
@@ -432,14 +432,14 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
           <td align="center">
             <!-- VML-based button rendering for Outlook -->
             <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/admin/dashboard" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/admin/dashboard" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
               <w:anchorlock/>
               <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Zum Genehmigungstool</center>
             </v:roundrect>
             <![endif]-->
   
             <!-- Fallback for non-Outlook clients -->
-            <a href="http://localhost:5173/admin/dashboard" style="
+            <a href="www.click-n-train.de/admin/dashboard" style="
                 background-color: #007bff;
                 border-radius: 5px;
                 color: #ffffff;
@@ -476,14 +476,14 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
           <td align="center">
             <!-- VML-based button rendering for Outlook -->
             <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/admin/dashboard" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/admin/dashboard" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
               <w:anchorlock/>
               <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Zum Genehmigungstool</center>
             </v:roundrect>
             <![endif]-->
   
             <!-- Fallback for non-Outlook clients -->
-            <a href="http://localhost:5173/admin/dashboard" style="
+            <a href="www.click-n-train.de/admin/dashboard" style="
                 background-color: #007bff;
                 border-radius: 5px;
                 color: #ffffff;
@@ -520,14 +520,14 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
           <td align="center">
             <!-- VML-based button rendering for Outlook -->
             <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/classInformation/${activity_id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/classInformation/${activity_id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
               <w:anchorlock/>
               <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage bearbeiten</center>
             </v:roundrect>
             <![endif]-->
   
             <!-- Fallback for non-Outlook clients -->
-            <a href="http://localhost:5173/admin/dashboard" style="
+            <a href="www.click-n-train.de/admin/dashboard" style="
                 background-color: #007bff;
                 border-radius: 5px;
                 color: #ffffff;
@@ -557,8 +557,8 @@ const updateClassStatus = asyncWrapper(async (req, res, next) => {
       },
       to: `${user.inbox}`,
       subject:
-        "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
-      text: "Training Academy - Rent.Group München - Antwort auf Ausstehende Anfrage",
+        "Click & Train - Rent.Group München - Antwort auf Ausstehende Anfrage",
+      text: "Click & Train - Rent.Group München - Antwort auf Ausstehende Anfrage",
       html: mailHtml,
     };
 

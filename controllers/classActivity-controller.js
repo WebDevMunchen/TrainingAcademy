@@ -340,14 +340,14 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
           <td align="center">
             <!-- VML-based button rendering for Outlook -->
             <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/classInformation/${id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/classInformation/${id}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
               <w:anchorlock/>
               <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage bearbeiten</center>
             </v:roundrect>
             <![endif]-->
   
             <!-- Fallback for non-Outlook clients -->
-            <a href="http://localhost:5173/classInformation/${id}" style="
+            <a href="www.click-n-train.de/classInformation/${id}" style="
                 background-color: #007bff;
                 border-radius: 5px;
                 color: #ffffff;
@@ -372,12 +372,12 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
 
       const mailOptions = {
         from: {
-          name: "Schulung geändert - Training Academy - No reply",
+          name: "Schulung geändert - Click & Train - No reply",
           address: process.env.USER,
         },
         to: toAddresses,
-        subject: "Training Academy - Rent.Group München - Schulung geändert",
-        text: "Training Academy - Rent.Group München - Schulung geändert",
+        subject: "Click & Train - Rent.Group München - Schulung geändert",
+        text: "Click & Train - Rent.Group München - Schulung geändert",
         html: mailHtml,
       };
 
@@ -693,12 +693,12 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
 
   const mailOptions = {
     from: {
-      name: "Schulung Abgesagt - Training Academy - No reply",
+      name: "Schulung Abgesagt - Click & Train - No reply",
       address: process.env.USER,
     },
     to: toAddresses,
-    subject: "Training Academy - Rent.Group München - Schulung Abgesagt",
-    text: "Training Academy - Rent.Group München - Schulung Abgesagt",
+    subject: "Click & Train - Rent.Group München - Schulung Abgesagt",
+    text: "Click & Train - Rent.Group München - Schulung Abgesagt",
     html: mailHtml,
   };
 
@@ -933,7 +933,7 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
 
         const mailOptions = {
           from: {
-            name: "Mitarbeiter wartet auf Genehmigung - Training Academy - No reply",
+            name: "Mitarbeiter wartet auf Genehmigung - Click & Train - No reply",
             address: process.env.USER,
           },
           to: `${approverEmail}, ${substituteEmail}`, 
@@ -954,14 +954,14 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
               <td align="center">
                 <!-- VML-based button rendering for Outlook -->
                 <!--[if mso]>
-                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://localhost:5173/classInformation/${classId}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/classInformation/${classId}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
                   <w:anchorlock/>
                   <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage beantworten</center>
                 </v:roundrect>
                 <![endif]-->
         
                 <!-- Fallback for non-Outlook clients -->
-                <a href="http://localhost:5173/classInformation/${classId}" style="
+                <a href="www.click-n-train.de/classInformation/${classId}" style="
                     background-color: #007bff;
                     border-radius: 5px;
                     color: #ffffff;

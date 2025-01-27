@@ -13,7 +13,7 @@ export default function SideMenu() {
         <div className="relative border-b border-white/20">
           <p className="flex items-center justify-center gap-4 pt-6 pb-4 px-8">
             <span className="block antialiased tracking-normal  text-base font-semibold leading-relaxed text-white">
-              Learning Center
+              Click & Train
             </span>
           </p>
           <p className="flex items-center justify-center gap-4 px-8 mb-4">
