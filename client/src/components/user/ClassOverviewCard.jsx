@@ -538,7 +538,7 @@ export default function ClassesOverviewCard({ activity }) {
               {activity.status === "genehmigt" && (
                 <div className="flex justify-center">
                   <button
-                    className="w-48 bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 lg:hidden"
+                    className="w-48 bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 lg:hidden"
                     onClick={exportCalendar}
                   >
                     Kalender Export

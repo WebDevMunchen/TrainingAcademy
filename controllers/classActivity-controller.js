@@ -836,6 +836,10 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
 
   const eventDate = new Date(classActivity.date);
   const [hours, minutes] = classActivity.time.split(":").map(Number);
+  
+  const endDate = new Date(eventDate);
+  endDate.setHours(hours);
+  endDate.setMinutes(minutes + classActivity.duration); 
 
   const event = {
     start: [
@@ -846,18 +850,17 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
       minutes,
     ],
     end: [
-      eventDate.getFullYear(),
-      eventDate.getMonth() + 1,
-      eventDate.getDate(),
-      hours,
-      minutes + classActivity.duration, // Ensure end time is properly set
+      endDate.getFullYear(),
+      endDate.getMonth() + 1,
+      endDate.getDate(),
+      endDate.getHours(),
+      endDate.getMinutes(),
     ],
     title: classActivity.title,
     description: classActivity.description || "",
     location: classActivity.location || "",
     organizer: { name: "Referent*in: " + (classActivity.teacher || "Organizer") },
   };
-  
 
   createEvent(event, (error, value) => {
     if (error) {
@@ -876,6 +879,7 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
     res.send(value);
   });
 });
+
 
 const sendReminder = asyncWrapper(async (req, res, next) => {
   const { id: classId } = req.params;
