@@ -26,14 +26,14 @@ export default function MessagesSide({ message, onClick, selected }) {
       >
         <div className="flex justify-between items-center">
           <h3
-            className={`text-sm ${
+            className={`text-xs ${
               message?.status === "read" ? "font-medium" : "font-bold"
-            }`}
+            } lg:text-base`}
           >
             {message?.messageID?.messageTitle || "No Title"}
           </h3>
           <p
-            className={`text-sm text-gray-400 ${
+            className={`text-xs lg:text-base text-gray-400 ${
               message?.status === "read" ? "font-normal" : "font-semibold"
             }`}
           >

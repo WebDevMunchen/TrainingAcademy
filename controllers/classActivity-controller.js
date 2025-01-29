@@ -860,11 +860,12 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
         .json({ message: "Error generating calendar event." });
     }
 
-    res.setHeader("Content-Type", "text/calendar");
+    res.setHeader("Content-Type", "text/calendar; charset=utf-8");
     res.setHeader(
       "Content-Disposition",
       `attachment; filename="${classActivity.title}.ics"`
     );
+    res.setHeader("Content-Transfer-Encoding", "binary");
     res.send(value);
   });
 });
@@ -936,7 +937,7 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
             name: "Mitarbeiter wartet auf Genehmigung - Click & Train - No reply",
             address: process.env.USER,
           },
-          to: `${approverEmail}, ${substituteEmail}`, 
+          to: `${approverEmail}, ${substituteEmail}`,
           subject: `Reminder for User: ${user.firstName} ${user.lastName}`,
           html: `Hallo zusammen,<br><br>
           ${user.firstName} ${
@@ -1014,7 +1015,7 @@ cron.schedule(
 
       for (const user of users) {
         for (const registration of user.classesRegistered) {
-          registration.reminded = false; 
+          registration.reminded = false;
         }
 
         await user.save();
@@ -1022,11 +1023,10 @@ cron.schedule(
       }
 
       console.log("Successfully reset 'reminded' status for all users.");
-    } catch (error) {
-    }
+    } catch (error) {}
   },
   {
-    timezone: "Europe/Berlin", 
+    timezone: "Europe/Berlin",
   }
 );
 
