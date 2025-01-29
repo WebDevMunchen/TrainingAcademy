@@ -850,7 +850,6 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
     description: classActivity.description || "",
     location: classActivity.location || "",
     organizer: { name: "Referent*in: " + classActivity.teacher || "Organizer" },
-    timezone: "Europe/Berlin", // Use a proper IANA timezone
   };
 
   createEvent(event, (error, value) => {
