@@ -15,7 +15,7 @@ export default function MessagesSide({ message, onClick, selected }) {
   return (
     <>
       <li
-        className={`py-2 border-y px-3 border-slate-300 transition hover:bg-indigo-100 hover:cursor-pointer lg:py-5 ${
+        className={`py-2 border-y px-3 border-slate-300 transition hover:bg-indigo-100 hover:cursor-pointer lg:py-2 ${
           selected
             ? "bg-blue-200"
             : message?.status === "read"
@@ -24,7 +24,7 @@ export default function MessagesSide({ message, onClick, selected }) {
         }`}
         onClick={onClick}
       >
-        <div className="flex justify-between items-center">
+        <div className="flex mb-2 justify-between items-center">
           <h3
             className={`text-xs ${
               message?.status === "read" ? "font-medium" : "font-bold"

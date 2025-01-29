@@ -845,12 +845,19 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
       hours,
       minutes,
     ],
-    duration: { minutes: classActivity.duration },
+    end: [
+      eventDate.getFullYear(),
+      eventDate.getMonth() + 1,
+      eventDate.getDate(),
+      hours,
+      minutes + classActivity.duration, // Ensure end time is properly set
+    ],
     title: classActivity.title,
     description: classActivity.description || "",
     location: classActivity.location || "",
-    organizer: { name: "Referent*in: " + classActivity.teacher || "Organizer" },
+    organizer: { name: "Referent*in: " + (classActivity.teacher || "Organizer") },
   };
+  
 
   createEvent(event, (error, value) => {
     if (error) {
