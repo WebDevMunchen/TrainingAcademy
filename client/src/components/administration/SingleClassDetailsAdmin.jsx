@@ -593,7 +593,7 @@ export default function SingleClassDetailsAdmin() {
                       </div>
                     </div>
                   </dialog>
-                  <p className="flex justify-center text-center mt-2 text-base text-gray-600">
+                  <p className="w-full text-center lg:flex justify-center lg:w-7/12 mx-auto mt-2 text-base text-gray-600">
                     {activity.description}
                   </p>
                   {/* Desktop */}

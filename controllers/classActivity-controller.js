@@ -266,7 +266,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
           </table>
           <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p><br />
           <p>Bei Fragen gerne melden.</p>
-          <p>Euer Training-Abteilung</p>
+          <p>Euere Trainingsabteilung</p>
         </div>
       `;
       } else {
@@ -333,7 +333,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
         </ul>
         <p>Bitte informiert die Mitarbeiter eurer Abteilung und passt deren Anfrage ggf. an.</p>
         <p>Bei Fragen gerne melden.</p>
-        <p>Euer Training-Abteilung</p>
+        <p>Euere Trainingsabteilung</p>
 
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
         <tr>
@@ -676,7 +676,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
         </ul>
         <p>Bitte die Kollegen aus eurer Abteilung informieren, falls sie betroffen sind.</p>
         <p>Bei Fragen gerne melden.</p>
-        <p>Euer Training-Abteilung</p>
+        <p>Euere Trainingsabteilung</p>
       </div>
     `;
   } else {
@@ -686,19 +686,19 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
         <p>Die Schulung <em>"${notifyBeforeDelete.title}"</em> wurde abgesagt.</p>
         <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p>
         <p>Bei Fragen gerne melden.</p>
-        <p>Euer Training Abteilung</p>
+        <p>Euere Trainingsabteilung</p>
       </div>
     `;
   }
 
   const mailOptions = {
     from: {
-      name: "Schulung Abgesagt - Click & Train - No reply",
+      name: "Schulung abgesagt - Click & Train - No reply",
       address: process.env.USER,
     },
     to: toAddresses,
-    subject: "Click & Train - Rent.Group München - Schulung Abgesagt",
-    text: "Click & Train - Rent.Group München - Schulung Abgesagt",
+    subject: "Click & Train - Rent.Group München - Schulung abgesagt",
+    text: "Click & Train - Rent.Group München - Schulung abgesagt",
     html: mailHtml,
   };
 
@@ -850,6 +850,7 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
     description: classActivity.description || "",
     location: classActivity.location || "",
     organizer: { name: "Referent*in: " + classActivity.teacher || "Organizer" },
+    timezone: "Europe/Berlin", // Use a proper IANA timezone
   };
 
   createEvent(event, (error, value) => {
@@ -983,7 +984,7 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
           
           <br>
           Bei Fragen könnt ihr euch gerne melden.
-          Eure Training-Abteilung`,
+          Eure Trainingabteilung`,
         };
 
         try {
