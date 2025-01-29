@@ -837,47 +837,39 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
   const eventDate = new Date(classActivity.date);
   const [hours, minutes] = classActivity.time.split(":").map(Number);
   
-  const endDate = new Date(eventDate);
-  endDate.setHours(hours);
-  endDate.setMinutes(minutes + classActivity.duration); 
+  // Ensure correct start time
+  eventDate.setHours(hours);
+  eventDate.setMinutes(minutes);
 
-  const event = {
-    start: [
-      eventDate.getFullYear(),
-      eventDate.getMonth() + 1,
-      eventDate.getDate(),
-      hours,
-      minutes,
-    ],
-    end: [
-      endDate.getFullYear(),
-      endDate.getMonth() + 1,
-      endDate.getDate(),
-      endDate.getHours(),
-      endDate.getMinutes(),
-    ],
-    title: classActivity.title,
-    description: classActivity.description || "",
-    location: classActivity.location || "",
-    organizer: { name: "Referent*in: " + (classActivity.teacher || "Organizer") },
+  // Calculate end time properly
+  const endDate = new Date(eventDate);
+  endDate.setMinutes(eventDate.getMinutes() + classActivity.duration);
+
+  // Format timestamps in YYYYMMDDTHHMMSSZ format
+  const formatDate = (date) => {
+    return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
   };
 
-  createEvent(event, (error, value) => {
-    if (error) {
-      console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Error generating calendar event." });
-    }
+  const icsData = `
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//YourApp//NONSGML v1.0//EN
+BEGIN:VEVENT
+UID:${id}@yourapp.com
+DTSTAMP:${formatDate(new Date())}
+DTSTART:${formatDate(eventDate)}
+DTEND:${formatDate(endDate)}
+SUMMARY:${classActivity.title}
+DESCRIPTION:${classActivity.description || ""}
+LOCATION:${classActivity.location || ""}
+ORGANIZER;CN="Referent*in: ${classActivity.teacher || "Organizer"}":mailto:no-reply@yourapp.com
+END:VEVENT
+END:VCALENDAR
+  `.trim(); // Trim to remove any leading/trailing spaces
 
-    res.setHeader("Content-Type", "text/calendar; charset=utf-8");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="${classActivity.title}.ics"`
-    );
-    res.setHeader("Content-Transfer-Encoding", "binary");
-    res.send(value);
-  });
+  res.setHeader("Content-Type", "text/calendar; charset=utf-8");
+  res.setHeader("Content-Disposition", `attachment; filename="${classActivity.title}.ics"`);
+  res.send(icsData);
 });
 
 
