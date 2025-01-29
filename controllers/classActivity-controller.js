@@ -829,33 +829,36 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
   const classActivity = await ClassActivity.findById(id);
-
   if (!classActivity) {
     return res.status(404).json({ message: "Class activity not found." });
   }
 
+  // Extract time components
   const eventDate = new Date(classActivity.date);
   const [hours, minutes] = classActivity.time.split(":").map(Number);
-  
-  // Ensure correct start time
+
+  // Set correct start time
   eventDate.setHours(hours);
   eventDate.setMinutes(minutes);
 
-  // Calculate end time properly
+  // Correctly calculate end time
   const endDate = new Date(eventDate);
-  endDate.setMinutes(eventDate.getMinutes() + classActivity.duration);
+  endDate.setMinutes(eventDate.getMinutes() + classActivity.duration); // This will roll over the hour if needed
 
-  // Format timestamps in YYYYMMDDTHHMMSSZ format
+  // Format timestamps in correct UTC format for Outlook compatibility
   const formatDate = (date) => {
     return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
   };
 
+  // Generate ICS event manually (fixes Outlook parsing issue)
   const icsData = `
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//YourApp//NONSGML v1.0//EN
+METHOD:PUBLISH
 BEGIN:VEVENT
 UID:${id}@yourapp.com
+SEQUENCE:0
 DTSTAMP:${formatDate(new Date())}
 DTSTART:${formatDate(eventDate)}
 DTEND:${formatDate(endDate)}
@@ -863,14 +866,18 @@ SUMMARY:${classActivity.title}
 DESCRIPTION:${classActivity.description || ""}
 LOCATION:${classActivity.location || ""}
 ORGANIZER;CN="Referent*in: ${classActivity.teacher || "Organizer"}":mailto:no-reply@yourapp.com
+STATUS:CONFIRMED
+TRANSP:OPAQUE
 END:VEVENT
 END:VCALENDAR
-  `.trim(); // Trim to remove any leading/trailing spaces
+  `.trim(); // Trim whitespace to avoid issues
 
+  // Set proper headers
   res.setHeader("Content-Type", "text/calendar; charset=utf-8");
   res.setHeader("Content-Disposition", `attachment; filename="${classActivity.title}.ics"`);
   res.send(icsData);
 });
+
 
 
 const sendReminder = asyncWrapper(async (req, res, next) => {
