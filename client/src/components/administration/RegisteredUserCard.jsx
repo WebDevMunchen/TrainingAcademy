@@ -480,6 +480,7 @@ export default function RegisteredUserCard({
           </div>
         </div>
       </div>
+      
       {user.role === "ASP" || user.role === "admin" ? (
         <>
           <div
@@ -603,7 +604,7 @@ export default function RegisteredUserCard({
                       ablehnen?
                     </p>
                     <div className="modal-action mr-2.5">
-                    <form method="dialog" className="w-full">
+                      <form method="dialog" className="w-full">
                         <div>
                           <div>
                             <label

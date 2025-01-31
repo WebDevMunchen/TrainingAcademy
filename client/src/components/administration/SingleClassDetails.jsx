@@ -3,8 +3,10 @@ import axiosClient from "../../utils/axiosClient";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import RegisterdUserCard from "./RegisteredUserCard";
 import { AuthContext } from "../../context/AuthProvider";
+import { motion, AnimatePresence } from "framer-motion";
 import "react-toastify/dist/ReactToastify.css";
 import { Bounce, toast } from "react-toastify";
+import UserInfo from "./UserInfo";
 
 export default function SingleClassDetails() {
   const {
@@ -26,6 +28,7 @@ export default function SingleClassDetails() {
   const [formattedDatePrior, setFormattedDatePrior] = useState("");
   const [formattedDatePriorGenehmigung, setFormattedDatePriorGenehmigung] =
     useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     axiosClient
@@ -677,22 +680,88 @@ export default function SingleClassDetails() {
               </div>
             </>
           )}
-          {filteredRegisteredUsers.map((registeredUser) => {
-            return (
-              <ul
-                key={registeredUser._id}
-                className="w-11/12 bg-white shadow overflow-hidden sm:rounded-md mx-auto mt-4 mb-6 lg:w-4/12"
+<div>
+  {filteredRegisteredUsers.map((registeredUser) => (
+    <div
+      key={registeredUser._id}
+      className="relative flex items-center w-full lg:w-4/12 mx-auto mt-4 mb-6"
+    >
+      {/* Animated Arrow (Left Side) */}
+      <motion.div
+        whileHover={{ x: [-10, 10, -10] }} // Moves left to right on hover
+        transition={{
+          duration: 0.8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute right-[-40px] flex items-center cursor-pointer"
+        onClick={() => setSelectedUser(registeredUser._id)} // Set user ID on click
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={40} // Adjust size if needed
+          height={40}
+          viewBox="0 0 24 24"
+          className="text-blue-500"
+        >
+          <path
+            fill="currentColor"
+            d="m15.632 12l-4.748-8.968l-1.768.936L13.368 12l-4.252 8.032l1.768.936z"
+          />
+        </svg>
+      </motion.div>
+
+      {/* Wrapper for RegisteredUserCard and UserInfo */}
+      <div className="relative flex w-full">
+        {/* User Card Component */}
+        <motion.div
+          initial={{ x: 0 }} // Initial position (no offset)
+          animate={{
+            x: selectedUser === registeredUser._id ? "-50%" : 0, // Move left when selected
+          }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="bg-white shadow overflow-hidden sm:rounded-md w-full lg:w-full" // Adjust width of card to leave space
+        >
+          <ul>
+            <li>
+              <RegisterdUserCard
+                registeredUser={registeredUser}
+                activityId={id}
+                setActivity={setActivity}
+              />
+            </li>
+          </ul>
+        </motion.div>
+
+        {/* Sliding UserInfo Component */}
+        <AnimatePresence>
+          {selectedUser === registeredUser._id && (
+            <motion.div
+              initial={{ x: "100%" }} // Start off-screen (right)
+              animate={{ x: 350 }} // Slide in
+              exit={{ x: "100%" }} // Slide out when closed
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="overflow-x-scroll absolute top-0 left-8/12 w-full lg:w-full h-full bg-gray-100 shadow-lg p-6" // Fixed width for UserInfo, only takes 1/3 of the width
+            >
+              {/* Close Button */}
+              <button
+                className="absolute top-4 right-4 text-lg"
+                onClick={() => setSelectedUser(null)} // Close the sliding panel
               >
-                <li>
-                  <RegisterdUserCard
-                    registeredUser={registeredUser}
-                    activityId={id}
-                    setActivity={setActivity}
-                  />
-                </li>
-              </ul>
-            );
-          })}
+                ✖
+              </button>
+
+              {/* User Info Component */}
+              <UserInfo userId={registeredUser._id} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  ))}
+</div>
+
+
         </>
       )}
     </>
