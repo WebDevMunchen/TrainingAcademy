@@ -18,7 +18,6 @@ export default function SingleClassDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const modalRef = useRef(null);
-  const modalRefMobile = useRef(null);
 
   const [activity, setActivity] = useState(null);
   const [isWithin48Hours, setIsWithin48Hours] = useState(false);
