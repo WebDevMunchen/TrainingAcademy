@@ -20,7 +20,6 @@ export default function SingleClassDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const modalRef = useRef(null);
-  const modalRefMobile = useRef(null);
 
   const [activity, setActivity] = useState(null);
   const [isWithin48Hours, setIsWithin48Hours] = useState(false);
@@ -584,7 +583,7 @@ export default function SingleClassDetails() {
                       </div>
                     </div>
                   </dialog>
-                  <p className="flex justify-center text-center mt-2 text-base text-gray-600">
+                  <p className="w-full text-center lg:flex justify-center lg:w-7/12 mx-auto mt-2 text-base text-gray-600">
                     {activity.description}
                   </p>
                   {/* Desktop */}

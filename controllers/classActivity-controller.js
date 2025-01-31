@@ -24,6 +24,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     year,
     time,
     teacher,
+    responsibleDepartments,
     safetyBriefing,
   } = req.body;
 
@@ -56,6 +57,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     time,
     teacher,
     safetyBriefing,
+    responsibleDepartments,
     fileUrl,
   });
 
@@ -266,7 +268,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
           </table>
           <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p><br />
           <p>Bei Fragen gerne melden.</p>
-          <p>Euer Training-Abteilung</p>
+          <p>Euere Trainingsabteilung</p>
         </div>
       `;
       } else {
@@ -333,7 +335,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
         </ul>
         <p>Bitte informiert die Mitarbeiter eurer Abteilung und passt deren Anfrage ggf. an.</p>
         <p>Bei Fragen gerne melden.</p>
-        <p>Euer Training-Abteilung</p>
+        <p>Euere Trainingsabteilung</p>
 
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
         <tr>
@@ -676,7 +678,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
         </ul>
         <p>Bitte die Kollegen aus eurer Abteilung informieren, falls sie betroffen sind.</p>
         <p>Bei Fragen gerne melden.</p>
-        <p>Euer Training-Abteilung</p>
+        <p>Euere Trainingsabteilung</p>
       </div>
     `;
   } else {
@@ -686,19 +688,19 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
         <p>Die Schulung <em>"${notifyBeforeDelete.title}"</em> wurde abgesagt.</p>
         <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p>
         <p>Bei Fragen gerne melden.</p>
-        <p>Euer Training Abteilung</p>
+        <p>Euere Trainingsabteilung</p>
       </div>
     `;
   }
 
   const mailOptions = {
     from: {
-      name: "Schulung Abgesagt - Click & Train - No reply",
+      name: "Schulung abgesagt - Click & Train - No reply",
       address: process.env.USER,
     },
     to: toAddresses,
-    subject: "Click & Train - Rent.Group München - Schulung Abgesagt",
-    text: "Click & Train - Rent.Group München - Schulung Abgesagt",
+    subject: "Click & Train - Rent.Group München - Schulung abgesagt",
+    text: "Click & Train - Rent.Group München - Schulung abgesagt",
     html: mailHtml,
   };
 
@@ -829,45 +831,56 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
   const classActivity = await ClassActivity.findById(id);
-
   if (!classActivity) {
     return res.status(404).json({ message: "Class activity not found." });
   }
 
+  // Extract time components
   const eventDate = new Date(classActivity.date);
   const [hours, minutes] = classActivity.time.split(":").map(Number);
 
-  const event = {
-    start: [
-      eventDate.getFullYear(),
-      eventDate.getMonth() + 1,
-      eventDate.getDate(),
-      hours,
-      minutes,
-    ],
-    duration: { minutes: classActivity.duration },
-    title: classActivity.title,
-    description: classActivity.description || "",
-    location: classActivity.location || "",
-    organizer: { name: "Referent*in: " + classActivity.teacher || "Organizer" },
+  // Set correct start time
+  eventDate.setHours(hours);
+  eventDate.setMinutes(minutes);
+
+  // Correctly calculate end time
+  const endDate = new Date(eventDate);
+  endDate.setMinutes(eventDate.getMinutes() + classActivity.duration); // This will roll over the hour if needed
+
+  // Format timestamps in correct UTC format for Outlook compatibility
+  const formatDate = (date) => {
+    return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
   };
 
-  createEvent(event, (error, value) => {
-    if (error) {
-      console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Error generating calendar event." });
-    }
+  // Generate ICS event manually (fixes Outlook parsing issue)
+  const icsData = `
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//YourApp//NONSGML v1.0//EN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:${id}@yourapp.com
+SEQUENCE:0
+DTSTAMP:${formatDate(new Date())}
+DTSTART:${formatDate(eventDate)}
+DTEND:${formatDate(endDate)}
+SUMMARY:${classActivity.title}
+DESCRIPTION:${classActivity.description || ""}
+LOCATION:${classActivity.location || ""}
+ORGANIZER;CN="Referent*in: ${classActivity.teacher || "Organizer"}":mailto:no-reply
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR
+  `.trim(); // Trim whitespace to avoid issues
 
-    res.setHeader("Content-Type", "text/calendar");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="${classActivity.title}.ics"`
-    );
-    res.send(value);
-  });
+  // Set proper headers
+  res.setHeader("Content-Type", "text/calendar; charset=utf-8");
+  res.setHeader("Content-Disposition", `attachment; filename="${classActivity.title}.ics"`);
+  res.send(icsData);
 });
+
+
 
 const sendReminder = asyncWrapper(async (req, res, next) => {
   const { id: classId } = req.params;
@@ -936,7 +949,7 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
             name: "Mitarbeiter wartet auf Genehmigung - Click & Train - No reply",
             address: process.env.USER,
           },
-          to: `${approverEmail}, ${substituteEmail}`, 
+          to: `${approverEmail}, ${substituteEmail}`,
           subject: `Reminder for User: ${user.firstName} ${user.lastName}`,
           html: `Hallo zusammen,<br><br>
           ${user.firstName} ${
@@ -983,7 +996,7 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
           
           <br>
           Bei Fragen könnt ihr euch gerne melden.
-          Eure Training-Abteilung`,
+          Eure Trainingabteilung`,
         };
 
         try {
@@ -1014,7 +1027,7 @@ cron.schedule(
 
       for (const user of users) {
         for (const registration of user.classesRegistered) {
-          registration.reminded = false; 
+          registration.reminded = false;
         }
 
         await user.save();
@@ -1022,11 +1035,10 @@ cron.schedule(
       }
 
       console.log("Successfully reset 'reminded' status for all users.");
-    } catch (error) {
-    }
+    } catch (error) {}
   },
   {
-    timezone: "Europe/Berlin", 
+    timezone: "Europe/Berlin",
   }
 );
 

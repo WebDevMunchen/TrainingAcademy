@@ -109,8 +109,7 @@ export default function ClassesOverviewCard({ activity }) {
         link.download = `${activity.registeredClassID.title}.ics`;
         link.click();
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const sendReminder = () => {
@@ -129,8 +128,7 @@ export default function ClassesOverviewCard({ activity }) {
       .then((responseActivities) => {
         setAllActivities(responseActivities.data);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   return (
@@ -521,24 +519,26 @@ export default function ClassesOverviewCard({ activity }) {
                   <p>Stornieren</p>
                 </button>
 
-                <button
-                  className={`w-48 ${
-                    activity.reminded
-                      ? "bg-gray-500 cursor-not-allowed"
-                      : "bg-gradient-to-b from-lime-500 to-lime-700"
-                  } 
+                {activity.status === "ausstehend" && (
+                  <button
+                    className={`w-48 ${
+                      activity.reminded
+                        ? "bg-gray-500 cursor-not-allowed"
+                        : "bg-gradient-to-b from-lime-500 to-lime-700"
+                    } 
               font-medium p-2 mt-2 md:p-2 text-white uppercase rounded transition transform hover:-translate-y-0.5`}
-                  onClick={sendReminder}
-                  disabled={activity.reminded} 
-                >
-                  <p>Nachfragen</p>
-                </button>
+                    onClick={sendReminder}
+                    disabled={activity.reminded}
+                  >
+                    <p>Nachfragen</p>
+                  </button>
+                )}
               </div>
 
               {activity.status === "genehmigt" && (
                 <div className="flex justify-center">
                   <button
-                    className="w-48 bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-2 mr-2.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 lg:hidden"
+                    className="w-48 bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 lg:hidden"
                     onClick={exportCalendar}
                   >
                     Kalender Export

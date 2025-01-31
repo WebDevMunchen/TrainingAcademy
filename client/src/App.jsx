@@ -29,10 +29,13 @@ import AuthorizeMessages from "./components/AuthorizeMessages";
 import PieCharStatisticsDecline from "./components/administration/PieChartStatisticsDecline";
 import PieChartStornoStatistics from "./components/administration/PieChartStornoStatistics";
 import PieChartAllClasses from "./components/administration/PieChartAllClasses";
+import AuthorizeApprover from "./components/AuthorizeApprover";
+import ApproverOverview from "./components/administration/ApproverOverview";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
   const allowedRolesMessage = ["user", "ASP"];
+  const allowedRoleApproverList = ["ASP"];
 
   return (
     <>
@@ -65,6 +68,12 @@ function App() {
             element={<AuthorizeMessages roles={allowedRolesMessage} />}
           >
             <Route path="messages" element={<Messages />} />
+          </Route>
+          <Route
+            path="/"
+            element={<AuthorizeApprover roles={allowedRoleApproverList} />}
+          >
+            <Route path="userOverview" element={<ApproverOverview />} />
           </Route>
 
           <Route
