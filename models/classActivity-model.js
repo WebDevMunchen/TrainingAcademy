@@ -45,6 +45,7 @@ const classActivitySchema = new Schema({
   time: { type: String, required: true },
   location: { type: String, required: true },
   department: [{ type: String }],
+  responsibleDepartments: [{type: String}],
   capacity: { type: Number, required: true },
   usedCapacity: { type: Number, default: 0 },
   registeredUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],

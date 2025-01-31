@@ -24,6 +24,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     year,
     time,
     teacher,
+    responsibleDepartments,
     safetyBriefing,
   } = req.body;
 
@@ -56,6 +57,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     time,
     teacher,
     safetyBriefing,
+    responsibleDepartments,
     fileUrl,
   });
 
@@ -865,7 +867,7 @@ DTEND:${formatDate(endDate)}
 SUMMARY:${classActivity.title}
 DESCRIPTION:${classActivity.description || ""}
 LOCATION:${classActivity.location || ""}
-ORGANIZER;CN="Referent*in: ${classActivity.teacher || "Organizer"}":mailto:no-reply@yourapp.com
+ORGANIZER;CN="Referent*in: ${classActivity.teacher || "Organizer"}":mailto:no-reply
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
