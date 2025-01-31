@@ -13,20 +13,49 @@ export default function CreateClass() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [hideFileUpload, setHideFileUpload] = useState("hidden");
   const [fileName, setFileName] = useState("");
-
+  const [responsibleDepartments, setResponsibleDepartments] = useState([]);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const departmentMap = {
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png": "Alle",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png": "Vertrieb",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png": "Logistik",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png": "Fuhrpark",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png": "IT & Services",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png": "HR & Training",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png": "Buchhaltung",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png": "Showroom",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png": "Design & Marketing",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png": "Bestandsmanagement",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png": "Haustechnik",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png": "Unternehmensentwicklung",
+  };
+
   const handleDepartmentChange = (e) => {
-    const department = e.target.value;
-    if (e.target.checked) {
-      setSelectedDepartments((prev) => [...prev, department]);
-    } else {
-      setSelectedDepartments((prev) => prev.filter((d) => d !== department));
-    }
+    const { value, checked } = e.target;
+    const departmentName = departmentMap[value];
+  
+    // Update responsibleDepartments state
+    setResponsibleDepartments((prev) => {
+      if (checked) {
+        return [...prev, departmentName];
+      } else {
+        return prev.filter((dept) => dept !== departmentName);
+      }
+    });
+  
+    // Update selectedDepartments state (URLs for departments)
+    setSelectedDepartments((prev) => {
+      if (checked) {
+        return [...prev, value]; // Add the URL of the selected department
+      } else {
+        return prev.filter((url) => url !== value); // Remove the URL of the unselected department
+      }
+    });
   };
 
   const handleFileChange = (e) => {
@@ -39,7 +68,8 @@ export default function CreateClass() {
 
   const onSubmit = async (data) => {
     data.department = selectedDepartments;
-
+    data.responsibleDepartments = responsibleDepartments;
+    console.log("Submitting Data:", data); // Debugging log
     const formData = new FormData();
     for (const key in data) {
       if (Array.isArray(data[key])) {
@@ -299,7 +329,7 @@ export default function CreateClass() {
                 >
                   Zielgruppe:
                 </label>
-                <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
+                {/* <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
                   <div className="flex items-center mb-1">
                     <input
                       type="checkbox"
@@ -488,7 +518,30 @@ export default function CreateClass() {
                       Unternehmensenent.
                     </label>
                   </div>
-                </div>
+                </div> */}
+
+<div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
+  {Object.entries(departmentMap).map(([url, name]) => (
+    <div key={name} className="flex items-center mb-1">
+      <input
+        type="checkbox"
+        value={url} // This is the URL you need in the department array
+        onChange={handleDepartmentChange}
+        className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+      />
+      <label className="ml-2 text-sm text-gray-900 dark:text-white">
+        {name}
+      </label>
+    </div>
+  ))}
+</div>
+
+
+      {/* Display Selected Departments */}
+      <div className="mt-4">
+        <h3 className="text-lg font-bold">Verantwortliche Abteilungen:</h3>
+        <p>{responsibleDepartments.join(", ") || "Keine ausgewählt"}</p>
+      </div>
 
                 <div className="flex justify-center">
                   <input
