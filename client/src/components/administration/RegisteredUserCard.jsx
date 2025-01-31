@@ -370,7 +370,7 @@ export default function RegisteredUserCard({
 
   return (
     <>
-      <div className="px-3 py-2 lg:px-4 lg:py-4">
+      <div className="px-3 py-2 lg:px-4 lg:py-6">
         <div className="flex text-lg items-center justify-between ">
           <h3 className="leading-6 text-sm font-medium text-gray-900 lg:text-lg">
             {registeredUser.firstName + " " + registeredUser.lastName}

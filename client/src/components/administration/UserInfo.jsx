@@ -50,12 +50,12 @@ export default function UserInfo({ userId }) {
                     </thead>
                     <tbody>
                       <tr>
-                        <td className="px-4 py-2 border-b">{formattedDate}</td>
-                        <td className="px-4 py-2 border-b">
+                        <td className="px-4 py-2">{formattedDate}</td>
+                        <td className="px-4 py-2">
                           {element.registeredClassID.time}
                         </td>
                         {/* Conditional badge for status */}
-                        <td className="flex items-center justify-center gap-2 px-4 py-2 border-b">
+                        <td className="flex items-center justify-center gap-2 px-4 py-2">
                           <span
                             className={`inline-block px-3 py-0.5 text-white font-medium rounded-full ${
                               element.status === "genehmigt"
@@ -88,7 +88,7 @@ export default function UserInfo({ userId }) {
                             </span>
                           )}
                         </td>
-                        <td className="px-4 py-2 border-b">
+                        <td className="px-4 py-2">
                         <span
                             className={`inline-block px-3 py-0.5 text-white font-medium rounded-full ${
                               element.statusAttended === "teilgenommen"
