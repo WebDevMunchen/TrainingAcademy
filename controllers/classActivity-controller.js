@@ -77,6 +77,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     year,
     time,
     teacher,
+    responsibleDepartments,
     safetyBriefing,
   } = req.body;
 
@@ -128,6 +129,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     year,
     time,
     teacher,
+    responsibleDepartments,
     safetyBriefing,
     fileUrl,
   };

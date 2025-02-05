@@ -17,6 +17,7 @@ export default function EditClass() {
   const [fileUploadHidden, setFileUploadHidden] = useState("hidden");
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
+  const [responsibleDepartments, setResponsibleDepartments] = useState([]);
 
   const {
     register,
@@ -24,10 +25,34 @@ export default function EditClass() {
     formState: { errors },
   } = useForm();
 
+  const departmentMap = {
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png":
+      "Alle",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png":
+      "Vertrieb",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png":
+      "Logistik",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png":
+      "Fuhrpark",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png":
+      "IT & Services",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png":
+      "HR & Training",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png":
+      "Buchhaltung",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png":
+      "Showroom",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png":
+      "Design & Marketing",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png":
+      "Bestandsmanagement",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png":
+      "Haustechnik",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png":
+      "Unternehmensentwicklung",
+  };
+
   useEffect(() => {
-    setFileUploadHidden(
-      activityInformation?.safetyBriefing ? "visible" : "hidden"
-    );
     axiosClient
       .get(`/classActivity/${id}`)
       .then((response) => {
@@ -44,9 +69,13 @@ export default function EditClass() {
           setFileName(fileName);
         }
 
+        // Initialize responsibleDepartments with the current value from the API response
+        const initialResponsibleDepartments =
+          response.data.responsibleDepartments || [];
+        setResponsibleDepartments(initialResponsibleDepartments);
+
         const currentDate = new Date();
         const { date, time } = response.data;
-
         if (date && time) {
           const [hoursStr, minutesStr] = time.split(":");
           const classDate = new Date(date);
@@ -61,20 +90,43 @@ export default function EditClass() {
           }
         }
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.error("Error fetching class activity:", error);
+      });
   }, [id, navigate]);
-
   const handleDepartmentChange = (e) => {
-    const department = e.target.value;
-    if (e.target.checked) {
-      setSelectedDepartments((prev) => [...prev, department]);
-    } else {
-      setSelectedDepartments((prev) => prev.filter((d) => d !== department));
-    }
+    const { value, checked } = e.target;
+
+    // Update selectedDepartments when checkbox is checked or unchecked
+    setSelectedDepartments((prev) => {
+      if (checked) {
+        // Add URL if checked
+        return [...prev, value];
+      } else {
+        // Remove URL if unchecked
+        return prev.filter((url) => url !== value);
+      }
+    });
+
+    const departmentName = departmentMap[value];
+    // Update responsibleDepartments
+    setResponsibleDepartments((prev) => {
+      if (checked) {
+        // Ensure the department is added only if not already in the list
+        if (!prev.includes(departmentName)) {
+          return [...prev, departmentName];
+        }
+      } else {
+        // Remove the department if it's unchecked
+        return prev.filter((dept) => dept !== departmentName);
+      }
+      return prev;
+    });
   };
 
   const onSubmit = async (data) => {
     data.department = selectedDepartments;
+    data.responsibleDepartments = responsibleDepartments;
 
     const formData = new FormData();
     for (const key in data) {
@@ -84,11 +136,13 @@ export default function EditClass() {
         formData.append(key, data[key]);
       }
     }
+
     if (selectedFile && typeof selectedFile !== "string") {
       formData.append("file", selectedFile);
     } else if (activityInformation?.fileUrl) {
       formData.append("existingFileUrl", activityInformation?.fileUrl);
     }
+
     try {
       await axiosClient.put(`/classActivity/editClass/${id}`, formData, {
         withCredentials: true,
@@ -106,9 +160,9 @@ export default function EditClass() {
       setAllUsers(usersResponse?.data);
 
       const userResponse = await axiosClient.get("/user/profile");
-
       setUser(userResponse?.data);
     } catch (error) {
+      console.error("Error submitting class activity:", error);
     } finally {
       navigate("/admin/dashboard");
     }
@@ -489,7 +543,7 @@ export default function EditClass() {
                   >
                     Zielgruppe:
                   </label>
-                  <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
+                  {/* <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
                     {[
                       {
                         value:
@@ -562,6 +616,23 @@ export default function EditClass() {
                         />
                         <label className="ml-2 text-sm text-gray-900 dark:text-white">
                           {label}
+                        </label>
+                      </div>
+                    ))}
+                  </div> */}
+
+                  <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
+                    {Object.entries(departmentMap).map(([url, name]) => (
+                      <div key={name} className="flex items-center mb-1">
+                        <input
+                          type="checkbox"
+                          value={url} // This is the URL you need in the department array
+                          onChange={handleDepartmentChange}
+                          checked={selectedDepartments.includes(url)} // This ensures the checkbox reflects the selectedDepartments state
+                          className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                        />
+                        <label className="ml-2 text-sm text-gray-900 dark:text-white">
+                          {name}
                         </label>
                       </div>
                     ))}
