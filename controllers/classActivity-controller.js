@@ -760,6 +760,19 @@ const checkAndUpdateClassRegistrations = async () => {
           },
         }
       );
+
+      await User.updateMany(
+        {
+          _id: { $in: registeredUserIds },
+          "classesRegistered.registeredClassID": classActivity._id,
+          "classesRegistered.statusAttended": "in Prüfung",
+        },
+        {
+          $set: {
+            "classesRegistered.$.statusAttended": "nicht teilgenommen",
+          },
+        }
+      );
     }
   } catch (error) {
     console.error("Error checking and updating class registrations!");
@@ -776,6 +789,7 @@ cron.schedule(
     timezone: "Europe/Berlin",
   }
 );
+
 
 const enlist = asyncWrapper(async (req, res, next) => {
   const { userId } = req.body;

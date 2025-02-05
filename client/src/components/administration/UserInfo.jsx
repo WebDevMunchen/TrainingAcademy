@@ -57,12 +57,12 @@ export default function UserInfo({ userId }) {
                         {/* Conditional badge for status */}
                         <td className="flex items-center justify-center gap-2 px-4 py-2">
                           <span
-                            className={`inline-block px-3 py-0.5 text-white font-medium rounded-full ${
+                            className={`inline-block px-3 py-0.5 font-medium rounded-full ${
                               element.status === "genehmigt"
-                                ? "bg-green-500"
+                                ? "bg-green-200 text-green-800"
                                 : element.status === "abgelehnt"
-                                ? "bg-red-500"
-                                : "bg-gray-500"
+                                ? "bg-red-200 text-red-700"
+                                : "bg-gray-200 text-gray-700"
                             }`}
                           >
                             {element.status}
@@ -89,13 +89,14 @@ export default function UserInfo({ userId }) {
                           )}
                         </td>
                         <td className="px-4 py-2">
-                        <span
-                            className={`inline-block px-3 py-0.5 text-white font-medium rounded-full ${
+                          <span
+                            className={`inline-block px-3 py-0.5 font-medium rounded-full ${
                               element.statusAttended === "teilgenommen"
-                                ? "bg-green-500"
-                                : element.statusAttended === "nicht teilgenommen"
-                                ? "bg-red-500"
-                                : "bg-amber-400"
+                                ? "bg-green-100 text-green-800"
+                                : element.statusAttended ===
+                                  "nicht teilgenommen"
+                                ? "bg-red-200 text-red-700"
+                                : "bg-gray-200 text-gray-700"
                             }`}
                           >
                             {element.statusAttended}

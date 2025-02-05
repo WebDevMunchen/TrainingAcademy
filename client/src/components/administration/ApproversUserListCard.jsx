@@ -196,7 +196,7 @@ export default function ApproversUserListCard({ user, selectedYear }) {
                 })}
               </div>
             ) : (
-              <p className="text-sm text-gray-500">No registered classes.</p>
+              <p className="my-4 text-sm text-center text-gray-500">Noch keine Schulungshistorie vorhanden</p>
             )}
           </motion.div>
         </td>
