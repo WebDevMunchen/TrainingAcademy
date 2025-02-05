@@ -352,6 +352,21 @@ export default function EditClass() {
                   </div>
 
                   <div className="flex gap-4">
+                    <div className="flex items-center gap-2">
+                      <label
+                        htmlFor="noRegistration"
+                        className="py-1.5 block text-sm font-medium text-gray-900 dark:text-white mt-1"
+                      >
+                        Schulung ohne Registrierung?
+                      </label>
+                      <input
+                        type="checkbox"
+                        {...register("noRegistration", { required: false })}
+                        id="noRegistration"
+                        className="checkbox mt-2"
+                        defaultChecked={activityInformation.noRegistration}
+                      />
+                    </div>
                     <div className="flex gap-2 items-center">
                       <label
                         htmlFor="safetyBriefing"
@@ -543,92 +558,15 @@ export default function EditClass() {
                   >
                     Zielgruppe:
                   </label>
-                  {/* <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
-                    {[
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png",
-                        label: "Alle",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png",
-                        label: "Vertrieb",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png",
-                        label: "Logistik",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png",
-                        label: "Fuhrpark",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png",
-                        label: "IT & Services",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png",
-                        label: "HR & Training",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png",
-                        label: "Buchhaltung",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png",
-                        label: "Showroom",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png",
-                        label: "Design & Marketing",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png",
-                        label: "Bestandsmanagement",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png",
-                        label: "Haustechnik",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png",
-                        label: "Unternehmensentwicklung",
-                      },
-                    ].map(({ value, label }) => (
-                      <div key={value} className="flex items-center mb-1">
-                        <input
-                          type="checkbox"
-                          value={value}
-                          onChange={handleDepartmentChange}
-                          className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-                          checked={selectedDepartments.includes(value)}
-                        />
-                        <label className="ml-2 text-sm text-gray-900 dark:text-white">
-                          {label}
-                        </label>
-                      </div>
-                    ))}
-                  </div> */}
 
                   <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
                     {Object.entries(departmentMap).map(([url, name]) => (
                       <div key={name} className="flex items-center mb-1">
                         <input
                           type="checkbox"
-                          value={url} // This is the URL you need in the department array
+                          value={url}
                           onChange={handleDepartmentChange}
-                          checked={selectedDepartments.includes(url)} // This ensures the checkbox reflects the selectedDepartments state
+                          checked={selectedDepartments.includes(url)}
                           className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         <label className="ml-2 text-sm text-gray-900 dark:text-white">

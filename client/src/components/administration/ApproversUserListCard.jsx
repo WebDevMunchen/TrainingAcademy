@@ -177,7 +177,7 @@ export default function ApproversUserListCard({ user, selectedYear }) {
                       </div>
 
                       {/* Status Attended Column */}
-                      <div className="px-4 w-[150px] ">
+                      <div className="px-4 w-[200px] text-center">
                         <span
                           className={`inline-block px-3 py-1 font-base text-sm rounded-full ${
                             registeredClass.statusAttended === "teilgenommen"

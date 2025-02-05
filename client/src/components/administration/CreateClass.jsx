@@ -162,6 +162,20 @@ export default function CreateClass() {
                 <div className="flex flex-col lg:flex-row gap-2 items-center">
                   <div className="flex items-center gap-2">
                     <label
+                      htmlFor="noRegistration"
+                      className="py-1.5 block text-sm font-medium text-gray-900 dark:text-white mt-1"
+                    >
+                      Schulung ohne Registrierung?
+                    </label>
+                    <input
+                      type="checkbox"
+                      {...register("noRegistration", { required: false })}
+                      id="noRegistration"
+                      className="checkbox mt-2"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label
                       htmlFor="safetyBriefing"
                       className="py-1.5 block text-sm font-medium text-gray-900 dark:text-white mt-1"
                     >

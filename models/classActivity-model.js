@@ -51,8 +51,10 @@ const classActivitySchema = new Schema({
   registeredUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],
   teacher: { type: String, required: true },
   safetyBriefing: { type: Boolean, default: false },
+  noRegistration: { type: Boolean, default: false },
   stornoReason: [{ type: String }],
   fileUrl: { type: String },
+  fileUrlPPT: {type: String}
 });
 
 const ClassActivity = model("ClassActivitie", classActivitySchema);

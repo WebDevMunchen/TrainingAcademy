@@ -10,6 +10,10 @@ const { format } = require("date-fns");
 const { DateTime } = require("luxon");
 const cron = require("node-cron");
 const { createEvent } = require("ics");
+const multer = require("multer");
+
+const storage = multer.diskStorage({});
+const upload = multer({ storage });
 
 const createClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -25,6 +29,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     time,
     teacher,
     responsibleDepartments,
+    noRegistration,
     safetyBriefing,
   } = req.body;
 
@@ -58,6 +63,7 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     teacher,
     safetyBriefing,
     responsibleDepartments,
+    noRegistration,
     fileUrl,
   });
 
@@ -78,6 +84,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     time,
     teacher,
     responsibleDepartments,
+    noRegistration,
     safetyBriefing,
   } = req.body;
 
@@ -131,6 +138,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     teacher,
     responsibleDepartments,
     safetyBriefing,
+    noRegistration,
     fileUrl,
   };
 
@@ -405,6 +413,55 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     next(error);
   }
 });
+
+const uploadClassFile = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!req.file) {
+    return res.status(400).json({ success: false, message: "No file uploaded" });
+  }
+
+  // ✅ Check if file is a .pptx
+  const allowedFormats = ["application/vnd.openxmlformats-officedocument.presentationml.presentation"];
+  if (!allowedFormats.includes(req.file.mimetype)) {
+    return res.status(400).json({ success: false, message: "Invalid file format. Please upload a .pptx file." });
+  }
+
+  try {
+    // ✅ Upload file to Cloudinary with explicit format
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      resource_type: "raw", // Ensures non-image files are handled correctly
+      format: "pptx", // Forces .pptx format
+      folder: "class_activities", // Optional: Store in a specific folder
+    });
+
+    // ✅ Update MongoDB with the Cloudinary URL
+    const activity = await ClassActivity.findByIdAndUpdate(
+      id,
+      { fileUrlPPT: result.secure_url },
+      { new: true }
+    );
+
+    if (!activity) {
+      return res.status(404).json({ success: false, message: "Activity not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "PPTX file uploaded and activity updated successfully",
+      data: activity,
+    });
+  } catch (error) {
+    console.error("Cloudinary upload error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error uploading file to Cloudinary",
+      error: error.message,
+    });
+  }
+});
+
+
 
 const updateCancelationReason = asyncWrapper(async (req, res, next) => {
   const { stornoReason } = req.body;
@@ -792,7 +849,6 @@ cron.schedule(
   }
 );
 
-
 const enlist = asyncWrapper(async (req, res, next) => {
   const { userId } = req.body;
   const { id: classId } = req.params;
@@ -883,7 +939,9 @@ DTEND:${formatDate(endDate)}
 SUMMARY:${classActivity.title}
 DESCRIPTION:${classActivity.description || ""}
 LOCATION:${classActivity.location || ""}
-ORGANIZER;CN="Referent*in: ${classActivity.teacher || "Organizer"}":mailto:no-reply
+ORGANIZER;CN="Referent*in: ${
+    classActivity.teacher || "Organizer"
+  }":mailto:no-reply
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
@@ -892,11 +950,12 @@ END:VCALENDAR
 
   // Set proper headers
   res.setHeader("Content-Type", "text/calendar; charset=utf-8");
-  res.setHeader("Content-Disposition", `attachment; filename="${classActivity.title}.ics"`);
+  res.setHeader(
+    "Content-Disposition",
+    `attachment; filename="${classActivity.title}.ics"`
+  );
   res.send(icsData);
 });
-
-
 
 const sendReminder = asyncWrapper(async (req, res, next) => {
   const { id: classId } = req.params;
@@ -1073,4 +1132,5 @@ module.exports = {
   enlist,
   exportCalendar,
   sendReminder,
+  uploadClassFile
 };

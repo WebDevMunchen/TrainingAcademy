@@ -23,6 +23,8 @@ export default function SingleClassDetailsAdmin() {
   const modalRefMobile = useRef(null);
 
   const [activity, setActivity] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isUploaded, setIsUploaded] = useState(false);
 
   useEffect(() => {
     axiosClient
@@ -126,8 +128,56 @@ export default function SingleClassDetailsAdmin() {
       });
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0]; // Get the selected file
+    setSelectedFile(file); // Update state
+    setIsUploaded(false);
+  };
+
+  const uploadFile = async () => {
+    if (!selectedFile) {
+      console.log("No file selected");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile); // Ensure key name matches `multer.single("file")`
+
+    try {
+      const response = await axiosClient.put(
+        `/classActivity/uploadFile/${id}`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Fake delay
+
+      setIsUploaded(true); // Set uploaded status after successful upload
+
+      notifySuccessUpload();
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
   const notifySuccess = () =>
     toast.success(`Mitarbeiter hinzugefügt!`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
+    });
+
+  const notifySuccessUpload = () =>
+    toast.success(`Datei-Upload erfolgreich`, {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -218,6 +268,57 @@ export default function SingleClassDetailsAdmin() {
                         >
                           Nachtragen
                         </button>
+
+                        <div className="flex gap-1">
+                          {/* Show file upload label only if no file is selected */}
+                          {!selectedFile && (
+                            <label
+                              htmlFor="file"
+                              className={
+                                hoursDifference < 0 && hoursDifference > -24
+                                  ? "flex items-center text-white h-[40px] px-4 uppercase rounded bg-orange-700 hover:bg-orange-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 hover:cursor-pointer"
+                                  : "hidden"
+                              }
+                            >
+                              {/* Tooltip and SVG */}
+                              <div className="tooltip" data-tip="Datei-Upload">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="w-6 fill-white inline"
+                                  viewBox="0 0 32 32"
+                                >
+                                  <path
+                                    d="M23.75 11.044a7.99 7.99 0 0 0-15.5-.009A8 8 0 0 0 9 27h3a1 1 0 0 0 0-2H9a6 6 0 0 1-.035-12 1.038 1.038 0 0 0 1.1-.854 5.991 5.991 0 0 1 11.862 0A1.08 1.08 0 0 0 23 13a6 6 0 0 1 0 12h-3a1 1 0 0 0 0 2h3a8 8 0 0 0 .75-15.956z"
+                                    data-original="#000000"
+                                  />
+                                  <path
+                                    d="M20.293 19.707a1 1 0 0 0 1.414-1.414l-5-5a1 1 0 0 0-1.414 0l-5 5a1 1 0 0 0 1.414 1.414L15 16.414V29a1 1 0 0 0 2 0V16.414z"
+                                    data-original="#000000"
+                                  />
+                                </svg>
+                              </div>
+
+                              <input
+                                type="file"
+                                id="file"
+                                className="hidden"
+                                onChange={handleFileChange}
+                                accept=".pptx"
+                              />
+                            </label>
+                          )}
+
+                          {/* Show "Hochladen" button when a file is selected */}
+                          {selectedFile && (
+                            <button
+                              onClick={uploadFile}
+                              className="flex items-center text-white h-[40px] px-4 uppercase rounded bg-emerald-500 hover:bg-emerald-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 hover:cursor-pointer"
+                            >
+                              {isUploaded ? "Hochgeladen" : "Hochladen"}
+                            </button>
+                          )}
+                        </div>
+
                         <NavLink
                           to={`/admin/editClass/${activity._id}`}
                           className="invisible flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
@@ -325,6 +426,27 @@ export default function SingleClassDetailsAdmin() {
                   </div>
                   <div className="flex justify-between lg:hidden">
                     <div className="flex">
+                      <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 48 48"
+                          strokeWidth={1.8}
+                          stroke="#15803d"
+                          className="w-7 h-7 mr-3"
+                          onClick={handleFileChange}
+                      >
+                        <g
+                          fill="none"
+                          stroke="#000"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="4"
+                        >
+                          <path d="M24.0079 41L23.9995 23" />
+                          <path d="M40.5178 34.3161C43.8044 32.005 45.2136 27.8302 44.0001 24C42.7866 20.1698 39.0705 18.0714 35.0527 18.0745H32.7317C31.2144 12.1613 26.2082 7.79572 20.1435 7.0972C14.0787 6.39868 8.21121 9.5118 5.38931 14.9253C2.56741 20.3388 3.37545 26.9317 7.42115 31.5035" />
+                          <path d="M30.3638 27.6359L23.9998 21.272L17.6358 27.6359" />
+                        </g>
+                      </svg>
                       <button
                         onClick={() => modalRefMobile.current.showModal()}
                         className={

@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
 import attended from "../../assets/attended.png";
@@ -12,6 +12,15 @@ export default function ClassesOverviewCard({ activity }) {
     useContext(AuthContext);
   const modalRef = useRef(null);
   const [selectedReason, setSelectedReason] = useState("");
+  const [fileUrlPPT, setFileUrlPPT] = useState(null);
+
+  useEffect(() => {
+    if (activity?.registeredClassID?.fileUrlPPT) {
+      setFileUrlPPT(activity.registeredClassID.fileUrlPPT);
+    }
+  }, [activity]);
+
+  console.log(activity.registeredClassID.fileUrlPPT);
 
   const cancelClass = (stornoReason) => {
     axiosClient
@@ -235,6 +244,76 @@ export default function ClassesOverviewCard({ activity }) {
                 Legende
               </button>
             </div>
+            <div className="flex justify-center gap-1">
+              {fileUrlPPT ? (
+                <a href={fileUrlPPT} download>
+                  <button className="flex items-center gap-2 font-medium text-orange-600 text-center transition-transform duration-300 transform hover:scale-125 mx-auto mt-1">
+                    Download Präsentation
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={32}
+                      height={32}
+                      viewBox="0 0 32 32"
+                    >
+                      <defs>
+                        <linearGradient
+                          id="vscodeIconsFileTypePowerpoint0"
+                          x1={4.494}
+                          x2={13.832}
+                          y1={-1748.086}
+                          y2={-1731.914}
+                          gradientTransform="translate(0 1756)"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop offset={0} stopColor="#ca4c28"></stop>
+                          <stop offset={0.5} stopColor="#c5401e"></stop>
+                          <stop offset={1} stopColor="#b62f14"></stop>
+                        </linearGradient>
+                      </defs>
+                      <path
+                        fill="#ed6c47"
+                        d="M18.93 17.3L16.977 3h-.146A12.9 12.9 0 0 0 3.953 15.854V16Z"
+                      ></path>
+                      <path
+                        fill="#ff8f6b"
+                        d="M17.123 3h-.146v13l6.511 2.6L30 16v-.146A12.9 12.9 0 0 0 17.123 3"
+                      ></path>
+                      <path
+                        fill="#d35230"
+                        d="M30 16v.143A12.905 12.905 0 0 1 17.12 29h-.287a12.907 12.907 0 0 1-12.88-12.857V16Z"
+                      ></path>
+                      <path
+                        d="M17.628 9.389V23.26a1.2 1.2 0 0 1-.742 1.1a1.2 1.2 0 0 1-.45.091H7.027a10 10 0 0 1-.521-.65a12.74 12.74 0 0 1-2.553-7.657v-.286A12.7 12.7 0 0 1 6.05 8.85a9 9 0 0 1 .456-.65h9.93a1.2 1.2 0 0 1 1.192 1.189"
+                        opacity={0.1}
+                      ></path>
+                      <path
+                        d="M16.977 10.04v13.871a1.2 1.2 0 0 1-.091.448a1.2 1.2 0 0 1-1.1.741H7.62q-.309-.314-.593-.65a10 10 0 0 1-.521-.65a12.74 12.74 0 0 1-2.553-7.657v-.286A12.7 12.7 0 0 1 6.05 8.85h9.735a1.2 1.2 0 0 1 1.192 1.19"
+                        opacity={0.2}
+                      ></path>
+                      <path
+                        d="M16.977 10.04v12.571a1.2 1.2 0 0 1-1.192 1.189H6.506a12.74 12.74 0 0 1-2.553-7.657v-.286A12.7 12.7 0 0 1 6.05 8.85h9.735a1.2 1.2 0 0 1 1.192 1.19"
+                        opacity={0.2}
+                      ></path>
+                      <path
+                        d="M16.326 10.04v12.571a1.2 1.2 0 0 1-1.192 1.189H6.506a12.74 12.74 0 0 1-2.553-7.657v-.286A12.7 12.7 0 0 1 6.05 8.85h9.084a1.2 1.2 0 0 1 1.192 1.19"
+                        opacity={0.2}
+                      ></path>
+                      <path
+                        fill="url(#vscodeIconsFileTypePowerpoint0)"
+                        d="M3.194 8.85h11.938a1.193 1.193 0 0 1 1.194 1.191v11.918a1.193 1.193 0 0 1-1.194 1.191H3.194A1.19 1.19 0 0 1 2 21.959V10.041A1.19 1.19 0 0 1 3.194 8.85"
+                      ></path>
+                      <path
+                        fill="#fff"
+                        d="M9.293 12.028a3.3 3.3 0 0 1 2.174.636a2.27 2.27 0 0 1 .756 1.841a2.56 2.56 0 0 1-.373 1.376a2.5 2.5 0 0 1-1.059.935a3.6 3.6 0 0 1-1.591.334H7.687v2.8H6.141v-7.922ZM7.686 15.94h1.331a1.74 1.74 0 0 0 1.177-.351a1.3 1.3 0 0 0 .4-1.025q0-1.309-1.525-1.31H7.686z"
+                      ></path>
+                    </svg>
+                  </button>
+                </a>
+              ) : (
+                <p className="hidden">Placeholder</p> // Display a fallback if no file URL is available
+              )}
+            </div>
+
             <dialog id="legend" className="modal">
               <div className="modal-box w-full max-w-6xl">
                 <h2 className="text-center font-poppins font-semibold text-3xl">
