@@ -228,7 +228,7 @@ export default function SingleClassDetailsAdmin() {
               <div className="flex justify-center">
                 <img
                   src="https://d2nk66epwbpimf.cloudfront.net/images/345249fd-0959-4762-bfbc-80ca4247abbb/54ad38e7-f4b4-4dc6-9e80-21e06958a192.png"
-                  className="h-32"
+                  className="h-48"
                   alt="logo"
                 />
               </div>
@@ -434,7 +434,7 @@ export default function SingleClassDetailsAdmin() {
           htmlFor="file"
           className={
             hoursDifference < 0 && hoursDifference > -24
-              ? "flex items-center bg-[] uppercase rounded shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 hover:cursor-pointer"
+              ? "flex items-center uppercase rounded font-medium transition transform hover:-translate-y-0.5 hover:cursor-pointer"
               : "hidden"
           }
         >
@@ -490,6 +490,51 @@ export default function SingleClassDetailsAdmin() {
               d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
             />
           </svg>
+          <dialog
+                        ref={modalRefMobile}
+                        id="my_modal_1"
+                        className="modal w-screen"
+                      >
+                        <div className="modal-box">
+                          <div className="modal-action">
+                            <form method="dialog" className="w-screen">
+                              <div className="flex flex-col gap-2">
+                                <select
+                                  id="mobileEnlist"
+                                  className="select select-bordered w-[100%] max-w-screen"
+                                >
+                                  <option disabled selected>
+                                    Wähle den Namen aus:
+                                  </option>
+                                  {allUsers
+                                    ?.filter(
+                                      (user) =>
+                                        user.role !== "teacher" &&
+                                        user.status !== "inaktiv"
+                                    )
+                                    .map((user) => (
+                                      <option key={user._id} value={user._id}>
+                                        {user.firstName} {user.lastName}
+                                      </option>
+                                    ))}
+                                </select>
+                                <div className="flex gap-2 mt-2 justify-end">
+                                  <button
+                                    className="btn w-fit bg-green-600 text-white hover:bg-green-700 text-xs sm:text-sm"
+                                    onClick={enlistMobile}
+                                  >
+                                    Bestätigen
+                                  </button>
+
+                                  <button className="btn w-fit bg-red-500 text-white hover:bg-red-600 text-xs sm:text-sm">
+                                    Abbrechen
+                                  </button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </dialog>
         </button>
 
         <button

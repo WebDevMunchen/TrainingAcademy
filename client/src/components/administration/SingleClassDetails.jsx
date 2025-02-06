@@ -228,7 +228,7 @@ export default function SingleClassDetails() {
               <div className="flex justify-center">
                 <img
                   src="https://d2nk66epwbpimf.cloudfront.net/images/345249fd-0959-4762-bfbc-80ca4247abbb/54ad38e7-f4b4-4dc6-9e80-21e06958a192.png"
-                  className="h-32"
+                  className="h-48"
                   alt="logo"
                 />
               </div>

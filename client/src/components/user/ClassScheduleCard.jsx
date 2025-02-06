@@ -103,25 +103,30 @@ export default function ClassScheduleCard({ activity }) {
             </p>
           </div>
           <div className="flex justify-center lg:justify-between">
-            <button
-              className="hidden lg:inline bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-1.5 md:p-2 text-white uppercase rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-              onClick={exportCalendar}
-              data-tip="hello" // Apply data-tip directly to button or svg
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={32}
-                height={32}
-                viewBox="0 0 512 512"
-                className="tooltip" // Optionally add tooltip class here if you want custom styles
+            {user.role !== "user" && user.role !== "teacher" ? (
+              <div className="tooltip" data-tip="Kalender Export">
+              <button
+                className="hidden lg:inline font-medium p-1.5 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition transform hover:-translate-y-0.5"
+                onClick={exportCalendar}
               >
-                <path
-                  fill="currentColor"
-                  d="M32 456a24 24 0 0 0 24 24h400a24 24 0 0 0 24-24V176H32Zm320-244a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm-80-80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm-80-80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4ZM456 64h-55.92V32h-48v32H159.92V32h-48v32H56a23.8 23.8 0 0 0-24 23.77V144h448V87.77A23.8 23.8 0 0 0 456 64"
-                ></path>
-              </svg>
-            </button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width={32}
+                  height={32}
+                  viewBox="0 0 512 512"
+                  className="text-blue-500"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M32 456a24 24 0 0 0 24 24h400a24 24 0 0 0 24-24V176H32Zm320-244a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm-80-80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm-80-80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4ZM456 64h-55.92V32h-48v32H159.92V32h-48v32H56a23.8 23.8 0 0 0-24 23.77V144h448V87.77A23.8 23.8 0 0 0 456 64"
+                  ></path>
+                </svg>
+              </button>
+              </div>
 
+            ) : (
+              <p className="hidden lg:block invisible">Forbidden</p>
+            )}
             <h3 className="flex justify-center mx-auto text-center mb-2 text-xl font-semibold text-black lg:hidden">
               {activity.title}
             </h3>
@@ -171,12 +176,16 @@ export default function ClassScheduleCard({ activity }) {
           </div>
 
           <div className="flex items-center justify-center lg:hidden">
-            <button
-              onClick={exportCalendar}
-              className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125 mx-auto mt-1"
-            >
-              Kalender Export
-            </button>
+            {user.role !== "user" && user.role !== "teacher" ? (
+              <button
+                onClick={exportCalendar}
+                className="font-medium text-blue-600 text-center transition-transform duration-300 transform hover:scale-125 mx-auto mt-1"
+              >
+                Kalender Export
+              </button>
+            ) : (
+              <p className="hidden">Forbidden</p>
+            )}
           </div>
           <dialog id="legend" className="modal">
             <div className="modal-box w-full max-w-6xl">
@@ -401,74 +410,20 @@ export default function ClassScheduleCard({ activity }) {
           </div>
 
           <div className="flex justify-center mt-1">
-            {user.role === "user" && !activityDatePassed && !oneDayPrior && (
-              <>
-                {activity.capacity - activity.usedCapacity > 0 ? (
-                  <>
-                    {user.classesRegistered.some(
-                      (classObj) =>
-                        classObj.registeredClassID?._id === activity?._id
-                    ) ? (
-                      <button
-                        className="bg-gradient-to-b from-green-500 to-green-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
-                        disabled
-                      >
-                        Angemeldet
-                      </button>
-                    ) : (
-                      <form onSubmit={handleSubmit(onSubmit)}>
-                        <input
-                          type="submit"
-                          className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition hover:shadow-lg hover:-translate-y-0.5"
-                          value="Anmelden"
-                        />
-                      </form>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <button
-                      className="mt-3 bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
-                      disabled
-                    >
-                      Ausgebucht
-                    </button>
-                  </>
-                )}
-              </>
-            )}
-
-            {user.role === "user" && (activityDatePassed || oneDayPrior) && (
-              <button
-                className="mt-3 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
-                disabled
+            {activity.noRegistration && user.role === "user" ? (
+              <div
+                className="tooltip"
+                data-tip="Für diese Schulung ist keine Anmeldung erforderlich, und somit auch keine Genehmigung durch deinen Abteilungsverantwortlichen. Jeder ist herzlich eingeladen, teilzunehmen."
               >
-                Registrierung abgeschlossen
-              </button>
-            )}
-          </div>
-
-          <div className="flex justify-center gap-4">
-            {(user.role === "ASP" || user.role === "admin") && (
-              <NavLink
-                to={`/classInformation/${activity?._id}`}
-                className="flex items-center justify-center text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-              >
-                Details Anzeigen
-              </NavLink>
-            )}
-            {(user.role === "admin" || user.role === "teacher") && (
-              <NavLink
-                to={`/classInformation/participation/${activity?._id}`}
-                className="text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-              >
-                Teilnahme verwalten
-              </NavLink>
-            )}
-          </div>
-
-          <div className="flex justify-center">
-            {(user.role === "ASP" || user.role === "admin") &&
+                <button
+                  className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed tracking-wide"
+                  disabled
+                >
+                  Schulung ohne Registrierung
+                </button>
+              </div>
+            ) : (
+              user.role === "user" &&
               !activityDatePassed &&
               !oneDayPrior && (
                 <>
@@ -503,17 +458,102 @@ export default function ClassScheduleCard({ activity }) {
                     </button>
                   )}
                 </>
-              )}
+              )
+            )}
 
-            {(user.role === "ASP" || user.role === "admin") &&
-              (activityDatePassed || oneDayPrior) && (
+            {user.role === "user" && (activityDatePassed || oneDayPrior) && (
+              <button
+                className="mt-3 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                disabled
+              >
+                Registrierung abgeschlossen
+              </button>
+            )}
+          </div>
+
+          <div className="flex justify-center gap-4">
+            {(user.role === "ASP" || user.role === "admin") && (
+              <NavLink
+                to={`/classInformation/${activity?._id}`}
+                className="flex items-center justify-center text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+              >
+                Details Anzeigen
+              </NavLink>
+            )}
+            {(user.role === "admin" || user.role === "teacher") && (
+              <NavLink
+                to={`/classInformation/participation/${activity?._id}`}
+                className="text-center bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-3 md:p-2 text-white uppercase w-52 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+              >
+                Teilnahme verwalten
+              </NavLink>
+            )}
+          </div>
+
+          <div className="flex justify-center">
+            {activity.noRegistration &&
+            (user.role === "ASP" || user.role === "admin") ? (
+              <div
+                className="tooltip"
+                data-tip="Für diese Schulung ist keine Anmeldung erforderlich, und somit auch keine Genehmigung durch deinen Abteilungsverantwortlichen. Jeder ist herzlich eingeladen, teilzunehmen."
+              >
                 <button
-                  className="mt-3 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                  className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed tracking-wide"
                   disabled
                 >
-                  Registrierung abgeschlossen
+                  Schulung ohne Registrierung
                 </button>
-              )}
+              </div>
+            ) : (
+              <>
+                {(user.role === "ASP" || user.role === "admin") &&
+                  !activityDatePassed &&
+                  !oneDayPrior && (
+                    <>
+                      {activity.capacity - activity.usedCapacity > 0 ? (
+                        <>
+                          {user.classesRegistered.some(
+                            (classObj) =>
+                              classObj.registeredClassID?._id === activity?._id
+                          ) ? (
+                            <button
+                              className="bg-gradient-to-b from-green-500 to-green-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                              disabled
+                            >
+                              Angemeldet
+                            </button>
+                          ) : (
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                              <input
+                                type="submit"
+                                className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition hover:shadow-lg hover:-translate-y-0.5"
+                                value="Anmelden"
+                              />
+                            </form>
+                          )}
+                        </>
+                      ) : (
+                        <button
+                          className="mt-3 bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                          disabled
+                        >
+                          Ausgebucht
+                        </button>
+                      )}
+                    </>
+                  )}
+
+                {(user.role === "ASP" || user.role === "admin") &&
+                  (activityDatePassed || oneDayPrior) && (
+                    <button
+                      className="mt-3 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                      disabled
+                    >
+                      Registrierung abgeschlossen
+                    </button>
+                  )}
+              </>
+            )}
           </div>
         </div>
       </div>
