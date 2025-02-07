@@ -46,13 +46,13 @@ export default function EditClassInterest() {
   }, [id, reset]);
 
   const allTargetGroups = {
-    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png":
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958806/alle_wyewox_c_pad_w_80_h_75_n0nktg.png":
       "Alle",
     "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png":
       "Vertrieb",
     "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png":
       "Logistik",
-    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png":
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958594/fuhrpark_bhkb9q_c_pad_w_80_h_74_unpasw.png":
       "Fuhrpark",
     "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png":
       "IT & Services",
@@ -228,48 +228,48 @@ export default function EditClassInterest() {
                 </div>
 
                 <div>
-  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-    Lernziele:
-  </label>
-  <div className="flex flex-wrap gap-2">
-    {tags.map((tag, index) => (
-      <span
-        key={index}
-        className="bg-gray-200 text-gray-800 px-2 py-1 rounded-md flex items-center border border-gray-400"
-      >
-        {tag}
-        <button
-          type="button"
-          onClick={() => removeTag(tag)}
-          className="ml-2 text-gray-600 hover:text-red-500 transition-colors duration-200 ease-in-out"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={20}
-            height={20}
-            viewBox="0 0 36 36"
-            className="fill-current"
-          >
-            <path
-              fill="currentColor"
-              d="M18 2a16 16 0 1 0 16 16A16 16 0 0 0 18 2m8 22.1a1.4 1.4 0 0 1-2 2l-6-6l-6 6.02a1.4 1.4 0 1 1-2-2l6-6.04l-6.17-6.22a1.4 1.4 0 1 1 2-2L18 16.1l6.17-6.17a1.4 1.4 0 1 1 2 2L20 18.08Z"
-              className="clr-i-solid clr-i-solid-path-1"
-            ></path>
-            <path fill="none" d="M0 0h36v36H0z"></path>
-          </svg>
-        </button>
-      </span>
-    ))}
-  </div>
-  <input
-    type="text"
-    value={newTag}
-    placeholder="Lernziel eingeben und mit Enter bestätigen"
-    onChange={(e) => setNewTag(e.target.value)}
-    onKeyDown={handleTagInput}
-    className="mt-2 w-full px-3 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-1 focus:ring-stone-950 focus:border-stone-950 transition duration-100 ease-in-out"
-  />
-</div>
+                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Lernziele:
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {tags.map((tag, index) => (
+                      <span
+                        key={index}
+                        className="bg-gray-200 text-gray-800 px-2 py-1 rounded-md flex items-center border border-gray-400"
+                      >
+                        {tag}
+                        <button
+                          type="button"
+                          onClick={() => removeTag(tag)}
+                          className="ml-2 text-gray-600 hover:text-red-500 transition-colors duration-200 ease-in-out"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width={20}
+                            height={20}
+                            viewBox="0 0 36 36"
+                            className="fill-current"
+                          >
+                            <path
+                              fill="currentColor"
+                              d="M18 2a16 16 0 1 0 16 16A16 16 0 0 0 18 2m8 22.1a1.4 1.4 0 0 1-2 2l-6-6l-6 6.02a1.4 1.4 0 1 1-2-2l6-6.04l-6.17-6.22a1.4 1.4 0 1 1 2-2L18 16.1l6.17-6.17a1.4 1.4 0 1 1 2 2L20 18.08Z"
+                              className="clr-i-solid clr-i-solid-path-1"
+                            ></path>
+                            <path fill="none" d="M0 0h36v36H0z"></path>
+                          </svg>
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                  <input
+                    type="text"
+                    value={newTag}
+                    placeholder="Lernziel eingeben und mit Enter bestätigen"
+                    onChange={(e) => setNewTag(e.target.value)}
+                    onKeyDown={handleTagInput}
+                    className="mt-2 w-full px-3 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-1 focus:ring-stone-950 focus:border-stone-950 transition duration-100 ease-in-out"
+                  />
+                </div>
 
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   Zielgruppe:
@@ -282,7 +282,6 @@ export default function EditClassInterest() {
                         checked={targetGroups.includes(imageUrl)}
                         onChange={() => toggleTargetGroup(imageUrl)}
                         className="w-4 h-4 accent-blue-500"
-
                       />
                       {name}
                     </label>

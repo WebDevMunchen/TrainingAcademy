@@ -9,21 +9,24 @@ export default function UserClassInterestCard({ id, interest }) {
   const modalRef = useRef(null);
 
   const showInterest = () => {
-    axiosClient.put(`/activityInterest/showInterest/${id}`).then(() => {
-      console.log("Success")
-    }).catch((error) => {
-      console.log(error)
-    })
-  }
+    axiosClient
+      .put(`/activityInterest/showInterest/${id}`)
+      .then(() => {
+        console.log("Success");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const allTargetGroups = {
-    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png":
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958806/alle_wyewox_c_pad_w_80_h_75_n0nktg.png":
       "Alle",
     "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png":
       "Vertrieb",
     "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png":
       "Logistik",
-    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png":
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958594/fuhrpark_bhkb9q_c_pad_w_80_h_74_unpasw.png":
       "Fuhrpark",
     "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png":
       "IT & Services",
@@ -100,7 +103,7 @@ export default function UserClassInterestCard({ id, interest }) {
                   return (
                     <span
                       className="tooltip cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-1.5 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70"
-                      data-tip={getTooltipText(group)} 
+                      data-tip={getTooltipText(group)}
                     >
                       <img src={group} width={35} alt={group} />
                     </span>

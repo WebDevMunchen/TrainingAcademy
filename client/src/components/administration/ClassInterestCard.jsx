@@ -24,13 +24,13 @@ export default function ClassInterestCard({ id, interest }) {
   };
 
   const allTargetGroups = {
-    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png":
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958806/alle_wyewox_c_pad_w_80_h_75_n0nktg.png":
       "Alle",
     "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png":
       "Vertrieb",
     "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png":
       "Logistik",
-    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png":
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958594/fuhrpark_bhkb9q_c_pad_w_80_h_74_unpasw.png":
       "Fuhrpark",
     "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png":
       "IT & Services",

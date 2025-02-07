@@ -458,7 +458,7 @@ export default function SingleClassDetails() {
                         <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                           <img
                             className="w-20 mx-auto"
-                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png"
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958806/alle_wyewox_c_pad_w_80_h_75_n0nktg.png"
                             alt="alle"
                           />
                           <p className="font-poppins font-medium text-center text-md">
@@ -487,7 +487,7 @@ export default function SingleClassDetails() {
                         </div>
                         <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                           <img
-                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png"
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958594/fuhrpark_bhkb9q_c_pad_w_80_h_74_unpasw.png"
                             alt="Fuhrpark"
                             className="w-20 mx-auto"
                           />
