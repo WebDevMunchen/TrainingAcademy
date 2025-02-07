@@ -19,6 +19,7 @@ const deletedClassActivityRouter = require("./routers/deletedClassActivity-route
 const {
   checkAndUpdateClassRegistrations,
 } = require("./controllers/classActivity-controller.js");
+const activityInterestRouter = require("./routers/activityInterest-router.js");
 
 app.use(
   cors({
@@ -35,6 +36,7 @@ app.use(express.static(path.resolve(__dirname, "client", "dist")));
 app.use("/api/user", userRouter);
 app.use("/api/classActivity", classActivityRouter);
 app.use("/api/approver", approverRouter);
+app.use("/api/activityInterest", activityInterestRouter);
 app.use("/api/message", messageRouter);
 app.use("/api/uploadPPT", uploadRoute);
 app.use("/api/deletedClassActivities", deletedClassActivityRouter);

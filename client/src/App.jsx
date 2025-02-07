@@ -31,6 +31,11 @@ import PieChartStornoStatistics from "./components/administration/PieChartStorno
 import PieChartAllClasses from "./components/administration/PieChartAllClasses";
 import AuthorizeApprover from "./components/AuthorizeApprover";
 import ApproverOverview from "./components/administration/ApproverOverview";
+import ClassInterest from "./components/administration/ClassInterest";
+import CreateClassInterest from "./components/administration/CreateClassInterest";
+import EditClassInterest from "./components/administration/EditClassInterest";
+import UserClassInterest from "./components/user/UserClassInterest";
+import InterestUserList from "./components/administration/InterestUserList";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
@@ -60,7 +65,10 @@ function App() {
         <Route path="/" element={<Protected />}>
           <Route path="/classes" element={<ClassesSchedule />} />
           <Route path="/classesOverview" element={<ClassesOverview />} />
-
+          <Route
+            path="/classInterest/overview"
+            element={<UserClassInterest />}
+          />
           <Route path="/FAQ" element={<FAQ />} />
 
           <Route
@@ -97,6 +105,19 @@ function App() {
               element={<ClassesOverviewDashboard />}
             />
             <Route path="createClass" element={<CreateClass />} />
+            <Route path="classInterest" element={<ClassInterest />} />
+            <Route
+              path="classInterest/create"
+              element={<CreateClassInterest />}
+            />
+                        <Route
+              path="classInterest/userOverview"
+              element={<InterestUserList />}
+            />
+            <Route
+              path="classInterest/editClassInterest/:id"
+              element={<EditClassInterest />}
+            />
             <Route path="editClass/:id" element={<EditClass />} />
             <Route path="report/:id" element={<Report />} />
             <Route path="approverList" element={<ApproverList />} />

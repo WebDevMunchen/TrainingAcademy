@@ -65,6 +65,11 @@ export default function Navbar() {
                         </NavLink>
                       </li>
                       <li>
+                        <NavLink to={"/classInterest/overview"}>
+                          Interesse
+                        </NavLink>
+                      </li>
+                      <li>
                         <NavLink to={"/faq"}>FAQ</NavLink>
                       </li>
                       <li className="relative">

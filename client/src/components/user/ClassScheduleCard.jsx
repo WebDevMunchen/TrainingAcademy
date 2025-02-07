@@ -413,7 +413,7 @@ export default function ClassScheduleCard({ activity }) {
             {activity.noRegistration && user.role === "user" ? (
               <div
                 className="tooltip"
-                data-tip="Für diese Schulung ist keine Anmeldung erforderlich, und somit auch keine Genehmigung durch deinen Abteilungsverantwortlichen. Jeder ist herzlich eingeladen, teilzunehmen."
+                data-tip="Für diese Schulung ist keine Anmeldung erforderlich, und somit auch keine Genehmigung durch deinen Abteilungsverantwortlichen"
               >
                 <button
                   className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed tracking-wide"
@@ -495,7 +495,7 @@ export default function ClassScheduleCard({ activity }) {
             (user.role === "ASP" || user.role === "admin") ? (
               <div
                 className="tooltip"
-                data-tip="Für diese Schulung ist keine Anmeldung erforderlich, und somit auch keine Genehmigung durch deinen Abteilungsverantwortlichen. Jeder ist herzlich eingeladen, teilzunehmen."
+                data-tip="Für diese Schulung ist keine Anmeldung erforderlich, und somit auch keine Genehmigung durch deinen Abteilungsverantwortlichen"
               >
                 <button
                   className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed tracking-wide"

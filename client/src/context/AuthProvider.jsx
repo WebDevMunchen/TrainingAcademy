@@ -14,6 +14,7 @@ export default function AuthProvider({ children }) {
   const [approver, setApprover] = useState(null);
   const [allUsers, setAllUsers] = useState(null);
   const [allActivities, setAllActivities] = useState([]);
+  const [allInterest, setAllInterest] = useState([]);
   const [isLoadingActivities, setIsLoadingActivities] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [currentMonth, setCurrentMonth] = useState(
@@ -59,6 +60,15 @@ export default function AuthProvider({ children }) {
       })
       .catch((error) => {
         setAllUsers(null);
+      });
+
+      axiosClient
+      .get("/activityInterest/getEveryInterest")
+      .then((response) => {
+        setAllInterest(response.data);
+      })
+      .catch((error) => {
+        setAllInterest(null);
       });
 
     axiosClient
@@ -218,6 +228,8 @@ export default function AuthProvider({ children }) {
           setAllUsers,
           notifyErrorRegister,
           setApprover,
+          setAllInterest,
+          allInterest,
           approver,
           user,
           allUsers,

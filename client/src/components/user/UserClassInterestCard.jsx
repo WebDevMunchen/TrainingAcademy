@@ -1,0 +1,125 @@
+import { useContext, useRef } from "react";
+import { AuthContext } from "../../context/AuthProvider";
+import { Bounce, toast } from "react-toastify";
+import axiosClient from "../../utils/axiosClient";
+import { NavLink } from "react-router-dom";
+
+export default function UserClassInterestCard({ id, interest }) {
+  const { allInterest, setAllInterest } = useContext(AuthContext);
+  const modalRef = useRef(null);
+
+  const showInterest = () => {
+    axiosClient.put(`/activityInterest/showInterest/${id}`).then(() => {
+      console.log("Success")
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
+  const allTargetGroups = {
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png":
+      "Alle",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png":
+      "Vertrieb",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png":
+      "Logistik",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png":
+      "Fuhrpark",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png":
+      "IT & Services",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png":
+      "HR & Training",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png":
+      "Buchhaltung",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png":
+      "Showroom",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png":
+      "Design & Marketing",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png":
+      "Bestandsmanagement",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png":
+      "Haustechnik",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png":
+      "Unternehmensentwicklung",
+  };
+
+  const getTooltipText = (url) => {
+    return allTargetGroups[url] || "Unknown Group"; // Default message if no match
+  };
+
+  const notifySuccess = () =>
+    toast.success("Schulung gelöscht!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mt-14 mr-6",
+    });
+
+  return (
+    <div className="bg-gray-50/50 flex">
+      <div className="flex justify-center items-center">
+        <div className="mx-auto">
+          <div className="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg">
+            <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
+              <img src={interest.previewPicture} alt="ui/ux review check" />
+              <div className="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
+            </div>
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-3">
+                <h5 className="block font-sans text-xl antialiased font-medium leading-snug tracking-normal text-blue-gray-900">
+                  {interest.title}
+                </h5>
+              </div>
+              <p className="block font-sans text-base antialiased font-light leading-relaxed text-gray-700">
+                {interest.description}
+              </p>
+              <label className="block my-3 text-sm font-medium text-gray-900 dark:text-white">
+                Lernziele:
+              </label>
+              <div className="flex gap-1">
+                {interest.tag.map((singleTag) => {
+                  return (
+                    <span className="w-fit bg-gray-200 text-gray-800 px-2 py-1 rounded-md flex items-center border border-gray-400">
+                      {singleTag}
+                    </span>
+                  );
+                })}
+              </div>
+              <label className="text-center block my-4 text-sm font-medium text-gray-900 dark:text-white">
+                Zielgruppe:
+              </label>
+
+              <div className="flex justify-center mx-auto items-center gap-3 group">
+                {interest.targetGroup.map((group) => {
+                  return (
+                    <span
+                      className="tooltip cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-1.5 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70"
+                      data-tip={getTooltipText(group)} 
+                    >
+                      <img src={group} width={35} alt={group} />
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="p-6 pt-0">
+              <button
+                className="block w-full select-none rounded-lg bg-gray-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                type="button"
+                onClick={showInterest}
+              >
+                Senden
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
