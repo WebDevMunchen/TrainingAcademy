@@ -76,21 +76,218 @@ export default function ClassInterestCard({ id, interest }) {
             <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
               <img src={interest.previewPicture} alt="ui/ux review check" />
               <div className="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
-              {!interest.tookPlace ? 
-                            <button
-                            className="!absolute top-4 left-4 h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-blue-500 transition-all active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none transition-transform duration-300"
-                          >
-                          <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} viewBox="0 0 32 32"><g fill="none"><path fill="url(#f624id0)" d="M29.757 15.75c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"></path><path fill="url(#f624id4)" d="M29.757 15.75c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"></path><path fill="url(#f624id1)" d="M29.757 15.75c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"></path><path fill="url(#f624id2)" d="M29.757 15.75c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"></path><path fill="url(#f624id3)" d="M29.757 15.75c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"></path><defs><radialGradient id="f624id0" cx={0} cy={0} r={1} gradientTransform="rotate(130.168 9.994 9.81)scale(27.8086)" gradientUnits="userSpaceOnUse"><stop offset={0.19} stopColor="#5ae68d"></stop><stop offset={0.835} stopColor="#43a684"></stop></radialGradient><radialGradient id="f624id1" cx={0} cy={0} r={1} gradientTransform="rotate(136.38 10.117 10.14)scale(14.6767 15.816)" gradientUnits="userSpaceOnUse"><stop offset={0.179} stopColor="#36b366"></stop><stop offset={1} stopColor="#256847" stopOpacity={0}></stop></radialGradient><radialGradient id="f624id2" cx={0} cy={0} r={1} gradientTransform="matrix(-19.25 0 0 -20 20.249 15.75)" gradientUnits="userSpaceOnUse"><stop offset={0.62} stopColor="#10dd51" stopOpacity={0}></stop><stop offset={0.951} stopColor="#a4e4b7"></stop></radialGradient><radialGradient id="f624id3" cx={0} cy={0} r={1} gradientTransform="matrix(0 22.1875 -22.9876 0 15.757 8.75)" gradientUnits="userSpaceOnUse"><stop offset={0.732} stopColor="#4a9795" stopOpacity={0}></stop><stop offset={1} stopColor="#718cad"></stop></radialGradient><linearGradient id="f624id4" x1={15.757} x2={15.757} y1={1.75} y2={8.25} gradientUnits="userSpaceOnUse"><stop stopColor="#278646"></stop><stop offset={1} stopColor="#278646" stopOpacity={0}></stop></linearGradient></defs></g></svg>
-                          </button>
-
-                          :
-                          <button
-                          className="!absolute top-4 left-4 h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-blue-500 transition-all active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none transition-transform duration-300"
+              {!interest.tookPlace ? (
+                <button className="!absolute top-4 left-4 h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-blue-500 transition-all active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none transition-transform duration-300">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={32}
+                    height={32}
+                    viewBox="0 0 32 32"
+                  >
+                    <g fill="none">
+                      <path
+                        fill="url(#f624id0)"
+                        d="M29.757 15.75c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"
+                      ></path>
+                      <path
+                        fill="url(#f624id4)"
+                        d="M29.757 15.75c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"
+                      ></path>
+                      <path
+                        fill="url(#f624id1)"
+                        d="M29.757 15.75c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"
+                      ></path>
+                      <path
+                        fill="url(#f624id2)"
+                        d="M29.757 15.75c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"
+                      ></path>
+                      <path
+                        fill="url(#f624id3)"
+                        d="M29.757 15.75c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"
+                      ></path>
+                      <defs>
+                        <radialGradient
+                          id="f624id0"
+                          cx={0}
+                          cy={0}
+                          r={1}
+                          gradientTransform="rotate(130.168 9.994 9.81)scale(27.8086)"
+                          gradientUnits="userSpaceOnUse"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} viewBox="0 0 32 32"><g fill="none"><path fill="url(#f2179id0)" d="M29.757 16c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"></path><path fill="url(#f2179id4)" d="M29.757 16c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"></path><path fill="url(#f2179id1)" d="M29.757 16c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"></path><path fill="url(#f2179id2)" d="M29.757 16c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"></path><path fill="url(#f2179id3)" d="M29.757 16c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"></path><defs><radialGradient id="f2179id0" cx={0} cy={0} r={1} gradientTransform="rotate(130.168 9.936 9.935)scale(27.8086)" gradientUnits="userSpaceOnUse"><stop offset={0.232} stopColor="#f24756"></stop><stop offset={1} stopColor="#b22945"></stop></radialGradient><radialGradient id="f2179id1" cx={0} cy={0} r={1} gradientTransform="rotate(136.38 10.067 10.264)scale(14.6767 15.816)" gradientUnits="userSpaceOnUse"><stop offset={0.179} stopColor="#ff6180"></stop><stop offset={1} stopColor="#e5364a" stopOpacity={0}></stop></radialGradient><radialGradient id="f2179id2" cx={0} cy={0} r={1} gradientTransform="matrix(-19.25 0 0 -20 20.249 16)" gradientUnits="userSpaceOnUse"><stop offset={0.62} stopColor="#b73e4b" stopOpacity={0}></stop><stop offset={0.951} stopColor="#d48387"></stop></radialGradient><radialGradient id="f2179id3" cx={0} cy={0} r={1} gradientTransform="matrix(0 21 -23.3208 0 15.757 9)" gradientUnits="userSpaceOnUse"><stop offset={0.863} stopColor="#b83c5a" stopOpacity={0}></stop><stop offset={1} stopColor="#b83c5a"></stop><stop offset={1} stopColor="#ac4064"></stop></radialGradient><linearGradient id="f2179id4" x1={15.757} x2={15.757} y1={2} y2={8.5} gradientUnits="userSpaceOnUse"><stop stopColor="#dd4577"></stop><stop offset={1} stopColor="#ef4b5e" stopOpacity={0}></stop></linearGradient></defs></g></svg>
-                        </button>
-
-            }
+                          <stop offset={0.19} stopColor="#5ae68d"></stop>
+                          <stop offset={0.835} stopColor="#43a684"></stop>
+                        </radialGradient>
+                        <radialGradient
+                          id="f624id1"
+                          cx={0}
+                          cy={0}
+                          r={1}
+                          gradientTransform="rotate(136.38 10.117 10.14)scale(14.6767 15.816)"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop offset={0.179} stopColor="#36b366"></stop>
+                          <stop
+                            offset={1}
+                            stopColor="#256847"
+                            stopOpacity={0}
+                          ></stop>
+                        </radialGradient>
+                        <radialGradient
+                          id="f624id2"
+                          cx={0}
+                          cy={0}
+                          r={1}
+                          gradientTransform="matrix(-19.25 0 0 -20 20.249 15.75)"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop
+                            offset={0.62}
+                            stopColor="#10dd51"
+                            stopOpacity={0}
+                          ></stop>
+                          <stop offset={0.951} stopColor="#a4e4b7"></stop>
+                        </radialGradient>
+                        <radialGradient
+                          id="f624id3"
+                          cx={0}
+                          cy={0}
+                          r={1}
+                          gradientTransform="matrix(0 22.1875 -22.9876 0 15.757 8.75)"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop
+                            offset={0.732}
+                            stopColor="#4a9795"
+                            stopOpacity={0}
+                          ></stop>
+                          <stop offset={1} stopColor="#718cad"></stop>
+                        </radialGradient>
+                        <linearGradient
+                          id="f624id4"
+                          x1={15.757}
+                          x2={15.757}
+                          y1={1.75}
+                          y2={8.25}
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop stopColor="#278646"></stop>
+                          <stop
+                            offset={1}
+                            stopColor="#278646"
+                            stopOpacity={0}
+                          ></stop>
+                        </linearGradient>
+                      </defs>
+                    </g>
+                  </svg>
+                </button>
+              ) : (
+                <button className="!absolute top-4 left-4 h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-blue-500 transition-all active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none transition-transform duration-300">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={32}
+                    height={32}
+                    viewBox="0 0 32 32"
+                  >
+                    <g fill="none">
+                      <path
+                        fill="url(#f2179id0)"
+                        d="M29.757 16c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"
+                      ></path>
+                      <path
+                        fill="url(#f2179id4)"
+                        d="M29.757 16c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"
+                      ></path>
+                      <path
+                        fill="url(#f2179id1)"
+                        d="M29.757 16c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"
+                      ></path>
+                      <path
+                        fill="url(#f2179id2)"
+                        d="M29.757 16c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"
+                      ></path>
+                      <path
+                        fill="url(#f2179id3)"
+                        d="M29.757 16c0 7.732-6.268 14-14 14s-14-6.268-14-14s6.268-14 14-14s14 6.268 14 14"
+                      ></path>
+                      <defs>
+                        <radialGradient
+                          id="f2179id0"
+                          cx={0}
+                          cy={0}
+                          r={1}
+                          gradientTransform="rotate(130.168 9.936 9.935)scale(27.8086)"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop offset={0.232} stopColor="#f24756"></stop>
+                          <stop offset={1} stopColor="#b22945"></stop>
+                        </radialGradient>
+                        <radialGradient
+                          id="f2179id1"
+                          cx={0}
+                          cy={0}
+                          r={1}
+                          gradientTransform="rotate(136.38 10.067 10.264)scale(14.6767 15.816)"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop offset={0.179} stopColor="#ff6180"></stop>
+                          <stop
+                            offset={1}
+                            stopColor="#e5364a"
+                            stopOpacity={0}
+                          ></stop>
+                        </radialGradient>
+                        <radialGradient
+                          id="f2179id2"
+                          cx={0}
+                          cy={0}
+                          r={1}
+                          gradientTransform="matrix(-19.25 0 0 -20 20.249 16)"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop
+                            offset={0.62}
+                            stopColor="#b73e4b"
+                            stopOpacity={0}
+                          ></stop>
+                          <stop offset={0.951} stopColor="#d48387"></stop>
+                        </radialGradient>
+                        <radialGradient
+                          id="f2179id3"
+                          cx={0}
+                          cy={0}
+                          r={1}
+                          gradientTransform="matrix(0 21 -23.3208 0 15.757 9)"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop
+                            offset={0.863}
+                            stopColor="#b83c5a"
+                            stopOpacity={0}
+                          ></stop>
+                          <stop offset={1} stopColor="#b83c5a"></stop>
+                          <stop offset={1} stopColor="#ac4064"></stop>
+                        </radialGradient>
+                        <linearGradient
+                          id="f2179id4"
+                          x1={15.757}
+                          x2={15.757}
+                          y1={2}
+                          y2={8.5}
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop stopColor="#dd4577"></stop>
+                          <stop
+                            offset={1}
+                            stopColor="#ef4b5e"
+                            stopOpacity={0}
+                          ></stop>
+                        </linearGradient>
+                      </defs>
+                    </g>
+                  </svg>
+                </button>
+              )}
 
               <button
                 className="!absolute top-4 right-4 h-8 max-h-[32px] w-8 max-w-[32px] bg-stone-200 select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-blue-500 transition-all active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none transition-transform duration-300 transform hover:scale-125"
