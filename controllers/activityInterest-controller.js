@@ -101,7 +101,7 @@ const deleteInterest = asyncWrapper(async (req, res, next) => {
 const getInterest = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
-  const interest = await ActivityInterest.findById(id).populate({path: 'interestedUsers.user'});
+  const interest = await ActivityInterest.findById(id).populate({path: 'interestedUsers.user'}).populate({path: 'pastInterests.users.user'});
 
   if (!interest) {
     throw new ErrorResponse(404, "Interest not found!");

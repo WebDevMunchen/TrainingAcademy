@@ -1,0 +1,134 @@
+import { motion } from "framer-motion";
+import { useState } from "react";
+
+export default function InterestHistoryCard({ user }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleAccordion = () => setIsOpen((prev) => !prev);
+
+  console.log(user);
+
+  const formattedDate = new Date(user.date).toLocaleDateString("de-DE", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
+  return (
+    <>
+      <tr>
+        <td className="flex justify-center px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+          <button
+            onClick={toggleAccordion}
+            className="flex items-center gap-2 px-3 py-1 bg-blue-400 text-white rounded-md hover:bg-blue-500 transition"
+          >
+            {/* {isOpen ? "Weniger anzeigen" : "Anzeigen"}
+             */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={24}
+              height={24}
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M16.95 7.45L12 2.5L7.051 7.447H11v9.103H7.05L12 21.5l4.95-4.95H13V7.448z"
+              ></path>
+            </svg>
+            {formattedDate}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={24}
+              height={24}
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M16.95 7.45L12 2.5L7.051 7.447H11v9.103H7.05L12 21.5l4.95-4.95H13V7.448z"
+              ></path>
+            </svg>
+          </button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          {/* Motion Div for Smooth Accordion Effect */}
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{
+              height: isOpen ? "auto" : 0,
+              opacity: isOpen ? 1 : 0,
+            }}
+            transition={{ duration: 0.4 }}
+            className="bg-gray-100 py-2 px-8"
+            style={{
+              borderRadius: "0px", // No rounded borders
+              overflow: "hidden", // Hide content when collapsed
+            }}
+          >
+            {user.users && user.users.length > 0 ? (
+              <div className="flex flex-col w-full">
+                {user.users.map((userInfo, index) => {
+                  // Format the date before returning the JSX
+                  const formattedDate = new Date(
+                    userInfo.interestedAt
+                  ).toLocaleDateString("de-DE", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  });
+
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between w-full py-2"
+                    >
+                      {/* Title Column: Takes more width */}
+                      <div className="flex-1 px-4 font-bold">
+                        {userInfo.user.firstName + " " + userInfo.user.lastName}
+                      </div>
+
+                      {/* Date Column */}
+                      <div className="text-center w-[150px] px-4">
+                        {formattedDate}
+                      </div>
+
+                      {/* Time Column */}
+                      <div className="flex flex-col text-center w-[150px] px-4">
+                        {userInfo.user.department}
+                      </div>
+                      <div className="flex flex-col text-center w-[150px] px-4">
+                        {userInfo.user.role === "ASP"
+                          ? "Genehmiger"
+                          : userInfo.user.role === "admin"
+                          ? "Administrator"
+                          : "User"}
+                      </div>
+                      {/* Status Column */}
+                      <div className="px-4 flex items-center w-[150px]">
+                        <span
+                          className={`inline-block px-3 py-1 font-base text-sm rounded-full ${
+                            userInfo.user.status === "aktiv"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-200 text-red-700"
+                          }`}
+                        >
+                          {userInfo.user.status}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="my-4 text-sm text-center text-gray-500">
+                Keine Schulungshistorie vorhanden
+              </p>
+            )}
+          </motion.div>
+        </td>
+      </tr>
+    </>
+  );
+}

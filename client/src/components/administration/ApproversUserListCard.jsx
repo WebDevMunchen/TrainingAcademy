@@ -18,9 +18,7 @@ export default function ApproversUserListCard({ user, selectedYear }) {
       );
     }
   );
-
-  console.log(user);
-
+  
   return (
     <>
       {/* Main Table Row */}

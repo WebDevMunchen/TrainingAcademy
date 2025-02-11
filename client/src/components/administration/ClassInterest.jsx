@@ -7,8 +7,6 @@ import ClassInterestCard from "./ClassInterestCard";
 export default function ClassInterest() {
   const { allInterest } = useContext(AuthContext);
 
-  console.log(allInterest)
-
   return (
     <div className="bg-gray-50/50 flex">
       {/* Side Menu */}

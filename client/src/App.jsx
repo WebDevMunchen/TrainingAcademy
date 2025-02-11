@@ -36,6 +36,7 @@ import CreateClassInterest from "./components/administration/CreateClassInterest
 import EditClassInterest from "./components/administration/EditClassInterest";
 import UserClassInterest from "./components/user/UserClassInterest";
 import InterestUserList from "./components/administration/InterestUserList";
+import InterestHistory from "./components/administration/InterestHistory";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
@@ -113,6 +114,10 @@ function App() {
                         <Route
               path="classInterest/userOverview/:id"
               element={<InterestUserList />}
+            />
+                                    <Route
+              path="classInterest/history/:id"
+              element={<InterestHistory />}
             />
             <Route
               path="classInterest/editClassInterest/:id"

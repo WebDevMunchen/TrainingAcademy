@@ -38,7 +38,6 @@ export default function ClassInterestCard({ id, interest }) {
       });
   };
 
-
   const allTargetGroups = {
     "https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958806/alle_wyewox_c_pad_w_80_h_75_n0nktg.png":
       "Alle",
@@ -84,19 +83,19 @@ export default function ClassInterestCard({ id, interest }) {
       className: "mt-14 mr-6",
     });
 
-    const notifySuccessMarkTookPlace = () =>
-      toast.success("Schulung als stattgefunden markiert!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        className: "mt-14 mr-6",
-      });
+  const notifySuccessMarkTookPlace = () =>
+    toast.success("Schulung als stattgefunden markiert!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      className: "mt-14 mr-6",
+    });
 
   return (
     <div className="bg-gray-50/50 flex">
@@ -155,48 +154,61 @@ export default function ClassInterestCard({ id, interest }) {
                   {interest.title}
                 </h5>
                 <div>
-                <p className="flex items-center justify-end gap-0 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
-                  Interesse:
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={24}
-                    height={24}
-                    viewBox="0 0 24 24"
-                    className="text-red-500 ml-1"
-                  >
-                    <path
-                      fill="currentColor"
-                      fillOpacity={100}
-                      d="M12 8c0 0 0 0 0.76 -1c0.88 -1.16 2.18 -2 3.74 -2c2.49 0 4.5 2.01 4.5 4.5c0 0.93 -0.28 1.79 -0.76 2.5c-0.81 1.21 -8.24 9 -8.24 9c0 0 -7.43 -7.79 -8.24 -9c-0.48 -0.71 -0.76 -1.57 -0.76 -2.5c0 -2.49 2.01 -4.5 4.5 -4.5c1.56 0 2.87 0.84 3.74 2c0.76 1 0.76 1 0.76 1Z"
-                    ></path>
-                    <path
-                      fill="none"
-                      stroke="currentColor"
-                      strokeDasharray={32}
-                      strokeDashoffset={32}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8c0 0 0 0 -0.76 -1c-0.88 -1.16 -2.18 -2 -3.74 -2c-2.49 0 -4.5 2.01 -4.5 4.5c0 0.93 0.28 1.79 0.76 2.5c0.81 1.21 8.24 9 8.24 9M12 8c0 0 0 0 0.76 -1c0.88 -1.16 2.18 -2 3.74 -2c2.49 0 4.5 2.01 4.5 4.5c0 0.93 -0.28 1.79 -0.76 2.5c-0.81 1.21 -8.24 9 -8.24 9"
-                    ></path>
-                  </svg>
-                  <NavLink
-                    className="text-blue-500 font-semibold text-lg hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-md transition-all duration-300 ease-in-out"
-                    to={`/admin/classInterest/userOverview/${interest._id}`}
-                  >
-                    ( {interest.interestedUsers.length} )
-                  </NavLink>
-                </p>
-                <p className="flex items-center justify-end gap-0 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
-                  <NavLink
-                    className="ml-2 text-blue-500 font-semibold text-lg hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-md transition-all duration-300 ease-in-out"
-                    to={`/admin/classInterest/userOverview/${interest._id}`}
-                  >
-                                      Historie
-                  </NavLink>
-                </p>
-                </div>
+                  <p className="flex items-center justify-end gap-0 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
+                    Interesse:
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={24}
+                      height={24}
+                      viewBox="0 0 24 24"
+                      className="text-red-500 ml-1"
+                    >
+                      <path
+                        fill="currentColor"
+                        fillOpacity={100}
+                        d="M12 8c0 0 0 0 0.76 -1c0.88 -1.16 2.18 -2 3.74 -2c2.49 0 4.5 2.01 4.5 4.5c0 0.93 -0.28 1.79 -0.76 2.5c-0.81 1.21 -8.24 9 -8.24 9c0 0 -7.43 -7.79 -8.24 -9c-0.48 -0.71 -0.76 -1.57 -0.76 -2.5c0 -2.49 2.01 -4.5 4.5 -4.5c1.56 0 2.87 0.84 3.74 2c0.76 1 0.76 1 0.76 1Z"
+                      ></path>
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        strokeDasharray={32}
+                        strokeDashoffset={32}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8c0 0 0 0 -0.76 -1c-0.88 -1.16 -2.18 -2 -3.74 -2c-2.49 0 -4.5 2.01 -4.5 4.5c0 0.93 0.28 1.79 0.76 2.5c0.81 1.21 8.24 9 8.24 9M12 8c0 0 0 0 0.76 -1c0.88 -1.16 2.18 -2 3.74 -2c2.49 0 4.5 2.01 4.5 4.5c0 0.93 -0.28 1.79 -0.76 2.5c-0.81 1.21 -8.24 9 -8.24 9"
+                      ></path>
+                    </svg>
+                    <NavLink
+                      className="text-blue-500 font-semibold text-lg hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-md transition-all duration-300 ease-in-out"
+                      to={`/admin/classInterest/userOverview/${interest._id}`}
+                    >
+                      ( {interest.interestedUsers.length} )
+                    </NavLink>
+                  </p>
+                  <p className="flex items-center justify-end gap-0 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
+                  Historie:
 
+
+                    <NavLink
+                      className="ml-2 text-blue-500 font-semibold text-lg hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-md transition-all duration-300 ease-in-out"
+                      to={`/admin/classInterest/history/${interest._id}`}
+                    >
+                                          <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={32}
+                      height={32}
+                      viewBox="0 0 24 24"
+                      className="transition-transform duration-300 transform hover:scale-125"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M8.23 18.77q-.412 0-.705-.295t-.294-.706v-1.192q0-.343.232-.576t.576-.232H10v-3.25q-.827.162-1.737-.005q-.911-.166-1.577-.73q-.132-.122-.209-.275t-.077-.334v-1.04H5.31q-.153 0-.297-.056t-.273-.184l-1.929-1.93q-.257-.257-.228-.6t.31-.565q.724-.513 1.66-.764q.938-.251 1.847-.251q.961 0 1.869.273T10 6.914v-.366q0-.615.428-1.043t1.043-.428h6.923q.662 0 1.134.475q.472.474.472 1.14V16.77q0 .847-.577 1.423T18 18.77zm2.77-3h5.23q.31 0 .54.229t.23.54v.23q0 .425.288.713t.712.287t.713-.287t.287-.713V6.692q0-.269-.173-.442t-.442-.173h-6.77q-.269 0-.442.173T11 6.692v.985l5.36 5.36q.118.111.145.253t-.038.285t-.177.226t-.292.084q-.102 0-.195-.043t-.157-.103l-2.896-2.897l-.565.566q-.293.292-.575.49t-.61.348zM5.408 9.134h1.184q.344 0 .576.232t.232.575v1.15q.511.316.952.43t.856.113q.683 0 1.241-.233q.559-.233 1.047-.721l.546-.546l-1.746-1.746q-.802-.802-1.798-1.203t-2.098-.4q-.73 0-1.421.19q-.69.19-1.237.494zM16 16.769H8.23v1h8.074q-.171-.205-.238-.462Q16 17.051 16 16.77m-7.77 1v-1z"
+                      ></path>
+                    </svg>
+                    </NavLink>
+                  </p>
+                </div>
               </div>
               <p className="block font-sans text-base antialiased font-light leading-relaxed text-gray-700">
                 {interest.description}
@@ -230,14 +242,14 @@ export default function ClassInterestCard({ id, interest }) {
                 })}
               </div>
             </div>
-             <div className="p-6 pt-3">
-                <button
-                    className="block w-full select-none rounded-lg bg-gray-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                    onClick={markTookPlace}
-                    type="button">
-                    
-                    Als stattgefunden markieren
-                </button>
+            <div className="p-6 pt-3">
+              <button
+                className="block w-full select-none rounded-lg bg-gray-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                onClick={markTookPlace}
+                type="button"
+              >
+                Als stattgefunden markieren
+              </button>
             </div>
             <dialog
               ref={modalRef}
