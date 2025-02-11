@@ -111,7 +111,7 @@ function App() {
               element={<CreateClassInterest />}
             />
                         <Route
-              path="classInterest/userOverview"
+              path="classInterest/userOverview/:id"
               element={<InterestUserList />}
             />
             <Route
