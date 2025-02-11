@@ -7,6 +7,7 @@ const {
   deleteInterest,
   getInterest,
   showInterest,
+  markTookPlace,
 } = require("../controllers/activityInterest-controller.js");
 
 const { authenticate } = require("../middlewares/authentication.js");
@@ -23,6 +24,7 @@ activityInterestRouter
   .post(authenticate, upload.single("previewPicture"), createInterest);
 activityInterestRouter.route("/getInterest/:id").get(authenticate, getInterest);
 activityInterestRouter.route("/showInterest/:id").put(authenticate, showInterest);
+activityInterestRouter.route("/markTookPlace/:id").put(authenticate, markTookPlace);
 activityInterestRouter
   .route("/updateInterest/:id")
   .put(authenticate, upload.single("previewPicture"), editInterest);

@@ -4,8 +4,7 @@ const asyncWrapper = require("../utils/asyncWrapper.js");
 const cloudinary = require("cloudinary").v2;
 
 const createInterest = asyncWrapper(async (req, res, next) => {
-  const { title, description, favCount, tag, targetGroup, tookPlace } =
-    req.body;
+  const { title, description, tag, targetGroup, tookPlace } = req.body;
 
   // Ensure tag and targetGroup are parsed as arrays
   const parsedTags = typeof tag === "string" ? JSON.parse(tag) : tag || [];
@@ -34,7 +33,6 @@ const createInterest = asyncWrapper(async (req, res, next) => {
     title,
     description,
     previewPicture,
-    favCount,
     tag: parsedTags,
     targetGroup: parsedTargetGroups,
     tookPlace,
@@ -45,11 +43,13 @@ const createInterest = asyncWrapper(async (req, res, next) => {
 
 const editInterest = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
-  let { title, description, favCount, tag, tookPlace, targetGroup } = req.body; // Include targetGroup
+  let { title, description, tag, tookPlace, targetGroup } = req.body; // Include targetGroup
 
   const parsedTags = typeof tag === "string" ? JSON.parse(tag) : tag || [];
   const parsedTargetGroup =
-    typeof targetGroup === "string" ? JSON.parse(targetGroup) : targetGroup || [];
+    typeof targetGroup === "string"
+      ? JSON.parse(targetGroup)
+      : targetGroup || [];
 
   const existingInterest = await ActivityInterest.findById(id);
   if (!existingInterest) {
@@ -76,7 +76,6 @@ const editInterest = asyncWrapper(async (req, res, next) => {
       title,
       description,
       previewPicture,
-      favCount,
       tag: parsedTags,
       targetGroup: parsedTargetGroup, // ✅ Add this line
       tookPlace,
@@ -86,7 +85,6 @@ const editInterest = asyncWrapper(async (req, res, next) => {
 
   res.status(200).json(updatedInterest);
 });
-
 
 const deleteInterest = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
@@ -103,7 +101,7 @@ const deleteInterest = asyncWrapper(async (req, res, next) => {
 const getInterest = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
-  const interest = await ActivityInterest.findById(id);
+  const interest = await ActivityInterest.findById(id).populate({path: 'interestedUsers.user'});
 
   if (!interest) {
     throw new ErrorResponse(404, "Interest not found!");
@@ -121,22 +119,34 @@ const getEveryInterest = asyncWrapper(async (req, res, next) => {
 const showInterest = asyncWrapper(async (req, res, next) => {
   const { id: classId } = req.params; // Extract classId from URL parameters
   const { id: userId } = req.user; // Extract userId from the authenticated user
-  
+
   try {
-    // Find the activity interest and add the user to the interestedUsers array if not already present
+    // Find the activity interest
     const activityInterest = await ActivityInterest.findById(classId);
-    
+
     if (!activityInterest) {
       return res.status(404).json({ message: "Activity interest not found" });
     }
 
     // Check if user is already in the interestedUsers array
-    if (activityInterest.interestedUsers.includes(userId)) {
-      return res.status(400).json({ message: "User has already shown interest" });
+    const alreadyInterested = activityInterest.interestedUsers.some(
+      (entry) => entry.user.toString() === userId
+    );
+
+    if (alreadyInterested) {
+      return res
+        .status(400)
+        .json({ message: "User has already shown interest" });
     }
 
-    // Add userId to the interestedUsers array
-    activityInterest.interestedUsers.push(userId);
+    // Add user with proper structure
+    activityInterest.interestedUsers.push({
+      user: userId, // Ensure the correct field name
+      interestedAt: new Date(),
+    });
+
+    // Increment favCount
+    activityInterest.favCount += 1;
 
     // Save the updated activity interest
     await activityInterest.save();
@@ -149,6 +159,40 @@ const showInterest = asyncWrapper(async (req, res, next) => {
   }
 });
 
+const markTookPlace = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  // Find the activity
+  const interest = await ActivityInterest.findById(id).populate(
+    "interestedUsers.user"
+  );
+
+  if (!interest) {
+    return res.status(404).json({ message: "Activity not found" });
+  }
+
+  if (interest.interestedUsers.length > 0) {
+    interest.pastInterests.push({
+      date: new Date(),
+      users: interest.interestedUsers
+        .filter((u) => u.user) // Filter out invalid entries
+        .map((u) => ({
+          user: u.user,
+          interestedAt: u.interestedAt,
+        })),
+    });
+  }
+
+  // Update lastTookPlace, clear interestedUsers, and reset favCount
+  interest.lastTookPlace = new Date();
+  interest.interestedUsers = [];
+  interest.favCount = 0; // Reset favCount
+
+  // Save the changes
+  await interest.save();
+
+  res.status(200).json(interest);
+});
 
 module.exports = {
   createInterest,
@@ -156,5 +200,6 @@ module.exports = {
   getEveryInterest,
   deleteInterest,
   getInterest,
-  showInterest
+  showInterest,
+  markTookPlace,
 };
