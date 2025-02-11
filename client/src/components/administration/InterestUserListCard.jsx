@@ -1,6 +1,7 @@
-import { NavLink } from "react-router-dom";
-
 export default function UserListCardCard({ user }) {
+
+  console.log(user)
+
   const formattedDate = new Date(user.interestedAt).toLocaleDateString(
     "de-DE",
     {
@@ -45,7 +46,7 @@ export default function UserListCardCard({ user }) {
           </td>
         ) : (
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            {/* {user.user.role.charAt(0).toUpperCase() + user.user.role.slice(1)} */}
+            {user.user.role.charAt(0).toUpperCase() + user.user.role.slice(1)}
           </td>
         )}
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

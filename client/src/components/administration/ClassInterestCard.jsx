@@ -154,7 +154,8 @@ export default function ClassInterestCard({ id, interest }) {
                 <h5 className="block font-sans text-xl antialiased font-medium leading-snug tracking-normal text-blue-gray-900">
                   {interest.title}
                 </h5>
-                <p className="flex items-center gap-0 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
+                <div>
+                <p className="flex items-center justify-end gap-0 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
                   Interesse:
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -186,6 +187,16 @@ export default function ClassInterestCard({ id, interest }) {
                     ( {interest.interestedUsers.length} )
                   </NavLink>
                 </p>
+                <p className="flex items-center justify-end gap-0 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
+                  <NavLink
+                    className="ml-2 text-blue-500 font-semibold text-lg hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-md transition-all duration-300 ease-in-out"
+                    to={`/admin/classInterest/userOverview/${interest._id}`}
+                  >
+                                      Historie
+                  </NavLink>
+                </p>
+                </div>
+
               </div>
               <p className="block font-sans text-base antialiased font-light leading-relaxed text-gray-700">
                 {interest.description}
