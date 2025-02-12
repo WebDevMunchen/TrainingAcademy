@@ -5,19 +5,27 @@ import axiosClient from "../../utils/axiosClient";
 import { NavLink } from "react-router-dom";
 
 export default function UserClassInterestCard({ id, interest }) {
-  const { allInterest, setAllInterest } = useContext(AuthContext);
+  const { allInterest, setAllInterest, user } = useContext(AuthContext);
   const modalRef = useRef(null);
 
   const showInterest = () => {
     axiosClient
       .put(`/activityInterest/showInterest/${id}`)
       .then(() => {
-        console.log("Success");
+        return axiosClient.get("/activityInterest/getEveryInterest");
+      })
+      .then((response) => {
+        setAllInterest(response.data);
+
+        notifySuccess();
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  console.log(interest);
+  console.log(user._id);
 
   const allTargetGroups = {
     "https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958806/alle_wyewox_c_pad_w_80_h_75_n0nktg.png":
@@ -51,7 +59,7 @@ export default function UserClassInterestCard({ id, interest }) {
   };
 
   const notifySuccess = () =>
-    toast.success("Schulung gelöscht!", {
+    toast.success("Erfolgreich eingetragen!", {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -64,16 +72,22 @@ export default function UserClassInterestCard({ id, interest }) {
       className: "mt-14 mr-6",
     });
 
+  const isUserInterested = interest.interestedUsers.some(
+    (interestedUserId) => interestedUserId.user === user._id
+  );
+
+  console.log(isUserInterested);
+
   return (
     <div className="bg-gray-50/50 flex">
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center">
         <div className="mx-auto">
-          <div className="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg">
+        <div className="relative flex flex-col rounded-xl bg-white shadow-lg h-[800px] lg:w-fit">
             <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
-              <img src={interest.previewPicture} alt="ui/ux review check" />
+              <img src={interest.previewPicture} alt="ui/ux review check" className="w-full min-h-[250px] object-cover lg:min-h-[350px]" />
               <div className="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
             </div>
-            <div className="p-6">
+            <div className="p-6 flex-grow overflow-auto">
               <div className="flex items-center justify-between mb-3">
                 <h5 className="block font-sans text-xl antialiased font-medium leading-snug tracking-normal text-blue-gray-900">
                   {interest.title}
@@ -85,7 +99,7 @@ export default function UserClassInterestCard({ id, interest }) {
               <label className="block my-3 text-sm font-medium text-gray-900 dark:text-white">
                 Lernziele:
               </label>
-              <div className="flex gap-1">
+              <div className="flex flex-wrap gap-1">
                 {interest.tag.map((singleTag) => {
                   return (
                     <span className="w-fit bg-gray-200 text-gray-800 px-2 py-1 rounded-md flex items-center border border-gray-400">
@@ -111,13 +125,20 @@ export default function UserClassInterestCard({ id, interest }) {
                 })}
               </div>
             </div>
-            <div className="p-6 pt-0">
+            <div className="p-6">
               <button
-                className="block w-full select-none rounded-lg bg-gray-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                className={`block w-full select-none rounded-lg py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase shadow-md transition-all 
+      ${
+        isUserInterested
+          ? "bg-gray-400 text-white cursor-not-allowed"
+          : "bg-gray-900 text-white hover:shadow-lg hover:shadow-gray-900/20"
+      }
+    `}
                 type="button"
                 onClick={showInterest}
+                disabled={isUserInterested}
               >
-                Senden
+                {isUserInterested ? "Bereits eingetragen" : "Eintragen"}
               </button>
             </div>
           </div>

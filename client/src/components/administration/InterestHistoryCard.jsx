@@ -16,11 +16,12 @@ export default function InterestHistoryCard({ user }) {
 
   return (
     <>
+      
       <tr>
-        <td className="flex justify-center px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+      <td colSpan={7} className="px-0 py-0 text-center">
           <button
             onClick={toggleAccordion}
-            className="flex items-center gap-2 px-3 py-1 bg-blue-400 text-white rounded-md hover:bg-blue-500 transition"
+            className="w-full mx-auto flex justify-center items-center gap-2 px-3 py-1 bg-gray-300 text-black hover:bg-gray-400 transition"
           >
             {/* {isOpen ? "Weniger anzeigen" : "Anzeigen"}
              */}
@@ -52,7 +53,7 @@ export default function InterestHistoryCard({ user }) {
       </tr>
 
       <tr>
-        <td>
+        <td colSpan={5}>
           {/* Motion Div for Smooth Accordion Effect */}
           <motion.div
             initial={{ height: 0, opacity: 0 }}

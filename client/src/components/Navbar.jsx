@@ -151,6 +151,14 @@ export default function Navbar() {
                           </NavLink>
                         </li>
                         <li>
+                          <NavLink
+                            to={"/classInterest/overview"}
+                            onClick={handleLinkClick}
+                          >
+                            Interesse
+                          </NavLink>
+                        </li>
+                        <li>
                           <NavLink to={"/messages"} onClick={handleLinkClick}>
                             Nachrichten
                             <span

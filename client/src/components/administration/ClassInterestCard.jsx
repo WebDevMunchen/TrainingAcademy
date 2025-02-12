@@ -7,6 +7,7 @@ import { NavLink } from "react-router-dom";
 export default function ClassInterestCard({ id, interest }) {
   const { allInterest, setAllInterest } = useContext(AuthContext);
   const modalRef = useRef(null);
+  const modalRef2 = useRef(null);
 
   const deleteInterest = () => {
     axiosClient
@@ -99,11 +100,11 @@ export default function ClassInterestCard({ id, interest }) {
 
   return (
     <div className="bg-gray-50/50 flex">
-      <div className="flex justify-center items-center">
-        <div className="mx-auto">
-          <div className="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg">
+      <div className="flex justify-center">
+        <div className="mx-auto ">
+          <div className="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg h-[800px]">
             <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
-              <img src={interest.previewPicture} alt="ui/ux review check" />
+              <img src={interest.previewPicture} alt="ui/ux review check" className="w-full min-h-[350px] object-cover" />
               <div className="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
               <button
                 className="!absolute top-4 right-4 h-8 max-h-[32px] w-8 max-w-[32px] bg-stone-200 select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-blue-500 transition-all active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none transition-transform duration-300 transform hover:scale-125"
@@ -148,11 +149,13 @@ export default function ClassInterestCard({ id, interest }) {
                 </span>
               </button>
             </div>
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-3">
+            <div className="p-6 flex-grow overflow-auto">
+              <div className="flex items-center justify-center mb-3">
                 <h5 className="block font-sans text-xl antialiased font-medium leading-snug tracking-normal text-blue-gray-900">
                   {interest.title}
                 </h5>
+              </div>
+              <div className="flex items-center justify-between mb-3">
                 <div>
                   <p className="flex items-center justify-end gap-0 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
                     Interesse:
@@ -186,7 +189,10 @@ export default function ClassInterestCard({ id, interest }) {
                       ( {interest.interestedUsers.length} )
                     </NavLink>
                   </p>
-                  <p className="flex items-center justify-end gap-0 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
+
+                </div>
+                <div>
+                <p className="flex items-center justify-end gap-0 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
                   Historie:
 
 
@@ -216,7 +222,7 @@ export default function ClassInterestCard({ id, interest }) {
               <label className="block my-3 text-sm font-medium text-gray-900 dark:text-white">
                 Lernziele:
               </label>
-              <div className="flex gap-1">
+              <div className="flex flex-wrap gap-1">
                 {interest.tag.map((singleTag) => {
                   return (
                     <span className="w-fit bg-gray-200 text-gray-800 px-2 py-1 rounded-md flex items-center border border-gray-400">
@@ -245,7 +251,8 @@ export default function ClassInterestCard({ id, interest }) {
             <div className="p-6 pt-3">
               <button
                 className="block w-full select-none rounded-lg bg-gray-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                onClick={markTookPlace}
+                onClick={() => modalRef2.current.showModal()}
+
                 type="button"
               >
                 Als stattgefunden markieren
@@ -297,6 +304,61 @@ export default function ClassInterestCard({ id, interest }) {
                       Löschen
                     </button>
                     <button className="btn w-28">Schließen</button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
+
+            <dialog id="tookPlace" className="modal" ref={modalRef2}>
+              <div className="modal-box max-w-3xl">
+                <div
+                  className="flex items-center p-3 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-300 dark:border-red-800"
+                  role="alert"
+                >
+                  <svg
+                    className="flex-shrink-0 inline w-4 h-4 me-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                  </svg>
+                  <span className="sr-only">Info</span>
+                  <div>
+                    <span className="font-medium">Warnung!</span> Du bist dabei,
+                    diese Schulung als stattgefunden zu markieren!
+                  </div>
+                </div>
+                <div
+                  className="flex p-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-blue-400"
+                  role="alert"
+                >
+                  <span className="sr-only">Info</span>
+                  <div>
+                    <span className="font-medium">
+                      Bitte Folgendes beachten:
+                    </span>
+                    <ul className="mt-1.5 list-disc list-inside">
+                    <li>
+                        Die Liste der Interessenten wird zurückgesetzt
+                      </li>
+                      <li>
+                        Alle Interessenten, die sich für diese Schulung eingetragen haben, werden in Historie verschoben
+                      </li>
+
+                    </ul>
+                  </div>
+                </div>
+                <div className="modal-action flex justify-center">
+                  <form method="dialog" className="flex gap-2">
+                    <button
+                      onClick={markTookPlace}
+                      className="btn w-28 bg-red-500 text-white hover:bg-red-700"
+                    >
+                      Bestätigen
+                    </button>
+                    <button className="btn w-28">Abbrechen</button>
                   </form>
                 </div>
               </div>

@@ -38,7 +38,7 @@ export default function AuthProvider({ children }) {
       .finally(() => {
         setIsLoading(false);
       });
-      setIsLoadingActivities(true);
+    setIsLoadingActivities(true);
 
     axiosClient
       .get(
@@ -49,7 +49,8 @@ export default function AuthProvider({ children }) {
       })
       .catch((error) => {
         setAllActivities([]);
-      }).finally(() => {
+      })
+      .finally(() => {
         setIsLoadingActivities(false);
       });
 
@@ -62,7 +63,7 @@ export default function AuthProvider({ children }) {
         setAllUsers(null);
       });
 
-      axiosClient
+    axiosClient
       .get("/activityInterest/getEveryInterest")
       .then((response) => {
         setAllInterest(response.data);
@@ -153,6 +154,11 @@ export default function AuthProvider({ children }) {
       .then((responseApprovers) => {
         setApprover(responseApprovers.data);
 
+        return axiosClient.get("/activityInterest/getEveryInterest");
+      })
+      .then((response) => {
+        setAllInterest(response.data);
+
         navigate(redirectUrl || "/");
       })
       .catch((error) => {
@@ -237,7 +243,7 @@ export default function AuthProvider({ children }) {
           isLoading,
           currentMonth,
           currentYear,
-          isLoadingActivities
+          isLoadingActivities,
         }}
       >
         {children}
