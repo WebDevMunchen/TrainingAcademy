@@ -24,6 +24,23 @@ export default function UserInfoCard() {
       })
       .catch((error) => {});
   }, []);
+  let totalMinutes = 0;
+
+  userInfomation?.classesRegistered?.forEach((element) => {
+    console.log(element);
+
+    if (element.statusAttended === "teilgenommen") {
+      totalMinutes += element.registeredClassID.duration;
+    }
+  });
+
+  console.log("Total Minutes:", totalMinutes);
+
+  // Convert total minutes to hours and minutes
+  let hours = Math.floor(totalMinutes / 60);
+  let minutes = totalMinutes % 60;
+
+  console.log(`Total Time: ${hours} hours and ${minutes} minutes`);
 
   const {
     register,
@@ -227,8 +244,10 @@ export default function UserInfoCard() {
                   {userInfomation?.firstName + " " + userInfomation?.lastName}
                 </h1>
                 <p className="font-light text-gray-600 mt-3">
-                  <span className="font-medium">Registriert seit:</span>{" "}
-                  {formattedDate}
+                  <span className="font-medium">
+                    Anwesende Stunden insgesamt:
+                  </span>{" "}
+                  {hours}:{minutes}
                 </p>
                 <p className="font-light text-gray-600 mt-2">
                   <span className="font-medium">Status: </span>

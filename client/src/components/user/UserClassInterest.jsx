@@ -10,16 +10,20 @@ export default function UserClassInterest() {
   return (
     <>
       <div className="text-center mx-auto max-w-3xl p-4">
-      <div className="flex justify-center">
-                <img
-                  src="https://d2nk66epwbpimf.cloudfront.net/images/345249fd-0959-4762-bfbc-80ca4247abbb/54ad38e7-f4b4-4dc6-9e80-21e06958a192.png"
-                  className="h-48"
-                  alt="logo"
-                />
-              </div>
+        <div className="flex justify-center">
+          <img
+            src="https://d2nk66epwbpimf.cloudfront.net/images/345249fd-0959-4762-bfbc-80ca4247abbb/54ad38e7-f4b4-4dc6-9e80-21e06958a192.png"
+            className="h-48"
+            alt="logo"
+          />
+        </div>
         <p className="text-gray-700 mt-2">
-        Hier findest du eine Auswahl an möglichen Schulungen, die stattfinden können. Wenn du Interesse an einer bestimmten Schulung hast, klicke einfach auf den Button
-          <span className="font-semibold"> "Eintragen" </span>,  um dein Interesse zu bekunden. Sobald genügend Interesse besteht, werden wir die Schulung offiziell ankündigen, und du kannst dich dafür anmelden."
+          Hier findest du eine Auswahl an möglichen Schulungen, die stattfinden
+          können. Wenn du Interesse an einer bestimmten Schulung hast, klicke
+          einfach auf den Button
+          <span className="font-semibold"> "Eintragen" </span>, um dein
+          Interesse zu bekunden. Sobald genügend Interesse besteht, werden wir
+          die Schulung offiziell ankündigen, und du kannst dich dafür anmelden."
         </p>
       </div>
       <div className="bg-gray-50/50 flex">
