@@ -65,7 +65,7 @@ export default function ClassInterestCard({ id, interest }) {
   };
 
   const getTooltipText = (url) => {
-    return allTargetGroups[url] || "Unknown Group"; // Default message if no match
+    return allTargetGroups[url] || "Unknown Group"; 
   };
 
   const notifySuccess = () =>
@@ -238,7 +238,7 @@ export default function ClassInterestCard({ id, interest }) {
                   return (
                     <span
                       className="tooltip cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-1.5 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70"
-                      data-tip={getTooltipText(group)} // Use 'group' here^^
+                      data-tip={getTooltipText(group)} 
                     >
                       <img src={group} width={35} height={35} alt={group} />
                     </span>
