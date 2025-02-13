@@ -418,24 +418,30 @@ const uploadClassFile = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
   if (!req.file) {
-    return res.status(400).json({ success: false, message: "No file uploaded" });
+    return res
+      .status(400)
+      .json({ success: false, message: "No file uploaded" });
   }
 
-  // ✅ Check if file is a .pptx
-  const allowedFormats = ["application/vnd.openxmlformats-officedocument.presentationml.presentation"];
+  const allowedFormats = [
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  ];
   if (!allowedFormats.includes(req.file.mimetype)) {
-    return res.status(400).json({ success: false, message: "Invalid file format. Please upload a .pptx file." });
+    return res
+      .status(400)
+      .json({
+        success: false,
+        message: "Invalid file format. Please upload a .pptx file.",
+      });
   }
 
   try {
-    // ✅ Upload file to Cloudinary with explicit format
     const result = await cloudinary.uploader.upload(req.file.path, {
-      resource_type: "raw", // Ensures non-image files are handled correctly
-      format: "pptx", // Forces .pptx format
-      folder: "class_activities", // Optional: Store in a specific folder
+      resource_type: "raw",
+      format: "pptx",
+      folder: "class_activities",
     });
 
-    // ✅ Update MongoDB with the Cloudinary URL
     const activity = await ClassActivity.findByIdAndUpdate(
       id,
       { fileUrlPPT: result.secure_url },
@@ -443,7 +449,9 @@ const uploadClassFile = asyncWrapper(async (req, res, next) => {
     );
 
     if (!activity) {
-      return res.status(404).json({ success: false, message: "Activity not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Activity not found" });
     }
 
     res.status(200).json({
@@ -460,8 +468,6 @@ const uploadClassFile = asyncWrapper(async (req, res, next) => {
     });
   }
 });
-
-
 
 const updateCancelationReason = asyncWrapper(async (req, res, next) => {
   const { stornoReason } = req.body;
@@ -907,24 +913,19 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
     return res.status(404).json({ message: "Class activity not found." });
   }
 
-  // Extract time components
   const eventDate = new Date(classActivity.date);
   const [hours, minutes] = classActivity.time.split(":").map(Number);
 
-  // Set correct start time
   eventDate.setHours(hours);
   eventDate.setMinutes(minutes);
 
-  // Correctly calculate end time
   const endDate = new Date(eventDate);
-  endDate.setMinutes(eventDate.getMinutes() + classActivity.duration); // This will roll over the hour if needed
+  endDate.setMinutes(eventDate.getMinutes() + classActivity.duration);
 
-  // Format timestamps in correct UTC format for Outlook compatibility
   const formatDate = (date) => {
     return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
   };
 
-  // Generate ICS event manually (fixes Outlook parsing issue)
   const icsData = `
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -946,9 +947,8 @@ STATUS:CONFIRMED
 TRANSP:OPAQUE
 END:VEVENT
 END:VCALENDAR
-  `.trim(); // Trim whitespace to avoid issues
+  `.trim();
 
-  // Set proper headers
   res.setHeader("Content-Type", "text/calendar; charset=utf-8");
   res.setHeader(
     "Content-Disposition",
@@ -1132,5 +1132,5 @@ module.exports = {
   enlist,
   exportCalendar,
   sendReminder,
-  uploadClassFile
+  uploadClassFile,
 };

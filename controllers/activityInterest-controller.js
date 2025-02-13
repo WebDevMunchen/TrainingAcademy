@@ -8,21 +8,19 @@ const nodemailer = require("nodemailer");
 const createInterest = asyncWrapper(async (req, res, next) => {
   const { title, description, tag, targetGroup, tookPlace } = req.body;
 
-  // Ensure tag and targetGroup are parsed as arrays
   const parsedTags = typeof tag === "string" ? JSON.parse(tag) : tag || [];
   const parsedTargetGroups =
     typeof targetGroup === "string"
       ? JSON.parse(targetGroup)
       : targetGroup || [];
 
-  // Upload the file to Cloudinary
   let previewPicture = null;
   if (req.file) {
     try {
       const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "activity_interests", // Optionally specify a folder in Cloudinary
+        folder: "activity_interests",
       });
-      previewPicture = result.secure_url; // Cloudinary URL
+      previewPicture = result.secure_url;
     } catch (error) {
       return res
         .status(500)
@@ -30,7 +28,6 @@ const createInterest = asyncWrapper(async (req, res, next) => {
     }
   }
 
-  // Create the activity interest in your database
   const interest = await ActivityInterest.create({
     title,
     description,
@@ -45,7 +42,7 @@ const createInterest = asyncWrapper(async (req, res, next) => {
 
 const editInterest = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
-  let { title, description, tag, tookPlace, targetGroup } = req.body; // Include targetGroup
+  let { title, description, tag, tookPlace, targetGroup } = req.body;
 
   const parsedTags = typeof tag === "string" ? JSON.parse(tag) : tag || [];
   const parsedTargetGroup =
@@ -79,7 +76,7 @@ const editInterest = asyncWrapper(async (req, res, next) => {
       description,
       previewPicture,
       tag: parsedTags,
-      targetGroup: parsedTargetGroup, // ✅ Add this line
+      targetGroup: parsedTargetGroup,
       tookPlace,
     },
     { new: true, runValidators: true }
@@ -121,18 +118,16 @@ const getEveryInterest = asyncWrapper(async (req, res, next) => {
 });
 
 const showInterest = asyncWrapper(async (req, res, next) => {
-  const { id: classId } = req.params; // Extract classId from URL parameters
-  const { id: userId } = req.user; // Extract userId from the authenticated user
+  const { id: classId } = req.params;
+  const { id: userId } = req.user;
 
   try {
-    // Find the activity interest
     const activityInterest = await ActivityInterest.findById(classId);
 
     if (!activityInterest) {
       return res.status(404).json({ message: "Activity interest not found" });
     }
 
-    // Check if user is already in the interestedUsers array
     const alreadyInterested = activityInterest.interestedUsers.some(
       (entry) => entry.user.toString() === userId
     );
@@ -143,13 +138,11 @@ const showInterest = asyncWrapper(async (req, res, next) => {
         .json({ message: "User has already shown interest" });
     }
 
-    // Add user with proper structure
     activityInterest.interestedUsers.push({
-      user: userId, // Ensure the correct field name
+      user: userId,
       interestedAt: new Date(),
     });
 
-    // Save the updated activity interest
     await activityInterest.save();
 
     const userInfo = await User.findById(userId);
@@ -230,7 +223,6 @@ const showInterest = asyncWrapper(async (req, res, next) => {
       console.error("Error sending email!");
     }
 
-    // Return the updated activity interest object as response
     res.status(200).json(activityInterest);
   } catch (error) {
     res.status(500).json({ message: "Error adding interest" });
@@ -240,7 +232,6 @@ const showInterest = asyncWrapper(async (req, res, next) => {
 const markTookPlace = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
-  // Find the activity
   const interest = await ActivityInterest.findById(id).populate(
     "interestedUsers.user"
   );
@@ -253,7 +244,7 @@ const markTookPlace = asyncWrapper(async (req, res, next) => {
     interest.pastInterests.push({
       date: new Date(),
       users: interest.interestedUsers
-        .filter((u) => u.user) // Filter out invalid entries
+        .filter((u) => u.user)
         .map((u) => ({
           user: u.user,
           interestedAt: u.interestedAt,
@@ -261,11 +252,9 @@ const markTookPlace = asyncWrapper(async (req, res, next) => {
     });
   }
 
-  // Update lastTookPlace, clear interestedUsers, and reset favCount
   interest.lastTookPlace = new Date();
   interest.interestedUsers = [];
 
-  // Save the changes
   await interest.save();
 
   res.status(200).json(interest);
