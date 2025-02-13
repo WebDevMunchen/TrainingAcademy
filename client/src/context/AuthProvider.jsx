@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import axiosClient from "../utils/axiosClient";
 import { useNavigate } from "react-router-dom";
 import { badCredentials } from "../utils/badCredentials";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const AuthContext = createContext();
@@ -193,29 +193,13 @@ export default function AuthProvider({ children }) {
         navigate("/admin/users");
       })
       .catch((error) => {
-        notifyErrorRegister();
+        toast.error(
+          `Registrierung fehlgeschlagen. Benutzer bereits registriert oder ungültige Daten`
+        );
       })
       .finally(() => {
         setIsLoading(false);
       });
-  };
-
-  const notifyErrorRegister = () => {
-    toast.error(
-      `Registrierung fehlgeschlagen. Benutzer bereits registriert oder ungültige Daten`,
-      {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        className: "mt-14 mr-6 w-80",
-      }
-    );
   };
 
   return (
@@ -232,7 +216,6 @@ export default function AuthProvider({ children }) {
           setIsLoading,
           setAllActivities,
           setAllUsers,
-          notifyErrorRegister,
           setApprover,
           setAllInterest,
           allInterest,

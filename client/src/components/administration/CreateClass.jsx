@@ -8,7 +8,9 @@ import { useNavigate } from "react-router-dom";
 export default function CreateClass() {
   const { setAllActivities, currentMonth, currentYear } =
     useContext(AuthContext);
+    
   const navigate = useNavigate();
+
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [hideFileUpload, setHideFileUpload] = useState("hidden");
@@ -61,9 +63,9 @@ export default function CreateClass() {
 
     setSelectedDepartments((prev) => {
       if (checked) {
-        return [...prev, value]; 
+        return [...prev, value];
       } else {
-        return prev.filter((url) => url !== value); 
+        return prev.filter((url) => url !== value);
       }
     });
   };
@@ -359,7 +361,7 @@ export default function CreateClass() {
                     <div key={name} className="flex items-center mb-1">
                       <input
                         type="checkbox"
-                        value={url} 
+                        value={url}
                         onChange={handleDepartmentChange}
                         className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                       />

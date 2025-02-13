@@ -55,10 +55,12 @@ export default function Navbar() {
                         <NavLink to={"/classes"}>Schulungsübersicht</NavLink>
                       </li>
                       {user.role === "ASP" && (
-                     
-                      <li>
-                        <NavLink to={"/userOverview"}>Mitarbeiterübericht</NavLink>
-                      </li> )}
+                        <li>
+                          <NavLink to={"/userOverview"}>
+                            Mitarbeiterübericht
+                          </NavLink>
+                        </li>
+                      )}
                       <li>
                         <NavLink to={"/classesOverview"}>
                           Meine Schulungen

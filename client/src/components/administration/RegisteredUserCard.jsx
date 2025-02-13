@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
 import { useParams } from "react-router-dom";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import attended from "../../assets/attended.png";
 import approved from "../../assets/approved.png";
 import pending from "../../assets/pending.png";
@@ -79,10 +79,10 @@ export default function RegisteredUserCard({
       })
       .then((responseUsers) => {
         setAllUsers(responseUsers.data);
-        notifySuccess();
+        toast.success("Genehmigung geändert");
       })
       .catch((error) => {
-        notifyError();
+        toast.error(`Genehmigung könnte nicht geändert werden!`);
         setHideChangedBtn(false);
         setSubmitedChangedStatus(true);
       });
@@ -113,11 +113,11 @@ export default function RegisteredUserCard({
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
-        notifySuccess();
+        toast.success("Genehmigung geändert");
       })
       .catch((error) => {
         if (error.name === "AxiosError") {
-          notifyError();
+          toast.error(`Genehmigung könnte nicht geändert werden!`);
           setHideChangedBtn(false);
           setSubmitedChangedStatus(true);
         }
@@ -152,11 +152,11 @@ export default function RegisteredUserCard({
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
-        notifySuccess();
+        toast.success("Genehmigung geändert");
       })
       .catch((error) => {
         if (error.name === "AxiosError") {
-          notifyError();
+          toast.error(`Genehmigung könnte nicht geändert werden!`);
           setHideChangedBtn(false);
           setSubmitedChangedStatus(true);
         }
@@ -262,7 +262,7 @@ export default function RegisteredUserCard({
       participated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
-      notifySuccessAttended();
+      toast.success("Teilnahmestatus geändert!");
     }
   };
 
@@ -272,7 +272,7 @@ export default function RegisteredUserCard({
       notParticipated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
-      notifySuccessAttended();
+      toast.success("Teilnahmestatus geändert!");
     }
   };
 
@@ -281,48 +281,6 @@ export default function RegisteredUserCard({
       modalRef.current.close();
     }
   };
-
-  const notifySuccess = () =>
-    toast.success("Genehmigung geändert", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
-    });
-
-  const notifyError = () =>
-    toast.error(`Genehmigung könnte nicht geändert werden!`, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
-    });
-
-  const notifySuccessAttended = () =>
-    toast.success("Teilnahmestatus geändert!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
-    });
 
   const currentDate = new Date();
   const isoDateString =
@@ -480,7 +438,7 @@ export default function RegisteredUserCard({
           </div>
         </div>
       </div>
-      
+
       {user.role === "ASP" || user.role === "admin" ? (
         <>
           <div

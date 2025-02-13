@@ -14,9 +14,8 @@ export default function InterestHistoryCard({ user }) {
 
   return (
     <>
-      
       <tr>
-      <td colSpan={7} className="px-0 py-0 text-center">
+        <td colSpan={7} className="px-0 py-0 text-center">
           <button
             onClick={toggleAccordion}
             className="w-full mx-auto flex justify-center items-center gap-2 px-3 py-1 bg-gray-300 text-black hover:bg-gray-400 transition"
@@ -59,8 +58,8 @@ export default function InterestHistoryCard({ user }) {
             transition={{ duration: 0.4 }}
             className="bg-gray-100 py-2 px-8"
             style={{
-              borderRadius: "0px", 
-              overflow: "hidden", 
+              borderRadius: "0px",
+              overflow: "hidden",
             }}
           >
             {user.users && user.users.length > 0 ? (

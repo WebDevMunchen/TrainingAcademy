@@ -1,12 +1,10 @@
 import { useContext, useRef } from "react";
 import { AuthContext } from "../../context/AuthProvider";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import axiosClient from "../../utils/axiosClient";
-import { NavLink } from "react-router-dom";
 
 export default function UserClassInterestCard({ id, interest }) {
-  const { allInterest, setAllInterest, user } = useContext(AuthContext);
-  const modalRef = useRef(null);
+  const { setAllInterest, user } = useContext(AuthContext);
 
   const showInterest = () => {
     axiosClient
@@ -16,11 +14,9 @@ export default function UserClassInterestCard({ id, interest }) {
       })
       .then((response) => {
         setAllInterest(response.data);
-
-        notifySuccess();
+        toast.success("Erfolgreich eingetragen!");
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const allTargetGroups = {
@@ -51,22 +47,8 @@ export default function UserClassInterestCard({ id, interest }) {
   };
 
   const getTooltipText = (url) => {
-    return allTargetGroups[url] || "Unknown Group"; 
+    return allTargetGroups[url] || "Unknown Group";
   };
-
-  const notifySuccess = () =>
-    toast.success("Erfolgreich eingetragen!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mt-14 mr-6",
-    });
 
   const isUserInterested = interest.interestedUsers.some(
     (interestedUserId) => interestedUserId.user === user._id
@@ -76,9 +58,13 @@ export default function UserClassInterestCard({ id, interest }) {
     <div className="bg-gray-50/50 flex">
       <div className="flex justify-center">
         <div className="mx-auto">
-        <div className="relative flex flex-col rounded-xl bg-white shadow-lg h-[800px] lg:w-fit">
+          <div className="relative flex flex-col rounded-xl bg-white shadow-lg h-[800px] lg:w-fit">
             <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
-              <img src={interest.previewPicture} alt="ui/ux review check" className="w-full min-h-[250px] object-cover lg:min-h-[350px]" />
+              <img
+                src={interest.previewPicture}
+                alt="ui/ux review check"
+                className="w-full min-h-[250px] object-cover lg:min-h-[350px]"
+              />
               <div className="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
             </div>
             <div className="p-6 flex-grow overflow-auto">

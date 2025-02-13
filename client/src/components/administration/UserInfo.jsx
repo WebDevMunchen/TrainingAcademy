@@ -11,12 +11,12 @@ export default function UserInfo({ userId }) {
         setUser(response.data);
       })
       .catch((error) => {});
-  }, [userId]); 
+  }, [userId]);
 
   return (
     <>
       {!user ? (
-        <p>Loading...</p> 
+        <p>Loading...</p>
       ) : (
         <ul>
           {user.classesRegistered.map((element) => {

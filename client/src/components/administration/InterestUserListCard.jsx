@@ -1,5 +1,4 @@
 export default function UserListCardCard({ user }) {
-
   const formattedDate = new Date(user.interestedAt).toLocaleDateString(
     "de-DE",
     {

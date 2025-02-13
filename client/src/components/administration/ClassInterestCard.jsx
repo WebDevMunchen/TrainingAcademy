@@ -1,11 +1,11 @@
 import { useContext, useRef } from "react";
 import { AuthContext } from "../../context/AuthProvider";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import axiosClient from "../../utils/axiosClient";
 import { NavLink } from "react-router-dom";
 
 export default function ClassInterestCard({ id, interest }) {
-  const { allInterest, setAllInterest } = useContext(AuthContext);
+  const { setAllInterest } = useContext(AuthContext);
   const modalRef = useRef(null);
   const modalRef2 = useRef(null);
 
@@ -17,10 +17,9 @@ export default function ClassInterestCard({ id, interest }) {
       })
       .then((response) => {
         setAllInterest(response.data);
-        notifySuccess();
+        toast.success("Schulung gelöscht!");
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const markTookPlace = () => {
@@ -31,10 +30,9 @@ export default function ClassInterestCard({ id, interest }) {
       })
       .then((response) => {
         setAllInterest(response.data);
-        notifySuccessMarkTookPlace();
+        toast.success("Schulung als stattgefunden markiert!");
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const allTargetGroups = {
@@ -65,45 +63,20 @@ export default function ClassInterestCard({ id, interest }) {
   };
 
   const getTooltipText = (url) => {
-    return allTargetGroups[url] || "Unknown Group"; 
+    return allTargetGroups[url] || "Unknown Group";
   };
 
-  const notifySuccess = () =>
-    toast.success("Schulung gelöscht!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mt-14 mr-6",
-    });
-
-  const notifySuccessMarkTookPlace = () =>
-    toast.success("Schulung als stattgefunden markiert!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mt-14 mr-6",
-    });
-
   return (
-
     <div className="bg-gray-50/50 flex">
       <div className="flex justify-center">
         <div className="mx-auto ">
           <div className="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg h-[800px]">
             <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
-              <img src={interest.previewPicture} alt="ui/ux review check" className="w-full min-h-[350px] object-cover" />
+              <img
+                src={interest.previewPicture}
+                alt="ui/ux review check"
+                className="w-full min-h-[350px] object-cover"
+              />
               <div className="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
               <button
                 className="!absolute top-4 right-4 h-8 max-h-[32px] w-8 max-w-[32px] bg-stone-200 select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-blue-500 transition-all active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none transition-transform duration-300 transform hover:scale-125"
@@ -188,29 +161,26 @@ export default function ClassInterestCard({ id, interest }) {
                       ( {interest.interestedUsers.length} )
                     </NavLink>
                   </p>
-
                 </div>
                 <div>
-                <p className="flex items-center justify-end gap-0 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
-                  Historie:
-
-
+                  <p className="flex items-center justify-end gap-0 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
+                    Historie:
                     <NavLink
                       className="ml-2 text-blue-500 font-semibold text-lg hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-md transition-all duration-300 ease-in-out"
                       to={`/admin/classInterest/history/${interest._id}`}
                     >
-                                          <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={32}
-                      height={32}
-                      viewBox="0 0 24 24"
-                      className="transition-transform duration-300 transform hover:scale-125"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M8.23 18.77q-.412 0-.705-.295t-.294-.706v-1.192q0-.343.232-.576t.576-.232H10v-3.25q-.827.162-1.737-.005q-.911-.166-1.577-.73q-.132-.122-.209-.275t-.077-.334v-1.04H5.31q-.153 0-.297-.056t-.273-.184l-1.929-1.93q-.257-.257-.228-.6t.31-.565q.724-.513 1.66-.764q.938-.251 1.847-.251q.961 0 1.869.273T10 6.914v-.366q0-.615.428-1.043t1.043-.428h6.923q.662 0 1.134.475q.472.474.472 1.14V16.77q0 .847-.577 1.423T18 18.77zm2.77-3h5.23q.31 0 .54.229t.23.54v.23q0 .425.288.713t.712.287t.713-.287t.287-.713V6.692q0-.269-.173-.442t-.442-.173h-6.77q-.269 0-.442.173T11 6.692v.985l5.36 5.36q.118.111.145.253t-.038.285t-.177.226t-.292.084q-.102 0-.195-.043t-.157-.103l-2.896-2.897l-.565.566q-.293.292-.575.49t-.61.348zM5.408 9.134h1.184q.344 0 .576.232t.232.575v1.15q.511.316.952.43t.856.113q.683 0 1.241-.233q.559-.233 1.047-.721l.546-.546l-1.746-1.746q-.802-.802-1.798-1.203t-2.098-.4q-.73 0-1.421.19q-.69.19-1.237.494zM16 16.769H8.23v1h8.074q-.171-.205-.238-.462Q16 17.051 16 16.77m-7.77 1v-1z"
-                      ></path>
-                    </svg>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={32}
+                        height={32}
+                        viewBox="0 0 24 24"
+                        className="transition-transform duration-300 transform hover:scale-125"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M8.23 18.77q-.412 0-.705-.295t-.294-.706v-1.192q0-.343.232-.576t.576-.232H10v-3.25q-.827.162-1.737-.005q-.911-.166-1.577-.73q-.132-.122-.209-.275t-.077-.334v-1.04H5.31q-.153 0-.297-.056t-.273-.184l-1.929-1.93q-.257-.257-.228-.6t.31-.565q.724-.513 1.66-.764q.938-.251 1.847-.251q.961 0 1.869.273T10 6.914v-.366q0-.615.428-1.043t1.043-.428h6.923q.662 0 1.134.475q.472.474.472 1.14V16.77q0 .847-.577 1.423T18 18.77zm2.77-3h5.23q.31 0 .54.229t.23.54v.23q0 .425.288.713t.712.287t.713-.287t.287-.713V6.692q0-.269-.173-.442t-.442-.173h-6.77q-.269 0-.442.173T11 6.692v.985l5.36 5.36q.118.111.145.253t-.038.285t-.177.226t-.292.084q-.102 0-.195-.043t-.157-.103l-2.896-2.897l-.565.566q-.293.292-.575.49t-.61.348zM5.408 9.134h1.184q.344 0 .576.232t.232.575v1.15q.511.316.952.43t.856.113q.683 0 1.241-.233q.559-.233 1.047-.721l.546-.546l-1.746-1.746q-.802-.802-1.798-1.203t-2.098-.4q-.73 0-1.421.19q-.69.19-1.237.494zM16 16.769H8.23v1h8.074q-.171-.205-.238-.462Q16 17.051 16 16.77m-7.77 1v-1z"
+                        ></path>
+                      </svg>
                     </NavLink>
                   </p>
                 </div>
@@ -239,7 +209,7 @@ export default function ClassInterestCard({ id, interest }) {
                   return (
                     <span
                       className="tooltip cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-1.5 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70"
-                      data-tip={getTooltipText(group)} 
+                      data-tip={getTooltipText(group)}
                     >
                       <img src={group} width={35} height={35} alt={group} />
                     </span>
@@ -251,7 +221,6 @@ export default function ClassInterestCard({ id, interest }) {
               <button
                 className="block w-full select-none rounded-lg bg-gray-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                 onClick={() => modalRef2.current.showModal()}
-
                 type="button"
               >
                 Als stattgefunden markieren
@@ -339,13 +308,11 @@ export default function ClassInterestCard({ id, interest }) {
                       Bitte Folgendes beachten:
                     </span>
                     <ul className="mt-1.5 list-disc list-inside">
-                    <li>
-                        Die Liste der Interessenten wird zurückgesetzt
-                      </li>
+                      <li>Die Liste der Interessenten wird zurückgesetzt</li>
                       <li>
-                        Alle Interessenten, die sich für diese Schulung eingetragen haben, werden in Historie verschoben
+                        Alle Interessenten, die sich für diese Schulung
+                        eingetragen haben, werden in Historie verschoben
                       </li>
-
                     </ul>
                   </div>
                 </div>

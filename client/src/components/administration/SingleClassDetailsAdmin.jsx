@@ -129,8 +129,8 @@ export default function SingleClassDetailsAdmin() {
   };
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0]; 
-    setSelectedFile(file); 
+    const file = event.target.files[0];
+    setSelectedFile(file);
     setIsUploaded(false);
   };
 
@@ -140,7 +140,7 @@ export default function SingleClassDetailsAdmin() {
     }
 
     const formData = new FormData();
-    formData.append("file", selectedFile); 
+    formData.append("file", selectedFile);
 
     try {
       const response = await axiosClient.put(
@@ -151,9 +151,9 @@ export default function SingleClassDetailsAdmin() {
         }
       );
 
-      await new Promise((resolve) => setTimeout(resolve, 1000)); 
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      setIsUploaded(true); 
+      setIsUploaded(true);
 
       notifySuccessUpload();
     } catch (error) {
@@ -554,10 +554,9 @@ export default function SingleClassDetailsAdmin() {
                           </button>
                         </>
                       ) : (
-                        
                         <button
                           className="flex text-sm items-center text-white h-[35px] px-3 uppercase rounded bg-emerald-500 hover:bg-emerald-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 hover:cursor-pointer"
-                          onClick={uploadFile} 
+                          onClick={uploadFile}
                         >
                           {isUploaded ? "Hochgeladen" : "Hochladen"}
                         </button>

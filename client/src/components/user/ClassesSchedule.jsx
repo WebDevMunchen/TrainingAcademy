@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import ClassScheduleCard from "./ClassScheduleCard";
 

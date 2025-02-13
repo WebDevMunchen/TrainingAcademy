@@ -4,7 +4,7 @@ import axiosClient from "../../utils/axiosClient";
 import { NavLink, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import { useContext } from "react";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -30,24 +30,10 @@ export default function ApproverList() {
       .then((responseApprovers) => {
         setApprover(responseApprovers.data);
 
-        notifySuccess();
+        toast.success("E-Mail-Adresse(n) aktualisiert!");
       })
       .catch((error) => {});
   };
-
-  const notifySuccess = () =>
-    toast.success("E-Mail-Adresse(n) aktualisiert!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mt-14 mr-6",
-    });
 
   return (
     <>
@@ -131,8 +117,6 @@ export default function ApproverList() {
                     </div>
                   </div>
                   <div className="flex flex-col lg:flex-row justify-around gap-2">
-
-
                     <div>
                       <label
                         htmlFor="it"
@@ -161,7 +145,7 @@ export default function ApproverList() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
-                    
+
                     <div>
                       <label
                         htmlFor="buchhaltung"
@@ -177,7 +161,7 @@ export default function ApproverList() {
                       />
                     </div>
                   </div>
- 
+
                   <div className="flex flex-col lg:flex-row justify-around gap-2">
                     <div>
                       <label
@@ -224,8 +208,6 @@ export default function ApproverList() {
                     </div>
                   </div>
                   <div className="flex flex-col lg:flex-row justify-center gap-16">
-  
-
                     <div>
                       <label
                         htmlFor="haustechnik"
@@ -248,15 +230,15 @@ export default function ApproverList() {
                         Unternehmensentwicklung:
                       </label>
                       <input
-                        {...register("unternehmensentwicklung", { required: true })}
+                        {...register("unternehmensentwicklung", {
+                          required: true,
+                        })}
                         defaultValue={approver[0].unternehmensentwicklung}
                         placeholder="tbd"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-64 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
-
                   </div>
-
 
                   <div className="flex justify-center gap-2">
                     <button

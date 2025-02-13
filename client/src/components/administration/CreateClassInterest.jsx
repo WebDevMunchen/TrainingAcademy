@@ -4,10 +4,10 @@ import SideMenu from "./SideMenu";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axiosClient from "../../utils/axiosClient";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function CreateClassInterest() {
-  const { allInterest, setAllInterest } = useContext(AuthContext);
+  const { setAllInterest } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [targetGroups, setTargetGroups] = useState([]);
@@ -70,7 +70,7 @@ export default function CreateClassInterest() {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       e.preventDefault();
       setTags([...tags, e.target.value.trim()]);
-      e.target.value = ""; 
+      e.target.value = "";
     }
   };
 
@@ -78,7 +78,7 @@ export default function CreateClassInterest() {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
   const onSubmit = (data) => {
-    setLoading(true); 
+    setLoading(true);
 
     const formData = new FormData();
 
@@ -91,8 +91,8 @@ export default function CreateClassInterest() {
     formData.append("favCount", data.favCount || 0);
     formData.append("tookPlace", data.tookPlace || false);
 
-    formData.append("tag", JSON.stringify(tags)); 
-    formData.append("targetGroup", JSON.stringify(targetGroups)); 
+    formData.append("tag", JSON.stringify(tags));
+    formData.append("targetGroup", JSON.stringify(targetGroups));
 
     axiosClient
       .post("/activityInterest/createInterest", formData, {
@@ -105,7 +105,7 @@ export default function CreateClassInterest() {
       })
       .then((response) => {
         setAllInterest(response.data);
-        notifySuccess();
+        toast.success("Neue Schulung erstellt!");
         navigate("/admin/classInterest");
       })
       .catch((error) => {
@@ -116,26 +116,10 @@ export default function CreateClassInterest() {
       });
   };
 
-  const notifySuccess = () =>
-    toast.success("Neue Schulung erstellt!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mt-14 mr-6",
-    });
-
   return (
     <div className="bg-gray-50/50 flex">
       <SideMenu />
       <div className="flex-1 p-6 flex flex-col ">
-        {/* Top Bar with Button */}
-
         <div className="flex flex-col items-center px-0 py-8 lg:py-2 lg:px-6">
           <div className="bg-white rounded-md shadow w-full lg:w-6/12">
             <div className="p-6 sm:p-8">
@@ -230,7 +214,7 @@ export default function CreateClassInterest() {
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width={20}
-                            height={20} 
+                            height={20}
                             viewBox="0 0 36 36"
                             className="fill-current"
                           >

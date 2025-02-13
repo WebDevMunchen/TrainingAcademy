@@ -93,6 +93,7 @@ export default function EditClass() {
         console.error("Error fetching class activity:", error);
       });
   }, [id, navigate]);
+  
   const handleDepartmentChange = (e) => {
     const { value, checked } = e.target;
 

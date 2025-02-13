@@ -686,18 +686,18 @@ export default function SingleClassDetails() {
                 className="relative flex items-center w-full lg:w-4/12 mx-auto mt-4 mb-6"
               >
                 <motion.div
-                  whileHover={{ x: [-10, 10, -10] }} 
+                  whileHover={{ x: [-10, 10, -10] }}
                   transition={{
                     duration: 0.8,
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
                   className="absolute right-[-40px] flex items-center cursor-pointer"
-                  onClick={() => setSelectedUser(registeredUser._id)} 
+                  onClick={() => setSelectedUser(registeredUser._id)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width={40} 
+                    width={40}
                     height={40}
                     viewBox="0 0 24 24"
                     className="text-blue-500"
@@ -711,12 +711,12 @@ export default function SingleClassDetails() {
 
                 <div className="relative flex w-full">
                   <motion.div
-                    initial={{ x: 0 }} 
+                    initial={{ x: 0 }}
                     animate={{
-                      x: selectedUser === registeredUser._id ? "-50%" : 0, 
+                      x: selectedUser === registeredUser._id ? "-50%" : 0,
                     }}
                     transition={{ duration: 0.5, ease: "easeInOut" }}
-                    className="bg-white shadow overflow-hidden sm:rounded-md w-full lg:w-full" 
+                    className="bg-white shadow overflow-hidden sm:rounded-md w-full lg:w-full"
                   >
                     <ul>
                       <li>
@@ -732,15 +732,15 @@ export default function SingleClassDetails() {
                   <AnimatePresence>
                     {selectedUser === registeredUser._id && (
                       <motion.div
-                        initial={{ x: "100%" }} 
-                        animate={{ x: 350 }} 
-                        exit={{ x: "100%" }} 
+                        initial={{ x: "100%" }}
+                        animate={{ x: 350 }}
+                        exit={{ x: "100%" }}
                         transition={{ duration: 0.5, ease: "easeInOut" }}
                         className="overflow-x-scroll absolute top-0 left-8/12 w-full lg:w-full h-full bg-gray-50 shadow-lg p-6"
                       >
                         <button
                           className="absolute top-4 right-4 text-lg"
-                          onClick={() => setSelectedUser(null)} 
+                          onClick={() => setSelectedUser(null)}
                         >
                           ✖
                         </button>

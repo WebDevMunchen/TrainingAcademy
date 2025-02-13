@@ -17,12 +17,21 @@ export default function UserListCard({ user, selectedYear, yearlyTotalHours }) {
       );
     });
 
-    const attendedClasses = user?.classesRegistered?.filter((registeredClass) => {
-      const attendedYear = new Date(registeredClass?.registeredClassID?.date).getFullYear();
-      return registeredClass.statusAttended === "teilgenommen" && attendedYear === yearlyTotalHours;
-    }) || [];
+    const attendedClasses =
+      user?.classesRegistered?.filter((registeredClass) => {
+        const attendedYear = new Date(
+          registeredClass?.registeredClassID?.date
+        ).getFullYear();
+        return (
+          registeredClass.statusAttended === "teilgenommen" &&
+          attendedYear === yearlyTotalHours
+        );
+      }) || [];
 
-    const totalMinutes = attendedClasses.reduce((sum, cls) => sum + cls.registeredClassID.duration, 0);
+    const totalMinutes = attendedClasses.reduce(
+      (sum, cls) => sum + cls.registeredClassID.duration,
+      0
+    );
 
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;

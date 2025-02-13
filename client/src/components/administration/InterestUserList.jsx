@@ -1,24 +1,22 @@
 import { NavLink, useParams } from "react-router-dom";
 import SideMenu from "./SideMenu";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthProvider";
+import { useEffect, useState } from "react";
 import InterestUserListCard from "./InterestUserListCard";
 import axiosClient from "../../utils/axiosClient";
 
-
 export default function InterestUserList() {
-  const { allInterest, setAllInterest } = useContext(AuthContext);
-  const {id} = useParams()
+  const { id } = useParams();
 
-
-  const [interest, setInterest] = useState([])
+  const [interest, setInterest] = useState([]);
 
   useEffect(() => {
-    axiosClient.get(`activityInterest/getInterest/${id}`).then((response) => {
-      setInterest(response.data.interestedUsers)
-    }).catch((error) => {
-    })
-  }, [])
+    axiosClient
+      .get(`activityInterest/getInterest/${id}`)
+      .then((response) => {
+        setInterest(response.data.interestedUsers);
+      })
+      .catch((error) => {});
+  }, []);
 
   return (
     <div className="bg-gray-50/50 flex">
@@ -60,14 +58,8 @@ export default function InterestUserList() {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {interest.map((user) => {
-                                  return (
-                                    <InterestUserListCard
-                                      key={user._id}
-                                      user={user}
-                                    />
-                                  );
-                                })}
-
+                    return <InterestUserListCard key={user._id} user={user} />;
+                  })}
                 </tbody>
               </table>
             </div>

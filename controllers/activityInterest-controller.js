@@ -224,8 +224,6 @@ const showInterest = asyncWrapper(async (req, res, next) => {
       `,
     };
 
-    console.log(userInfo);
-
     try {
       await transporter.sendMail(mailOptions);
     } catch (error) {
@@ -235,7 +233,6 @@ const showInterest = asyncWrapper(async (req, res, next) => {
     // Return the updated activity interest object as response
     res.status(200).json(activityInterest);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Error adding interest" });
   }
 });

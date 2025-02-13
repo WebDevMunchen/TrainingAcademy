@@ -31,14 +31,17 @@ export default function ClassInterest() {
               />
             </svg>
           </NavLink>
-
         </div>
 
         <div className="h-[calc(81vh)] overflow-y-scroll">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 ">
             {allInterest &&
               allInterest.map((interest) => (
-                <ClassInterestCard key={interest._id} id={interest._id} interest={interest} />
+                <ClassInterestCard
+                  key={interest._id}
+                  id={interest._id}
+                  interest={interest}
+                />
               ))}
           </div>
         </div>

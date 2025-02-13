@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { useParams } from "react-router-dom";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../../context/AuthProvider";
 import attended from "../../assets/attended.png";
@@ -108,7 +108,7 @@ export default function RegisteredUserCardAdmin({
       participated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
-      notifySuccessAttended();
+      toast.success("Teilnahmestatus geändert!");
     }
   };
 
@@ -118,23 +118,9 @@ export default function RegisteredUserCardAdmin({
       notParticipated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
-      notifySuccessAttended();
+      toast.success("Teilnahmestatus geändert!");
     }
   };
-
-  const notifySuccessAttended = () =>
-    toast.success("Teilnahmestatus geändert!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
-    });
 
   const currentDate = new Date();
   const isoDateString =

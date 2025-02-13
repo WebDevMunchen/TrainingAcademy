@@ -103,25 +103,24 @@ export default function ClassScheduleCard({ activity }) {
           <div className="flex justify-center lg:justify-between">
             {user.role !== "user" && user.role !== "teacher" ? (
               <div className="tooltip" data-tip="Kalender Export">
-              <button
-                className="hidden lg:inline font-medium p-1.5 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition transform hover:-translate-y-0.5"
-                onClick={exportCalendar}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width={32}
-                  height={32}
-                  viewBox="0 0 512 512"
-                  className="text-blue-500"
+                <button
+                  className="hidden lg:inline font-medium p-1.5 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition transform hover:-translate-y-0.5"
+                  onClick={exportCalendar}
                 >
-                  <path
-                    fill="currentColor"
-                    d="M32 456a24 24 0 0 0 24 24h400a24 24 0 0 0 24-24V176H32Zm320-244a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm-80-80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm-80-80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4ZM456 64h-55.92V32h-48v32H159.92V32h-48v32H56a23.8 23.8 0 0 0-24 23.77V144h448V87.77A23.8 23.8 0 0 0 456 64"
-                  ></path>
-                </svg>
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={32}
+                    height={32}
+                    viewBox="0 0 512 512"
+                    className="text-blue-500"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M32 456a24 24 0 0 0 24 24h400a24 24 0 0 0 24-24V176H32Zm320-244a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm-80-80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm-80-80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4Zm0 80a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v40a4 4 0 0 1-4 4h-40a4 4 0 0 1-4-4ZM456 64h-55.92V32h-48v32H159.92V32h-48v32H56a23.8 23.8 0 0 0-24 23.77V144h448V87.77A23.8 23.8 0 0 0 456 64"
+                    ></path>
+                  </svg>
+                </button>
               </div>
-
             ) : (
               <p className="hidden lg:block invisible">Forbidden</p>
             )}
@@ -224,7 +223,6 @@ export default function ClassScheduleCard({ activity }) {
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                   <img
                     src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958594/fuhrpark_bhkb9q_c_pad_w_80_h_74_unpasw.png"
-
                     alt="Fuhrpark"
                     className="w-20 mx-auto"
                   />

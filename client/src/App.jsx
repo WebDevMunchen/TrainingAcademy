@@ -10,7 +10,6 @@ import ClassesOverview from "./components/user/ClassesOverview";
 import Register from "./components/administration/Register";
 import Dashboard from "./components/administration/Dashboard";
 import UserList from "./components/administration/UserList";
-import ClassesOverviewDashboard from "./components/administration/ClassesOverviewDashboard";
 import CreateClass from "./components/administration/CreateClass";
 import UserInfoCard from "./components/administration/UserInfoCard";
 import UpdateUser from "./components/administration/UpdateUser";
@@ -101,10 +100,6 @@ function App() {
             <Route path="users" element={<UserList />} />
             <Route path="userProfile/:id" element={<UserInfoCard />} />
             <Route path="userProfile/update/:id" element={<UpdateUser />} />
-            <Route
-              path="classesOverview"
-              element={<ClassesOverviewDashboard />}
-            />
             <Route path="createClass" element={<CreateClass />} />
             <Route path="classInterest" element={<ClassInterest />} />
             <Route

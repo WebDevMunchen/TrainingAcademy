@@ -35,9 +35,7 @@ export default function Messages() {
         setUser(updatedUser);
         setReadStatus("read");
       })
-      .catch((error) => {
-        console.error("Error marking message as read!");
-      });
+      .catch((error) => {});
   };
 
   const toggleReadStatus = (messageId) => {
@@ -61,9 +59,7 @@ export default function Messages() {
         setUser(updatedUser);
         setReadStatus(newStatus);
       })
-      .catch((error) => {
-        console.error(`Error marking message with new status!`);
-      });
+      .catch((error) => {});
   };
 
   const formatDate = (timestamp) => {
@@ -81,19 +77,7 @@ export default function Messages() {
     (a, b) =>
       new Date(b?.messageID?.timeStamp) - new Date(a?.messageID?.timeStamp)
   );
-  const testContent = `
-  <h1>A</h1>
-  <p><strong>A</strong></p>
-  <p>A</p>
-  <p><em>A</em></p>
-  <p><em><u>A</u></em></p>
-  <ol><li>a</li></ol>
-  <ul>
-    <li>a</li>
-    <li><a href="http://www.google.com" rel="noopener noreferrer" target="_blank">sadsda</a></li>
-    <li><br></li>
-  </ul>
-`;
+
   const deleteMessage = (messageId) => {
     axiosClient
       .delete(`/user/deleteMessage/${messageId}`)
@@ -106,9 +90,7 @@ export default function Messages() {
         };
         setUser(updatedUser);
       })
-      .catch((error) => {
-        console.error("Error deleting message!");
-      });
+      .catch((error) => {});
   };
 
   const goToPreviousMessage = () => {
@@ -335,9 +317,7 @@ export default function Messages() {
                 ></div>
 
                 <div className="mt-6">
-                  <p className="mb-3">
-                    Bei Fragen melde dich gerne 
-                  </p>
+                  <p className="mb-3">Bei Fragen melde dich gerne</p>
                   <p className="mb-1">Liebe Grüße</p>
                   <p className="italic">{selectedMessage?.messageID?.sender}</p>
                 </div>

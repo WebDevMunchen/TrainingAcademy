@@ -16,8 +16,7 @@ export default function InterestHistory() {
       .then((response) => {
         setInterest(response.data);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   }, []);
 
   return (
@@ -30,33 +29,30 @@ export default function InterestHistory() {
           <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
             <div className="p-6 h-[calc(75.5vh-32px)] overflow-x-scroll px-0 pt-0 pb-2">
               <table className="w-full min-w-[640px] table-auto">
-              <div className="flex flex-col w-full">
-              <div
-                      className="flex items-center justify-between w-full py-2"
-                    >
-                                            <div className="flex-1 ml-8 px-4">
-                        Mitarbeiter
-                      </div>
+                <div className="flex flex-col w-full">
+                  <div className="flex items-center justify-between w-full py-2">
+                    <div className="flex-1 ml-8 px-4">Mitarbeiter</div>
 
-                      <div className="text-left w-[150px] ">
-                      Zeitstempel
-                      </div>
+                    <div className="text-left w-[150px] ">Zeitstempel</div>
 
-                      <div className="flex flex-col text-left w-[150px] ">
+                    <div className="flex flex-col text-left w-[150px] ">
                       Abteilung
-                      </div>
-                      <div className="flex flex-col text-left w-[150px] pl-4">
+                    </div>
+                    <div className="flex flex-col text-left w-[150px] pl-4">
                       Rolle
-                      </div>
-                      <div className="flex flex-col text-left w-[150px]">
+                    </div>
+                    <div className="flex flex-col text-left w-[150px]">
                       Status
-                      </div>
-                      </div>
-</div>
+                    </div>
+                  </div>
+                </div>
                 <tbody className="bg-white divide-y divide-gray-200">
-                {interest?.pastInterests?.slice().reverse().map((user, index) => {
-  return <InterestHistoryCard key={user._id} user={user} />;
-})}
+                  {interest?.pastInterests
+                    ?.slice()
+                    .reverse()
+                    .map((user, index) => {
+                      return <InterestHistoryCard key={user._id} user={user} />;
+                    })}
                 </tbody>
               </table>
             </div>

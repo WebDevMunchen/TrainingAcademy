@@ -140,9 +140,7 @@ export default function PieChartAllClasses() {
       } else {
         setNoStatistics(false);
       }
-    } catch (error) {
-      console.error("Error fetching data!");
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

@@ -4,10 +4,10 @@ import SideMenu from "./SideMenu";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axiosClient from "../../utils/axiosClient";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function EditClassInterest() {
-  const { allInterest, setAllInterest } = useContext(AuthContext);
+  const { setAllInterest } = useContext(AuthContext);
   const navigate = useNavigate();
   const { id } = useParams(); 
   const [interestData, setInterestData] = useState(null);
@@ -130,20 +130,6 @@ export default function EditClassInterest() {
       .catch((error) => console.error("Error updating interest:", error))
       .finally(() => setLoading(false));
   };
-
-  const notifySuccess = () =>
-    toast.success("Neue Schulung erstellt!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mt-14 mr-6",
-    });
 
   return (
     <div className="bg-gray-50/50 flex">

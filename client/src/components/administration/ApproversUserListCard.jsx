@@ -18,7 +18,7 @@ export default function ApproversUserListCard({ user, selectedYear }) {
       );
     }
   );
-  
+
   return (
     <>
       <tr className="text-center">
@@ -110,8 +110,8 @@ export default function ApproversUserListCard({ user, selectedYear }) {
             transition={{ duration: 0.4 }}
             className="bg-gray-100 py-2 px-8"
             style={{
-              borderRadius: "0px", 
-              overflow: "hidden", 
+              borderRadius: "0px",
+              overflow: "hidden",
             }}
           >
             <h3 className="text-lg text-center font-semibold mb-2">
@@ -184,7 +184,9 @@ export default function ApproversUserListCard({ user, selectedYear }) {
                 })}
               </div>
             ) : (
-              <p className="my-4 text-sm text-center text-gray-500">Noch keine Schulungshistorie vorhanden</p>
+              <p className="my-4 text-sm text-center text-gray-500">
+                Noch keine Schulungshistorie vorhanden
+              </p>
             )}
           </motion.div>
         </td>
