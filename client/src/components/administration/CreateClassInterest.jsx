@@ -56,7 +56,6 @@ export default function CreateClassInterest() {
       const updated = prev.includes(imageUrl)
         ? prev.filter((url) => url !== imageUrl)
         : [...prev, imageUrl];
-      console.log("Updated Target Groups:", updated); // Log updated target groups
       return updated;
     });
   };
@@ -73,7 +72,6 @@ export default function CreateClassInterest() {
       setTags([...tags, e.target.value.trim()]);
       e.target.value = ""; // Clear input
     }
-    console.log("Current Tags:", tags); // Log current tags after the key press
   };
 
   // Function to remove a tag
@@ -96,11 +94,6 @@ export default function CreateClassInterest() {
 
     formData.append("tag", JSON.stringify(tags)); // Convert array to JSON string
     formData.append("targetGroup", JSON.stringify(targetGroups)); // Convert array to JSON string
-
-    // Log the formData
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
 
     axiosClient
       .post("/activityInterest/createInterest", formData, {

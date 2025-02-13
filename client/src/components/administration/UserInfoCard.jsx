@@ -27,20 +27,13 @@ export default function UserInfoCard() {
   let totalMinutes = 0;
 
   userInfomation?.classesRegistered?.forEach((element) => {
-    console.log(element);
-
     if (element.statusAttended === "teilgenommen") {
       totalMinutes += element.registeredClassID.duration;
     }
   });
 
-  console.log("Total Minutes:", totalMinutes);
-
-  // Convert total minutes to hours and minutes
   let hours = Math.floor(totalMinutes / 60);
   let minutes = totalMinutes % 60;
-
-  console.log(`Total Time: ${hours} hours and ${minutes} minutes`);
 
   const {
     register,

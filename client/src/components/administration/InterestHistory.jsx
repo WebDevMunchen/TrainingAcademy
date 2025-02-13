@@ -15,10 +15,8 @@ export default function InterestHistory() {
       .get(`activityInterest/getInterest/${id}`)
       .then((response) => {
         setInterest(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
-        console.log(error);
       });
   }, []);
 

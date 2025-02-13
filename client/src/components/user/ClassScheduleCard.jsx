@@ -55,8 +55,6 @@ export default function ClassScheduleCard({ activity }) {
     activityDate.getTime() - 2 * 24 * 60 * 60 * 1000
   );
 
-  console.log(activity.registeredClassID);
-
   const activityDatePassed = currentTime > activityDate;
   const oneDayPrior =
     currentTime > oneDayBeforeActivity && currentTime < activityDate;

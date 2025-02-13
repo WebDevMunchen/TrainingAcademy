@@ -5,8 +5,6 @@ import UserClassInterestCard from "./UserClassInterestCard";
 export default function UserClassInterest() {
   const { allInterest } = useContext(AuthContext);
 
-  console.log(allInterest);
-
   return (
     <>
       <div className="text-center mx-auto max-w-3xl p-4">

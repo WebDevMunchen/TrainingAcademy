@@ -20,7 +20,6 @@ export default function ClassInterestCard({ id, interest }) {
         notifySuccess();
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -35,7 +34,6 @@ export default function ClassInterestCard({ id, interest }) {
         notifySuccessMarkTookPlace();
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 

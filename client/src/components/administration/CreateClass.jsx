@@ -81,7 +81,7 @@ export default function CreateClass() {
   const onSubmit = async (data) => {
     data.department = selectedDepartments;
     data.responsibleDepartments = responsibleDepartments;
-    console.log("Submitting Data:", data); // Debugging log
+    
     const formData = new FormData();
     for (const key in data) {
       if (Array.isArray(data[key])) {

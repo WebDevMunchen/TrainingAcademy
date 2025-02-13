@@ -37,8 +37,6 @@ export default function UserListCard({ user, selectedYear, yearlyTotalHours }) {
     }
   }, [user, selectedYear, yearlyTotalHours]);
 
-  console.log(user)
-
   const handleDownload = async () => {
     if (!fileUrl) {
       console.error("File URL is not defined!");

@@ -6,8 +6,6 @@ export default function InterestHistoryCard({ user }) {
 
   const toggleAccordion = () => setIsOpen((prev) => !prev);
 
-  console.log(user);
-
   const formattedDate = new Date(user.date).toLocaleDateString("de-DE", {
     year: "numeric",
     month: "short",

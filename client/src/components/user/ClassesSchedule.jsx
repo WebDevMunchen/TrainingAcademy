@@ -16,8 +16,6 @@ export default function ClassesSchedule() {
   const startYear = 2025;
   const years = Array.from({ length: 5 }, (_, i) => (startYear + i).toString());
 
-  console.log(allActivities);
-
   return (
     <section className="bg-blue-500ray-50 lg:mx-auto">
       <div className="py-6 sm:py-16 block lg:py-8 relative bg-opacity-50">

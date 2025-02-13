@@ -20,12 +20,8 @@ export default function UserClassInterestCard({ id, interest }) {
         notifySuccess();
       })
       .catch((error) => {
-        console.log(error);
       });
   };
-
-  console.log(interest);
-  console.log(user._id);
 
   const allTargetGroups = {
     "https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958806/alle_wyewox_c_pad_w_80_h_75_n0nktg.png":
@@ -75,8 +71,6 @@ export default function UserClassInterestCard({ id, interest }) {
   const isUserInterested = interest.interestedUsers.some(
     (interestedUserId) => interestedUserId.user === user._id
   );
-
-  console.log(isUserInterested);
 
   return (
     <div className="bg-gray-50/50 flex">

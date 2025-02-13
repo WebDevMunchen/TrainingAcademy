@@ -9,7 +9,6 @@ export default function UserInfo({ userId }) {
       .get(`/user/profileInformation/${userId}`)
       .then((response) => {
         setUser(response.data);
-        console.log(response.data);
       })
       .catch((error) => {});
   }, [userId]); // Added userId dependency to re-fetch data when the userId changes.

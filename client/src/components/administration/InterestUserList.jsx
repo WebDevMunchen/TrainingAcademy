@@ -17,11 +17,8 @@ export default function InterestUserList() {
     axiosClient.get(`activityInterest/getInterest/${id}`).then((response) => {
       setInterest(response.data.interestedUsers)
     }).catch((error) => {
-      console.log(error)
     })
   }, [])
-
-  console.log(interest)
 
   return (
     <div className="bg-gray-50/50 flex">

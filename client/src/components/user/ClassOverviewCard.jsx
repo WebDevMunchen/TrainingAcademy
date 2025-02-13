@@ -20,8 +20,6 @@ export default function ClassesOverviewCard({ activity }) {
     }
   }, [activity]);
 
-  console.log(activity.registeredClassID.fileUrlPPT);
-
   const cancelClass = (stornoReason) => {
     axiosClient
       .put(`/classActivity/cancelClass/${activity.registeredClassID._id}`, {
