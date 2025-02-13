@@ -30,25 +30,6 @@ export default function InterestHistory() {
           <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
             <div className="p-6 h-[calc(75.5vh-32px)] overflow-x-scroll px-0 pt-0 pb-2">
               <table className="w-full min-w-[640px] table-auto">
-              {/* <thead className="bg-gray-50">
-                      <tr >
-                        <th className="px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
-                          Mitarbeiter
-                        </th>
-                        <th className="px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
-                        Zeitstempel
-                        </th>
-                        <th className="px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
-                        Abteilung
-                        </th>
-                        <th className="px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
-                          Rolle
-                        </th>
-                        <th className="w-2/12 px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
-                          Status
-                        </th>
-                      </tr>
-                    </thead> */}
               <div className="flex flex-col w-full">
               <div
                       className="flex items-center justify-between w-full py-2"

@@ -51,7 +51,6 @@ export default function CreateClass() {
     const { value, checked } = e.target;
     const departmentName = departmentMap[value];
 
-    // Update responsibleDepartments state
     setResponsibleDepartments((prev) => {
       if (checked) {
         return [...prev, departmentName];
@@ -60,12 +59,11 @@ export default function CreateClass() {
       }
     });
 
-    // Update selectedDepartments state (URLs for departments)
     setSelectedDepartments((prev) => {
       if (checked) {
-        return [...prev, value]; // Add the URL of the selected department
+        return [...prev, value]; 
       } else {
-        return prev.filter((url) => url !== value); // Remove the URL of the unselected department
+        return prev.filter((url) => url !== value); 
       }
     });
   };
@@ -81,7 +79,7 @@ export default function CreateClass() {
   const onSubmit = async (data) => {
     data.department = selectedDepartments;
     data.responsibleDepartments = responsibleDepartments;
-    
+
     const formData = new FormData();
     for (const key in data) {
       if (Array.isArray(data[key])) {
@@ -361,7 +359,7 @@ export default function CreateClass() {
                     <div key={name} className="flex items-center mb-1">
                       <input
                         type="checkbox"
-                        value={url} // This is the URL you need in the department array
+                        value={url} 
                         onChange={handleDepartmentChange}
                         className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                       />

@@ -21,7 +21,6 @@ export default function ApproversUserListCard({ user, selectedYear }) {
   
   return (
     <>
-      {/* Main Table Row */}
       <tr className="text-center">
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="text-sm font-medium text-gray-900">
@@ -90,7 +89,6 @@ export default function ApproversUserListCard({ user, selectedYear }) {
           )}
         </td>
 
-        {/* Toggle Button in New Column */}
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
           <button
             onClick={toggleAccordion}
@@ -101,10 +99,8 @@ export default function ApproversUserListCard({ user, selectedYear }) {
         </td>
       </tr>
 
-      {/* Accordion Row Below */}
       <tr>
         <td colSpan="8">
-          {/* Motion Div for Smooth Accordion Effect */}
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{
@@ -114,8 +110,8 @@ export default function ApproversUserListCard({ user, selectedYear }) {
             transition={{ duration: 0.4 }}
             className="bg-gray-100 py-2 px-8"
             style={{
-              borderRadius: "0px", // No rounded borders
-              overflow: "hidden", // Hide content when collapsed
+              borderRadius: "0px", 
+              overflow: "hidden", 
             }}
           >
             <h3 className="text-lg text-center font-semibold mb-2">
@@ -124,7 +120,6 @@ export default function ApproversUserListCard({ user, selectedYear }) {
             {user.classesRegistered && user.classesRegistered.length > 0 ? (
               <div className="flex flex-col w-full">
                 {user.classesRegistered.map((registeredClass, index) => {
-                  // Format the date before returning the JSX
                   const formattedDate = new Date(
                     registeredClass.registeredClassID?.date
                   ).toLocaleDateString("de-DE", {
@@ -138,23 +133,19 @@ export default function ApproversUserListCard({ user, selectedYear }) {
                       key={index}
                       className="flex items-center justify-between w-full py-2"
                     >
-                      {/* Title Column: Takes more width */}
                       <div className="flex-1 px-4 font-bold">
                         {registeredClass.registeredClassID?.title}
                       </div>
 
-                      {/* Date Column */}
                       <div className="text-center w-[150px] px-4">
                         {formattedDate}
                       </div>
 
-                      {/* Time Column */}
                       <div className="flex flex-col text-center w-[150px] px-4">
                         {registeredClass.registeredClassID?.time}
                         <span>(Uhrzeit)</span>
                       </div>
 
-                      {/* Status Column */}
                       <div className="px-4 flex items-center w-[150px]">
                         <span
                           className={`inline-block px-3 py-1 font-base text-sm rounded-full ${
@@ -174,7 +165,6 @@ export default function ApproversUserListCard({ user, selectedYear }) {
                         </span>
                       </div>
 
-                      {/* Status Attended Column */}
                       <div className="px-4 w-[200px] text-center">
                         <span
                           className={`inline-block px-3 py-1 font-base text-sm rounded-full ${

@@ -69,7 +69,6 @@ export default function EditClass() {
           setFileName(fileName);
         }
 
-        // Initialize responsibleDepartments with the current value from the API response
         const initialResponsibleDepartments =
           response.data.responsibleDepartments || [];
         setResponsibleDepartments(initialResponsibleDepartments);
@@ -97,27 +96,21 @@ export default function EditClass() {
   const handleDepartmentChange = (e) => {
     const { value, checked } = e.target;
 
-    // Update selectedDepartments when checkbox is checked or unchecked
     setSelectedDepartments((prev) => {
       if (checked) {
-        // Add URL if checked
         return [...prev, value];
       } else {
-        // Remove URL if unchecked
         return prev.filter((url) => url !== value);
       }
     });
 
     const departmentName = departmentMap[value];
-    // Update responsibleDepartments
     setResponsibleDepartments((prev) => {
       if (checked) {
-        // Ensure the department is added only if not already in the list
         if (!prev.includes(departmentName)) {
           return [...prev, departmentName];
         }
       } else {
-        // Remove the department if it's unchecked
         return prev.filter((dept) => dept !== departmentName);
       }
       return prev;

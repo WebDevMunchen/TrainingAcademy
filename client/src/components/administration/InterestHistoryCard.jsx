@@ -62,14 +62,13 @@ export default function InterestHistoryCard({ user }) {
             transition={{ duration: 0.4 }}
             className="bg-gray-100 py-2 px-8"
             style={{
-              borderRadius: "0px", // No rounded borders
-              overflow: "hidden", // Hide content when collapsed
+              borderRadius: "0px", 
+              overflow: "hidden", 
             }}
           >
             {user.users && user.users.length > 0 ? (
               <div className="flex flex-col w-full">
                 {user.users.map((userInfo, index) => {
-                  // Format the date before returning the JSX
                   const formattedDate = new Date(
                     userInfo.interestedAt
                   ).toLocaleDateString("de-DE", {

@@ -68,18 +68,17 @@ export default function CreateClassInterest() {
 
   const addTag = (e) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
-      e.preventDefault(); // Prevent form submission
+      e.preventDefault();
       setTags([...tags, e.target.value.trim()]);
-      e.target.value = ""; // Clear input
+      e.target.value = ""; 
     }
   };
 
-  // Function to remove a tag
   const removeTag = (tagToRemove) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
   const onSubmit = (data) => {
-    setLoading(true); // Disable button
+    setLoading(true); 
 
     const formData = new FormData();
 
@@ -92,8 +91,8 @@ export default function CreateClassInterest() {
     formData.append("favCount", data.favCount || 0);
     formData.append("tookPlace", data.tookPlace || false);
 
-    formData.append("tag", JSON.stringify(tags)); // Convert array to JSON string
-    formData.append("targetGroup", JSON.stringify(targetGroups)); // Convert array to JSON string
+    formData.append("tag", JSON.stringify(tags)); 
+    formData.append("targetGroup", JSON.stringify(targetGroups)); 
 
     axiosClient
       .post("/activityInterest/createInterest", formData, {
@@ -231,7 +230,7 @@ export default function CreateClassInterest() {
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width={20}
-                            height={20} // Increased size
+                            height={20} 
                             viewBox="0 0 36 36"
                             className="fill-current"
                           >

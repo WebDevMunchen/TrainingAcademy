@@ -18,7 +18,7 @@ export default function UserInfoCard() {
 
   useEffect(() => {
     axiosClient
-      .get(`/user/profileInformation/${id}`)
+      .get(`/user/profileInformation/${id}`) 
       .then((response) => {
         setUserInformation(response.data);
       })

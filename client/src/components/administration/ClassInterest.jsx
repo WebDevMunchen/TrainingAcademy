@@ -37,7 +37,6 @@ export default function ClassInterest() {
 
         </div>
 
-        {/* Class Interest Cards (Scrollable Container) */}
         <div className="h-[calc(81vh)] overflow-y-scroll">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 ">
             {allInterest &&

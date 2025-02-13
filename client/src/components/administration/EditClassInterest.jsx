@@ -9,7 +9,7 @@ import { Bounce, toast } from "react-toastify";
 export default function EditClassInterest() {
   const { allInterest, setAllInterest } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { id } = useParams(); // Get ID from URL
+  const { id } = useParams(); 
   const [interestData, setInterestData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -35,7 +35,7 @@ export default function EditClassInterest() {
         setTags(data.tag || []);
         setTargetGroups(
           Array.isArray(data.targetGroup) ? data.targetGroup : []
-        ); // Ensure array
+        ); 
         reset({
           ...data,
           tag: data.tag || [],
@@ -83,7 +83,7 @@ export default function EditClassInterest() {
         ? prev.filter((url) => url !== imageUrl)
         : [...prev, imageUrl];
 
-      setValue("targetGroup", updated); // Ensure react-hook-form updates
+      setValue("targetGroup", updated); 
       return updated;
     });
   };
@@ -92,11 +92,10 @@ export default function EditClassInterest() {
     if (e.key === "Enter" && newTag.trim()) {
       e.preventDefault();
       setTags((prev) => [...prev, newTag.trim()]);
-      setNewTag(""); // Clear the input field
+      setNewTag(""); 
     }
   };
 
-  // Function to remove a tag
   const removeTag = (tagToRemove) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };

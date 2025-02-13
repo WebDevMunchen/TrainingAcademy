@@ -51,7 +51,7 @@ export default function UserClassInterestCard({ id, interest }) {
   };
 
   const getTooltipText = (url) => {
-    return allTargetGroups[url] || "Unknown Group"; // Default message if no match
+    return allTargetGroups[url] || "Unknown Group"; 
   };
 
   const notifySuccess = () =>

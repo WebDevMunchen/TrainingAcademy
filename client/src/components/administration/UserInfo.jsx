@@ -11,16 +11,15 @@ export default function UserInfo({ userId }) {
         setUser(response.data);
       })
       .catch((error) => {});
-  }, [userId]); // Added userId dependency to re-fetch data when the userId changes.
+  }, [userId]); 
 
   return (
     <>
       {!user ? (
-        <p>Loading...</p> // Showing loading message while data is being fetched
+        <p>Loading...</p> 
       ) : (
         <ul>
           {user.classesRegistered.map((element) => {
-            // Format the date to a more readable format inside the map function
             const formattedDate = new Date(
               element.registeredClassID.date
             ).toLocaleDateString("de-DE", {
@@ -31,12 +30,10 @@ export default function UserInfo({ userId }) {
 
             return (
               <li className="text-center" key={element.registeredClassID._id}>
-                {/* Title of the class */}
                 <div className="font-bold text-md mb-3">
                   {element.registeredClassID.title}
                 </div>
 
-                {/* Single row table with date, time, and status */}
                 <div className="my-2">
                   <table className="text-sm table-auto border-collapse border border-gray-300 w-full">
                     <thead>

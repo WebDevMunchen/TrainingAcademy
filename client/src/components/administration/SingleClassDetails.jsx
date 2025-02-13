@@ -685,20 +685,19 @@ export default function SingleClassDetails() {
                 key={registeredUser._id}
                 className="relative flex items-center w-full lg:w-4/12 mx-auto mt-4 mb-6"
               >
-                {/* Animated Arrow (Left Side) */}
                 <motion.div
-                  whileHover={{ x: [-10, 10, -10] }} // Moves left to right on hover
+                  whileHover={{ x: [-10, 10, -10] }} 
                   transition={{
                     duration: 0.8,
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
                   className="absolute right-[-40px] flex items-center cursor-pointer"
-                  onClick={() => setSelectedUser(registeredUser._id)} // Set user ID on click
+                  onClick={() => setSelectedUser(registeredUser._id)} 
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width={40} // Adjust size if needed
+                    width={40} 
                     height={40}
                     viewBox="0 0 24 24"
                     className="text-blue-500"
@@ -710,16 +709,14 @@ export default function SingleClassDetails() {
                   </svg>
                 </motion.div>
 
-                {/* Wrapper for RegisteredUserCard and UserInfo */}
                 <div className="relative flex w-full">
-                  {/* User Card Component */}
                   <motion.div
-                    initial={{ x: 0 }} // Initial position (no offset)
+                    initial={{ x: 0 }} 
                     animate={{
-                      x: selectedUser === registeredUser._id ? "-50%" : 0, // Move left when selected
+                      x: selectedUser === registeredUser._id ? "-50%" : 0, 
                     }}
                     transition={{ duration: 0.5, ease: "easeInOut" }}
-                    className="bg-white shadow overflow-hidden sm:rounded-md w-full lg:w-full" // Adjust width of card to leave space
+                    className="bg-white shadow overflow-hidden sm:rounded-md w-full lg:w-full" 
                   >
                     <ul>
                       <li>
@@ -732,25 +729,22 @@ export default function SingleClassDetails() {
                     </ul>
                   </motion.div>
 
-                  {/* Sliding UserInfo Component */}
                   <AnimatePresence>
                     {selectedUser === registeredUser._id && (
                       <motion.div
-                        initial={{ x: "100%" }} // Start off-screen (right)
-                        animate={{ x: 350 }} // Slide in
-                        exit={{ x: "100%" }} // Slide out when closed
+                        initial={{ x: "100%" }} 
+                        animate={{ x: 350 }} 
+                        exit={{ x: "100%" }} 
                         transition={{ duration: 0.5, ease: "easeInOut" }}
-                        className="overflow-x-scroll absolute top-0 left-8/12 w-full lg:w-full h-full bg-gray-50 shadow-lg p-6" // Fixed width for UserInfo, only takes 1/3 of the width
+                        className="overflow-x-scroll absolute top-0 left-8/12 w-full lg:w-full h-full bg-gray-50 shadow-lg p-6"
                       >
-                        {/* Close Button */}
                         <button
                           className="absolute top-4 right-4 text-lg"
-                          onClick={() => setSelectedUser(null)} // Close the sliding panel
+                          onClick={() => setSelectedUser(null)} 
                         >
                           ✖
                         </button>
 
-                        {/* User Info Component */}
                         <UserInfo userId={registeredUser._id} />
                       </motion.div>
                     )}
