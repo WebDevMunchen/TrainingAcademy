@@ -21,8 +21,6 @@ export default function InterestHistoryCard({ user }) {
             onClick={toggleAccordion}
             className="w-full mx-auto flex justify-center items-center gap-2 px-3 py-1 bg-gray-300 text-black hover:bg-gray-400 transition"
           >
-            {/* {isOpen ? "Weniger anzeigen" : "Anzeigen"}
-             */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width={24}
@@ -52,7 +50,6 @@ export default function InterestHistoryCard({ user }) {
 
       <tr>
         <td colSpan={5}>
-          {/* Motion Div for Smooth Accordion Effect */}
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{
@@ -82,17 +79,14 @@ export default function InterestHistoryCard({ user }) {
                       key={index}
                       className="flex items-center justify-between w-full py-2"
                     >
-                      {/* Title Column: Takes more width */}
                       <div className="flex-1 px-4 font-bold">
                         {userInfo.user.firstName + " " + userInfo.user.lastName}
                       </div>
 
-                      {/* Date Column */}
                       <div className="text-center w-[150px] px-4">
                         {formattedDate}
                       </div>
 
-                      {/* Time Column */}
                       <div className="flex flex-col text-center w-[150px] px-4">
                         {userInfo.user.department}
                       </div>
@@ -103,7 +97,6 @@ export default function InterestHistoryCard({ user }) {
                           ? "Administrator"
                           : "User"}
                       </div>
-                      {/* Status Column */}
                       <div className="px-4 flex items-center w-[150px]">
                         <span
                           className={`inline-block px-3 py-1 font-base text-sm rounded-full ${

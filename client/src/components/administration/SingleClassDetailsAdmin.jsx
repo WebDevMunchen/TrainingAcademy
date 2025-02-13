@@ -269,7 +269,6 @@ export default function SingleClassDetailsAdmin() {
                         </button>
 
                         <div className="flex gap-1">
-                          {/* Show file upload label only if no file is selected */}
                           {!selectedFile && (
                             <label
                               htmlFor="file"
@@ -279,7 +278,6 @@ export default function SingleClassDetailsAdmin() {
                                   : "hidden"
                               }
                             >
-                              {/* Tooltip and SVG */}
                               <div className="tooltip" data-tip="Datei-Upload">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
@@ -307,7 +305,6 @@ export default function SingleClassDetailsAdmin() {
                             </label>
                           )}
 
-                          {/* Show "Hochladen" button when a file is selected */}
                           {selectedFile && (
                             <button
                               onClick={uploadFile}
@@ -425,7 +422,6 @@ export default function SingleClassDetailsAdmin() {
                   </div>
                   <div className="flex justify-between lg:hidden">
                     <div className="flex">
-                      {/* Show icons until a file is selected */}
                       {!selectedFile ? (
                         <>
                           <label

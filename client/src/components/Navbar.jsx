@@ -338,9 +338,6 @@ export default function Navbar() {
                             Benutzer Registrieren
                           </NavLink>
                         </li>
-                        {/* <li>
-            <NavLink to={"/faq"}>FAQ</NavLink>
-          </li> */}
                         <li>
                           <NavLink
                             to={"/"}

@@ -97,6 +97,7 @@ export default function ClassInterestCard({ id, interest }) {
     });
 
   return (
+
     <div className="bg-gray-50/50 flex">
       <div className="flex justify-center">
         <div className="mx-auto ">

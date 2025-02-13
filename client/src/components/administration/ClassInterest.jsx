@@ -9,12 +9,9 @@ export default function ClassInterest() {
 
   return (
     <div className="bg-gray-50/50 flex">
-      {/* Side Menu */}
       <SideMenu />
 
-      {/* Main Content */}
       <div className="flex-1 py-6 px-2 flex flex-col ">
-        {/* Top Bar with Button */}
         <div className="flex items-center gap-4 mb-6">
           <NavLink
             to="/admin/classInterest/create"

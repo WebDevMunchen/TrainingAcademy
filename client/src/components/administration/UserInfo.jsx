@@ -50,7 +50,6 @@ export default function UserInfo({ userId }) {
                         <td className="px-4 py-2">
                           {element.registeredClassID.time}
                         </td>
-                        {/* Conditional badge for status */}
                         <td className="flex items-center justify-center gap-2 px-4 py-2">
                           <span
                             className={`inline-block px-3 py-0.5 font-medium rounded-full ${

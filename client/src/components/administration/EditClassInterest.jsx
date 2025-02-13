@@ -149,8 +149,6 @@ export default function EditClassInterest() {
     <div className="bg-gray-50/50 flex">
       <SideMenu />
       <div className="flex-1 p-6 flex flex-col ">
-        {/* Top Bar with Button */}
-
         <div className="flex flex-col items-center px-0 py-8 lg:py-2 lg:px-6">
           <div className="bg-white rounded-md shadow w-full lg:w-6/12">
             <div className="p-6 sm:p-8">

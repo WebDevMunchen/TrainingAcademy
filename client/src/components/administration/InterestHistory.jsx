@@ -38,19 +38,16 @@ export default function InterestHistory() {
                         Mitarbeiter
                       </div>
 
-                      {/* Date Column */}
                       <div className="text-left w-[150px] ">
                       Zeitstempel
                       </div>
 
-                      {/* Time Column */}
                       <div className="flex flex-col text-left w-[150px] ">
                       Abteilung
                       </div>
                       <div className="flex flex-col text-left w-[150px] pl-4">
                       Rolle
                       </div>
-                      {/* Status Column */}
                       <div className="flex flex-col text-left w-[150px]">
                       Status
                       </div>
