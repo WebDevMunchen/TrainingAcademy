@@ -28,7 +28,7 @@ export default function UserInfoCard() {
 
   userInfomation?.classesRegistered?.forEach((element) => {
     if (element.statusAttended === "teilgenommen") {
-      totalMinutes += element.registeredClassID.duration;
+      totalMinutes += element?.registeredClassID?.duration;
     }
   });
 
