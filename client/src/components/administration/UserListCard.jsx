@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
-export default function UserListCard({ user, selectedYear }) {
+export default function UserListCard({ user, selectedYear, yearlyTotalHours }) {
   const [fileUrl, setFileUrl] = useState(null);
+  const [totalTime, setTotalTime] = useState({ hours: 0, minutes: 0 });
 
   useEffect(() => {
     const findURL = user?.classesRegistered?.find((registeredClass) => {
@@ -16,10 +17,27 @@ export default function UserListCard({ user, selectedYear }) {
       );
     });
 
+    const attendedClasses = user?.classesRegistered?.filter((registeredClass) => {
+      const attendedYear = new Date(registeredClass?.registeredClassID?.date).getFullYear();
+      return registeredClass.statusAttended === "teilgenommen" && attendedYear === yearlyTotalHours;
+    }) || [];
+
+    const totalMinutes = attendedClasses.reduce((sum, cls) => sum + cls.registeredClassID.duration, 0);
+
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    setTotalTime({
+      hours: String(hours).padStart(2, "0"),
+      minutes: String(minutes).padStart(2, "0"),
+    });
+
     if (findURL && findURL.registeredClassID) {
       setFileUrl(findURL.registeredClassID.fileUrl);
     }
-  }, [user, selectedYear]);
+  }, [user, selectedYear, yearlyTotalHours]);
+
+  console.log(user)
 
   const handleDownload = async () => {
     if (!fileUrl) {
@@ -159,7 +177,9 @@ export default function UserListCard({ user, selectedYear }) {
             </svg>
           )}
         </td>
-
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          {totalTime.hours}:{totalTime.minutes}
+        </td>
         <td className="px-6 py-4 text-sm font-medium">
           <NavLink
             to={`/admin/userProfile/${user._id}`}

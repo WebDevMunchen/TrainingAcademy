@@ -10,9 +10,14 @@ export default function UserList() {
   const currentYear = date.getFullYear();
 
   const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [yearlyTotalHours, setYearlyTotalHours] = useState(currentYear);
 
   const handleYearChange = (event) => {
     setSelectedYear(Number(event.target.value));
+  };
+
+  const handleTotalHoursYearChange = (event) => {
+    setYearlyTotalHours(Number(event.target.value));
   };
 
   return (
@@ -76,6 +81,24 @@ export default function UserList() {
                               ))}
                             </select>
                           </th>
+                          <th className="w-1/12 px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
+                            <span>Anwesende Stunden insgesamt</span>
+                            <select
+                              value={yearlyTotalHours}
+                              onChange={handleTotalHoursYearChange}
+                              className="form-select font-extrabold text-blue-500 hover:cursor-pointer"
+                            >
+                              {[
+                                currentYear,
+                                currentYear - 1,
+                                currentYear - 2,
+                              ].map((year) => (
+                                <option key={year} value={year}>
+                                  {year}
+                                </option>
+                              ))}
+                            </select>
+                          </th>
                           <th className="px-6 py-3 text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Details
                           </th>
@@ -88,6 +111,7 @@ export default function UserList() {
                               key={user._id}
                               user={user}
                               selectedYear={selectedYear}
+                              yearlyTotalHours={yearlyTotalHours}
                             />
                           );
                         })}

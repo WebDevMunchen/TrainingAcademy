@@ -247,7 +247,7 @@ export default function UserInfoCard() {
                   <span className="font-medium">
                     Anwesende Stunden insgesamt:
                   </span>{" "}
-                  {hours}:{minutes}
+                  {String(hours).padStart(2, "0")} Std. und {String(minutes).padStart(2, "0")} Min.
                 </p>
                 <p className="font-light text-gray-600 mt-2">
                   <span className="font-medium">Status: </span>

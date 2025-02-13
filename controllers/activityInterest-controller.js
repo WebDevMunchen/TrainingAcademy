@@ -1,7 +1,9 @@
 const ErrorResponse = require("../utils/errorResponse.js");
 const ActivityInterest = require("../models/activityInterest-model.js");
 const asyncWrapper = require("../utils/asyncWrapper.js");
+const User = require("../models/user-model.js");
 const cloudinary = require("cloudinary").v2;
+const nodemailer = require("nodemailer");
 
 const createInterest = asyncWrapper(async (req, res, next) => {
   const { title, description, tag, targetGroup, tookPlace } = req.body;
@@ -101,7 +103,9 @@ const deleteInterest = asyncWrapper(async (req, res, next) => {
 const getInterest = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
-  const interest = await ActivityInterest.findById(id).populate({path: 'interestedUsers.user'}).populate({path: 'pastInterests.users.user'});
+  const interest = await ActivityInterest.findById(id)
+    .populate({ path: "interestedUsers.user" })
+    .populate({ path: "pastInterests.users.user" });
 
   if (!interest) {
     throw new ErrorResponse(404, "Interest not found!");
@@ -145,11 +149,88 @@ const showInterest = asyncWrapper(async (req, res, next) => {
       interestedAt: new Date(),
     });
 
-    // Increment favCount
-    activityInterest.favCount += 1;
-
     // Save the updated activity interest
     await activityInterest.save();
+
+    const userInfo = await User.findById(userId);
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.USER,
+        pass: process.env.APP_PASSWORD,
+      },
+    });
+
+    const registeredUsers = activityInterest.interestedUsers.length;
+
+    const mailOptions = {
+      from: {
+        name: "Neues Interesse - Click & Train - No reply",
+        address: process.env.USER,
+      },
+      to: `${userInfo.inbox}`,
+      subject: "Click & Train - Rent.Group München - Neues Interesse",
+      text: `Neues Interesse für ${activityInterest.title}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; max-width: 600px;">
+          <h2 style="color: #007bff;">Neues Interesse für ${
+            activityInterest.title
+          }</h2>
+          <p><strong>${userInfo.firstName} ${
+        userInfo.lastName
+      }</strong> hat sein Interesse an der Teilnahme an der Schulung <strong>${
+        activityInterest.title
+      }</strong> bekundet.</p>
+          <p>Derzeit gibt es insgesamt <strong>${registeredUsers}</strong> 
+  ${registeredUsers === 1 ? "Interesse" : "Interessen"} für diese Schulung.</p>
+          <hr style="border: 1px solid #ddd;">
+
+                              <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
+        <tr>
+          <td align="center">
+            <!-- VML-based button rendering for Outlook -->
+            <!--[if mso]>
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/admin/classInterest" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
+              <w:anchorlock/>
+              <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage bearbeiten</center>
+            </v:roundrect>
+            <![endif]-->
+  
+            <!-- Fallback for non-Outlook clients -->
+            <a href="www.click-n-train.de/admin/classInterest" style="
+                background-color: #007bff;
+                border-radius: 5px;
+                color: #ffffff;
+                display: inline-block;
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                line-height: 50px;
+                text-align: center;
+                text-decoration: none;
+                width: 200px;
+                height: 50px;
+                mso-hide: all;
+              "
+              target="_blank"
+              >Zum Genehmigungstool</a>
+          </td>
+        </tr>
+      </table>
+        </div>
+      `,
+    };
+
+    console.log(userInfo);
+
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.error("Error sending email!");
+    }
 
     // Return the updated activity interest object as response
     res.status(200).json(activityInterest);
@@ -186,7 +267,6 @@ const markTookPlace = asyncWrapper(async (req, res, next) => {
   // Update lastTookPlace, clear interestedUsers, and reset favCount
   interest.lastTookPlace = new Date();
   interest.interestedUsers = [];
-  interest.favCount = 0; // Reset favCount
 
   // Save the changes
   await interest.save();
