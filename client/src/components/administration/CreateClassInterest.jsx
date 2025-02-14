@@ -109,7 +109,6 @@ export default function CreateClassInterest() {
         navigate("/admin/classInterest");
       })
       .catch((error) => {
-        console.error(error);
       })
       .finally(() => {
         setLoading(false);

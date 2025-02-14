@@ -4,11 +4,12 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function CreateClass() {
   const { setAllActivities, currentMonth, currentYear } =
     useContext(AuthContext);
-    
+
   const navigate = useNavigate();
 
   const [selectedDepartments, setSelectedDepartments] = useState([]);
@@ -16,6 +17,8 @@ export default function CreateClass() {
   const [hideFileUpload, setHideFileUpload] = useState("hidden");
   const [fileName, setFileName] = useState("");
   const [responsibleDepartments, setResponsibleDepartments] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -79,6 +82,8 @@ export default function CreateClass() {
   };
 
   const onSubmit = async (data) => {
+    setLoading(true);
+
     data.department = selectedDepartments;
     data.responsibleDepartments = responsibleDepartments;
 
@@ -106,9 +111,12 @@ export default function CreateClass() {
         `/classActivity/allActivities?month=${currentMonth}&year=${currentYear}`
       );
       setAllActivities(activitiesResponse?.data);
+      toast.success("Neue Schulung erstellt!");
     } catch (error) {
       console.error("Error during form submission!");
+      toast.error("Fehler! Dateigröße hat 10 MB überschritten!");
     } finally {
+      setLoading(false);
       navigate("/admin/dashboard");
     }
   };
@@ -373,11 +381,43 @@ export default function CreateClass() {
                 </div>
 
                 <div className="flex justify-center">
-                  <input
+                  <button
                     type="submit"
-                    className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/3 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-                    value={"Erstellen"}
-                  />
+                    disabled={loading}
+                    className={`bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/3 rounded shadow transition transform ${
+                      loading
+                        ? "cursor-not-allowed opacity-50"
+                        : "hover:shadow-lg hover:-translate-y-0.5"
+                    }`}
+                  >
+                    {loading ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <svg
+                          className="animate-spin h-5 w-5 text-white"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v4l4-4-4-4v4a8 8 0 00-8 8z"
+                          ></path>
+                        </svg>
+                        Bitte warten...
+                      </div>
+                    ) : (
+                      "Erstellen"
+                    )}
+                  </button>
                 </div>
               </form>
             </div>

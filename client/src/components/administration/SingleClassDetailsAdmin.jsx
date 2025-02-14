@@ -4,7 +4,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import RegisteredUserCardAdmin from "./RegisteredUserCardAdmin";
 import "react-toastify/dist/ReactToastify.css";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function SingleClassDetailsAdmin() {
   const {
@@ -92,11 +92,11 @@ export default function SingleClassDetailsAdmin() {
           )
           .then((response) => {
             setAllActivities(response.data);
-            notifySuccess();
+            toast.success(`Mitarbeiter hinzugefügt!`);
           });
       })
       .catch((error) => {
-        notifyError();
+        toast.error(`Der Mitarbeiter wurde schon registriert!`);
       });
   };
 
@@ -120,11 +120,11 @@ export default function SingleClassDetailsAdmin() {
           )
           .then((response) => {
             setAllActivities(response.data);
-            notifySuccess();
+            toast.success(`Mitarbeiter hinzugefügt!`);
           });
       })
       .catch((error) => {
-        notifyError();
+        toast.error(`Der Mitarbeiter wurde schon registriert!`);
       });
   };
 
@@ -155,53 +155,11 @@ export default function SingleClassDetailsAdmin() {
 
       setIsUploaded(true);
 
-      notifySuccessUpload();
+      toast.success(`Datei-Upload erfolgreich`);
     } catch (error) {
-      console.error("Error uploading file:", error);
+      toast.error("Fehler! Dateigröße hat 10 MB überschritten!");
     }
   };
-
-  const notifySuccess = () =>
-    toast.success(`Mitarbeiter hinzugefügt!`, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
-    });
-
-  const notifySuccessUpload = () =>
-    toast.success(`Datei-Upload erfolgreich`, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
-    });
-
-  const notifyError = () =>
-    toast.error(`Der Mitarbeiter wurde schon registriert!`, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
-    });
 
   return (
     <>
