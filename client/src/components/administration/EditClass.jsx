@@ -159,7 +159,7 @@ export default function EditClass() {
 
       const userResponse = await axiosClient.get("/user/profile");
       setUser(userResponse?.data);
-      toast.success("Neue Schulung erstellt!");
+      toast.success("Schulung aktualisiert!");
     } catch (error) {
       toast.error("Fehler! Dateigröße hat 10 MB überschritten!");
     } finally {

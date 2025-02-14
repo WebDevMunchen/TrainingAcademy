@@ -9,7 +9,8 @@ export default function ApproverOverview() {
   const navigate = useNavigate();
 
   const date = new Date();
-  const currentYear = date.getFullYear();
+  const currentYear = date
+  .getFullYear();
 
   const [selectedYear, setSelectedYear] = useState(currentYear);
 
