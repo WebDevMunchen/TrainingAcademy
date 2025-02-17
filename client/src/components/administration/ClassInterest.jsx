@@ -34,14 +34,16 @@ export default function ClassInterest() {
         </div>
 
         <div className="h-[calc(81vh)] overflow-y-scroll">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 ">
+          <div className="flex flex-wrap justify-center gap-4">
             {allInterest &&
-              allInterest.map((interest) => (
-                <ClassInterestCard
-                  key={interest._id}
-                  id={interest._id}
-                  interest={interest}
-                />
+              allInterest.map((interest, index) => (
+                <div className="w-full sm:w-1/2 lg:w-[32%] flex justify-center">
+                  <ClassInterestCard
+                    key={interest._id}
+                    id={interest._id}
+                    interest={interest}
+                  />
+                </div>
               ))}
           </div>
         </div>

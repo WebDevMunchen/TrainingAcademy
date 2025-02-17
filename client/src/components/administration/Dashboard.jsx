@@ -70,6 +70,10 @@ export default function Dashboard() {
   const startYear = 2025;
   const years = Array.from({ length: 5 }, (_, i) => (startYear + i).toString());
 
+  // const activeUsersCount = allUsers?.filter(
+  //   (user) => user.status === "aktiv"
+  // ).length;
+
   return (
     <>
       <div className="bg-gray-50/50 flex">
@@ -102,7 +106,7 @@ export default function Dashboard() {
                         </div>
                       </div>
                     ) : (
-                      allUsers?.length
+                      allUsers?.filter((user) => user.status === "aktiv").length
                     )}
                   </h4>
                 </div>

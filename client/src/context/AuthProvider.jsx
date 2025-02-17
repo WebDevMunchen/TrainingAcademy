@@ -191,6 +191,7 @@ export default function AuthProvider({ children }) {
       .then((response) => {
         setAllUsers(response.data);
         navigate("/admin/users");
+        toast.success("Benutzer registriert!")
       })
       .catch((error) => {
         toast.error(

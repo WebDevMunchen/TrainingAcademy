@@ -26,14 +26,16 @@ export default function UserClassInterest() {
       </div>
       <div className="bg-gray-50/50 flex">
         <div className="mx-auto my-4 flex justify center max-w-[90%]">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex flex-wrap justify-center gap-4">
             {allInterest &&
               allInterest.map((interest) => (
-                <UserClassInterestCard
-                  key={interest._id}
-                  id={interest._id}
-                  interest={interest}
-                />
+                <div className="w-full sm:w-1/2 lg:w-[32%] flex justify-center">
+                  <UserClassInterestCard
+                    key={interest._id}
+                    id={interest._id}
+                    interest={interest}
+                  />
+                </div>
               ))}
           </div>
         </div>

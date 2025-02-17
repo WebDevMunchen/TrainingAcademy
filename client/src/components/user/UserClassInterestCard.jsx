@@ -58,7 +58,7 @@ export default function UserClassInterestCard({ id, interest }) {
     <div className="bg-gray-50/50 flex">
       <div className="flex justify-center">
         <div className="mx-auto">
-          <div className="relative flex flex-col rounded-xl bg-white shadow-lg h-[800px] lg:w-fit">
+          <div className="relative flex flex-col rounded-xl bg-white shadow-lg lg:w-fit lg:h-[800px]">
             <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
               <img
                 src={interest.previewPicture}
