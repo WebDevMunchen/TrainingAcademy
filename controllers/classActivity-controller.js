@@ -959,6 +959,7 @@ END:VCALENDAR
 
 const sendReminder = asyncWrapper(async (req, res, next) => {
   const { id: classId } = req.params;
+  const { id: userId } = req.user; // Get logged-in user ID
 
   if (!classId) {
     return res.status(400).json({ message: "Class ID is required." });
@@ -975,7 +976,9 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
     },
   });
 
-  const users = await User.find({
+  // Fetch the logged-in user and check their registration status
+  const user = await User.findOne({
+    _id: userId,
     "classesRegistered.registeredClassID": classId,
     "classesRegistered.reminded": false,
   })
@@ -985,112 +988,94 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
       select: "title date time",
     });
 
-  if (!users.length) {
-    return res
-      .status(404)
-      .json({ message: "No users to remind for this class." });
+  if (!user) {
+    return res.status(404).json({ message: "No pending reminders for this user." });
   }
 
-  for (const user of users) {
-    for (const registration of user.classesRegistered) {
-      if (
-        registration.registeredClassID &&
-        registration.registeredClassID._id.toString() === classId &&
-        !registration.reminded
-      ) {
-        const approver = await Approver.findById(user.userContactInformation);
+  for (const registration of user.classesRegistered) {
+    if (
+      registration.registeredClassID &&
+      registration.registeredClassID._id.toString() === classId &&
+      !registration.reminded
+    ) {
+      const approver = await Approver.findById(user.userContactInformation);
 
-        if (!approver) {
-          console.error(`Approver not found for user: ${user._id}`);
-          continue;
-        }
+      if (!approver) {
+        console.error(`Approver not found for user: ${user._id}`);
+        continue;
+      }
 
-        const department = user.department.toLowerCase();
-        const approverEmail = approver[department];
-        const substituteEmail = approver[`${department}Substitute`];
+      const department = user.department.toLowerCase();
+      const approverEmail = approver[department];
+      const substituteEmail = approver[`${department}Substitute`];
 
-        if (!approverEmail || !substituteEmail) {
-          console.error(
-            `Approver or substitute email not found for department: ${department}`
-          );
-          continue;
-        }
+      if (!approverEmail || !substituteEmail) {
+        console.error(`Approver or substitute email not found for department: ${department}`);
+        continue;
+      }
 
-        const classDetails = registration.registeredClassID;
-        const { title, date, time } = classDetails || {};
+      const { title, date, time } = registration.registeredClassID || {};
 
-        const mailOptions = {
-          from: {
-            name: "Mitarbeiter wartet auf Genehmigung - Click & Train - No reply",
-            address: process.env.USER,
-          },
-          to: `${approverEmail}, ${substituteEmail}`,
-          subject: `Reminder for User: ${user.firstName} ${user.lastName}`,
-          html: `Hallo zusammen,<br><br>
-          ${user.firstName} ${
-            user.lastName
-          } wartet immer noch auf eure Genehmigung für die folgende Schulung:<br><br>
-          
-          <strong>${title || "N/A"}</strong><br><br>
-          - Datum: ${date ? new Date(date).toLocaleDateString() : "N/A"}<br>
-          - Uhrzeit: ${time || "N/A"}<br><br>
-          
-          Bitte beantwortet die Anfrage schnellstmöglich.<br><br>
-          
-          <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
-            <tr>
-              <td align="center">
-                <!-- VML-based button rendering for Outlook -->
-                <!--[if mso]>
-                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/classInformation/${classId}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
-                  <w:anchorlock/>
-                  <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage beantworten</center>
-                </v:roundrect>
-                <![endif]-->
+      const mailOptions = {
+        from: {
+          name: "Mitarbeiter wartet auf Genehmigung - Click & Train - No reply",
+          address: process.env.USER,
+        },
+        to: `${approverEmail}, ${substituteEmail}`,
+        subject: `Reminder for User: ${user.firstName} ${user.lastName}`,
+        html: `Hallo zusammen,<br><br>
+        ${user.firstName} ${
+          user.lastName
+        } wartet immer noch auf die Genehmigung für die folgende Schulung:<br><br>
         
-                <!-- Fallback for non-Outlook clients -->
-                <a href="www.click-n-train.de/classInformation/${classId}" style="
-                    background-color: #007bff;
-                    border-radius: 5px;
-                    color: #ffffff;
-                    display: inline-block;
-                    font-family: Arial, sans-serif;
-                    font-size: 16px;
-                    line-height: 50px;
-                    text-align: center;
-                    text-decoration: none;
-                    width: 200px;
-                    height: 50px;
-                    mso-hide: all;
-                    " target="_blank">
-                    Zum Genehmigungstool
-                </a>
-              </td>
-            </tr>
-          </table>
-          
-          <br>
-          Bei Fragen könnt ihr euch gerne melden.
-          Eure Trainingabteilung`,
-        };
+        <strong>${title || "N/A"}</strong><br><br>
+        - Datum: ${date ? new Date(date).toLocaleDateString() : "N/A"}<br>
+        - Uhrzeit: ${time || "N/A"}<br><br>
+        
+        Bitte beantwortet die Anfrage schnellstmöglich.<br><br>
+        
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
+          <tr>
+            <td align="center">
+              <a href="www.click-n-train.de/classInformation/${classId}" style="
+                  background-color: #007bff;
+                  border-radius: 5px;
+                  color: #ffffff;
+                  display: inline-block;
+                  font-family: Arial, sans-serif;
+                  font-size: 16px;
+                  line-height: 50px;
+                  text-align: center;
+                  text-decoration: none;
+                  width: 200px;
+                  height: 50px;
+                  " target="_blank">
+                  Zum Genehmigungstool
+              </a>
+            </td>
+          </tr>
+        </table>
+        
+        <br>
+        Bei Fragen könnt ihr euch gerne melden.
+        Eure Trainingabteilung`,
+      };
 
-        try {
-          await transporter.sendMail(mailOptions);
-          console.log(
-            `Reminder sent to ${approverEmail} and ${substituteEmail}.`
-          );
+      try {
+        await transporter.sendMail(mailOptions);
+        console.log(`Reminder sent to ${approverEmail} and ${substituteEmail}.`);
 
-          registration.reminded = true;
-          await user.save();
-        } catch (error) {
-          console.error(`Failed to send reminder for user: ${user._id}`, error);
-        }
+        registration.reminded = true;
+        await user.save();
+      } catch (error) {
+        console.error(`Failed to send reminder for user: ${user._id}`, error);
       }
     }
   }
 
-  res.status(200).json({ message: "Reminders sent successfully." });
+  res.status(200).json({ message: "Reminder sent successfully for the logged-in user." });
 });
+
 
 cron.schedule(
   "00 03 * * *",
