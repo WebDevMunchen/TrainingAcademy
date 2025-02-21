@@ -452,7 +452,7 @@ export default function UserInfoCard() {
           ? activity?.status === "genehmigt"
             ? "bg-green-100 text-green-800"
             : activity?.status === "ausstehend"
-            ? "bg-orange-100 text-orange-800"
+            ? "bg-gray-200 text-gray-800"
             : "bg-red-200 text-red-700"
           : ""
       }`}
@@ -513,7 +513,7 @@ export default function UserInfoCard() {
             ? activity?.statusAttended === "teilgenommen"
               ? "bg-green-100 text-green-800"
               : activity?.statusAttended === "in Prüfung"
-              ? "bg-orange-100 text-orange-800"
+              ? "bg-gray-200 text-gray-800"
               : "bg-red-200 text-red-700"
             : ""
         }`}

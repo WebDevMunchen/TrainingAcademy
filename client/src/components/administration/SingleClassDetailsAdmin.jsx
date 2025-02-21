@@ -25,6 +25,7 @@ export default function SingleClassDetailsAdmin() {
   const [activity, setActivity] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploaded, setIsUploaded] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     axiosClient
@@ -135,6 +136,8 @@ export default function SingleClassDetailsAdmin() {
   };
 
   const uploadFile = async () => {
+    setLoading(true);
+
     if (!selectedFile) {
       return;
     }
@@ -158,6 +161,8 @@ export default function SingleClassDetailsAdmin() {
       toast.success(`Datei-Upload erfolgreich`);
     } catch (error) {
       toast.error("Fehler! Dateigröße hat 10 MB überschritten!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -265,11 +270,66 @@ export default function SingleClassDetailsAdmin() {
 
                           {selectedFile && (
                             <button
+                              type="button"
+                              disabled={loading}
                               onClick={uploadFile}
-                              className="flex items-center text-white h-[40px] px-4 uppercase rounded bg-emerald-500 hover:bg-emerald-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 hover:cursor-pointer"
+                              className={`flex text-sm items-center text-white h-[40px] px-3 uppercase rounded bg-emerald-500 hover:bg-emerald-600 shadow font-medium transition transform ${
+                                loading
+                                  ? "cursor-not-allowed opacity-50"
+                                  : "hover:shadow-lg hover:-translate-y-0.5 hover:cursor-pointer"
+                              }`}
                             >
-                              {isUploaded ? "Hochgeladen" : "Hochladen"}
+                              {loading ? (
+                                <div className="flex items-center justify-center gap-2">
+                                  <svg
+                                    className="animate-spin h-5 w-5 text-white"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <circle
+                                      className="opacity-25"
+                                      cx="12"
+                                      cy="12"
+                                      r="10"
+                                      stroke="currentColor"
+                                      strokeWidth="4"
+                                    ></circle>
+                                    <path
+                                      className="opacity-75"
+                                      fill="currentColor"
+                                      d="M4 12a8 8 0 018-8v4l4-4-4-4v4a8 8 0 00-8 8z"
+                                    ></path>
+                                  </svg>
+                                  Bitte warten...
+                                </div>
+                              ) : isUploaded ? (
+                                "Hochgeladen"
+                              ) : (
+                                "Hochladen"
+                              )}
                             </button>
+                          )}
+                        </div>
+                        <div
+                          className="tooltip mt-1 hover:cursor-pointer"
+                          data-tip="Datei schon vorhanden!"
+                        >
+                          {activity.fileUrlPPT && (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="size-8 text-green-600"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+                              />
+                            </svg>
                           )}
                         </div>
 

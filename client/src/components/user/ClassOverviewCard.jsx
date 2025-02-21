@@ -6,6 +6,7 @@ import approved from "../../assets/approved.png";
 import pending from "../../assets/pending.png";
 import declined from "../../assets/declined.png";
 import notAttended from "../../assets/notAttended.png";
+import { toast } from "react-toastify";
 
 export default function ClassesOverviewCard({ activity }) {
   const { setUser, setAllActivities, currentMonth, currentYear } =
@@ -47,6 +48,7 @@ export default function ClassesOverviewCard({ activity }) {
       })
       .then((responseActivities) => {
         setAllActivities(responseActivities.data);
+        toast.success("Schulung storniert!");
       })
       .catch((error) => {});
   };

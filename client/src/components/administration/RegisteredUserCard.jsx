@@ -83,12 +83,21 @@ export default function RegisteredUserCard({
       })
       .catch((error) => {
         toast.error(`Genehmigung könnte nicht geändert werden!`);
-        setHideChangedBtn(false);
-        setSubmitedChangedStatus(true);
+        // setHideChangedBtn(false);
+        // setSubmitedChangedStatus(true);
       });
   };
 
   const decline = (status, reason) => {
+    if (
+      !declineReason ||
+      declineReason.trim() === "" ||
+      declineReason === "Kein Grund angegeben"
+    ) {
+      toast.error("Ein Grund muss angegeben werden!");
+
+      return;
+    }
     axiosClient
       .put(`/user/updateClassStatus/${registeredUser._id}`, {
         classId: id,
@@ -118,13 +127,22 @@ export default function RegisteredUserCard({
       .catch((error) => {
         if (error.name === "AxiosError") {
           toast.error(`Genehmigung könnte nicht geändert werden!`);
-          setHideChangedBtn(false);
-          setSubmitedChangedStatus(true);
+          // setHideChangedBtn(false);
+          // setSubmitedChangedStatus(true);
         }
       });
   };
 
   const declineWithCapacityIncrease = (status, reason) => {
+    if (
+      !declineReason ||
+      declineReason.trim() === "" ||
+      declineReason === "Kein Grund angegeben"
+    ) {
+      toast.error("Ein Grund muss angegeben werden!");
+
+      return;
+    }
     axiosClient
       .put(`/user/updateClassStatus/${registeredUser._id}`, {
         classId: id,
@@ -157,8 +175,8 @@ export default function RegisteredUserCard({
       .catch((error) => {
         if (error.name === "AxiosError") {
           toast.error(`Genehmigung könnte nicht geändert werden!`);
-          setHideChangedBtn(false);
-          setSubmitedChangedStatus(true);
+          // setHideChangedBtn(false);
+          // setSubmitedChangedStatus(true);
         }
       });
   };
@@ -172,21 +190,45 @@ export default function RegisteredUserCard({
     }
   };
 
-  const handleDeclined = (e) => {
-    if (e.target.checked) {
-      const status = e.target.value;
-      decline(status, declineReason);
-      setHideChangedBtn(true);
-      setSubmitedChangedStatus(false);
+  const handleDeclined = async () => {
+    if (
+      !declineReason ||
+      declineReason.trim() === "" ||
+      declineReason === "Kein Grund angegeben"
+    ) {
+      toast.error("Ein Grund muss angegeben werden!");
+      return;
+    }
+
+    const status = "abgelehnt"; 
+    setHideChangedBtn(true); 
+
+    try {
+      await declineWithCapacityIncrease(status, declineReason);
+      setSubmitedChangedStatus(false); 
+    } catch (error) {
+      setHideChangedBtn(false); 
     }
   };
 
-  const handleDeclinedWithCapcityIncrease = (e) => {
-    if (e.target.checked) {
-      const status = e.target.value;
-      declineWithCapacityIncrease(status, declineReason);
-      setHideChangedBtn(true);
-      setSubmitedChangedStatus(false);
+  const handleDeclinedWithCapcityIncrease = async () => {
+    if (
+      !declineReason ||
+      declineReason.trim() === "" ||
+      declineReason === "Kein Grund angegeben"
+    ) {
+      toast.error("Ein Grund muss angegeben werden!");
+      return;
+    }
+
+    const status = "abgelehnt";
+    setHideChangedBtn(true);
+
+    try {
+      await declineWithCapacityIncrease(status, declineReason);
+      setSubmitedChangedStatus(false); 
+    } catch (error) {
+      setHideChangedBtn(false); 
     }
   };
 
@@ -577,9 +619,7 @@ export default function RegisteredUserCard({
                               value={declineReason}
                               onChange={(e) => setDeclineReason(e.target.value)}
                             >
-                              <option value="" disabled>
-                                Wähle eine Begründung
-                              </option>
+                              <option value="">Wähle eine Begründung</option>
                               {declineReasons.map((reason, index) => (
                                 <option key={index} value={reason}>
                                   {reason}
@@ -588,16 +628,13 @@ export default function RegisteredUserCard({
                             </select>
                           </div>
                           <div className="flex justify-end gap-2">
-                            <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
-                              <input
-                                onChange={handleDeclined}
-                                onClick={closeModal}
-                                type="radio"
-                                className="peer sr-only"
-                                value="abgelehnt"
-                              />
-                              Bestätigen
-                            </label>
+                            <button
+                              className="btn w-fit bg-red-500 text-white hover:bg-red-700"
+                              onClick={handleDeclined}
+                            >
+                              In "abgelehnt" ändern
+                            </button>
+
                             <button className="btn w-28">Abbrechen</button>
                           </div>
                         </div>
@@ -694,9 +731,7 @@ export default function RegisteredUserCard({
                                   setDeclineReason(e.target.value)
                                 }
                               >
-                                <option value="" disabled>
-                                  Wähle eine Begründung
-                                </option>
+                                <option value="">Wähle eine Begründung</option>
                                 {declineReasons.map((reason, index) => (
                                   <option key={index} value={reason}>
                                     {reason}
@@ -704,16 +739,12 @@ export default function RegisteredUserCard({
                                 ))}
                               </select>
                               <div className="flex justify-end gap-2">
-                                <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
-                                  <input
-                                    onChange={handleDeclinedWithCapcityIncrease}
-                                    onClick={closeModal}
-                                    type="radio"
-                                    className="peer sr-only"
-                                    value="abgelehnt"
-                                  />
+                                <button
+                                  className="btn w-fit bg-red-500 text-white hover:bg-red-700"
+                                  onClick={handleDeclinedWithCapcityIncrease}
+                                >
                                   In "abgelehnt" ändern
-                                </label>
+                                </button>
 
                                 <button className="btn w-fit">Abbrechen</button>
                               </div>

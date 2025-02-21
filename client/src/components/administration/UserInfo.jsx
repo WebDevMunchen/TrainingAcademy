@@ -50,9 +50,9 @@ export default function UserInfo({ userId }) {
                         <td className="px-4 py-2">
                           {element.registeredClassID.time}
                         </td>
-                        <td className="flex items-center justify-center gap-2 px-4 py-2">
+                        <td className="flex items-center justify-center gap-2 px-2 py-2">
                           <span
-                            className={`inline-block px-3 py-0.5 font-medium rounded-full ${
+                            className={`inline-block px-3 py-1 font-medium rounded-full ${
                               element.status === "genehmigt"
                                 ? "bg-green-200 text-green-800"
                                 : element.status === "abgelehnt"
@@ -83,9 +83,9 @@ export default function UserInfo({ userId }) {
                             </span>
                           )}
                         </td>
-                        <td className="px-4 py-2">
+                        <td className="px-2 py-2">
                           <span
-                            className={`inline-block px-3 py-0.5 font-medium rounded-full ${
+                            className={`inline-block px-3 py-1 font-medium rounded-full ${
                               element.statusAttended === "teilgenommen"
                                 ? "bg-green-100 text-green-800"
                                 : element.statusAttended ===

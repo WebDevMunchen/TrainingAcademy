@@ -108,8 +108,7 @@ export default function CreateClassInterest() {
         toast.success("Neue Schulung erstellt!");
         navigate("/admin/classInterest");
       })
-      .catch((error) => {
-      })
+      .catch((error) => {})
       .finally(() => {
         setLoading(false);
       });
