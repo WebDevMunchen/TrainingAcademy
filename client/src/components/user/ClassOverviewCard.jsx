@@ -6,11 +6,7 @@ import approved from "../../assets/approved.png";
 import pending from "../../assets/pending.png";
 import declined from "../../assets/declined.png";
 import notAttended from "../../assets/notAttended.png";
-<<<<<<< HEAD
 import { toast } from "react-toastify";
-=======
-import {toast} from "react-toastify"
->>>>>>> 6aed38dd4f8b9de9a5561c01609d86b26dcabaf9
 
 export default function ClassesOverviewCard({ activity }) {
   const { setUser, setAllActivities, currentMonth, currentYear } =
@@ -52,11 +48,7 @@ export default function ClassesOverviewCard({ activity }) {
       })
       .then((responseActivities) => {
         setAllActivities(responseActivities.data);
-<<<<<<< HEAD
         toast.success("Schulung storniert!");
-=======
-        toast.success("Anfrage storniert!")
->>>>>>> 6aed38dd4f8b9de9a5561c01609d86b26dcabaf9
       })
       .catch((error) => {});
   };
@@ -144,7 +136,7 @@ export default function ClassesOverviewCard({ activity }) {
       })
       .then((responseActivities) => {
         setAllActivities(responseActivities.data);
-        toast.success("Erinnerung an den Genehmiger gesendet!")
+        toast.success("Erinnerung an den Genehmiger gesendet!");
       })
       .catch((error) => {});
   };
