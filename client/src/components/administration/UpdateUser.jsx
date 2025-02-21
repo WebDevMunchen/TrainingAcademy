@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { AuthContext } from "../../context/AuthProvider";
 import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 export default function Register() {
   const { setAllUsers } = useContext(AuthContext);
@@ -56,6 +57,7 @@ export default function Register() {
       .then((response) => {
         setAllUsers(response.data);
         navigate(`/admin/userProfile/${id}`);
+        toast.success("Benutzerprofil aktualisiert");
       })
       .catch((error) => {});
   };

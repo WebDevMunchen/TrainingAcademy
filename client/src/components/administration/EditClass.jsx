@@ -193,6 +193,8 @@ export default function EditClass() {
   };
 
   const cancelClass = () => {
+    setLoading(true);
+
     axiosClient
       .delete(`/classActivity/deleteClass/${id}`)
       .then((response) => {
@@ -211,9 +213,13 @@ export default function EditClass() {
       })
       .then((response) => {
         navigate("/admin/dashboard");
+        toast.success("Schulung gelöscht!");
       })
       .catch((error) => {
         setAllActivities(null);
+      })
+      .finally(() => {
+        setLoading(false);
         navigate("/admin/dashboard");
       });
   };
@@ -615,6 +621,7 @@ export default function EditClass() {
                       )}
                     </button>
                     <button
+                      type="button"
                       onClick={() => navigate(-1)}
                       className="bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/3 rounded cursor-pointer "
                     >
