@@ -200,14 +200,14 @@ export default function RegisteredUserCard({
       return;
     }
 
-    const status = "abgelehnt"; 
-    setHideChangedBtn(true); 
+    const status = "abgelehnt";
+    setHideChangedBtn(true);
 
     try {
       await declineWithCapacityIncrease(status, declineReason);
-      setSubmitedChangedStatus(false); 
+      setSubmitedChangedStatus(false);
     } catch (error) {
-      setHideChangedBtn(false); 
+      setHideChangedBtn(false);
     }
   };
 
@@ -226,9 +226,9 @@ export default function RegisteredUserCard({
 
     try {
       await declineWithCapacityIncrease(status, declineReason);
-      setSubmitedChangedStatus(false); 
+      setSubmitedChangedStatus(false);
     } catch (error) {
-      setHideChangedBtn(false); 
+      setHideChangedBtn(false);
     }
   };
 
