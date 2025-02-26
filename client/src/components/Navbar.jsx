@@ -66,11 +66,11 @@ export default function Navbar() {
                           Meine Schulungen
                         </NavLink>
                       </li>
-                      <li>
+                      {/* <li>
                         <NavLink to={"/classInterest/overview"}>
                           Interesse
                         </NavLink>
-                      </li>
+                      </li> */}
                       <li>
                         <NavLink to={"/faq"}>FAQ</NavLink>
                       </li>
@@ -152,14 +152,14 @@ export default function Navbar() {
                             Meine Schulungen
                           </NavLink>
                         </li>
-                        <li>
+                        {/* <li>
                           <NavLink
                             to={"/classInterest/overview"}
                             onClick={handleLinkClick}
                           >
                             Interesse
                           </NavLink>
-                        </li>
+                        </li> */}
                         <li>
                           <NavLink to={"/messages"} onClick={handleLinkClick}>
                             Nachrichten

@@ -33,7 +33,7 @@ import ApproverOverview from "./components/administration/ApproverOverview";
 import ClassInterest from "./components/administration/ClassInterest";
 import CreateClassInterest from "./components/administration/CreateClassInterest";
 import EditClassInterest from "./components/administration/EditClassInterest";
-import UserClassInterest from "./components/user/UserClassInterest";
+// import UserClassInterest from "./components/user/UserClassInterest";
 import InterestUserList from "./components/administration/InterestUserList";
 import InterestHistory from "./components/administration/InterestHistory";
 
@@ -65,10 +65,10 @@ function App() {
         <Route path="/" element={<Protected />}>
           <Route path="/classes" element={<ClassesSchedule />} />
           <Route path="/classesOverview" element={<ClassesOverview />} />
-          <Route
+          {/* <Route
             path="/classInterest/overview"
             element={<UserClassInterest />}
-          />
+          /> */}
           <Route path="/FAQ" element={<FAQ />} />
 
           <Route

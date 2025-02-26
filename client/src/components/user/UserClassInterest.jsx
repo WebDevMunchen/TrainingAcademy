@@ -27,7 +27,11 @@ export default function UserClassInterest() {
       <div className="bg-gray-50/50 flex">
         <div className="mx-auto my-4 flex justify center max-w-[90%]">
           <div className="flex flex-wrap justify-center gap-4">
-            {allInterest &&
+            {allInterest.length === 0 ? (
+              <p className="flex text-center items-center text-md h-[calc(25vh-32px)] text-3xl font-medium text-gray-600">
+                Zur Zeit sind keine Schulungen verfügbar
+              </p>
+            ) : (
               allInterest.map((interest) => (
                 <div className="w-full sm:w-1/2 lg:w-[32%] flex justify-center">
                   <UserClassInterestCard
@@ -36,7 +40,8 @@ export default function UserClassInterest() {
                     interest={interest}
                   />
                 </div>
-              ))}
+              ))
+            )}
           </div>
         </div>
       </div>

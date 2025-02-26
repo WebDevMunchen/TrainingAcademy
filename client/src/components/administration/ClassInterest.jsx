@@ -35,7 +35,11 @@ export default function ClassInterest() {
 
         <div className="h-[calc(81vh)] overflow-y-scroll">
           <div className="flex flex-wrap justify-center gap-4">
-            {allInterest &&
+            {allInterest.length === 0 ? (
+              <p className="flex items-center text-md h-[calc(51vh-32px)] text-3xl font-medium text-gray-600">
+                Noch keine Schulungen erstellt
+              </p>
+            ) : (
               allInterest.map((interest, index) => (
                 <div className="w-full sm:w-1/2 lg:w-[32%] flex justify-center">
                   <ClassInterestCard
@@ -44,7 +48,8 @@ export default function ClassInterest() {
                     interest={interest}
                   />
                 </div>
-              ))}
+              ))
+            )}
           </div>
         </div>
       </div>

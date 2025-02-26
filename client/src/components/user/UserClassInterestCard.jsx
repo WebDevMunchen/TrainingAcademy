@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import { toast } from "react-toastify";
 import axiosClient from "../../utils/axiosClient";
@@ -6,7 +6,11 @@ import axiosClient from "../../utils/axiosClient";
 export default function UserClassInterestCard({ id, interest }) {
   const { setAllInterest, user } = useContext(AuthContext);
 
+  const [loading, setLoading] = useState(false);
+
   const showInterest = () => {
+    setLoading(true);
+
     axiosClient
       .put(`/activityInterest/showInterest/${id}`)
       .then(() => {
@@ -16,7 +20,10 @@ export default function UserClassInterestCard({ id, interest }) {
         setAllInterest(response.data);
         toast.success("Erfolgreich eingetragen!");
       })
-      .catch((error) => {});
+      .catch((error) => {})
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const allTargetGroups = {
@@ -116,9 +123,37 @@ export default function UserClassInterestCard({ id, interest }) {
     `}
                 type="button"
                 onClick={showInterest}
-                disabled={isUserInterested}
+                disabled={isUserInterested || loading}
               >
-                {isUserInterested ? "Bereits eingetragen" : "Eintragen"}
+                {loading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4l4-4-4-4v4a8 8 0 00-8 8z"
+                      ></path>
+                    </svg>
+                    Bitte warten...
+                  </div>
+                ) : isUserInterested ? (
+                  "Bereits eingetragen"
+                ) : (
+                  "Eintragen"
+                )}
               </button>
             </div>
           </div>

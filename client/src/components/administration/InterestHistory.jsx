@@ -31,19 +31,21 @@ export default function InterestHistory() {
               <table className="w-full min-w-[640px] table-auto">
                 <div className="flex flex-col w-full">
                   <div className="flex items-center justify-between w-full py-2">
-                    <div className="flex-1 ml-8 px-4">Mitarbeiter</div>
+                    <div className="ml-8 px-4">Mitarbeiter</div>
+<div className="flex gap-12 mr-8">
+                    <div className="text-center w-[150px] ">Zeitstempel</div>
 
-                    <div className="text-left w-[150px] ">Zeitstempel</div>
-
-                    <div className="flex flex-col text-left w-[150px] ">
+                    <div className="flex flex-col text-center w-[150px]">
                       Abteilung
                     </div>
-                    <div className="flex flex-col text-left w-[150px] pl-4">
+                    <div className="flex flex-col text-center w-[150px]">
                       Rolle
                     </div>
-                    <div className="flex flex-col text-left w-[150px]">
+                    <div className="flex flex-col text-center w-[150px]">
                       Status
                     </div>
+</div>
+
                   </div>
                 </div>
                 <tbody className="bg-white divide-y divide-gray-200">

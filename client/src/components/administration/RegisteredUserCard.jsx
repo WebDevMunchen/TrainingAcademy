@@ -63,7 +63,6 @@ export default function RegisteredUserCard({
       })
       .then((response) => {
         return axiosClient.get(`/classActivity/${id}`);
-        i;
       })
       .then((responseSingleActivity) => {
         setActivity(responseSingleActivity.data);
@@ -83,8 +82,7 @@ export default function RegisteredUserCard({
       })
       .catch((error) => {
         toast.error(`Genehmigung könnte nicht geändert werden!`);
-        // setHideChangedBtn(false);
-        // setSubmitedChangedStatus(true);
+
       });
   };
 
@@ -127,8 +125,6 @@ export default function RegisteredUserCard({
       .catch((error) => {
         if (error.name === "AxiosError") {
           toast.error(`Genehmigung könnte nicht geändert werden!`);
-          // setHideChangedBtn(false);
-          // setSubmitedChangedStatus(true);
         }
       });
   };
@@ -170,13 +166,16 @@ export default function RegisteredUserCard({
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
+
+        return axiosClient.get(`/user/profileInformation/${registeredUser._id}`)
+      }).then((responseUserInfo) => {
+        
+        
         toast.success("Genehmigung geändert");
       })
       .catch((error) => {
         if (error.name === "AxiosError") {
           toast.error(`Genehmigung könnte nicht geändert werden!`);
-          // setHideChangedBtn(false);
-          // setSubmitedChangedStatus(true);
         }
       });
   };
@@ -204,7 +203,7 @@ export default function RegisteredUserCard({
     setHideChangedBtn(true);
 
     try {
-      await declineWithCapacityIncrease(status, declineReason);
+      await decline(status, declineReason);
       setSubmitedChangedStatus(false);
     } catch (error) {
       setHideChangedBtn(false);

@@ -81,24 +81,25 @@ export default function InterestHistoryCard({ user }) {
                       <div className="flex-1 px-4 font-bold">
                         {userInfo.user.firstName + " " + userInfo.user.lastName}
                       </div>
+                      <div className="flex gap-12">
 
-                      <div className="text-center w-[150px] px-4">
+                      <div className="text-center w-[150px]">
                         {formattedDate}
                       </div>
 
-                      <div className="flex flex-col text-center w-[150px] px-4">
-                        {userInfo.user.department}
+                      <div className="flex flex-col text-center w-[150px]">
+                        {userInfo.user.department === "Unternehmensentwicklung" ? "Unternehmensent." : userInfo.user.department}
                       </div>
-                      <div className="flex flex-col text-center w-[150px] px-4">
+                      <div className="flex flex-col text-center w-[150px]">
                         {userInfo.user.role === "ASP"
                           ? "Genehmiger"
                           : userInfo.user.role === "admin"
                           ? "Administrator"
                           : "User"}
                       </div>
-                      <div className="px-4 flex items-center w-[150px]">
+                      <div className="flex flex-col text-center w-[150px]">
                         <span
-                          className={`inline-block px-3 py-1 font-base text-sm rounded-full ${
+                          className={`inline-block py-1 font-base text-sm rounded-full ${
                             userInfo.user.status === "aktiv"
                               ? "bg-green-100 text-green-800"
                               : "bg-red-200 text-red-700"
@@ -106,6 +107,7 @@ export default function InterestHistoryCard({ user }) {
                         >
                           {userInfo.user.status}
                         </span>
+                      </div>
                       </div>
                     </div>
                   );

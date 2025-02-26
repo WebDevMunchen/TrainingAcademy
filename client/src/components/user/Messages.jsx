@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
+import { toast } from "react-toastify";
 import MessagesSide from "./MessagesSide";
 import axiosClient from "../../utils/axiosClient";
 import envelope from "../../assets/envelope.png";
@@ -89,6 +90,7 @@ export default function Messages() {
           ),
         };
         setUser(updatedUser);
+        toast.success("Nachricht gelöscht!");
       })
       .catch((error) => {});
   };
