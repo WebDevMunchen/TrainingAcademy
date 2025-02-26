@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import ClassScheduleCard from "./ClassScheduleCard";
 
@@ -15,8 +15,6 @@ export default function ClassesSchedule() {
 
   const startYear = 2025;
   const years = Array.from({ length: 5 }, (_, i) => (startYear + i).toString());
-
-  console.log(allActivities);
 
   return (
     <section className="bg-blue-500ray-50 lg:mx-auto">

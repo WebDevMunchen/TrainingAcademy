@@ -6,6 +6,7 @@ import { AuthContext } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { toast } from "react-toastify";
 
 export default function MessageForm() {
   const { user } = useContext(AuthContext);
@@ -30,6 +31,7 @@ export default function MessageForm() {
       .post("/message/createNewMessage", data)
       .then((response) => {
         navigate("/admin/dashboard");
+        toast.success("Nachricht gesendet!");
       })
       .catch((error) => {});
   };

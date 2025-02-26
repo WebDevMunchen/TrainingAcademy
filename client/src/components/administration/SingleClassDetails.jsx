@@ -3,8 +3,10 @@ import axiosClient from "../../utils/axiosClient";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import RegisterdUserCard from "./RegisteredUserCard";
 import { AuthContext } from "../../context/AuthProvider";
+import { motion, AnimatePresence } from "framer-motion";
 import "react-toastify/dist/ReactToastify.css";
 import { Bounce, toast } from "react-toastify";
+import UserInfo from "./UserInfo";
 
 export default function SingleClassDetails() {
   const {
@@ -18,7 +20,6 @@ export default function SingleClassDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const modalRef = useRef(null);
-  const modalRefMobile = useRef(null);
 
   const [activity, setActivity] = useState(null);
   const [isWithin48Hours, setIsWithin48Hours] = useState(false);
@@ -26,6 +27,7 @@ export default function SingleClassDetails() {
   const [formattedDatePrior, setFormattedDatePrior] = useState("");
   const [formattedDatePriorGenehmigung, setFormattedDatePriorGenehmigung] =
     useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     axiosClient
@@ -226,7 +228,7 @@ export default function SingleClassDetails() {
               <div className="flex justify-center">
                 <img
                   src="https://d2nk66epwbpimf.cloudfront.net/images/345249fd-0959-4762-bfbc-80ca4247abbb/54ad38e7-f4b4-4dc6-9e80-21e06958a192.png"
-                  className="h-32"
+                  className="h-48"
                   alt="logo"
                 />
               </div>
@@ -456,7 +458,7 @@ export default function SingleClassDetails() {
                         <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                           <img
                             className="w-20 mx-auto"
-                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png"
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958806/alle_wyewox_c_pad_w_80_h_75_n0nktg.png"
                             alt="alle"
                           />
                           <p className="font-poppins font-medium text-center text-md">
@@ -485,7 +487,7 @@ export default function SingleClassDetails() {
                         </div>
                         <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                           <img
-                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png"
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958594/fuhrpark_bhkb9q_c_pad_w_80_h_74_unpasw.png"
                             alt="Fuhrpark"
                             className="w-20 mx-auto"
                           />
@@ -581,7 +583,7 @@ export default function SingleClassDetails() {
                       </div>
                     </div>
                   </dialog>
-                  <p className="flex justify-center text-center mt-2 text-base text-gray-600">
+                  <p className="w-full text-center lg:flex justify-center lg:w-7/12 mx-auto mt-2 text-base text-gray-600">
                     {activity.description}
                   </p>
                   {/* Desktop */}
@@ -677,22 +679,80 @@ export default function SingleClassDetails() {
               </div>
             </>
           )}
-          {filteredRegisteredUsers.map((registeredUser) => {
-            return (
-              <ul
+          <div>
+            {filteredRegisteredUsers.map((registeredUser) => (
+              <div
                 key={registeredUser._id}
-                className="w-11/12 bg-white shadow overflow-hidden sm:rounded-md mx-auto mt-4 mb-6 lg:w-4/12"
+                className="relative flex items-center w-full lg:w-4/12 mx-auto mt-4 mb-6"
               >
-                <li>
-                  <RegisterdUserCard
-                    registeredUser={registeredUser}
-                    activityId={id}
-                    setActivity={setActivity}
-                  />
-                </li>
-              </ul>
-            );
-          })}
+                <motion.div
+                  whileHover={{ x: [-10, 10, -10] }}
+                  transition={{
+                    duration: 0.8,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute right-[-40px] flex items-center cursor-pointer"
+                  onClick={() => setSelectedUser(registeredUser._id)}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={40}
+                    height={40}
+                    viewBox="0 0 24 24"
+                    className="text-blue-500"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="m15.632 12l-4.748-8.968l-1.768.936L13.368 12l-4.252 8.032l1.768.936z"
+                    />
+                  </svg>
+                </motion.div>
+
+                <div className="relative flex w-full">
+                  <motion.div
+                    initial={{ x: 0 }}
+                    animate={{
+                      x: selectedUser === registeredUser._id ? "-50%" : 0,
+                    }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    className="bg-white shadow overflow-hidden sm:rounded-md w-full lg:w-full"
+                  >
+                    <ul>
+                      <li>
+                        <RegisterdUserCard
+                          registeredUser={registeredUser}
+                          activityId={id}
+                          setActivity={setActivity}
+                        />
+                      </li>
+                    </ul>
+                  </motion.div>
+
+                  <AnimatePresence>
+                    {selectedUser === registeredUser._id && (
+                      <motion.div
+                        initial={{ x: "100%" }}
+                        animate={{ x: 350 }}
+                        exit={{ x: "100%" }}
+                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                        className="overflow-x-scroll absolute top-0 left-8/12 w-full lg:w-full h-full bg-gray-50 shadow-lg p-6"
+                      >
+                        <button
+                          className="absolute top-4 right-4 text-lg"
+                          onClick={() => setSelectedUser(null)}
+                        >
+                          ✖
+                        </button>
+
+                        <UserInfo userId={registeredUser._id} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            ))}
+          </div>
         </>
       )}
     </>

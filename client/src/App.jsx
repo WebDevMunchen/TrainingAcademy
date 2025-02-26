@@ -10,7 +10,6 @@ import ClassesOverview from "./components/user/ClassesOverview";
 import Register from "./components/administration/Register";
 import Dashboard from "./components/administration/Dashboard";
 import UserList from "./components/administration/UserList";
-import ClassesOverviewDashboard from "./components/administration/ClassesOverviewDashboard";
 import CreateClass from "./components/administration/CreateClass";
 import UserInfoCard from "./components/administration/UserInfoCard";
 import UpdateUser from "./components/administration/UpdateUser";
@@ -29,10 +28,19 @@ import AuthorizeMessages from "./components/AuthorizeMessages";
 import PieCharStatisticsDecline from "./components/administration/PieChartStatisticsDecline";
 import PieChartStornoStatistics from "./components/administration/PieChartStornoStatistics";
 import PieChartAllClasses from "./components/administration/PieChartAllClasses";
+import AuthorizeApprover from "./components/AuthorizeApprover";
+import ApproverOverview from "./components/administration/ApproverOverview";
+import ClassInterest from "./components/administration/ClassInterest";
+import CreateClassInterest from "./components/administration/CreateClassInterest";
+import EditClassInterest from "./components/administration/EditClassInterest";
+// import UserClassInterest from "./components/user/UserClassInterest";
+import InterestUserList from "./components/administration/InterestUserList";
+import InterestHistory from "./components/administration/InterestHistory";
 
 function App() {
   const allowedRoles = ["admin", "teacher", "ASP"];
   const allowedRolesMessage = ["user", "ASP"];
+  const allowedRoleApproverList = ["ASP"];
 
   return (
     <>
@@ -57,7 +65,10 @@ function App() {
         <Route path="/" element={<Protected />}>
           <Route path="/classes" element={<ClassesSchedule />} />
           <Route path="/classesOverview" element={<ClassesOverview />} />
-
+          {/* <Route
+            path="/classInterest/overview"
+            element={<UserClassInterest />}
+          /> */}
           <Route path="/FAQ" element={<FAQ />} />
 
           <Route
@@ -65,6 +76,12 @@ function App() {
             element={<AuthorizeMessages roles={allowedRolesMessage} />}
           >
             <Route path="messages" element={<Messages />} />
+          </Route>
+          <Route
+            path="/"
+            element={<AuthorizeApprover roles={allowedRoleApproverList} />}
+          >
+            <Route path="userOverview" element={<ApproverOverview />} />
           </Route>
 
           <Route
@@ -83,11 +100,24 @@ function App() {
             <Route path="users" element={<UserList />} />
             <Route path="userProfile/:id" element={<UserInfoCard />} />
             <Route path="userProfile/update/:id" element={<UpdateUser />} />
-            <Route
-              path="classesOverview"
-              element={<ClassesOverviewDashboard />}
-            />
             <Route path="createClass" element={<CreateClass />} />
+            <Route path="classInterest" element={<ClassInterest />} />
+            <Route
+              path="classInterest/create"
+              element={<CreateClassInterest />}
+            />
+            <Route
+              path="classInterest/userOverview/:id"
+              element={<InterestUserList />}
+            />
+            <Route
+              path="classInterest/history/:id"
+              element={<InterestHistory />}
+            />
+            <Route
+              path="classInterest/editClassInterest/:id"
+              element={<EditClassInterest />}
+            />
             <Route path="editClass/:id" element={<EditClass />} />
             <Route path="report/:id" element={<Report />} />
             <Route path="approverList" element={<ApproverList />} />

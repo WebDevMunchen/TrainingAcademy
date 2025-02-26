@@ -4,7 +4,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import RegisteredUserCardAdmin from "./RegisteredUserCardAdmin";
 import "react-toastify/dist/ReactToastify.css";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function SingleClassDetailsAdmin() {
   const {
@@ -23,6 +23,9 @@ export default function SingleClassDetailsAdmin() {
   const modalRefMobile = useRef(null);
 
   const [activity, setActivity] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isUploaded, setIsUploaded] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     axiosClient
@@ -90,11 +93,11 @@ export default function SingleClassDetailsAdmin() {
           )
           .then((response) => {
             setAllActivities(response.data);
-            notifySuccess();
+            toast.success(`Mitarbeiter hinzugefügt!`);
           });
       })
       .catch((error) => {
-        notifyError();
+        toast.error(`Der Mitarbeiter wurde schon registriert!`);
       });
   };
 
@@ -118,41 +121,50 @@ export default function SingleClassDetailsAdmin() {
           )
           .then((response) => {
             setAllActivities(response.data);
-            notifySuccess();
+            toast.success(`Mitarbeiter hinzugefügt!`);
           });
       })
       .catch((error) => {
-        notifyError();
+        toast.error(`Der Mitarbeiter wurde schon registriert!`);
       });
   };
 
-  const notifySuccess = () =>
-    toast.success(`Mitarbeiter hinzugefügt!`, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
-    });
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    setIsUploaded(false);
+  };
 
-  const notifyError = () =>
-    toast.error(`Der Mitarbeiter wurde schon registriert!`, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
-    });
+  const uploadFile = async () => {
+    setLoading(true);
+
+    if (!selectedFile) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      const response = await axiosClient.put(
+        `/classActivity/uploadFile/${id}`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      setIsUploaded(true);
+
+      toast.success(`Datei-Upload erfolgreich`);
+    } catch (error) {
+      toast.error("Fehler! Dateigröße hat 10 MB überschritten!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -177,7 +189,7 @@ export default function SingleClassDetailsAdmin() {
               <div className="flex justify-center">
                 <img
                   src="https://d2nk66epwbpimf.cloudfront.net/images/345249fd-0959-4762-bfbc-80ca4247abbb/54ad38e7-f4b4-4dc6-9e80-21e06958a192.png"
-                  className="h-32"
+                  className="h-48"
                   alt="logo"
                 />
               </div>
@@ -218,6 +230,109 @@ export default function SingleClassDetailsAdmin() {
                         >
                           Nachtragen
                         </button>
+
+                        <div className="flex gap-1">
+                          {!selectedFile && (
+                            <label
+                              htmlFor="file"
+                              className={
+                                hoursDifference < 0 && hoursDifference > -24
+                                  ? "flex items-center text-white h-[40px] px-4 uppercase rounded bg-orange-700 hover:bg-orange-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 hover:cursor-pointer"
+                                  : "hidden"
+                              }
+                            >
+                              <div className="tooltip" data-tip="Datei-Upload">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="w-6 fill-white inline"
+                                  viewBox="0 0 32 32"
+                                >
+                                  <path
+                                    d="M23.75 11.044a7.99 7.99 0 0 0-15.5-.009A8 8 0 0 0 9 27h3a1 1 0 0 0 0-2H9a6 6 0 0 1-.035-12 1.038 1.038 0 0 0 1.1-.854 5.991 5.991 0 0 1 11.862 0A1.08 1.08 0 0 0 23 13a6 6 0 0 1 0 12h-3a1 1 0 0 0 0 2h3a8 8 0 0 0 .75-15.956z"
+                                    data-original="#000000"
+                                  />
+                                  <path
+                                    d="M20.293 19.707a1 1 0 0 0 1.414-1.414l-5-5a1 1 0 0 0-1.414 0l-5 5a1 1 0 0 0 1.414 1.414L15 16.414V29a1 1 0 0 0 2 0V16.414z"
+                                    data-original="#000000"
+                                  />
+                                </svg>
+                              </div>
+
+                              <input
+                                type="file"
+                                id="file"
+                                className="hidden"
+                                onChange={handleFileChange}
+                                accept=".pptx"
+                              />
+                            </label>
+                          )}
+
+                          {selectedFile && (
+                            <button
+                              type="button"
+                              disabled={loading}
+                              onClick={uploadFile}
+                              className={`flex text-sm items-center text-white h-[40px] px-3 uppercase rounded bg-emerald-500 hover:bg-emerald-600 shadow font-medium transition transform ${
+                                loading
+                                  ? "cursor-not-allowed opacity-50"
+                                  : "hover:shadow-lg hover:-translate-y-0.5 hover:cursor-pointer"
+                              }`}
+                            >
+                              {loading ? (
+                                <div className="flex items-center justify-center gap-2">
+                                  <svg
+                                    className="animate-spin h-5 w-5 text-white"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <circle
+                                      className="opacity-25"
+                                      cx="12"
+                                      cy="12"
+                                      r="10"
+                                      stroke="currentColor"
+                                      strokeWidth="4"
+                                    ></circle>
+                                    <path
+                                      className="opacity-75"
+                                      fill="currentColor"
+                                      d="M4 12a8 8 0 018-8v4l4-4-4-4v4a8 8 0 00-8 8z"
+                                    ></path>
+                                  </svg>
+                                  Bitte warten...
+                                </div>
+                              ) : isUploaded ? (
+                                "Hochgeladen"
+                              ) : (
+                                "Hochladen"
+                              )}
+                            </button>
+                          )}
+                        </div>
+                        <div
+                          className="tooltip mt-1 hover:cursor-pointer"
+                          data-tip="Datei schon vorhanden!"
+                        >
+                          {activity.fileUrlPPT && (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="size-8 text-green-600"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+                              />
+                            </svg>
+                          )}
+                        </div>
+
                         <NavLink
                           to={`/admin/editClass/${activity._id}`}
                           className="invisible flex items-center text-white h-[40px] px-4 uppercase rounded bg-green-500 hover:bg-green-700 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
@@ -325,94 +440,145 @@ export default function SingleClassDetailsAdmin() {
                   </div>
                   <div className="flex justify-between lg:hidden">
                     <div className="flex">
-                      <button
-                        onClick={() => modalRefMobile.current.showModal()}
-                        className={
-                          hoursDifference < 0 && hoursDifference > -24
-                            ? "flex transition-transform duration-300 transform hover:scale-150"
-                            : "hidden"
-                        }
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.8}
-                          stroke="#15803d"
-                          className="w-7 h-7"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
-                          />
-                        </svg>
-                      </button>
+                      {!selectedFile ? (
+                        <>
+                          <label
+                            htmlFor="file"
+                            className={
+                              hoursDifference < 0 && hoursDifference > -24
+                                ? "flex items-center uppercase rounded font-medium transition transform hover:-translate-y-0.5 hover:cursor-pointer"
+                                : "hidden"
+                            }
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 48 48"
+                              strokeWidth={1.8}
+                              stroke="#15803d"
+                              className="w-7 h-7 mr-3"
+                            >
+                              <g
+                                fill="none"
+                                stroke="#000"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="4"
+                              >
+                                <path d="M24.0079 41L23.9995 23" />
+                                <path d="M40.5178 34.3161C43.8044 32.005 45.2136 27.8302 44.0001 24C42.7866 20.1698 39.0705 18.0714 35.0527 18.0745H32.7317C31.2144 12.1613 26.2082 7.79572 20.1435 7.0972C14.0787 6.39868 8.21121 9.5118 5.38931 14.9253C2.56741 20.3388 3.37545 26.9317 7.42115 31.5035" />
+                                <path d="M30.3638 27.6359L23.9998 21.272L17.6358 27.6359" />
+                              </g>
+                            </svg>
 
-                      <dialog
-                        ref={modalRefMobile}
-                        id="my_modal_1"
-                        className="modal w-screen"
-                      >
-                        <div className="modal-box">
-                          <div className="modal-action">
-                            <form method="dialog" className="w-screen">
-                              <div className="flex flex-col gap-2">
-                                <select
-                                  id="mobileEnlist"
-                                  className="select select-bordered w-[100%] max-w-screen"
-                                >
-                                  <option disabled selected>
-                                    Wähle den Namen aus:
-                                  </option>
-                                  {allUsers
-                                    ?.filter(
-                                      (user) =>
-                                        user.role !== "teacher" &&
-                                        user.status !== "inaktiv"
-                                    )
-                                    .map((user) => (
-                                      <option key={user._id} value={user._id}>
-                                        {user.firstName} {user.lastName}
-                                      </option>
-                                    ))}
-                                </select>
-                                <div className="flex gap-2 mt-2 justify-end">
-                                  <button
-                                    className="btn w-fit bg-green-600 text-white hover:bg-green-700 text-xs sm:text-sm"
-                                    onClick={enlistMobile}
-                                  >
-                                    Bestätigen
-                                  </button>
+                            <input
+                              type="file"
+                              id="file"
+                              className="hidden"
+                              onChange={handleFileChange}
+                              accept=".pptx"
+                            />
+                          </label>
 
-                                  <button className="btn w-fit bg-red-500 text-white hover:bg-red-600 text-xs sm:text-sm">
-                                    Abbrechen
-                                  </button>
+                          <button
+                            onClick={() => modalRefMobile.current.showModal()}
+                            className={
+                              hoursDifference < 0 && hoursDifference > -24
+                                ? "flex transition-transform duration-300 transform hover:scale-150"
+                                : "hidden"
+                            }
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.8}
+                              stroke="#15803d"
+                              className="w-7 h-7"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
+                              />
+                            </svg>
+                            <dialog
+                              ref={modalRefMobile}
+                              id="my_modal_1"
+                              className="modal w-screen"
+                            >
+                              <div className="modal-box">
+                                <div className="modal-action">
+                                  <form method="dialog" className="w-screen">
+                                    <div className="flex flex-col gap-2">
+                                      <select
+                                        id="mobileEnlist"
+                                        className="select select-bordered w-[100%] max-w-screen"
+                                      >
+                                        <option disabled selected>
+                                          Wähle den Namen aus:
+                                        </option>
+                                        {allUsers
+                                          ?.filter(
+                                            (user) =>
+                                              user.role !== "teacher" &&
+                                              user.status !== "inaktiv"
+                                          )
+                                          .map((user) => (
+                                            <option
+                                              key={user._id}
+                                              value={user._id}
+                                            >
+                                              {user.firstName} {user.lastName}
+                                            </option>
+                                          ))}
+                                      </select>
+                                      <div className="flex gap-2 mt-2 justify-end">
+                                        <button
+                                          className="btn w-fit bg-green-600 text-white hover:bg-green-700 text-xs sm:text-sm"
+                                          onClick={enlistMobile}
+                                        >
+                                          Bestätigen
+                                        </button>
+
+                                        <button className="btn w-fit bg-red-500 text-white hover:bg-red-600 text-xs sm:text-sm">
+                                          Abbrechen
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </form>
                                 </div>
                               </div>
-                            </form>
-                          </div>
-                        </div>
-                      </dialog>
+                            </dialog>
+                          </button>
 
-                      <button
-                        className="ml-3 transition-transform duration-300 transform hover:scale-150"
-                        onClick={() => window.location.reload()}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="w-7 h-7"
+                          <button
+                            className="ml-3 transition-transform duration-300 transform hover:scale-150"
+                            onClick={() => window.location.reload()}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                              className="w-7 h-7"
+                            >
+                              <path
+                                fill="#3d94ff"
+                                fillRule="evenodd"
+                                d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          className="flex text-sm items-center text-white h-[35px] px-3 uppercase rounded bg-emerald-500 hover:bg-emerald-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 hover:cursor-pointer"
+                          onClick={uploadFile}
                         >
-                          <path
-                            fill="#3d94ff"
-                            fillRule="evenodd"
-                            d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
+                          {isUploaded ? "Hochgeladen" : "Hochladen"}
+                        </button>
+                      )}
                     </div>
 
                     <p className="font-semibold flex items-center">
@@ -430,6 +596,7 @@ export default function SingleClassDetailsAdmin() {
                       )}
                     </p>
                   </div>
+
                   <h3 className="hidden lg:flex mt-6 mb-4 justify-center text-lg font-semibold text-black">
                     {activity.title}
                   </h3>
@@ -468,7 +635,7 @@ export default function SingleClassDetailsAdmin() {
                         <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                           <img
                             className="w-20 mx-auto"
-                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png"
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958806/alle_wyewox_c_pad_w_80_h_75_n0nktg.png"
                             alt="alle"
                           />
                           <p className="font-poppins font-medium text-center text-md">
@@ -497,7 +664,7 @@ export default function SingleClassDetailsAdmin() {
                         </div>
                         <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center">
                           <img
-                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png"
+                            src="https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958594/fuhrpark_bhkb9q_c_pad_w_80_h_74_unpasw.png"
                             alt="Fuhrpark"
                             className="w-20 mx-auto"
                           />
@@ -593,7 +760,7 @@ export default function SingleClassDetailsAdmin() {
                       </div>
                     </div>
                   </dialog>
-                  <p className="flex justify-center text-center mt-2 text-base text-gray-600">
+                  <p className="w-full text-center lg:flex justify-center lg:w-7/12 mx-auto mt-2 text-base text-gray-600">
                     {activity.description}
                   </p>
                   {/* Desktop */}

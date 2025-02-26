@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function EditClass() {
   const { setAllActivities, setAllUsers, currentMonth, currentYear, setUser } =
@@ -17,6 +18,8 @@ export default function EditClass() {
   const [fileUploadHidden, setFileUploadHidden] = useState("hidden");
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
+  const [responsibleDepartments, setResponsibleDepartments] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -24,10 +27,34 @@ export default function EditClass() {
     formState: { errors },
   } = useForm();
 
+  const departmentMap = {
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958806/alle_wyewox_c_pad_w_80_h_75_n0nktg.png":
+      "Alle",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png":
+      "Vertrieb",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png":
+      "Logistik",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1738958594/fuhrpark_bhkb9q_c_pad_w_80_h_74_unpasw.png":
+      "Fuhrpark",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png":
+      "IT & Services",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png":
+      "HR & Training",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png":
+      "Buchhaltung",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png":
+      "Showroom",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png":
+      "Design & Marketing",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png":
+      "Bestandsmanagement",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png":
+      "Haustechnik",
+    "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png":
+      "Unternehmensentwicklung",
+  };
+
   useEffect(() => {
-    setFileUploadHidden(
-      activityInformation?.safetyBriefing ? "visible" : "hidden"
-    );
     axiosClient
       .get(`/classActivity/${id}`)
       .then((response) => {
@@ -44,9 +71,12 @@ export default function EditClass() {
           setFileName(fileName);
         }
 
+        const initialResponsibleDepartments =
+          response.data.responsibleDepartments || [];
+        setResponsibleDepartments(initialResponsibleDepartments);
+
         const currentDate = new Date();
         const { date, time } = response.data;
-
         if (date && time) {
           const [hoursStr, minutesStr] = time.split(":");
           const classDate = new Date(date);
@@ -61,20 +91,40 @@ export default function EditClass() {
           }
         }
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.error("Error fetching class activity:", error);
+      });
   }, [id, navigate]);
 
   const handleDepartmentChange = (e) => {
-    const department = e.target.value;
-    if (e.target.checked) {
-      setSelectedDepartments((prev) => [...prev, department]);
-    } else {
-      setSelectedDepartments((prev) => prev.filter((d) => d !== department));
-    }
+    const { value, checked } = e.target;
+
+    setSelectedDepartments((prev) => {
+      if (checked) {
+        return [...prev, value];
+      } else {
+        return prev.filter((url) => url !== value);
+      }
+    });
+
+    const departmentName = departmentMap[value];
+    setResponsibleDepartments((prev) => {
+      if (checked) {
+        if (!prev.includes(departmentName)) {
+          return [...prev, departmentName];
+        }
+      } else {
+        return prev.filter((dept) => dept !== departmentName);
+      }
+      return prev;
+    });
   };
 
   const onSubmit = async (data) => {
+    setLoading(true);
+
     data.department = selectedDepartments;
+    data.responsibleDepartments = responsibleDepartments;
 
     const formData = new FormData();
     for (const key in data) {
@@ -84,11 +134,13 @@ export default function EditClass() {
         formData.append(key, data[key]);
       }
     }
+
     if (selectedFile && typeof selectedFile !== "string") {
       formData.append("file", selectedFile);
     } else if (activityInformation?.fileUrl) {
       formData.append("existingFileUrl", activityInformation?.fileUrl);
     }
+
     try {
       await axiosClient.put(`/classActivity/editClass/${id}`, formData, {
         withCredentials: true,
@@ -106,10 +158,12 @@ export default function EditClass() {
       setAllUsers(usersResponse?.data);
 
       const userResponse = await axiosClient.get("/user/profile");
-
       setUser(userResponse?.data);
+      toast.success("Schulung aktualisiert!");
     } catch (error) {
+      toast.error("Fehler! Dateigröße hat 10 MB überschritten!");
     } finally {
+      setLoading(false);
       navigate("/admin/dashboard");
     }
   };
@@ -139,6 +193,8 @@ export default function EditClass() {
   };
 
   const cancelClass = () => {
+    setLoading(true);
+
     axiosClient
       .delete(`/classActivity/deleteClass/${id}`)
       .then((response) => {
@@ -157,9 +213,13 @@ export default function EditClass() {
       })
       .then((response) => {
         navigate("/admin/dashboard");
+        toast.success("Schulung gelöscht!");
       })
       .catch((error) => {
         setAllActivities(null);
+      })
+      .finally(() => {
+        setLoading(false);
         navigate("/admin/dashboard");
       });
   };
@@ -298,6 +358,21 @@ export default function EditClass() {
                   </div>
 
                   <div className="flex gap-4">
+                    <div className="flex items-center gap-2">
+                      <label
+                        htmlFor="noRegistration"
+                        className="py-1.5 block text-sm font-medium text-gray-900 dark:text-white mt-1"
+                      >
+                        Schulung ohne Registrierung?
+                      </label>
+                      <input
+                        type="checkbox"
+                        {...register("noRegistration", { required: false })}
+                        id="noRegistration"
+                        className="checkbox mt-2"
+                        defaultChecked={activityInformation.noRegistration}
+                      />
+                    </div>
                     <div className="flex gap-2 items-center">
                       <label
                         htmlFor="safetyBriefing"
@@ -489,91 +564,64 @@ export default function EditClass() {
                   >
                     Zielgruppe:
                   </label>
+
                   <div className="grid grid-cols-2 grid-rows-6 lg:grid-cols-3 lg:grid-rows-4">
-                    {[
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/alle_wyewox.png",
-                        label: "Alle",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/vertrieb_mhopgl.png",
-                        label: "Vertrieb",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/logistik_blm8tf.png",
-                        label: "Logistik",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/fuhrpark_bhkb9q.png",
-                        label: "Fuhrpark",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040592/IT_cyoqz8.png",
-                        label: "IT & Services",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/HR_bhni2i.png",
-                        label: "HR & Training",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040593/buha_xuo2tb.png",
-                        label: "Buchhaltung",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040594/showroom_nsrmiw.png",
-                        label: "Showroom",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040596/design_x4hg1y.png",
-                        label: "Design & Marketing",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/bestandsmanagement_dacigz.png",
-                        label: "Bestandsmanagement",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/haustechnik_uj6pa6.png",
-                        label: "Haustechnik",
-                      },
-                      {
-                        value:
-                          "https://res.cloudinary.com/dtrymbvrp/image/upload/v1737040595/unternehmensentwicklung_qiggf8.png",
-                        label: "Unternehmensentwicklung",
-                      },
-                    ].map(({ value, label }) => (
-                      <div key={value} className="flex items-center mb-1">
+                    {Object.entries(departmentMap).map(([url, name]) => (
+                      <div key={name} className="flex items-center mb-1">
                         <input
                           type="checkbox"
-                          value={value}
+                          value={url}
                           onChange={handleDepartmentChange}
+                          checked={selectedDepartments.includes(url)}
                           className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-                          checked={selectedDepartments.includes(value)}
                         />
                         <label className="ml-2 text-sm text-gray-900 dark:text-white">
-                          {label}
+                          {name}
                         </label>
                       </div>
                     ))}
                   </div>
 
                   <div className="flex justify-center gap-2">
-                    <input
-                      type="submit"
-                      className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/3 rounded cursor-pointer hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-                      value={"Bestätigen"}
-                    />
                     <button
+                      type="submit"
+                      disabled={loading}
+                      className={`bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/3 rounded shadow transition transform ${
+                        loading
+                          ? "cursor-not-allowed opacity-50"
+                          : "hover:shadow-lg hover:-translate-y-0.5"
+                      }`}
+                    >
+                      {loading ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <svg
+                            className="animate-spin h-5 w-5 text-white"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8v4l4-4-4-4v4a8 8 0 00-8 8z"
+                            ></path>
+                          </svg>
+                          Bitte warten...
+                        </div>
+                      ) : (
+                        "Bestätigen"
+                      )}
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => navigate(-1)}
                       className="bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 from-gray-700 to-gray-900 font-medium p-2 mt-2 md:p-2 text-white uppercase w-1/3 rounded cursor-pointer "
                     >

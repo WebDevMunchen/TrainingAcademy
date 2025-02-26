@@ -32,7 +32,7 @@ export default function ReportCard({ registeredUser, activity }) {
               ? registration?.status === "genehmigt"
                 ? "bg-green-100 text-green-800"
                 : registration?.status === "ausstehend"
-                ? "bg-orange-100 text-orange-800"
+                ? "bg-gray-200 text-gray-800"
                 : "bg-red-200 text-red-700"
               : ""
           }`}
@@ -77,7 +77,7 @@ export default function ReportCard({ registeredUser, activity }) {
             ? registration?.statusAttended === "teilgenommen"
               ? "bg-green-100 text-green-800"
               : registration?.statusAttended === "in Prüfung"
-              ? "bg-orange-200 text-orange-800"
+              ? "bg-gray-200 text-gray-800"
               : "bg-red-200 text-red-700"
             : ""
         }`}

@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const {
   createClassActivity,
   getAllActivities,
@@ -13,10 +14,13 @@ const {
   enlist,
   exportCalendar,
   sendReminder,
+  uploadClassFile,
 } = require("../controllers/classActivity-controller.js");
 const { authenticate } = require("../middlewares/authentication.js");
 const { updateUserRegistration } = require("../controllers/user-controller.js");
 const upload = require("../utils/multerConfig.js");
+const upload2 = multer({ storage: multer.diskStorage({}) });
+
 
 const classActivityRouter = express.Router();
 
@@ -28,9 +32,15 @@ classActivityRouter
 classActivityRouter
   .route("/registerClass/:id")
   .put(authenticate, registerClass, updateUserRegistration);
-classActivityRouter
+  classActivityRouter
   .route("/cancelClass/:id")
   .put(authenticate, cancelUserRegistration);
+  classActivityRouter.put(
+    "/uploadFile/:id",
+    authenticate,
+    upload2.single("file"), // Ensure multer handles file upload
+    uploadClassFile
+  );
 classActivityRouter
   .route("/updateReason/:id")
   .put(authenticate, updateCancelationReason);

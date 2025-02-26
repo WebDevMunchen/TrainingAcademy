@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../utils/axiosClient";
 import { updatePBC } from "../../utils/updatePBC";
 import { useForm } from "react-hook-form";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import profilePic from "../../../src/assets/profile.jpeg";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -24,6 +24,16 @@ export default function UserInfoCard() {
       })
       .catch((error) => {});
   }, []);
+  let totalMinutes = 0;
+
+  userInfomation?.classesRegistered?.forEach((element) => {
+    if (element.statusAttended === "teilgenommen") {
+      totalMinutes += element?.registeredClassID?.duration;
+    }
+  });
+
+  let hours = Math.floor(totalMinutes / 60);
+  let minutes = totalMinutes % 60;
 
   const {
     register,
@@ -40,35 +50,10 @@ export default function UserInfoCard() {
       })
       .then((response) => {
         document.getElementById("updatePBC").close();
-        notifySuccess();
+        toast.success("Kennwort geändert");
       })
       .catch((error) => {});
   };
-
-  const monthsInGerman = [
-    "Januar",
-    "Februar",
-    "März",
-    "April",
-    "Mai",
-    "Juni",
-    "Juli",
-    "August",
-    "September",
-    "Oktober",
-    "November",
-    "Dezember",
-  ];
-
-  const dateString = userInfomation?.dateOfRegistration;
-  const date = new Date(dateString);
-
-  const day = date.getDate();
-  const monthIndex = date.getMonth();
-  const monthGerman = monthsInGerman[monthIndex];
-  const year = date.getFullYear();
-
-  const formattedDate = `${day}.${monthGerman} - ${year}`;
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -105,20 +90,6 @@ export default function UserInfoCard() {
     return dateB - dateA;
   });
 
-  const notifySuccess = () =>
-    toast.success("Kennwort geändert", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mr-6",
-    });
-
   const generateRandomString = (length) => {
     const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -145,24 +116,10 @@ export default function UserInfoCard() {
     navigator.clipboard
       .writeText(generatedPassword)
       .then(() => {
-        notifyCopied();
+        toast.success("Kennwort in die Zwischenablage kopiert!");
       })
       .catch((err) => {});
   };
-
-  const notifyCopied = () =>
-    toast.success("Kennwort in die Zwischenablage kopiert!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mt-14 mr-6",
-    });
 
   const password = watch("password", "");
 
@@ -227,8 +184,11 @@ export default function UserInfoCard() {
                   {userInfomation?.firstName + " " + userInfomation?.lastName}
                 </h1>
                 <p className="font-light text-gray-600 mt-3">
-                  <span className="font-medium">Registriert seit:</span>{" "}
-                  {formattedDate}
+                  <span className="font-medium">
+                    Anwesende Stunden insgesamt:
+                  </span>{" "}
+                  {String(hours).padStart(2, "0")} Std. und{" "}
+                  {String(minutes).padStart(2, "0")} Min.
                 </p>
                 <p className="font-light text-gray-600 mt-2">
                   <span className="font-medium">Status: </span>
@@ -492,7 +452,7 @@ export default function UserInfoCard() {
           ? activity?.status === "genehmigt"
             ? "bg-green-100 text-green-800"
             : activity?.status === "ausstehend"
-            ? "bg-orange-100 text-orange-800"
+            ? "bg-gray-200 text-gray-800"
             : "bg-red-200 text-red-700"
           : ""
       }`}
@@ -553,7 +513,7 @@ export default function UserInfoCard() {
             ? activity?.statusAttended === "teilgenommen"
               ? "bg-green-100 text-green-800"
               : activity?.statusAttended === "in Prüfung"
-              ? "bg-orange-100 text-orange-800"
+              ? "bg-gray-200 text-gray-800"
               : "bg-red-200 text-red-700"
             : ""
         }`}

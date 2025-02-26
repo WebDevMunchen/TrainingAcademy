@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import axiosClient from "../../utils/axiosClient";
 import { useParams } from "react-router-dom";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import attended from "../../assets/attended.png";
 import approved from "../../assets/approved.png";
 import pending from "../../assets/pending.png";
@@ -63,7 +63,6 @@ export default function RegisteredUserCard({
       })
       .then((response) => {
         return axiosClient.get(`/classActivity/${id}`);
-        i;
       })
       .then((responseSingleActivity) => {
         setActivity(responseSingleActivity.data);
@@ -79,16 +78,24 @@ export default function RegisteredUserCard({
       })
       .then((responseUsers) => {
         setAllUsers(responseUsers.data);
-        notifySuccess();
+        toast.success("Genehmigung geändert");
       })
       .catch((error) => {
-        notifyError();
-        setHideChangedBtn(false);
-        setSubmitedChangedStatus(true);
+        toast.error(`Genehmigung könnte nicht geändert werden!`);
+
       });
   };
 
   const decline = (status, reason) => {
+    if (
+      !declineReason ||
+      declineReason.trim() === "" ||
+      declineReason === "Kein Grund angegeben"
+    ) {
+      toast.error("Ein Grund muss angegeben werden!");
+
+      return;
+    }
     axiosClient
       .put(`/user/updateClassStatus/${registeredUser._id}`, {
         classId: id,
@@ -113,18 +120,25 @@ export default function RegisteredUserCard({
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
-        notifySuccess();
+        toast.success("Genehmigung geändert");
       })
       .catch((error) => {
         if (error.name === "AxiosError") {
-          notifyError();
-          setHideChangedBtn(false);
-          setSubmitedChangedStatus(true);
+          toast.error(`Genehmigung könnte nicht geändert werden!`);
         }
       });
   };
 
   const declineWithCapacityIncrease = (status, reason) => {
+    if (
+      !declineReason ||
+      declineReason.trim() === "" ||
+      declineReason === "Kein Grund angegeben"
+    ) {
+      toast.error("Ein Grund muss angegeben werden!");
+
+      return;
+    }
     axiosClient
       .put(`/user/updateClassStatus/${registeredUser._id}`, {
         classId: id,
@@ -152,13 +166,16 @@ export default function RegisteredUserCard({
       })
       .then((responseAllActivities) => {
         setAllActivities(responseAllActivities.data);
-        notifySuccess();
+
+        return axiosClient.get(`/user/profileInformation/${registeredUser._id}`)
+      }).then((responseUserInfo) => {
+        
+        
+        toast.success("Genehmigung geändert");
       })
       .catch((error) => {
         if (error.name === "AxiosError") {
-          notifyError();
-          setHideChangedBtn(false);
-          setSubmitedChangedStatus(true);
+          toast.error(`Genehmigung könnte nicht geändert werden!`);
         }
       });
   };
@@ -172,21 +189,45 @@ export default function RegisteredUserCard({
     }
   };
 
-  const handleDeclined = (e) => {
-    if (e.target.checked) {
-      const status = e.target.value;
-      decline(status, declineReason);
-      setHideChangedBtn(true);
+  const handleDeclined = async () => {
+    if (
+      !declineReason ||
+      declineReason.trim() === "" ||
+      declineReason === "Kein Grund angegeben"
+    ) {
+      toast.error("Ein Grund muss angegeben werden!");
+      return;
+    }
+
+    const status = "abgelehnt";
+    setHideChangedBtn(true);
+
+    try {
+      await decline(status, declineReason);
       setSubmitedChangedStatus(false);
+    } catch (error) {
+      setHideChangedBtn(false);
     }
   };
 
-  const handleDeclinedWithCapcityIncrease = (e) => {
-    if (e.target.checked) {
-      const status = e.target.value;
-      declineWithCapacityIncrease(status, declineReason);
-      setHideChangedBtn(true);
+  const handleDeclinedWithCapcityIncrease = async () => {
+    if (
+      !declineReason ||
+      declineReason.trim() === "" ||
+      declineReason === "Kein Grund angegeben"
+    ) {
+      toast.error("Ein Grund muss angegeben werden!");
+      return;
+    }
+
+    const status = "abgelehnt";
+    setHideChangedBtn(true);
+
+    try {
+      await declineWithCapacityIncrease(status, declineReason);
       setSubmitedChangedStatus(false);
+    } catch (error) {
+      setHideChangedBtn(false);
     }
   };
 
@@ -262,7 +303,7 @@ export default function RegisteredUserCard({
       participated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
-      notifySuccessAttended();
+      toast.success("Teilnahmestatus geändert!");
     }
   };
 
@@ -272,7 +313,7 @@ export default function RegisteredUserCard({
       notParticipated(status);
       setHideAttendedBtn(true);
       setSubmitedAttended(false);
-      notifySuccessAttended();
+      toast.success("Teilnahmestatus geändert!");
     }
   };
 
@@ -281,48 +322,6 @@ export default function RegisteredUserCard({
       modalRef.current.close();
     }
   };
-
-  const notifySuccess = () =>
-    toast.success("Genehmigung geändert", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
-    });
-
-  const notifyError = () =>
-    toast.error(`Genehmigung könnte nicht geändert werden!`, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
-    });
-
-  const notifySuccessAttended = () =>
-    toast.success("Teilnahmestatus geändert!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mr-0 mt-0 lg:mt-14 lg:mr-6",
-    });
 
   const currentDate = new Date();
   const isoDateString =
@@ -370,7 +369,7 @@ export default function RegisteredUserCard({
 
   return (
     <>
-      <div className="px-3 py-2 lg:px-4 lg:py-4">
+      <div className="px-3 py-2 lg:px-4 lg:py-6">
         <div className="flex text-lg items-center justify-between ">
           <h3 className="leading-6 text-sm font-medium text-gray-900 lg:text-lg">
             {registeredUser.firstName + " " + registeredUser.lastName}
@@ -480,6 +479,7 @@ export default function RegisteredUserCard({
           </div>
         </div>
       </div>
+
       {user.role === "ASP" || user.role === "admin" ? (
         <>
           <div
@@ -603,7 +603,7 @@ export default function RegisteredUserCard({
                       ablehnen?
                     </p>
                     <div className="modal-action mr-2.5">
-                    <form method="dialog" className="w-full">
+                      <form method="dialog" className="w-full">
                         <div>
                           <div>
                             <label
@@ -618,9 +618,7 @@ export default function RegisteredUserCard({
                               value={declineReason}
                               onChange={(e) => setDeclineReason(e.target.value)}
                             >
-                              <option value="" disabled>
-                                Wähle eine Begründung
-                              </option>
+                              <option value="">Wähle eine Begründung</option>
                               {declineReasons.map((reason, index) => (
                                 <option key={index} value={reason}>
                                   {reason}
@@ -629,16 +627,13 @@ export default function RegisteredUserCard({
                             </select>
                           </div>
                           <div className="flex justify-end gap-2">
-                            <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
-                              <input
-                                onChange={handleDeclined}
-                                onClick={closeModal}
-                                type="radio"
-                                className="peer sr-only"
-                                value="abgelehnt"
-                              />
-                              Bestätigen
-                            </label>
+                            <button
+                              className="btn w-fit bg-red-500 text-white hover:bg-red-700"
+                              onClick={handleDeclined}
+                            >
+                              In "abgelehnt" ändern
+                            </button>
+
                             <button className="btn w-28">Abbrechen</button>
                           </div>
                         </div>
@@ -735,9 +730,7 @@ export default function RegisteredUserCard({
                                   setDeclineReason(e.target.value)
                                 }
                               >
-                                <option value="" disabled>
-                                  Wähle eine Begründung
-                                </option>
+                                <option value="">Wähle eine Begründung</option>
                                 {declineReasons.map((reason, index) => (
                                   <option key={index} value={reason}>
                                     {reason}
@@ -745,16 +738,12 @@ export default function RegisteredUserCard({
                                 ))}
                               </select>
                               <div className="flex justify-end gap-2">
-                                <label className="btn w-fit bg-red-500 text-white hover:bg-red-700">
-                                  <input
-                                    onChange={handleDeclinedWithCapcityIncrease}
-                                    onClick={closeModal}
-                                    type="radio"
-                                    className="peer sr-only"
-                                    value="abgelehnt"
-                                  />
+                                <button
+                                  className="btn w-fit bg-red-500 text-white hover:bg-red-700"
+                                  onClick={handleDeclinedWithCapcityIncrease}
+                                >
                                   In "abgelehnt" ändern
-                                </label>
+                                </button>
 
                                 <button className="btn w-fit">Abbrechen</button>
                               </div>

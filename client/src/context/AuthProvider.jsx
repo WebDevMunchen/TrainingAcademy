@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import axiosClient from "../utils/axiosClient";
 import { useNavigate } from "react-router-dom";
 import { badCredentials } from "../utils/badCredentials";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const AuthContext = createContext();
@@ -14,6 +14,7 @@ export default function AuthProvider({ children }) {
   const [approver, setApprover] = useState(null);
   const [allUsers, setAllUsers] = useState(null);
   const [allActivities, setAllActivities] = useState([]);
+  const [allInterest, setAllInterest] = useState([]);
   const [isLoadingActivities, setIsLoadingActivities] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [currentMonth, setCurrentMonth] = useState(
@@ -37,7 +38,7 @@ export default function AuthProvider({ children }) {
       .finally(() => {
         setIsLoading(false);
       });
-      setIsLoadingActivities(true);
+    setIsLoadingActivities(true);
 
     axiosClient
       .get(
@@ -48,7 +49,8 @@ export default function AuthProvider({ children }) {
       })
       .catch((error) => {
         setAllActivities([]);
-      }).finally(() => {
+      })
+      .finally(() => {
         setIsLoadingActivities(false);
       });
 
@@ -59,6 +61,15 @@ export default function AuthProvider({ children }) {
       })
       .catch((error) => {
         setAllUsers(null);
+      });
+
+    axiosClient
+      .get("/activityInterest/getEveryInterest")
+      .then((response) => {
+        setAllInterest(response.data);
+      })
+      .catch((error) => {
+        setAllInterest(null);
       });
 
     axiosClient
@@ -143,6 +154,11 @@ export default function AuthProvider({ children }) {
       .then((responseApprovers) => {
         setApprover(responseApprovers.data);
 
+        return axiosClient.get("/activityInterest/getEveryInterest");
+      })
+      .then((response) => {
+        setAllInterest(response.data);
+
         navigate(redirectUrl || "/");
       })
       .catch((error) => {
@@ -175,31 +191,16 @@ export default function AuthProvider({ children }) {
       .then((response) => {
         setAllUsers(response.data);
         navigate("/admin/users");
+        toast.success("Benutzer registriert!")
       })
       .catch((error) => {
-        notifyErrorRegister();
+        toast.error(
+          `Registrierung fehlgeschlagen. Benutzer bereits registriert oder ungültige Daten`
+        );
       })
       .finally(() => {
         setIsLoading(false);
       });
-  };
-
-  const notifyErrorRegister = () => {
-    toast.error(
-      `Registrierung fehlgeschlagen. Benutzer bereits registriert oder ungültige Daten`,
-      {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        className: "mt-14 mr-6 w-80",
-      }
-    );
   };
 
   return (
@@ -216,8 +217,9 @@ export default function AuthProvider({ children }) {
           setIsLoading,
           setAllActivities,
           setAllUsers,
-          notifyErrorRegister,
           setApprover,
+          setAllInterest,
+          allInterest,
           approver,
           user,
           allUsers,
@@ -225,7 +227,7 @@ export default function AuthProvider({ children }) {
           isLoading,
           currentMonth,
           currentYear,
-          isLoadingActivities
+          isLoadingActivities,
         }}
       >
         {children}

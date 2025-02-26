@@ -92,16 +92,15 @@ export default function PieChartSingle() {
                   {activity?.title}
                 </p>
               </div>
-              
             </div>
             <div className="text-right flex justify-end">
-            <NavLink
-              to={"/admin/dashboard"}
-              className="w-fit flex items-center text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-            >
-              Zurück
-            </NavLink>
-          </div>
+              <NavLink
+                to={"/admin/dashboard"}
+                className="w-fit flex items-center text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+              >
+                Zurück
+              </NavLink>
+            </div>
           </div>
           <div className="flex justify-center mt-4">
             {noStatistics ? (
@@ -118,7 +117,6 @@ export default function PieChartSingle() {
               />
             )}
           </div>
-
         </div>
       </div>
     </div>

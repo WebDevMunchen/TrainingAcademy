@@ -54,11 +54,23 @@ export default function Navbar() {
                       <li>
                         <NavLink to={"/classes"}>Schulungsübersicht</NavLink>
                       </li>
+                      {user.role === "ASP" && (
+                        <li>
+                          <NavLink to={"/userOverview"}>
+                            Mitarbeiterübericht
+                          </NavLink>
+                        </li>
+                      )}
                       <li>
                         <NavLink to={"/classesOverview"}>
                           Meine Schulungen
                         </NavLink>
                       </li>
+                      {/* <li>
+                        <NavLink to={"/classInterest/overview"}>
+                          Interesse
+                        </NavLink>
+                      </li> */}
                       <li>
                         <NavLink to={"/faq"}>FAQ</NavLink>
                       </li>
@@ -140,6 +152,14 @@ export default function Navbar() {
                             Meine Schulungen
                           </NavLink>
                         </li>
+                        {/* <li>
+                          <NavLink
+                            to={"/classInterest/overview"}
+                            onClick={handleLinkClick}
+                          >
+                            Interesse
+                          </NavLink>
+                        </li> */}
                         <li>
                           <NavLink to={"/messages"} onClick={handleLinkClick}>
                             Nachrichten
@@ -320,9 +340,6 @@ export default function Navbar() {
                             Benutzer Registrieren
                           </NavLink>
                         </li>
-                        {/* <li>
-            <NavLink to={"/faq"}>FAQ</NavLink>
-          </li> */}
                         <li>
                           <NavLink
                             to={"/"}

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import SideMenu from "./SideMenu";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
@@ -55,24 +55,10 @@ export default function Register() {
     navigator.clipboard
       .writeText(generatedPassword)
       .then(() => {
-        notifyCopied();
+        toast.success("Kennwort in die Zwischenablage kopiert!");
       })
       .catch((err) => {});
   };
-
-  const notifyCopied = () =>
-    toast.success("Kennwort in die Zwischenablage kopiert!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      className: "mt-14 mr-6",
-    });
 
   const password = watch("password", "");
 

@@ -10,6 +10,10 @@ const { format } = require("date-fns");
 const { DateTime } = require("luxon");
 const cron = require("node-cron");
 const { createEvent } = require("ics");
+const multer = require("multer");
+
+const storage = multer.diskStorage({});
+const upload = multer({ storage });
 
 const createClassActivity = asyncWrapper(async (req, res, next) => {
   const {
@@ -24,6 +28,8 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     year,
     time,
     teacher,
+    responsibleDepartments,
+    noRegistration,
     safetyBriefing,
   } = req.body;
 
@@ -56,6 +62,8 @@ const createClassActivity = asyncWrapper(async (req, res, next) => {
     time,
     teacher,
     safetyBriefing,
+    responsibleDepartments,
+    noRegistration,
     fileUrl,
   });
 
@@ -75,6 +83,8 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     year,
     time,
     teacher,
+    responsibleDepartments,
+    noRegistration,
     safetyBriefing,
   } = req.body;
 
@@ -126,7 +136,9 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     year,
     time,
     teacher,
+    responsibleDepartments,
     safetyBriefing,
+    noRegistration,
     fileUrl,
   };
 
@@ -266,7 +278,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
           </table>
           <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p><br />
           <p>Bei Fragen gerne melden.</p>
-          <p>Euer Training-Abteilung</p>
+          <p>Euere Trainingsabteilung</p>
         </div>
       `;
       } else {
@@ -333,7 +345,7 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
         </ul>
         <p>Bitte informiert die Mitarbeiter eurer Abteilung und passt deren Anfrage ggf. an.</p>
         <p>Bei Fragen gerne melden.</p>
-        <p>Euer Training-Abteilung</p>
+        <p>Euere Trainingsabteilung</p>
 
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
         <tr>
@@ -399,6 +411,61 @@ const editClassActivity = asyncWrapper(async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+});
+
+const uploadClassFile = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!req.file) {
+    return res
+      .status(400)
+      .json({ success: false, message: "No file uploaded" });
+  }
+
+  const allowedFormats = [
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  ];
+  if (!allowedFormats.includes(req.file.mimetype)) {
+    return res
+      .status(400)
+      .json({
+        success: false,
+        message: "Invalid file format. Please upload a .pptx file.",
+      });
+  }
+
+  try {
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      resource_type: "raw",
+      format: "pptx",
+      folder: "class_activities",
+    });
+
+    const activity = await ClassActivity.findByIdAndUpdate(
+      id,
+      { fileUrlPPT: result.secure_url },
+      { new: true }
+    );
+
+    if (!activity) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Activity not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "PPTX file uploaded and activity updated successfully",
+      data: activity,
+    });
+  } catch (error) {
+    console.error("Cloudinary upload error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error uploading file to Cloudinary",
+      error: error.message,
+    });
   }
 });
 
@@ -676,7 +743,7 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
         </ul>
         <p>Bitte die Kollegen aus eurer Abteilung informieren, falls sie betroffen sind.</p>
         <p>Bei Fragen gerne melden.</p>
-        <p>Euer Training-Abteilung</p>
+        <p>Euere Trainingsabteilung</p>
       </div>
     `;
   } else {
@@ -686,19 +753,19 @@ const deleteClass = asyncWrapper(async (req, res, next) => {
         <p>Die Schulung <em>"${notifyBeforeDelete.title}"</em> wurde abgesagt.</p>
         <p>Bisher hat sich niemand für die Schulung angemeldet, daher müsst ihr keine weiteren Maßnahmen ergreifen.</p>
         <p>Bei Fragen gerne melden.</p>
-        <p>Euer Training Abteilung</p>
+        <p>Euere Trainingsabteilung</p>
       </div>
     `;
   }
 
   const mailOptions = {
     from: {
-      name: "Schulung Abgesagt - Click & Train - No reply",
+      name: "Schulung abgesagt - Click & Train - No reply",
       address: process.env.USER,
     },
     to: toAddresses,
-    subject: "Click & Train - Rent.Group München - Schulung Abgesagt",
-    text: "Click & Train - Rent.Group München - Schulung Abgesagt",
+    subject: "Click & Train - Rent.Group München - Schulung abgesagt",
+    text: "Click & Train - Rent.Group München - Schulung abgesagt",
     html: mailHtml,
   };
 
@@ -755,6 +822,19 @@ const checkAndUpdateClassRegistrations = async () => {
             "classesRegistered.$.status": "abgelehnt",
             "classesRegistered.$.reason":
               "Automatisch abgelehnt(keine Antwort vom Genehmiger oder seinem Vertreter)",
+          },
+        }
+      );
+
+      await User.updateMany(
+        {
+          _id: { $in: registeredUserIds },
+          "classesRegistered.registeredClassID": classActivity._id,
+          "classesRegistered.statusAttended": "in Prüfung",
+        },
+        {
+          $set: {
+            "classesRegistered.$.statusAttended": "nicht teilgenommen",
           },
         }
       );
@@ -829,7 +909,6 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
   const classActivity = await ClassActivity.findById(id);
-
   if (!classActivity) {
     return res.status(404).json({ message: "Class activity not found." });
   }
@@ -837,40 +916,50 @@ const exportCalendar = asyncWrapper(async (req, res, next) => {
   const eventDate = new Date(classActivity.date);
   const [hours, minutes] = classActivity.time.split(":").map(Number);
 
-  const event = {
-    start: [
-      eventDate.getFullYear(),
-      eventDate.getMonth() + 1,
-      eventDate.getDate(),
-      hours,
-      minutes,
-    ],
-    duration: { minutes: classActivity.duration },
-    title: classActivity.title,
-    description: classActivity.description || "",
-    location: classActivity.location || "",
-    organizer: { name: "Referent*in: " + classActivity.teacher || "Organizer" },
+  eventDate.setHours(hours);
+  eventDate.setMinutes(minutes);
+
+  const endDate = new Date(eventDate);
+  endDate.setMinutes(eventDate.getMinutes() + classActivity.duration);
+
+  const formatDate = (date) => {
+    return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
   };
 
-  createEvent(event, (error, value) => {
-    if (error) {
-      console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Error generating calendar event." });
-    }
+  const icsData = `
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//YourApp//NONSGML v1.0//EN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:${id}@yourapp.com
+SEQUENCE:0
+DTSTAMP:${formatDate(new Date())}
+DTSTART:${formatDate(eventDate)}
+DTEND:${formatDate(endDate)}
+SUMMARY:${classActivity.title}
+DESCRIPTION:${classActivity.description || ""}
+LOCATION:${classActivity.location || ""}
+ORGANIZER;CN="Referent*in: ${
+    classActivity.teacher || "Organizer"
+  }":mailto:no-reply
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR
+  `.trim();
 
-    res.setHeader("Content-Type", "text/calendar");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="${classActivity.title}.ics"`
-    );
-    res.send(value);
-  });
+  res.setHeader("Content-Type", "text/calendar; charset=utf-8");
+  res.setHeader(
+    "Content-Disposition",
+    `attachment; filename="${classActivity.title}.ics"`
+  );
+  res.send(icsData);
 });
 
 const sendReminder = asyncWrapper(async (req, res, next) => {
   const { id: classId } = req.params;
+  const { id: userId } = req.user; // Get logged-in user ID
 
   if (!classId) {
     return res.status(400).json({ message: "Class ID is required." });
@@ -887,7 +976,9 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
     },
   });
 
-  const users = await User.find({
+  // Fetch the logged-in user and check their registration status
+  const user = await User.findOne({
+    _id: userId,
     "classesRegistered.registeredClassID": classId,
     "classesRegistered.reminded": false,
   })
@@ -897,112 +988,94 @@ const sendReminder = asyncWrapper(async (req, res, next) => {
       select: "title date time",
     });
 
-  if (!users.length) {
-    return res
-      .status(404)
-      .json({ message: "No users to remind for this class." });
+  if (!user) {
+    return res.status(404).json({ message: "No pending reminders for this user." });
   }
 
-  for (const user of users) {
-    for (const registration of user.classesRegistered) {
-      if (
-        registration.registeredClassID &&
-        registration.registeredClassID._id.toString() === classId &&
-        !registration.reminded
-      ) {
-        const approver = await Approver.findById(user.userContactInformation);
+  for (const registration of user.classesRegistered) {
+    if (
+      registration.registeredClassID &&
+      registration.registeredClassID._id.toString() === classId &&
+      !registration.reminded
+    ) {
+      const approver = await Approver.findById(user.userContactInformation);
 
-        if (!approver) {
-          console.error(`Approver not found for user: ${user._id}`);
-          continue;
-        }
+      if (!approver) {
+        console.error(`Approver not found for user: ${user._id}`);
+        continue;
+      }
 
-        const department = user.department.toLowerCase();
-        const approverEmail = approver[department];
-        const substituteEmail = approver[`${department}Substitute`];
+      const department = user.department.toLowerCase();
+      const approverEmail = approver[department];
+      const substituteEmail = approver[`${department}Substitute`];
 
-        if (!approverEmail || !substituteEmail) {
-          console.error(
-            `Approver or substitute email not found for department: ${department}`
-          );
-          continue;
-        }
+      if (!approverEmail || !substituteEmail) {
+        console.error(`Approver or substitute email not found for department: ${department}`);
+        continue;
+      }
 
-        const classDetails = registration.registeredClassID;
-        const { title, date, time } = classDetails || {};
+      const { title, date, time } = registration.registeredClassID || {};
 
-        const mailOptions = {
-          from: {
-            name: "Mitarbeiter wartet auf Genehmigung - Click & Train - No reply",
-            address: process.env.USER,
-          },
-          to: `${approverEmail}, ${substituteEmail}`, 
-          subject: `Reminder for User: ${user.firstName} ${user.lastName}`,
-          html: `Hallo zusammen,<br><br>
-          ${user.firstName} ${
-            user.lastName
-          } wartet immer noch auf eure Genehmigung für die folgende Schulung:<br><br>
-          
-          <strong>${title || "N/A"}</strong><br><br>
-          - Datum: ${date ? new Date(date).toLocaleDateString() : "N/A"}<br>
-          - Uhrzeit: ${time || "N/A"}<br><br>
-          
-          Bitte beantwortet die Anfrage schnellstmöglich.<br><br>
-          
-          <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
-            <tr>
-              <td align="center">
-                <!-- VML-based button rendering for Outlook -->
-                <!--[if mso]>
-                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.click-n-train.de/classInformation/${classId}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#007bff" fillcolor="#007bff">
-                  <w:anchorlock/>
-                  <center style="color:#ffffff;font-family:sans-serif;font-size:16px;">Anfrage beantworten</center>
-                </v:roundrect>
-                <![endif]-->
+      const mailOptions = {
+        from: {
+          name: "Mitarbeiter wartet auf Genehmigung - Click & Train - No reply",
+          address: process.env.USER,
+        },
+        to: `${approverEmail}, ${substituteEmail}`,
+        subject: `Reminder for User: ${user.firstName} ${user.lastName}`,
+        html: `Hallo zusammen,<br><br>
+        ${user.firstName} ${
+          user.lastName
+        } wartet immer noch auf die Genehmigung für die folgende Schulung:<br><br>
         
-                <!-- Fallback for non-Outlook clients -->
-                <a href="www.click-n-train.de/classInformation/${classId}" style="
-                    background-color: #007bff;
-                    border-radius: 5px;
-                    color: #ffffff;
-                    display: inline-block;
-                    font-family: Arial, sans-serif;
-                    font-size: 16px;
-                    line-height: 50px;
-                    text-align: center;
-                    text-decoration: none;
-                    width: 200px;
-                    height: 50px;
-                    mso-hide: all;
-                    " target="_blank">
-                    Zum Genehmigungstool
-                </a>
-              </td>
-            </tr>
-          </table>
-          
-          <br>
-          Bei Fragen könnt ihr euch gerne melden.
-          Eure Training-Abteilung`,
-        };
+        <strong>${title || "N/A"}</strong><br><br>
+        - Datum: ${date ? new Date(date).toLocaleDateString() : "N/A"}<br>
+        - Uhrzeit: ${time || "N/A"}<br><br>
+        
+        Bitte beantwortet die Anfrage schnellstmöglich.<br><br>
+        
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 10px 0; border-collapse: collapse;">
+          <tr>
+            <td align="center">
+              <a href="www.click-n-train.de/classInformation/${classId}" style="
+                  background-color: #007bff;
+                  border-radius: 5px;
+                  color: #ffffff;
+                  display: inline-block;
+                  font-family: Arial, sans-serif;
+                  font-size: 16px;
+                  line-height: 50px;
+                  text-align: center;
+                  text-decoration: none;
+                  width: 200px;
+                  height: 50px;
+                  " target="_blank">
+                  Zum Genehmigungstool
+              </a>
+            </td>
+          </tr>
+        </table>
+        
+        <br>
+        Bei Fragen könnt ihr euch gerne melden.
+        Eure Trainingabteilung`,
+      };
 
-        try {
-          await transporter.sendMail(mailOptions);
-          console.log(
-            `Reminder sent to ${approverEmail} and ${substituteEmail}.`
-          );
+      try {
+        await transporter.sendMail(mailOptions);
+        console.log(`Reminder sent to ${approverEmail} and ${substituteEmail}.`);
 
-          registration.reminded = true;
-          await user.save();
-        } catch (error) {
-          console.error(`Failed to send reminder for user: ${user._id}`, error);
-        }
+        registration.reminded = true;
+        await user.save();
+      } catch (error) {
+        console.error(`Failed to send reminder for user: ${user._id}`, error);
       }
     }
   }
 
-  res.status(200).json({ message: "Reminders sent successfully." });
+  res.status(200).json({ message: "Reminder sent successfully for the logged-in user." });
 });
+
 
 cron.schedule(
   "00 03 * * *",
@@ -1014,7 +1087,7 @@ cron.schedule(
 
       for (const user of users) {
         for (const registration of user.classesRegistered) {
-          registration.reminded = false; 
+          registration.reminded = false;
         }
 
         await user.save();
@@ -1022,11 +1095,10 @@ cron.schedule(
       }
 
       console.log("Successfully reset 'reminded' status for all users.");
-    } catch (error) {
-    }
+    } catch (error) {}
   },
   {
-    timezone: "Europe/Berlin", 
+    timezone: "Europe/Berlin",
   }
 );
 
@@ -1045,4 +1117,5 @@ module.exports = {
   enlist,
   exportCalendar,
   sendReminder,
+  uploadClassFile,
 };
