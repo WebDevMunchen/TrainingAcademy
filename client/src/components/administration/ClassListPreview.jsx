@@ -120,17 +120,33 @@ export default function ClassListPreview({ activity }) {
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50 flex justify-center">
-        <div
-          className="radial-progress bg-gray-200 text-cyan-600 mx-8"
-          style={{
-            "--value": (activity.usedCapacity / activity.capacity) * 100,
-          }}
-          role="progressbar"
-        >
-          <span className="text-neutral-800 font-bold tracking-widest">
-            {activity.usedCapacity + "/" + activity.capacity}
-          </span>
-        </div>
+        <svg width="90" height="90" viewBox="0 0 100 100" className="mx-8">
+          <circle
+            cx="50"
+            cy="50"
+            r="40"
+            stroke="lightgray"
+            strokeWidth="6"
+            fill="none"
+          />
+          <circle
+            cx="50"
+            cy="50"
+            r="40"
+            stroke="dodgerblue"
+            strokeWidth="6"
+            fill="none"
+            strokeDasharray="251.2"
+            strokeDashoffset={
+              251.2 - (activity.usedCapacity / activity.capacity) * 251.2
+            }
+            strokeLinecap="round"
+            className="transition-all duration-500 ease-in-out"
+          />
+          <text x="50" y="57" textAnchor="middle" fontSize="18" fill="black">
+            {activity.usedCapacity}/{activity.capacity}
+          </text>
+        </svg>
       </td>
 
       <td className="py-3 px-5 border-b border-blue-gray-50">

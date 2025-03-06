@@ -407,7 +407,14 @@ export default function ClassScheduleCard({ activity }) {
           </div>
 
           <div className="flex justify-center mt-1">
-            {activity.noRegistration && user.role === "user" ? (
+            {user.role === "user" && (activityDatePassed || oneDayPrior) ? (
+              <button
+                className="mt-3 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                disabled
+              >
+                Registrierung abgeschlossen
+              </button>
+            ) : activity.noRegistration && user.role === "user" ? (
               <div
                 className="tooltip"
                 data-tip="Für diese Schulung ist keine Anmeldung erforderlich, und somit auch keine Genehmigung durch deinen Abteilungsverantwortlichen"
@@ -456,15 +463,6 @@ export default function ClassScheduleCard({ activity }) {
                   )}
                 </>
               )
-            )}
-
-            {user.role === "user" && (activityDatePassed || oneDayPrior) && (
-              <button
-                className="mt-3 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
-                disabled
-              >
-                Registrierung abgeschlossen
-              </button>
             )}
           </div>
 
