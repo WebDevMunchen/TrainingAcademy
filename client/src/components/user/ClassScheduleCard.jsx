@@ -407,64 +407,64 @@ export default function ClassScheduleCard({ activity }) {
           </div>
 
           <div className="flex justify-center mt-1">
-            {user.role === "user" && (activityDatePassed || oneDayPrior) ? (
+  {activity.noRegistration ? (
+    <div
+      className="tooltip"
+      data-tip="Für diese Schulung ist keine Anmeldung erforderlich, und somit auch keine Genehmigung durch deinen Abteilungsverantwortlichen"
+    >
+      <button
+        className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed tracking-wide"
+        disabled
+      >
+        Schulung ohne Registrierung
+      </button>
+    </div>
+  ) : user.role === "user" && (activityDatePassed || oneDayPrior) ? (
+    <button
+      className="mt-3 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+      disabled
+    >
+      Registrierung abgeschlossen
+    </button>
+  ) : (
+    user.role === "user" &&
+    !activityDatePassed &&
+    !oneDayPrior && (
+      <>
+        {activity.capacity - activity.usedCapacity > 0 ? (
+          <>
+            {user.classesRegistered.some(
+              (classObj) => classObj.registeredClassID?._id === activity?._id
+            ) ? (
               <button
-                className="mt-3 bg-gradient-to-b from-gray-400 to-gray-600 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+                className="bg-gradient-to-b from-green-500 to-green-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
                 disabled
               >
-                Registrierung abgeschlossen
+                Angemeldet
               </button>
-            ) : activity.noRegistration && user.role === "user" ? (
-              <div
-                className="tooltip"
-                data-tip="Für diese Schulung ist keine Anmeldung erforderlich, und somit auch keine Genehmigung durch deinen Abteilungsverantwortlichen"
-              >
-                <button
-                  className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed tracking-wide"
-                  disabled
-                >
-                  Schulung ohne Registrierung
-                </button>
-              </div>
             ) : (
-              user.role === "user" &&
-              !activityDatePassed &&
-              !oneDayPrior && (
-                <>
-                  {activity.capacity - activity.usedCapacity > 0 ? (
-                    <>
-                      {user.classesRegistered.some(
-                        (classObj) =>
-                          classObj.registeredClassID?._id === activity?._id
-                      ) ? (
-                        <button
-                          className="bg-gradient-to-b from-green-500 to-green-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-not-allowed"
-                          disabled
-                        >
-                          Angemeldet
-                        </button>
-                      ) : (
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                          <input
-                            type="submit"
-                            className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition hover:shadow-lg hover:-translate-y-0.5"
-                            value="Anmelden"
-                          />
-                        </form>
-                      )}
-                    </>
-                  ) : (
-                    <button
-                      className="mt-3 bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
-                      disabled
-                    >
-                      Ausgebucht
-                    </button>
-                  )}
-                </>
-              )
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <input
+                  type="submit"
+                  className="bg-gradient-to-b from-blue-500 to-blue-700 font-medium p-2 mt-3 md:p-2 text-white uppercase rounded cursor-pointer font-medium transition hover:shadow-lg hover:-translate-y-0.5"
+                  value="Anmelden"
+                />
+              </form>
             )}
-          </div>
+          </>
+        ) : (
+          <button
+            className="mt-3 bg-gradient-to-b from-red-500 to-red-700 font-medium p-2 mt-2 md:p-2 text-white uppercase rounded cursor-not-allowed"
+            disabled
+          >
+            Ausgebucht
+          </button>
+        )}
+      </>
+    )
+  )}
+</div>
+
 
           <div className="flex justify-center gap-4">
             {(user.role === "ASP" || user.role === "admin") && (
